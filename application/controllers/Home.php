@@ -20,5 +20,7 @@ class Home extends CI_Controller {
 	public function Account()
 	{
 		$this->load->view('frontend/account');
+		
+		
 	}
 }
