@@ -1,39 +1,7 @@
 <?php
 	$this->load->view('frontend/include-partner/header');
 ?>
-<nav class="navigation">
-    <div class="container">
-        <div class="row">
-            <div id='cssmenu'>
-                <ul>
-                   <li><a href='#'>Dashboard</a></li>
-                   <li><a href='#'>Products</a>
-                      <!--<ul>
-                         <li class=''><a href='#'>Product 1</a>
-                            <ul>
-                               <li><a href='#'>Sub Product</a></li>
-                               <li><a href='#'>Sub Product</a></li>
-                            </ul>
-                         </li>
-                         <li class=''><a href='#'>Product 2</a>
-                            <ul>
-                               <li><a href='#'>Sub Product</a></li>
-                               <li><a href='#'>Sub Product</a></li>
-                            </ul>
-                         </li>
-                      </ul>-->
-                   </li>
-                   <li><a href='#'>Inbox</a></li>
-                   <li><a href='#'>Listings</a></li>
-                   <li><a href='#'>Rentals</a></li>
-                   <li class='active'><a href='#'>Profile</a></li>
-                   <li><a href='#'>Account</a></li>
-                   <li><a href='#'>Credit</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</nav>
+
 <section class="middle-container account-section profile-section">
     <div class="container">
         <div class="main-content">
@@ -41,11 +9,11 @@
                 <aside class="col-lg-3 left-sidebar">
                     <div class="sidenav-list">
                         <ul>
-                            <li class="active"><a href="#">Edit Profile</a></li>
-                            <li><a href="#">Photos and Video</a></li>
-                            <li><a href="#">Trust and Verification</a></li>
-                            <li><a href="#">Reviews</a></li>
-                            <li><a href="#">References</a></li>
+                            <li class="active"><a href="<?php echo base_url()?>Profile">Edit Profile</a></li>
+                            <li><a href="<?php echo base_url()?>Profile/Profile2">Photos and Video</a></li>
+                            <li><a href="<?php echo base_url()?>Profile/Profile3">Trust and Verification</a></li>
+                            <li><a href="<?php echo base_url()?>Profile/Profile4">Reviews</a></li>
+                            <li><a href="<?php echo base_url()?>Profile/Profile5">References</a></li>
                         </ul>
                     </div>
                     <a class="btn btn-default btn-block" href="#">View Profile</a>
@@ -276,7 +244,7 @@
                                             </select>
                                             <p>We'll send you messages in this language.</p>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="main-input">
@@ -567,7 +535,7 @@
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+
 });
 </script>
 </body>

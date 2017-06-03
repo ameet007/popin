@@ -7,17 +7,9 @@
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
                     <div class="sidenav-list">
-                        <ul>
-                            <li><a href="#">Notifications</a></li>
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Payout Preferences</a></li>
-                            <li><a href="#">Transaction History</a></li>
-                            <li><a href="#">Privacy</a></li>
-                            <li><a href="#">Security</a></li>
-                            <li class="active"><a href="#">Connected Apps</a></li>
-                            <li><a href="#">Settings</a></li>
-                            <li><a href="#">Badges</a></li>
-                        </ul>
+											<?php
+												$this->load->view('frontend/include/account-sidebar');
+											?>
                     </div>
                     <a class="btn btn-default btn-block" href="#">Rental Credit</a>
                 </aside>

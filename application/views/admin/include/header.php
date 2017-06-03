@@ -2,7 +2,7 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="index.html" class="logo"><span>Zir<span>cos</span></span><i class="mdi mdi-layers"></i></a>
+                    <a href="<?php echo base_url()?>/Siteowner/index" class="logo"><span>PoP<span>In</span></span><i class="mdi mdi-layers"></i></a>
                     <!-- Image logo -->
                     <!--<a href="index.html" class="logo">-->
                         <!--<span>-->
@@ -163,7 +163,7 @@
 
                                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                                     <li>
-                                        <h5>Hi, John</h5>
+                                        <h5>  <?php echo $this->session->userdata('USERNAME'); ?></h5>
                                     </li>
                                     <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>
                                     <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>

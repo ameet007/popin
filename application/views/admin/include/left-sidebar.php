@@ -64,22 +64,22 @@
                                 <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage subscriptions </span></a>
                             </li>
                             <li>
-                                <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage Transactional Reports </span></a>
+                                <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Transactional Reports </span></a>
                             </li>
                             <li>
                                 <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage Posted listings </span></a>
                             </li>
                             <li>
-                                <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage Subscription plans and Promo Codes </span></a>
+                                <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Subscription plans and Promo Codes </span></a>
                             </li>
                             <li>
-                                <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage referral bonus and rules </span></a>
+                                <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Referral bonus and rules </span></a>
                             </li>
                             <li>
                                 <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage user messages </span></a>
                             </li>
                             <li>
-                                <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage Email Templates and Newsletters </span></a>
+                                <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Email Templates and Newsletters </span></a>
                             </li>
 
                             <!--<li class="has_sub">

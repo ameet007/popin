@@ -9,7 +9,7 @@
         <!-- App favicon -->
         <link rel="shortcut icon" href="<?php echo base_url()?>backend-assets/assets/images/favicon.ico">
         <!-- App title -->
-        <title>Zircos - Responsive Admin Dashboard Template</title>
+        <title>PopIn Admin Login</title>
 
         <!-- App css -->
         <link href="<?php echo base_url()?>backend-assets/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -45,48 +45,45 @@
                             <div class="m-t-40 account-pages">
                                 <div class="text-center account-logo-box">
                                     <h2 class="text-uppercase">
-                                        <a href="index.html" class="text-success">
-                                            <span><img src="<?php echo base_url()?>backend-assets/assets/images/logo.png" alt="" height="36"></span>
+                                        <a href="#" class="text-success">
+                                          <?php /* ?>  <span><img src="<?php echo base_url()?>backend-assets/assets/images/logo.png" alt="" height="36"></span> <?php */ ?>
+                                         <span>PopIn Admin Login</span>
                                         </a>
                                     </h2>
                                     <!--<h4 class="text-uppercase font-bold m-b-0">Sign In</h4>-->
                                 </div>
                                 <div class="account-content">
-                                    <form class="form-horizontal" action="<?php echo base_url()?>Siteowner/dashboard">
+                                  <?php if(!empty($error)){?>
+                                     <div class="alert alert-warning">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <strong>Message!</strong> <?php echo $error;?>
+                                     </div>
+                                     <?php } ?>
+                                    <form class="form-horizontal" method="post" action="<?php echo base_url()?>siteowner/AdminLogin">
 
                                         <div class="form-group ">
                                             <div class="col-xs-12">
-                                                <input class="form-control" type="text" required placeholder="Username">
+                                                <input class="form-control" type="text" name="username"  placeholder="Username">
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <input class="form-control" type="password" required placeholder="Password">
+                                                <input class="form-control" type="password" name="password" placeholder="Password">
                                             </div>
                                         </div>
 
-                                        <div class="form-group ">
-                                            <div class="col-xs-12">
-                                                <div class="checkbox checkbox-success">
-                                                    <input id="checkbox-signup" type="checkbox" checked>
-                                                    <label for="checkbox-signup">
-                                                        Remember me
-                                                    </label>
-                                                </div>
-
-                                            </div>
-                                        </div>
 
                                         <div class="form-group text-center m-t-30">
                                             <div class="col-sm-12">
-                                                <a href="page-recoverpw.html" class="text-muted"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
+                                              <!--  <a href="page-recoverpw.html" class="text-muted"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a> -->
                                             </div>
                                         </div>
 
                                         <div class="form-group account-btn text-center m-t-10">
                                             <div class="col-xs-12">
-                                                <button class="btn w-md btn-bordered btn-danger waves-effect waves-light" type="submit">Log In</button>
+                                                <!--<button class="btn w-md btn-bordered btn-danger waves-effect waves-light" type="submit">Log In</button>-->
+                                                 <input type="submit" name="submit" class="btn btn-lg btn-success btn-block" value="Login">
                                             </div>
                                         </div>
 
@@ -101,7 +98,7 @@
 
                             <div class="row m-t-50">
                                 <div class="col-sm-12 text-center">
-                                    <p class="text-muted">Don't have an account? <a href="page-register.html" class="text-primary m-l-5"><b>Sign Up</b></a></p>
+                                    <!--<p class="text-muted">Don't have an account? <a href="page-register.html" class="text-primary m-l-5"><b>Sign Up</b></a></p>-->
                                 </div>
                             </div>
 

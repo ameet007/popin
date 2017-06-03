@@ -7,17 +7,9 @@
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
                     <div class="sidenav-list">
-                        <ul>
-                            <li><a href="#">Notifications</a></li>
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Payout Preferences</a></li>
-                            <li class="active"><a href="#">Transaction History</a></li>
-                            <li><a href="#">Privacy</a></li>
-                            <li><a href="#">Security</a></li>
-                            <li><a href="#">Connected Apps</a></li>
-                            <li><a href="#">Settings</a></li>
-                            <li><a href="#">Badges</a></li>
-                        </ul>
+											<?php
+												$this->load->view('frontend/include/account-sidebar');
+											?>
                     </div>
                     <a class="btn btn-default btn-block" href="#">Rental Credit</a>
                 </aside>
@@ -25,7 +17,7 @@
                     <div class="panel-group">
                         <div class="panel panel-default transa_history">
                             <div class="panel-heading">
-                                <div id="exTab1">	
+                                <div id="exTab1">
                                     <ul  class="nav nav-pills">
                                         <li class="active"><a  href="#1a" data-toggle="tab">Completed Transactions</a></li>
                                         <li><a href="#2a" data-toggle="tab">Future Transactions</a></li>
@@ -129,9 +121,9 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div> 
+                              </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </article>
             </div>

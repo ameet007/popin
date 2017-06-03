@@ -8,11 +8,9 @@
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
                     <div class="sidenav-list">
-                        <ul>
-                            <li><a href="#">Your Listings</a></li>
-                            <li class="active"><a href="#">Your Reservations</a></li>
-                            <li><a href="#">Reservation Requirements</a></li>
-                        </ul>
+											<?php
+												$this->load->view('frontend/include/listing-sidebar');
+											?>
                     </div>
                     <a class="green-" href="#">Add New Listings</a>
                 </aside>

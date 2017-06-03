@@ -8,11 +8,9 @@
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
                     <div class="sidenav-list">
-                        <ul>
-                            <li class="active"><a href="#">Your Listings</a></li>
-                            <li><a href="#">Your Reservations</a></li>
-                            <li><a href="#">Reservation Requirements</a></li>
-                        </ul>
+											<?php
+												$this->load->view('frontend/include/listing-sidebar');
+											?>
                     </div>
                     <a class="green-btn" href="#">Add New Listings</a>
                 </aside>
@@ -29,7 +27,7 @@
                             <div class="panel-heading">Your verified info</div>
                             <div class="panel-body">
                                 <h4>Email address</h4>
-                                <p>You have confirmed your email: abc@gmail.com. A confirmed email is important to allow us to securely communicate with you.</p>                               
+                                <p>You have confirmed your email: abc@gmail.com. A confirmed email is important to allow us to securely communicate with you.</p>
                             </div>
                         </div>-->
                     </div>

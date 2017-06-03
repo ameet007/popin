@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 </section>
 <?php
 	$this->load->view('frontend/include-partner/footer');

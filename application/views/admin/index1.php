@@ -9,7 +9,7 @@
         <!-- App favicon -->
         <link rel="shortcut icon" href="<?php echo base_url()?>backend-assets/assets/images/favicon.ico">
         <!-- App title -->
-        <title>Zircos - Responsive Admin Dashboard Template</title>
+        <title>PopIn Dashboard</title>
 
         <!--Morris Chart CSS -->
 		<link rel="stylesheet" href="<?php echo base_url()?>backend-assets/plugins/morris/morris.css">
@@ -277,8 +277,8 @@
                                             </tbody>
                                         </table>
 
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                             </div>-->
                             <!-- end col -->
 

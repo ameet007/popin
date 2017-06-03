@@ -2,7 +2,7 @@
 <link href="<?php echo base_url()?>assests/css/fileuploader.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url()?>assests/css/fileuploader-dragdrop.css" rel="stylesheet" type="text/css" />
 <?php
-	$this->load->view('frontend/include-partner/header');
+	$this->load->view('frontend/include-partner/header3');
 ?>
 <div class="progress">
     <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:10%">
