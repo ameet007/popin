@@ -41,7 +41,7 @@
                         <img src="<?php echo base_url()?>assests/img/profile-pic.png" alt="" />
                     </div>
                     <ul class="nav navbar-nav navbar-right navi">
-                        <li><a href="<?php echo base_url()?>Home/BecomeAPartner"">Become a Partner</a></li>
+                        <li><a href="<?php echo base_url()?>Home/BecomeAPartner">Become a Partner</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rentals <span class="caret"></span></a>
                             <ul class="dropdown-menu">

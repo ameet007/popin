@@ -1,5 +1,5 @@
 <?php
-	$this->load->view('frontend/include-partner/header');
+	$this->load->view('frontend/include/header');
 ?>
 
 <section class="middle-container account-section profile-section">

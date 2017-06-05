@@ -16,9 +16,18 @@ class Home extends CI_Controller
 
 	public function index()
 	{
-		//$this->load->view('frontend/new-partner2');
-    //$this->load->view('frontend/inbox-x');
+
     $this->load->view('frontend/home');
+	}
+	public function spaces_view()
+	{
+
+    $this->load->view('frontend/spaces');
+	}
+	public function workshop_view()
+	{
+
+    $this->load->view('frontend/workshop');
 	}
   public function login()
   {
