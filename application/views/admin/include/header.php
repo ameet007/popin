@@ -23,19 +23,19 @@
         <link href="<?= base_url('theme/admin/assets/css/menu.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('theme/admin/assets/css/responsive.css'); ?>" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="<?= base_url('theme/admin/plugins/switchery/switchery.min.css'); ?>">
-       
-       <link href="<?= base_url('theme/admin/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css'); ?>" rel="stylesheet">
-       
+        <link href="<?= base_url('theme/admin/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css'); ?>" rel="stylesheet">
+        <link href="<?= base_url('theme/admin/assets/css/custom.css'); ?>" rel="stylesheet" type="text/css" />
+
        <!--Initialize Jquery-->
        <script src="<?= base_url('theme/admin/assets/js/jquery.min.js'); ?>"></script>
-      
+
        <!--Initialize Bootstrap-->
        <script src="<?= base_url('theme/admin/assets/js/bootstrap.min.js'); ?>"></script>
-       
+
        <!--Initialize Jquery Validation with Additional Methods-->
        <script src="<?= base_url('theme/admin/assets/js/jquery.validate.js'); ?>"></script>
        <script src="<?= base_url('theme/admin/assets/js/additional-methods.js'); ?>"></script>
-        
+
          <!-- BEGIN DATATABLE PLUGINS -->
         <link href="<?= base_url('theme/admin/plugins/datatables/datatables.min.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('theme/admin/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css'); ?>" rel="stylesheet" type="text/css" />
@@ -49,16 +49,16 @@
         <![endif]-->
 
         <script src="<?= base_url('theme/admin/assets/js/modernizr.min.js'); ?>"></script>
-        
+
          <!--Wysiwig js-->
         <script src="<?= base_url('theme/admin/plugins/tinymce/tinymce.min.js'); ?>"></script>
-        
+
         <style>
 			.error {
 				color: #f5707a;
 			}
 		</style>
-        
+
         <script>
         $(document).ready(function(e) {
             jQuery.validator.addMethod("fileSize", function (val, element) {
@@ -77,17 +77,17 @@
 				   return true;
 			   }
 		 }
-	
+
       }, "Maximum 2MB Image Size Allowed");
-  
+
     $('.history-back').click(function(){
 			window.history.back();
-		});	
-		   
+		});
+
 	    });
-		
-	
-   
+
+
+
         </script>
 
     </head>
@@ -117,10 +117,10 @@
                 <div class="navbar navbar-default" role="navigation">
                     <div class="container">
 
-                        
+
                         <!-- Right(Notification) -->
                         <ul class="nav navbar-nav navbar-right">
-                          
+
                             <li class="dropdown user-box">
                                 <a href="" class="dropdown-toggle waves-effect user-link" data-toggle="dropdown" aria-expanded="true">
                                     <img src="<?= base_url('uploads/admin/'.$adminProfileInfo->avatar); ?>" alt="<?= $adminProfileInfo->name; ?>" title="<?= $adminProfileInfo->name; ?>" class="img-circle user-img">
