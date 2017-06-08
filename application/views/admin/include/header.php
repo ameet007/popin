@@ -21,10 +21,11 @@
         <link href="<?= base_url('theme/admin/assets/css/icons.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('theme/admin/assets/css/pages.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('theme/admin/assets/css/menu.css'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('theme/admin/assets/css/custom.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('theme/admin/assets/css/responsive.css'); ?>" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="<?= base_url('theme/admin/plugins/switchery/switchery.min.css'); ?>">
         <link href="<?= base_url('theme/admin/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css'); ?>" rel="stylesheet">
-        <link href="<?= base_url('theme/admin/assets/css/custom.css'); ?>" rel="stylesheet" type="text/css" />
+
 
        <!--Initialize Jquery-->
        <script src="<?= base_url('theme/admin/assets/js/jquery.min.js'); ?>"></script>
