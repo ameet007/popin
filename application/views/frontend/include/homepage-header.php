@@ -24,7 +24,7 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="<?php echo base_url()?>Home/index">
-                                <img class="media-object" src="<?php echo base_url()?>assests/img/logo.png" alt="logo" />
+                                <img class="media-object" src="<?php echo base_url()?>assests/img/logo.png" alt="<?= SITE_DISPNAME; ?>" />
                             </a>
                         </div>
                         <div class="media-body">
