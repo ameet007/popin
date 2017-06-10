@@ -24,7 +24,7 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="<?php echo base_url()?>Home/index">
-                                <img class="media-object" src="<?php echo base_url()?>assests/img/logo.png" alt="<?= SITE_DISPNAME; ?>" />
+                                <img class="media-object" src="<?php echo base_url('theme/front/assests/img/logo.png')?>" alt="logo" />
                             </a>
                         </div>
                         <div class="media-body">
@@ -38,7 +38,7 @@
                                     </li>
                                     <li class="guest">
                                         <button id="guest_button">
-                                            <span><img src="<?php echo base_url('assests/img/head-guest-icon.png');?>" alt="" /></span>
+                                            <span><img src="<?php echo base_url('theme/front/assests/img/head-guest-icon.png');?>" alt="" /></span>
                                             <span>1 guest</span>
                                         </button>
                                         <div id="guest_open" class="bz_guest_box clearfix" style="display: none;">
@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="pro_img">
-                        <img src="<?php echo base_url('assests/img/profile-pic.png');?>" alt="" />
+                        <img src="<?php echo base_url('theme/front/assests/img/profile-pic.png');?>" alt="" />
                     </div>
                     <ul class="nav navbar-nav navbar-right navi">
                        <?php /*?> <li><a href="<?php echo base_url()?>Home/BecomeAPartner">Become a Partner</a></li><?php */?>
