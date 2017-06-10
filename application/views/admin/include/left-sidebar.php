@@ -16,8 +16,8 @@
                                     <li><a href="<?= base_url(ADMIN_DIR.'/pages/lists'); ?>"><i class="fa fa-clone"></i>CMS Page</a></li>
                                     <li><a href="<?= base_url(ADMIN_DIR.'/faq_category/lists'); ?>"><i class="fa fa-info"></i>FAQ Category</a></li>
                                     <li><a href="<?= base_url(ADMIN_DIR.'/faq/lists'); ?>"><i class="fa fa-question"></i>FAQ</a></li>
-									<li><a href="<?= base_url(ADMIN_DIR.'/contact_request/lists'); ?>"><i class="fa fa-envelope"></i>Contact Req.</a></li>
-									<li><a href="<?= base_url(ADMIN_DIR.'/email_template/lists'); ?>"><i class="fa fa-envelope-o"></i>Email Templates</a></li>
+			            <li><a href="<?= base_url(ADMIN_DIR.'/contact_request/lists'); ?>"><i class="fa fa-envelope"></i>Contact Req.</a></li>
+				    <li><a href="<?= base_url(ADMIN_DIR.'/email_template/lists'); ?>"><i class="fa fa-envelope-o"></i>Email Templates</a></li>
                                 </ul>
                             </li>
                             <li>
