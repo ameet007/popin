@@ -162,7 +162,7 @@ class AdminPages extends CI_Model {
 		@unlink("./uploads/page/thumb/".$image->featuredImage);
 		
 		$this->db->where('id', $pageId);
-   		$this->db->delete('static_page'); 
+   		$this->db->delete($this->table); 
 		return $this->db->affected_rows();
 	}
 	public function updateStatus($id = array(), $status)

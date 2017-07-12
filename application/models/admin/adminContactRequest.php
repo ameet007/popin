@@ -139,7 +139,7 @@ class AdminContactRequest extends CI_Model {
 	}
 	public function deleteContactRequest($contactRequestId)
 	{
-		$data = array("status"=>"Delete");
+		$data = array("status"=>"Delete by Admin");
 		$where = array("id"=>$contactRequestId);
 		$this->db->where($where);
 		$this->db->update($this->table,$data);

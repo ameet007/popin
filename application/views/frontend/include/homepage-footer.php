@@ -3,40 +3,53 @@
         <div class="row">
             <div class="foot_top clearfix">
                 <div class="col-lg-3 one-foruth">
-                    <select><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="ca">Català</option><option value="da">Dansk</option><option value="de">Deutsch</option><option value="en">English</option><option value="es">Español</option><option value="el">Eλληνικά</option><option value="fr">Français</option><option value="it">Italiano</option><option value="hu">Magyar</option><option value="nl">Nederlands</option><option value="no">Norsk</option><option value="pl">Polski</option><option value="pt">Português</option><option value="fi">Suomi</option><option value="sv">Svenska</option><option value="tr">Türkçe</option><option value="is">Íslenska</option><option value="cs">Čeština</option><option value="ru">Русский</option><option value="th">ภาษาไทย</option><option value="zh">中文 (简体)</option><option value="zh-TW">中文 (繁體)</option><option value="ja">日本語</option><option value="ko">한국어</option></select>
+                    <select name="site_language" id="site_language">
+                        <?php $all_languages = unserialize(LANGUAGES);
+                        foreach ($all_languages as $k => $v) {
+                            ?>
+                            <option value="<?= $k; ?>"><?= $v; ?></option>
+<?php } ?>
+                    </select>
 
-                    <select><option value="AED">AED</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="BGN">BGN</option><option value="BRL">BRL</option><option value="CAD">CAD</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CZK">CZK</option><option value="DKK">DKK</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="HKD">HKD</option><option value="HRK">HRK</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="JPY">JPY</option><option value="KRW">KRW</option><option value="MAD">MAD</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="NOK">NOK</option><option value="NZD">NZD</option><option value="PEN">PEN</option><option value="PHP">PHP</option><option value="PLN">PLN</option><option value="RON">RON</option><option value="RUB">RUB</option><option value="SAR">SAR</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="THB">THB</option><option value="TRY">TRY</option><option value="TWD">TWD</option><option value="UAH">UAH</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="VND">VND</option><option value="ZAR">ZAR</option></select>
+                    <select name="site_currency" id="site_currency">
+                        <?php $all_currency = unserialize(CURRENCIES);
+                        foreach ($all_currency as $k => $v) {
+                            ?>
+                            <option value="<?= $k; ?>"><?= $v; ?></option>
+<?php } ?>
+                    </select>
                 </div>
-                <div class="col-lg-3 one-foruth pd-left">
-                    <h5>Popln</h5>
-                    <ul>
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">Policies</a></li>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">Diversity &amp; Belonging</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 one-foruth pd-left">
-                    <h5>Discover</h5>
-                    <ul>
-                        <li><a href="#">Trust &amp; Safety</a></li>
-                        <li><a href="#">Travel Credit</a></li>
-                        <li><a href="#">Gift Cards</a></li>
-                        <li><a href="#">Popln Citizen</a></li>
-                        <li><a href="#">Business Travel</a></li>
-                        <li><a href="#">Guidebooks</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 one-foruth pd-left">
-                    <h5>Hosting</h5>
-                    <ul>
-                        <li><a href="#">Why Host</a></li>
-                        <li><a href="#">Hospitality</a></li>
-                        <li><a href="#">Responsible Hosting</a></li>
-                    </ul>
-                </div>
+
+                <?php
+                $all_footer_sections = unserialize(FOOTER_SECTION);
+                foreach ($all_footer_sections as $k => $v) {
+                    $CI = & get_instance();
+                    $CI->load->model(ADMIN_DIR . '/AdminSettings', 'settings');
+                    $pages = $CI->settings->getAllFooterPages($k);
+                    $pages_array = explode(',', $pages->page);
+                    /* echo '<pre>';
+                      print_r($pages_array);
+                      exit; */
+                    ?>
+
+                    <div class="col-lg-3 one-foruth pd-left">
+                        <h5><?= $v; ?></h5>
+                            <?php if (!empty($pages_array)) { ?>
+                            <ul>
+                                <?php
+                                foreach ($pages_array as $v) {
+                                    $CI = & get_instance();
+                                    $CI->load->model(ADMIN_DIR . '/AdminSettings', 'settings');
+                                    $pageDetail = $CI->settings->getPageDetail($v);
+                                    if (!empty($pageDetail)) {
+                                        ?>
+                                        <li><a href="<?= base_url('p/' . $pageDetail->url); ?>"><?= $pageDetail->pageName; ?></a></li>
+                                <?php }
+                            } ?>
+                            </ul>
+    <?php } ?>
+                    </div>                
+<?php } ?> 
             </div>
             <div class="foot_bottom clearfix">
                 <div class="copy-right">
@@ -56,11 +69,87 @@
         </div>
     </div>
 </footer>
-<script src="<?php echo base_url('theme/front/assests/js/jQuery.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/jquery.jcarousel.min.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/jcarousel.responsive.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/owl.carousel.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/bootstrap.min.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/moment.min.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/daterangepicker.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/jquery-ui.js')?>" type="text/javascript"></script>
+
+
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    //highlight current or active link
+    $('.head-tab ul li a').each(function() {
+        if ($($(this))[0].href === String(window.location)){
+            $(this).addClass('active');
+        }
+    });
+    $('input.icon1').focus(function () {
+        $(this).attr('placeholder', 'Destination, city, address');
+    }).blur(function () {
+        $(this).attr('placeholder', 'Anywhere');
+    });
+
+    $('#guest_button').on("click", function (e) {
+        $('#guest_open').slideToggle();
+        e.stopPropagation();
+    });
+    $(document).on("click", function (e) {
+        if (!(e.target.closest('#guest_open'))) {
+            $("#guest_open").slideUp();
+        }
+    });
+    // This button will increment the value
+    $('.qtyplus').click(function (e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name=' + fieldName + ']').val());
+        // If is not undefined
+        if (!isNaN(currentVal)) {
+            // Increment
+            $('input[name=' + fieldName + ']').val(currentVal + 1);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name=' + fieldName + ']').val(0);
+        }
+    });
+    // This button will decrement the value till 0
+    $(".qtyminus").click(function (e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name=' + fieldName + ']').val());
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(currentVal) && currentVal > 0) {
+            // Decrement one
+            $('input[name=' + fieldName + ']').val(currentVal - 1);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name=' + fieldName + ']').val(0);
+        }
+    });
+});
+</script>
+
+<script src="<?= base_url('theme/front/assests/js/ac.js'); ?>" type="text/javascript"></script>
+<script src="<?= base_url('theme/front/assests/js/fileuploader.min.js'); ?>" type="text/javascript"></script>
+<script src="<?= base_url('theme/front/assests/js/fileuploader-custom2.js'); ?>" type="text/javascript"></script>
+<script src="<?= base_url('theme/front/assests/js/bxslider.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/front/assests/js/jquery.jcarousel.min.js') ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/front/assests/js/jcarousel.responsive.js') ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/front/assests/js/moment.min.js') ?>" type="text/javascript"></script>
+<?php if(isset($search_nav) && $search_nav == 1){ ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.0/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<?php }else{?>
+<script src="<?php echo base_url('theme/front/assests/js/owl.carousel.js') ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/front/assests/js/daterangepicker.js') ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/front/assests/js/jquery-ui.js') ?>" type="text/javascript"></script>
+<?php }?>
+</body>
+</html>
+<?php
+if ($this->session->userdata('session_login_id') == '') {
+    include_once('user-modalbox.php');
+}
+?>

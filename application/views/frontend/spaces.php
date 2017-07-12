@@ -1,42 +1,27 @@
-<?php
-	$this->load->view('frontend/include/homepage-header');
-?>
-<link href="<?php echo base_url('theme/front/assests/css/jquery-ui.css')?>" rel="stylesheet" type="text/css" />
+<!--<link href="<?php echo base_url('theme/front/assests/css/jquery-ui.css')?>" rel="stylesheet" type="text/css" />-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <section class="spaces-home">
     <div class="container-fluid">
-        <div class="col-md-8 spaces-left">
+        <div class="col-md-8 spaces-left search-main">
             <ul>
                 <li class="space-type">
-                    <a herf="#" id="space-type">Space Type <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                    <a herf="#" id="space-type">Space Type <span class="badge hidden"></span> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                     <div id="space-type_open" class="bz_guest_box clearfix" style="display: none;">
                         <ul>
+                            <?php $establishments = unserialize(ESTABLISHMENT); 
+                                    foreach($establishments as $key=>$establishment){ ?>
                             <li>
                                 <div class="feild">
-                                    <label for="user_preference">
-                                        <input id="user_preference" type="checkbox"> Entire home <br>
-                                        <p>Have a place to yourself</p>
+                                    <label for="user_preference<?= $key; ?>">
+                                        <input id="user_preference<?= $key; ?>" type="checkbox"> <?= $establishment[0]; ?> <br>
+                                        <p><?= $establishment[1]; ?></p>
                                     </label>
                                 </div>
                             </li>
-                            <li>
-                                <div class="feild">
-                                    <label for="user_preference">
-                                        <input id="user_preference" type="checkbox"> Entire home <br>
-                                        <p>Have a place to yourself</p>
-                                    </label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="feild">
-                                    <label for="user_preference">
-                                        <input id="user_preference" type="checkbox"> Entire home <br>
-                                        <p>Have a place to yourself</p>
-                                    </label>
-                                </div>
-                            </li>
+                            <?php }?>
                         </ul>
-                        <div class="pull-left"><a href="#">Cancel</a></div>
-                        <div class="pull-right"><a href="#">Apply</a></div>
+                        <div class="pull-left"><a href="#" id="space-type-cancel">Cancel</a></div>
+                        <div class="pull-right"><a href="#" id="space-type-apply">Apply</a></div>
                     </div>
                 </li>
                 <li class="space-type price-range">
@@ -45,18 +30,16 @@
                         <ul>
                             <li>
                                 <div class="feild">
-                                    <p>Price [<span id="amount"></span>]</p>
+                                    <p><span id="amount"></span></p>
                                     <p>The average nightly price is $5,409.</p>
                                     <div id="slider-range"></div>
-                                    <form method="post" action="get_items.php">
-                                      <input type="hidden" id="amount1" />
-                                      <input type="hidden" id="amount2" />
-                                    </form>
+                                    <input type="hidden" id="amount1" />
+                                    <input type="hidden" id="amount2" />
                                 </div>
                             </li>
                         </ul>
-                        <div class="pull-left"><a href="#">Cancel</a></div>
-                        <div class="pull-right"><a href="#">Apply</a></div>
+                        <div class="pull-left"><a href="#" id="price-range-cancel">Cancel</a></div>
+                        <div class="pull-right"><a href="#" id="price-range-apply">Apply</a></div>
                     </div>
                 </li>
                 <li class="space-type rent-instantly">
@@ -79,242 +62,69 @@
                                 
                             </li>
                         </ul>
-                        <div class="pull-left"><a href="#">Cancel</a></div>
-                        <div class="pull-right"><a href="#">Apply</a></div>
+                        <div class="pull-left"><a href="#" id="rent-instantly-cancel">Cancel</a></div>
+                        <div class="pull-right"><a href="#" id="rent-instantly-apply">Apply</a></div>
                     </div>
                 </li>
-                <li class=""><a herf="#">More <i class="fa fa-caret-down" aria-hidden="true"></i></a></li>
+<!--                <li class=""><a herf="#">More <i class="fa fa-caret-down" aria-hidden="true"></i></a></li>-->
             </ul>
             <div class="row">
+                <?php if(!empty($listings)):?>
+                <?php foreach($listings as $listing): if(isset($listing['gallery']) && !empty($listing['gallery'])){?>
+                <?php
+                $basePrice = (!empty($listing['base_price']))? getCurrency_symbol($listing['currency']). number_format($listing['base_price']):'';
+                $spaceTitle = $listing['spaceTitle'];
+                $rentType = $listing['establishmentType'].'/'.$listing['spaceType'];
+                $workspaces = $listing['workSpaceCount']." workspaces";
+                ?>
                 <div class="col-md-6 owl-carousel">
+                    <?php foreach($listing['gallery'] as $image):?>
                     <div class="item">
                         <div class="slide-main clearfix">
                             <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?= base_url('theme/front/img/image1.jpg'); ?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
+                                <a target="_blank" href="<?= site_url('spaces/'.$listing['id']); ?>" style="color: inherit;">
+                                    <div class="img" style="background-image: url(<?= base_url('uploads/user/gallery/'.$image); ?>);">
                                     </div>
-                                </div>
+                                    <div class="content">
+                                        <p><strong><?= $basePrice; ?> · <?= $spaceTitle; ?> </strong></p>
+                                        <p><span><?= $rentType; ?> ·</span> <?= $workspaces; ?></p>
+                                        <div class="review">
+                                            <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
+                                            <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
+                                            <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
+                                            <span>1 review</span>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?= base_url('theme/front/img/image1.jpg'); ?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <div class="col-md-6 owl-carousel">
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg')?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg')?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 owl-carousel">
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg')?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?= base_url('theme/front/img/image1.jpg'); ?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 owl-carousel">
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?= base_url('theme/front/img/image1.jpg'); ?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?= base_url('theme/front/img/image1.jpg'); ?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 owl-carousel">
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg')?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg')?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 owl-carousel">
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?= base_url('theme/front/img/image1.jpg'); ?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg')?>);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p><span>Entire home/apt ·</span> 2 beds</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php } endforeach; endif;?>
             </div>
+            <?php if(!empty($listings)):?>
+            <div class="paginate wrapper">
+                <ul>
+                    <li><a href="">⟨</a></li>
+                    <li><a href="">1</a></li>
+                    <li><a href="" class="inactive">2</a></li>
+                    <li><a href="">3</a></li>
+                    <li><a href="" class="active">4</a></li>
+                    <li><a href="">5</a></li>
+                    <li><a href="" class="more">…</a></li>
+                    <li><a href="">98</a></li>
+                    <li><a href="">99</a></li>
+                    <li><a href="">100</a></li>
+                    <li><a href="">⟩</a></li>
+                </ul>
+            </div>
+            <div class="of-ren">
+                <span>1 – 18 of 142 Rentals</span>
+                <p>Average 4.77 out of 5 stars from 249 guest reviews</p>
+                <h5>Additional fees apply. Taxes may be added.</h5>
+            </div>
+            <?php endif;?>
         </div>
         <div class="col-md-4 spaces-map">
             <div class="row">
@@ -323,34 +133,52 @@
         </div>
     </div>
 </section>
-    
-</section>
-<?php
-	$this->load->view('frontend/include/homepage-footer');
-?>
 
 <script type="text/javascript">
-$(document).ready(function(){
-	$('input.icon1').focus(function() {
-        $(this).attr('placeholder', 'Destination, city, address')    
-    }).blur(function() {
-        $(this).attr('placeholder', 'Anywhere')
-    })
-    
-    $('#demo-range').daterangepicker();
+$(document).ready(function(){    
+    $('#demo-range').daterangepicker({
+        autoUpdateInput: false,
+        minDate: moment(),
+        //showDropdowns: true
+    });
+    $('#demo-range').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'));
+    });
+    $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('Anytime');
+    });
     $('#demo-range').val('Anytime');
-    
-    $('#guest_button').on("click", function(e) {
-        $('#guest_open').slideToggle();
+    $('#space-type').on("click", function(e) {
+        $('#space-type_open').slideToggle();
         e.stopPropagation(); 
     });
-    $(document).on("click", function(e) {	
-        if(!(e.target.closest('#guest_open'))){	
-            $("#guest_open").slideUp();   		
-        }
+    $('#space-type_open').find("input[type='checkbox']").each(function(){
+        $(this).on("click", function(){            
+            var checked = $('#space-type_open').find("input[type='checkbox']:checked").length;
+            $('#space-type .badge').text(checked);
+            if(checked > 0){
+                $('#space-type .badge').removeClass("hidden");
+            }
+        });
     });
-    
-    $('#space-type').on("click", function(e) {
+    $('#space-type-cancel').on("click", function(e) {
+        e.preventDefault(); 
+        $('#space-type_open').find("input[type='checkbox']").each(function(){
+            var ele = $(this);
+            if(ele.is(':checked')){
+                ele.prop('checked', false);
+            }
+        });
+        var checked = $('#space-type_open').find("input[type='checkbox']:checked").length;
+        $('#space-type .badge').text(checked);
+        if(checked === 0){
+            $('#space-type .badge').addClass("hidden");
+        }
+        $('#space-type_open').slideToggle();
+        e.stopPropagation(); 
+    });
+    $('#space-type-apply').on("click", function(e) {
+        e.preventDefault(); 
         $('#space-type_open').slideToggle();
         e.stopPropagation(); 
     });
@@ -364,6 +192,25 @@ $(document).ready(function(){
         $('#price-range_open').slideToggle();
         e.stopPropagation(); 
     });
+    $('#price-range-cancel').on("click", function(e) {
+        e.preventDefault(); 
+        $( "#price-range" ).html( 'Price range <i class="fa fa-caret-down" aria-hidden="true"></i>' );
+        
+        var options = $("#slider-range").slider( 'option' );
+        $("#slider-range").slider( 'values', [ options.min, options.max ] );
+        
+        $( "#amount" ).html( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+        $( "#amount1" ).val($( "#slider-range" ).slider( "values", 0 ));
+        $( "#amount2" ).val($( "#slider-range" ).slider( "values", 1 ));
+        $('#price-range_open').slideToggle();
+        
+        e.stopPropagation(); 
+    });
+    $('#price-range-apply').on("click", function(e) {
+        e.preventDefault(); 
+        $('#price-range_open').slideToggle();
+        e.stopPropagation(); 
+    });
     $(document).on("click", function(e) {	
         if(!(e.target.closest('#price-range_open'))){	
             $("#price-range_open").slideUp();   		
@@ -374,46 +221,19 @@ $(document).ready(function(){
         $('#rent-instantly_open').slideToggle();
         e.stopPropagation(); 
     });
+    $('#rent-instantly-cancel').on("click", function(e) {
+        e.preventDefault();
+        $('#rent-instantly_open').slideToggle();
+        e.stopPropagation(); 
+    });
+    $('#rent-instantly-apply').on("click", function(e) {
+        e.preventDefault(); 
+        $('#rent-instantly_open').slideToggle();
+        e.stopPropagation(); 
+    });
     $(document).on("click", function(e) {	
         if(!(e.target.closest('#rent-instantly_open'))){	
             $("#rent-instantly_open").slideUp();   		
-        }
-    });
-    
-   
-    
-    // This button will increment the value
-    $('.qtyplus').click(function(e){
-        // Stop acting like a button
-        e.preventDefault();
-        // Get the field name
-        fieldName = $(this).attr('field');
-        // Get its current value
-        var currentVal = parseInt($('input[name='+fieldName+']').val());
-        // If is not undefined
-        if (!isNaN(currentVal)) {
-            // Increment
-            $('input[name='+fieldName+']').val(currentVal + 1);
-        } else {
-            // Otherwise put a 0 there
-            $('input[name='+fieldName+']').val(0);
-        }
-    });
-    // This button will decrement the value till 0
-    $(".qtyminus").click(function(e) {
-        // Stop acting like a button
-        e.preventDefault();
-        // Get the field name
-        fieldName = $(this).attr('field');
-        // Get its current value
-        var currentVal = parseInt($('input[name='+fieldName+']').val());
-        // If it isn't undefined or its greater than 0
-        if (!isNaN(currentVal) && currentVal > 0) {
-            // Decrement one
-            $('input[name='+fieldName+']').val(currentVal - 1);
-        } else {
-            // Otherwise put a 0 there
-            $('input[name='+fieldName+']').val(0);
         }
     });
     
@@ -432,22 +252,22 @@ $(document).ready(function(){
                 items:1
             }
         }
-    })
-    
-    $( "#slider-range" ).slider({
-      range: true,
-      min: 0,
-      max: 5000,
-      values: [ 0, 5000 ],
-      slide: function( event, ui ) {
-        $( "#amount" ).html( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-		$( "#amount1" ).val(ui.values[ 0 ]);
-		$( "#amount2" ).val(ui.values[ 1 ]);
-      }
     });
     
-	$( "#amount" ).html( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-     " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+    $( "#slider-range" ).slider({
+        range: true,
+        min: 650,
+        max: 50000,
+        values: [ 650, 50000 ],
+        slide: function( event, ui ) {          
+            $( "#price-range" ).html( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] + ' <i class="fa fa-caret-down" aria-hidden="true"></i>' );
+            $( "#amount" ).html( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            $( "#amount1" ).val(ui.values[ 0 ]);
+            $( "#amount2" ).val(ui.values[ 1 ]);
+        }
+    });
+    
+    $( "#amount" ).html( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
 });
 
 

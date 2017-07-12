@@ -84,7 +84,7 @@ class Contact_request extends CI_Controller {
                                                                                             <a href="javascript:void(0);" title="View Contact Request" onClick="view_contact_request('.$cr->id.');"><i class="fa fa-eye"></i> View</a>
                                                                                         </li>
                                                                                         <li>
-                                                                                            <a  href="'.base_url(ADMIN_DIR.'/banner/delete/'.$cr->id).'"><i class="fa fa-trash"></i> Delete</a>
+                                                                                            <a  href="'.base_url(ADMIN_DIR.'/contact_request/delete/'.$cr->id).'"><i class="fa fa-trash"></i> Delete</a>
                                                                                         </li>
                                                                                     </ul>
                                                                                 </div>';           $data[] = $row;
@@ -114,18 +114,18 @@ class Contact_request extends CI_Controller {
 	{
 		$array = $this->uri->uri_to_assoc();
 		$contact_id = $this->uri->segment('4');
-		$response = $this->vendor->deleteContactRequest($contact_id);	
+		$response = $this->contact->deleteContactRequest($contact_id);	
 		if($response>0)
 			{
 				$this->session->set_flashdata('message_notification','Contact Request Deleted Successfully');
-				$this->session->set_flashdata('class',A_SUCCESS);
+				$this->session->set_flashdata('class',A_SUC);
 				redirect(ADMIN_DIR.'/contact_request');
 			}
 		else
 			{
 				$this->session->set_flashdata('message_notification','Contact Request Not Deleted Successfully');
 				$this->session->set_flashdata('class',A_FAIL);
-				redirect(ADMIN_DIR.'/vendor');
+				redirect(ADMIN_DIR.'/contact_request');
 			}
 	}
 	

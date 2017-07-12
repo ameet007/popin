@@ -1,5 +1,5 @@
 <?php
-	$this->load->view('frontend/include/header');
+	$this->load->view('frontend/include/user-header');
 ?>
 <div class="rentals-banner">
     <div class="container">
@@ -97,5 +97,5 @@
     </div>    
 </section>
 <?php
-	$this->load->view('frontend/include/footer');
+	$this->load->view('frontend/include/user-footer');
 ?>

@@ -1,4 +1,3 @@
-
 <footer class="foot">
     <div class="container">
         <div class="row">
@@ -57,13 +56,5 @@
         </div>
     </div>
 </footer>
-<script src="<?php echo base_url('theme/front/assests/js/jQuery.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/nav.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/bootstrap.min.js')?>" type="text/javascript"></script>
-<script type="<?php echo base_url()?>assests/text/javascript">
-$(document).ready(function(){
-	
-});
-</script>
 </body>
 </html>

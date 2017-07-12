@@ -97,7 +97,7 @@
 						image		: 	{	
 											required:true,
 											accept	:	"jpg|png|jpeg|gif",
-											//fileSize : true
+											fileSize : true
 										}
 						},
 					messages : {

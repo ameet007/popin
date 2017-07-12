@@ -138,24 +138,6 @@ class Pages extends CI_Controller {
 		$this->load->view(ADMIN_DIR.'/'.CMS_PAGE.'/add',$data);		
 		$this->load->view(ADMIN_DIR.'/'.INC.'/footer',$data);
 	}
-	public function view()
-	{
-		$data['module_heading'] = 'View Page';
-		$data['adminProfileInfo'] = $this->adminProfileInfo;
-		$page_id = $this->uri->segment('4');
-		$data['pageInfo'] = $this->page->viewPage($page_id);
-		if(!empty($data['pageInfo']))
-		{
-			$this->load->view(ADMIN_DIR.'/include/header',$data);		
-			$this->load->view(ADMIN_DIR.'/include/left-sidebar',$data);		
-			$this->load->view(ADMIN_DIR.'/view_page',$data);		
-			$this->load->view(ADMIN_DIR.'/common/footer',$data);
-		}
-		else
-		{
-			$this->lists();
-		}
-	}
 	
 	public function edit()
 	{
