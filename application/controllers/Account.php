@@ -12,6 +12,7 @@ class Account extends CI_Controller
 		     $this->load->helper('path');
 		     $this->load->helper('form');
 		     $this->load->helper('cookie');
+			 echo "test";
     }
 
 	public function Account()
