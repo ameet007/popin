@@ -76,6 +76,7 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
                             <div class="panel-body">
                                 <h4>Email address</h4>
                                 <p>You have confirmed your email: <b><?= $userProfileInfo->email; ?></b>. A confirmed email is important to allow us to securely communicate with you.</p>
+<<<<<<< HEAD
                               <h4>Phone number</h4>
                               <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p>
 															<?php
@@ -83,6 +84,10 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
 															<h4>Google</h4>
                               <p>Your <?= SITE_DISPNAME; ?> account is Connected with Goole account.</p>
 															<?php } ?>
+=======
+                              <h4>Phone number</h4>  
+                              <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p>                             
+>>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
                             </div>
                         </div>
                         <div class="panel panel-default profile-photo verified-info">
@@ -139,6 +144,7 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
                                     </div>
                                 </div>
                                 <!-- <h4>Phone number</h4> -->
+<<<<<<< HEAD
                                 <!-- p>Make it easier to communicate with a verified phone number. We’ll send you a code by SMS or read it to you over the phone. Enter the code below to confirm that you’re the person on the other end.</p>
                                 <p>Your number is only shared with another <?php// SITE_DISPNAME; ?> member once you have a confirmed booking.</p> -->
                                 <div class="col-sm-6"><input type="hidden" name="phone" id="phone" value="4521" class="textbox"></div>
@@ -168,6 +174,28 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
 						?>
                 </div>
             </article>
+=======
+                                <<!-- p>Make it easier to communicate with a verified phone number. We’ll send you a code by SMS or read it to you over the phone. Enter the code below to confirm that you’re the person on the other end.</p>
+                                <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p> -->
+                                <div class="col-sm-6"><!-- <input type="text" name="phone" id="phone" value="<?= $userProfileInfo->phone; ?>" class="textbox"> --></div>
+                                <div class="row mr15">
+                                    <div class="col-md-8"><br>
+                                        <h4>Google</h4>
+                                        Connect your <?= SITE_DISPNAME; ?> account to your Goole account for simplicity and ease.
+                                    </div>
+                                    <div class="col-md-4 align-center">
+                                        <?php if($userProfileInfo->googleVerified=='Yes'){ ?><a href="javascript:void(0);" class="btn btn-default">Verified</a><?php } else { ?><a class="btn btn-default btn-file" href="<?php echo $authUrl; ?>"> Connect with Google </a> <?php } ?>
+                                    </div>
+                                </div>
+								<input type="hidden" name="OldLicenceCopy" id="OldLicenceCopy" value="<?= $userProfileInfo->licenceCopy; ?>">
+								<input type="hidden" name="OldEstablishmentLicence" id="OldEstablishmentLicence" value="<?= $userProfileInfo->establishmentLicence; ?>">
+								<input type="hidden" name="OldLiabilityInsurance" id="OldLiabilityInsurance" value="<?= $userProfileInfo->liabilityInsurance; ?>">
+								<input type="submit" name="submit" id="submit" class="btn btn-red pull-right" value="Update">
+                            </div>
+                        </div>
+                    </div>
+                </article>
+>>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
 				</form>
 			</div>
         </div>

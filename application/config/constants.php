@@ -635,7 +635,7 @@ define('ALL_COUNTRY',serialize(array(
 		'ZM'=>'Zambia',
 		'ZW'=>'Zimbabwe'
 )));
-define('ESTABLISHMENT',serialize(array(
+/*define('ESTABLISHMENT',serialize(array(
     array('Entire space',"Professionals will rent the entire space."),
     array('Private workspace',"Professionals share some spaces but they'll have their own private room for clients or work"),
     array('Shared workspace',"Professionals don't have a room to themselves."),
@@ -643,12 +643,8 @@ define('ESTABLISHMENT',serialize(array(
     array('Shared suite',"Professionals share a suite within the establishment.")
 )));
 
-define('SPACE',serialize(array('Single station','Personal station','Stocked station','Booth')));
+define('SPACE',serialize(array('Single station','Personal station','Stocked station','Booth')));*/
 
-define('ESTABLICENSE',serialize(array(
-		'1'	=>	'AAA',
-		'2'	=>	'BBB'
-)));
 define('AMENITIES',serialize(array(
 		'Essentials'            =>	array('desc' => 'Towels, bed sheets, soap and toilet paper', 'icon' => ''),
 		'Wifi'			=>	array('desc' => '', 'icon' => ''),
@@ -950,10 +946,4 @@ define('CAN_REASON',serialize(array(
 	'4'=>'I don\'t understand how to use it',
 	'5'=>'It\'s temporary, I will be back',
 	'6'=>'Other'
-)));
-
-define('WORKSPACE',serialize(array(
-	'sp1'=>'AAA',
-	'sp2'=>'BBB',
-	'sp3'=>'CCC',
 )));

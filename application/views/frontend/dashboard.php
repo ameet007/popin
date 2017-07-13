@@ -15,7 +15,7 @@
                     <h4 class="media-heading">Earn $5 rental credit</h4>
                     <p>Give your colleagues $5 off their first rental on Popln and you’ll get up to $20 rental credit.</p>
                     <button class="btn2">Invite Colleagues</button>
-                    <button class="btn btn-default">Later</button>
+                    <button class="btn btn-default" data-dismiss="alert" aria-label="close">Later</button>
                 </div>
             </div>
         </div>
@@ -75,20 +75,20 @@
                             <div class="panel-heading">Notifications</div>
                             <div class="panel-body">
                                 <ul>
-                                    <li class="clearfix"><a href="#">Cassidy, new spaces have arrived! Book now before they run out.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
+                                    <li class="clearfix"><a href="#"><?= ucfirst($userProfileInfo->firstName); ?>, new spaces have arrived! Book now before they run out.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
                                     <li class="clearfix"><a href="#">Book workshops. led by experienced business owners. Now over, 51 to choose form.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
                                     <li class="clearfix"><a href="#">Invite your friend to join Popln and you’ll get $10 after their first rental.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
                                 </ul>
                             </div>
                         </div>
-                        
+
                         <div class="panel panel-default notification messages">
                             <div class="panel-heading">Messages <?php if($userMessages['newCount']){ echo "({$userMessages['newCount']} New)"; }?></div>
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <table class="table table-condensed message-table">
                                         <tbody>
-                                            <?php if(!empty($userMessages['messages'])): 
+                                            <?php if(!empty($userMessages['messages'])):
                                                 foreach($userMessages['messages'] as $messages):?>
                                             <tr>
                                                 <td width="50"><center><img class="user-pic" src="<?= base_url('uploads/user/thumb/'.$messages['userInfo']['picture']); ?>" alt="" width="50" height="50"></center></td>
@@ -112,13 +112,13 @@
                                 <?php endif;?>
                             </div>
                         </div>
-                        <!-- Display upload docuemnt file -->            
+												<!-- Display upload docuemnt file -->
                        <div class="panel panel-default profile-photo verified-info">
                             <div class="panel-heading">Documents</div>
                             <div class="panel-body">
                                 <div class="row mr15">
                                     <div class="col-md-9">
-                                            <?php 
+                                            <?php
                                             if($userProfileInfo->licenceCopy!='')
                                             {
                                                 $licenceLink = base_url('uploads/user/document/'.$userProfileInfo->licenceCopy);
@@ -145,13 +145,13 @@
                                         Upload a copy of your license or certificate to avoid the hassle later.<p class="licenceCopyError"></p>
                                     </div>
                                     <div class="col-md-3 align-center">
-                                     <?php 
+                                     <?php
                                       if (!empty($userProfileInfo->licenceCopy)) {
-                                        $licenceCopy  = explode(".",$userProfileInfo->licenceCopy); 
+                                        $licenceCopy  = explode(".",$userProfileInfo->licenceCopy);
                                             if ($licenceCopy[1] == 'pdf') { ?>
-                                             <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a> 
+                                             <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
                                            <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
-                                               <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a> 
+                                               <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
                                           <?php  }else{ ?>
                                            <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
                                          <?php   }
@@ -165,13 +165,13 @@
                                         If you are listing your space, verify ownership by providing us with your license<p class="establishmentLicenceError"></p>
                                     </div>
                                     <div class="col-md-3 align-center">
-                                        <?php 
+                                        <?php
                                           if (!empty($userProfileInfo->establishmentLicence)) {
-                                         $establishmentLicence  = explode(".",$userProfileInfo->establishmentLicence); 
+                                         $establishmentLicence  = explode(".",$userProfileInfo->establishmentLicence);
                                             if ($establishmentLicence[1] == 'pdf') { ?>
-                                             <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a> 
+                                             <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
                                            <?php }else if ($establishmentLicence[1] == 'doc' || $establishmentLicence[1] == 'docx') { ?>
-                                               <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a> 
+                                               <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
                                           <?php  }else{ ?>
                                            <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $establishmentLicenceLink; ?>" style="height:100px;" ></a>
                                          <?php   }
@@ -185,13 +185,13 @@
                                         Upload a copy of your liability insurance.<p class="liabilityInsuranceError"></p>
                                     </div>
                                     <div class="col-md-3 align-center">
-                                       <?php 
+                                       <?php
                                         if (!empty($userProfileInfo->liabilityInsurance)) {
-                                          $liabilityInsurance  = explode(".",$userProfileInfo->liabilityInsurance); 
+                                          $liabilityInsurance  = explode(".",$userProfileInfo->liabilityInsurance);
                                             if ($liabilityInsurance[1] == 'pdf') { ?>
-                                             <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a> 
+                                             <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
                                            <?php }else if ($liabilityInsurance[1] == 'doc' || $liabilityInsurance[1] == 'docx') { ?>
-                                               <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a> 
+                                               <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
                                           <?php  }else{ ?>
                                            <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $liabilityInsuranceLink; ?>" style="height:100px;" ></a>
                                          <?php   }

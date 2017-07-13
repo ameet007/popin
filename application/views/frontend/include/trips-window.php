@@ -1,4 +1,8 @@
-<?php $userID = $this->session->userdata('user_id'); $upcomingRentals = $this->user->getUpcomingRentals($userID); ?>
+<?php 
+$userID = $this->session->userdata('user_id'); 
+$upcomingRentals = $this->user->getUpcomingRentals($userID);
+$userWishLists = $this->user->getWishLists($userID);
+?>
 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rentals <span class="caret"></span></a>
 <ul class="dropdown-menu">
     <li>
@@ -49,7 +53,8 @@
         </a>
     </li>
     <li>
-        <a href="#">
+        <?php if(empty($userWishLists)):?>
+        <a href="<?= site_url('wishlists'); ?>">
             <div class="no-upcoming">
                 <div class="content">
                     <h4>No Wish List created</h4>
@@ -62,5 +67,25 @@
                 </div>
             </div>
         </a>
+        <?php else: if(isset($userWishLists[0])){?>
+        <a href="#">
+            <div class="no-upcoming">
+                <div class="content">
+                    <h4><?= $userWishLists[0]['name'];?></h4>
+                    <p><?= isset($userWishLists[0]['userLists'])?count($userWishLists[0]['userLists']):'0';?> Listings</p>
+                    <p><?= (isset($userWishLists[0]['userLists']) && !empty($userWishLists[0]['userLists']))?$userWishLists[0]['userLists'][0]['professionals'].' professionals':'1 professional';?></p>
+                </div>
+                <div class="img-icon">
+                    <div class="inner">
+                        <?php if(!isset($userWishLists[0]['userLists'])){ ?>
+                        <img src="<?= base_url('theme/front/img/nav-icon2.png'); ?>" alt="" />
+                        <?php }else{ ?>
+                        <img src="<?= $userWishLists[0]['userLists'][0]['image']; ?>" alt="" />
+                        <?php }?>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <?php } endif; ?>
     </li>
 </ul>

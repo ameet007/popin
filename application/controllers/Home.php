@@ -28,7 +28,13 @@ class Home extends CI_Controller {
         } else {
             $data = array();
         }
-        $data['listings'] = $this->space->getActiveListings($currentUser);
+        $filters = $this->input->post();
+//        echo "<pre>";
+//        print_r($filters);
+//        echo "</pre>";
+        $data['space_types'] = $this->space->getDropdownData('space_types');
+        $data['listings'] = $this->space->getActiveListings($currentUser, $filters);
+        
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
         $this->load->view(FRONT_DIR . '/spaces', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
@@ -53,6 +59,7 @@ class Home extends CI_Controller {
                 redirect('spaces');
             }
             $data['hostProfileInfo'] = $this->space->hostProfileInfo($data['preview']['host']);
+            $data['wishlistMaster'] = $this->user->getWishLists($currentUser);
         }
         $data['search_nav'] = 1;
         $data['space_id'] = $space_id;

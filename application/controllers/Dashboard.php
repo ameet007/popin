@@ -164,7 +164,6 @@ class Dashboard extends CI_Controller
         }
         echo json_encode($result);die();
     }
-
     public function compose() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $sender = $this->session->userdata('user_id');
@@ -185,6 +184,7 @@ class Dashboard extends CI_Controller
                 'receiver'  => $receiver,
                 'subject'    => $subject,
                 'message'   => $message
+                'message'   => $message           
             );
             $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
             $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
@@ -336,5 +336,26 @@ class Dashboard extends CI_Controller
             $messasgeData = $this->messageBuilderHTML($modelData);
             echo $messasgeData;
         }
+    }
+}    
+    public function invite()
+    {
+        $data['search_nav'] = 1;
+    	$data['module_heading'] = 'Wishlists';
+    	$data['userProfileInfo'] = $this->user->userProfileInfo();
+        
+        $referalLink = trim($data['userProfileInfo']->referalLink);
+        if(empty($referalLink)){
+            $rand = substr(uniqid('', true), -4);
+            $referral = strtolower(trim($data['userProfileInfo']->firstName)). substr(strtolower(trim($data['userProfileInfo']->lastName)), 0, 1).$rand;
+            
+            $update['referalLink'] = $referral;
+            $update['updatedDate'] = time();
+            $this->user->editUser($update, $data['userProfileInfo']->id);
+            $data['userProfileInfo']->referalLink = $referral;
+        }
+        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
+    	$this->load->view('frontend/invite',$data);
+        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
 }
