@@ -5,14 +5,9 @@
     <div class="container">
         <div class="main-content">
             <div class="row">
-<<<<<<< HEAD
                 <div class="col-md-6">
                     <a class="btn2" href="<?= site_url('compose'); ?>">Compose new message</a>
-										<a class="btn2" href="<?= site_url('contactList'); ?>">Contact List</a>
-=======
-                <div class="col-md-3">
-                    <a class="btn2" href="<?= site_url('compose'); ?>">Compose new message</a>
->>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
+                    <a class="btn2" href="<?= site_url('contactList'); ?>">Contact List</a>
                 </div>
                 <div class="col-md-3 all-msessage pull-right">
                     <form id="inbox" method="post" action="">

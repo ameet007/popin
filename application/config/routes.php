@@ -67,6 +67,7 @@ $route['compose'] = 'Dashboard/compose';
 $route['rentals'] = 'Dashboard/rentals';
 $route['wishlists'] = 'Dashboard/wishlists';
 $route['invite'] = 'Dashboard/invite';
+$route['contactList'] = 'Dashboard/contactList';
 
 $route['listing'] = 'Listing/listing';
 $route['my-reservations'] = 'Listing/Listing2';

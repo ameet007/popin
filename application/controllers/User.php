@@ -915,13 +915,10 @@ class User extends CI_Controller {
                     $this->session->set_flashdata('class', A_SUC);
                     redirect(base_url() . "dashboard");
                 } else {
-<<<<<<< HEAD
-                    $this->session->set_flashdata('message_notification', 'Your account status is ' . strtolower($status) . ', please verify your email-address.<a href="'.base_url('user/resendVerifyEmail').'/'.urlencode($this->input->post('login_email')).'">Click here </a>Resend verification Link');
-                    $this->session->set_flashdata('class', A_FAIL);
-=======
+
                   $this->session->set_flashdata('message_notification', 'Your account status is ' . strtolower($status) . ', please verify your email-address.<a href="'.base_url('user/resendVerifyEmail').'/'.urlencode($this->input->post('login_email')).'">Click here </a>Resend verification Link');
                   $this->session->set_flashdata('class', A_FAIL);
->>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
+
                     redirect(base_url());
                 }
             } else {
@@ -1206,8 +1203,4 @@ class User extends CI_Controller {
           redirect(base_url());
       }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
 }
