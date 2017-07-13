@@ -183,8 +183,7 @@ class Dashboard extends CI_Controller
                 'sender'    => $sender,
                 'receiver'  => $receiver,
                 'subject'    => $subject,
-                'message'   => $message
-                'message'   => $message           
+                'message'   => $message        
             );
             $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
             $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
@@ -338,8 +337,7 @@ class Dashboard extends CI_Controller
             $messasgeData = $this->messageBuilderHTML($modelData);
             echo $messasgeData;
         }
-    }
-}    
+    }   
     public function invite()
     {
         $data['search_nav'] = 1;

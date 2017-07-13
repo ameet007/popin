@@ -394,11 +394,7 @@ class FrontUser extends CI_Model {
                             'professionals' => $spaceInfo['professionalCapacity'],
                             'image' => $image
                         );
-<<<<<<< HEAD
-                    }
-=======
                     }                    
->>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
                 }
                 $i++;
             }
@@ -408,11 +404,9 @@ class FrontUser extends CI_Model {
     }
 
     function getUserWishLists($wishlist) {
-<<<<<<< HEAD
-        return $this->db->select('space_id')->where(array('wishlist_id' => $wishlist, 'status' => 1))->get('wishlists')->result_array();
-=======
+
         return $this->db->select('space_id')->where(array('wishlist_id' => $wishlist, 'status' => 1))->order_by('id','desc')->get('wishlists')->result_array();
->>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
+
     }
 
     function create_wishlist($data) {
@@ -440,7 +434,7 @@ class FrontUser extends CI_Model {
     {
       return $this->db->get_where('user',array('email'=>$email))->row_array();
     }
-<<<<<<< HEAD
+
     # get Contact list from the booking table
     public function bookContactList($userId,$requestData){
       $response = array();
@@ -465,8 +459,6 @@ class FrontUser extends CI_Model {
     public function checkContactList($addUserId,$userID){
       return $this->db->get_where('address_book',array('userIID'=>$userID,'addUserID'=>$addUserId))->row_array();
     }
-=======
->>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
 }
 
 ?>
