@@ -6,25 +6,24 @@
                     <h2>Wish Lists</h2>
                 </div>
                 <div class="pull-right">
-                    <a class="gost-btn" href="#">Create a Wish List</a>
+                    <a class="gost-btn" href="#" data-toggle="modal" data-target="#wishlistModal">Create a Wish List</a>
                 </div>
             </div>
+            <?php if(!empty($userWishLists)): ?>
             <div class="wishlist-list">
                 <h3>Your lists</h3>
                 <ul class="clearfix">
-                    <li style="background-image: url(img/image1.jpg);">
+                    <?php foreach($userWishLists as $wishlists): ?>
+                    <li<?php if(isset($wishlists['userLists'])){ ?> style="background-image: url(<?= $wishlists['userLists'][0]['image'];?>);"<?php }?>>
                         <div class="content">
-                            <h4>Accommodating Architecture</h4>
-                            <p>14 Homes</p>
+                            <h4><?= $wishlists['name']; ?></h4>
+                            <?php if(isset($wishlists['userLists'])){ ?><p><?= count($wishlists['userLists']);?> Listings</p><?php }?>
                         </div>
                     </li>
-                    <li style="">
-                        <div class="content">
-                            <h4>Dream Homes</h4>
-                        </div>
-                    </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
+            <?php endif; ?>
             <div class="wishlist-list">
                 <h3>Popular Lists</h3>
                 <ul class="clearfix">
@@ -110,3 +109,79 @@
         </div>
     </div>
 </section>
+<div id="wishlistModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create a Wish List</h4>
+            </div>
+            <form id="wishlist-form" method="post" action="<?php echo site_url("dashboard/create_wishlist"); ?>" novalidate autocomplete="off">
+                <div class="modal-body row">
+                    <div class="col-lg-offset-1 col-lg-9">
+                        <div class="alert alert-danger" style="display: none;">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <strong>Please enter your wish list name below</strong>
+                        </div>
+                        <div class="form-group">
+                            <label for="wishlist_name">Name</label>
+                            <input class="textbox" id="wishlist_name" name="name" placeholder="Name your Wish List" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="wishlist_name">Privacy Settings</label>
+                            <select class="selectbox" name="privacy">
+                                <option value="everyone">Everyone</option>
+                                <option value="invite-only">Invite Only</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn2">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+$('#wishListModal').on('hidden.bs.modal', function () {
+    $("form#wishlist-form").trigger('reset');
+});
+$('#wishlist-form').validate({
+    rules: {
+        'name' :{ required:true}
+    },
+    messages : {
+        'name' :{ required:"Please enter your wishlist name."}
+    },
+    submitHandler: function(form) {
+        $(form).parents('div.modal-content').block({ 
+            overlayCSS: { backgroundColor: '#E5E5E5' }, 
+            message: '<img src="<?= base_url(); ?>assets/images/loading-spinner-grey.gif" alt="please wait...">',
+            css: { border: 'none', backgroundColor: 'transparent' }  
+        });
+        $.ajax({
+            url: form.action,
+            type: form.method,
+            data: $(form).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                $(form).parents('div.modal-content').unblock();
+                
+                if(response.success){
+                    window.location.reload();
+                }else{
+                    $(form).parents('div.modal-body').find(".alert strong").text(response.message);
+                    $(form).parents('div.modal-body').find(".alert").show();
+                }
+                
+            },
+            error: function(response){
+                $(form).parents('div.modal-content').unblock();
+            }
+        });
+    }
+});
+</script>

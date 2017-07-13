@@ -8,13 +8,12 @@
                     <a herf="#" id="space-type">Space Type <span class="badge hidden"></span> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                     <div id="space-type_open" class="bz_guest_box clearfix" style="display: none;">
                         <ul>
-                            <?php $establishments = unserialize(ESTABLISHMENT); 
-                                    foreach($establishments as $key=>$establishment){ ?>
+                            <?php foreach($space_types as $key => $space_type){ ?>
                             <li>
                                 <div class="feild">
                                     <label for="user_preference<?= $key; ?>">
-                                        <input id="user_preference<?= $key; ?>" type="checkbox"> <?= $establishment[0]; ?> <br>
-                                        <p><?= $establishment[1]; ?></p>
+                                        <input id="user_preference<?= $key; ?>" type="checkbox" name="" value="<?= $space_type['id']; ?>"> <?= $space_type['name']; ?> <br>
+                                        <p><?php //echo $space_type['description']; ?></p>
                                     </label>
                                 </div>
                             </li>
@@ -140,14 +139,22 @@ $(document).ready(function(){
         autoUpdateInput: false,
         minDate: moment(),
         //showDropdowns: true
+    }, 
+    function(start, end, label) {
+        //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
     });
     $('#demo-range').on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'));
+        $(this).val(picker.startDate.format('DD MMM') + ' - ' + picker.endDate.format('DD MMM'));
     });
     $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
-        $(this).val('Anytime');
+        $(this).val('');
+        $(this).attr('placeholder', 'Anytime');
     });
-    $('#demo-range').val('Anytime');
+    $('#demo-range').focus(function () {
+        $(this).attr('placeholder', 'Check In - Check Out');
+    }).blur(function () {
+        $(this).attr('placeholder', 'Anytime');
+    });
     $('#space-type').on("click", function(e) {
         $('#space-type_open').slideToggle();
         e.stopPropagation(); 
@@ -269,9 +276,24 @@ $(document).ready(function(){
     
     $( "#amount" ).html( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
 });
-
-
-
+</script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI&libraries=places"></script>
+<script type="text/javascript">
+    google.maps.event.addDomListener(window, 'load', function () {
+        var places = new google.maps.places.Autocomplete(document.getElementById('destination'));
+        google.maps.event.addListener(places, 'place_changed', function () {
+            var place = places.getPlace();
+            var address = place.formatted_address;
+            var latitude = place.geometry.location.lat();
+            var longitude = place.geometry.location.lng();
+            var mesg = "Address: " + address;
+            mesg += "\nLatitude: " + latitude;
+            mesg += "\nLongitude: " + longitude;
+            console.log(mesg);
+            $("#latitude").val(latitude);$("#longitude").val(longitude);
+            $("#space-search-form").submit();
+        });
+    });
 </script>
 </body>
 </html>

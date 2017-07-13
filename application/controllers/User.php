@@ -10,6 +10,8 @@ class User extends CI_Controller {
         $this->load->model(FRONT_DIR . '/FrontUser', 'user');
         $this->load->model(FRONT_DIR . '/FrontEmails', 'all_emails');
         $this->load->model(FRONT_DIR . '/FrontSubscriber', 'subscriber');
+        // $this->load->library('encrypt');
+        $this->load->library('encryption');
     }
 
     public function ajax_submit_basic() {
@@ -641,7 +643,7 @@ class User extends CI_Controller {
                     $this->session->set_flashdata('message_notification', 'Something Went Wrong, Please Try Again Later In Some Time');
                     $this->session->set_flashdata('class', A_FAIL);
                     redirect(base_url());
-                }                
+                }
             } else {
                 $password = $this->randomString();
                 $userRegisterData = array(
@@ -654,7 +656,7 @@ class User extends CI_Controller {
                     "status" => 'Active',
                     "googleEmail" => $userProfile['email'],
                     "email" => $userProfile['email'],
-                    "password" => $this->encrypt->encode($password),
+                    "password" => $this->encryption->encrypt($password),
                     "gender" => ucfirst($userProfile['gender'])
                 );
                 $id = $this->user->addUser($userRegisterData);
@@ -681,7 +683,6 @@ class User extends CI_Controller {
                         $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
                         $to = array('email' => $userProfile['email'], 'name' => $userName);
                         $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
-
                         //If this email is exist and active then only email should be sent
                     }
 
@@ -698,9 +699,9 @@ class User extends CI_Controller {
     }
 
     public function submit_register() {
-        /* echo '<pre>';
-          print_r($_POST);
-          exit; */
+         // echo '<pre>';
+         //  print_r($_POST);
+         //  exit;
         $config = array(
             array(
                 'field' => 'reg_firstName',
@@ -771,11 +772,13 @@ class User extends CI_Controller {
         } else {
             $activationLink = md5($this->input->post('reg_email'));
             $newsLetter = isset($_POST['newsLetter'])?$_POST['newsLetter']:'No';
+            $pass = $this->input->post('reg_password');
             $userRegisterData = array(
                 "firstName" => $this->input->post('reg_firstName'),
                 "lastName" => $this->input->post('reg_lastName'),
                 "email" => $this->input->post('reg_email'),
-                "password" => $this->encrypt->encode($this->input->post('reg_password')),
+                // "password" => $this->encrypt->encode($pass),
+                "password" => $this->encryption->encrypt($pass),
                 "dobMonth" => $this->input->post('reg_dobMonth'),
                 "dobDay" => $this->input->post('reg_dobDay'),
                 "dobYear" => $this->input->post('reg_dobYear'),
@@ -786,6 +789,7 @@ class User extends CI_Controller {
                 "updatedDate" => strtotime(date('Y-m-d H:i:s')),
                 "ipAddress" => $this->input->ip_address()
             );
+            // print_r($userRegisterData);exit;
             $id = $this->user->addUser($userRegisterData);
             if ($id > 0) {
                 $userName = $this->input->post('reg_firstName') . ' ' . $this->input->post('reg_lastName');
@@ -808,10 +812,6 @@ class User extends CI_Controller {
                 $emailTemplate = $this->all_emails->getEmailTemplate('user-register');
                 if (!empty($emailTemplate)) {
                     $siteEmailDetails = $this->all_emails->emailDetails();
-
-                    /* echo '<pre>';
-                      print_r($siteEmailDetails);
-                      exit; */
                     $emailContent = $emailTemplate->content;
                     $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
                         "{name}" => $userName,
@@ -821,6 +821,7 @@ class User extends CI_Controller {
                     $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
                     $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
                     $to = array('email' => $this->input->post('reg_email'), 'name' => $userName);
+
                     $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
 
                     //If this email is exist and active then only email should be sent
@@ -829,7 +830,7 @@ class User extends CI_Controller {
                     redirect(base_url());
                 }
 
-                
+
             } else {
                 $this->session->set_flashdata('message_notification', 'Your Registration Has Not Been Done Successfully');
                 $this->session->set_flashdata('class', A_FAIL);
@@ -893,7 +894,7 @@ class User extends CI_Controller {
                     {
                         $agent = 'Unidentified User Agent';
                     }
-                    
+
                     $user_id = $record->id;
                     $this->load->helper('popin');
                     //Insert data in to the Logins table code start
@@ -914,8 +915,8 @@ class User extends CI_Controller {
                     $this->session->set_flashdata('class', A_SUC);
                     redirect(base_url() . "dashboard");
                 } else {
-                    $this->session->set_flashdata('message_notification', 'Your account status is ' . strtolower($status) . ', please verify your email-address.');
-                    $this->session->set_flashdata('class', A_FAIL);
+                  $this->session->set_flashdata('message_notification', 'Your account status is ' . strtolower($status) . ', please verify your email-address.<a href="'.base_url('user/resendVerifyEmail').'/'.urlencode($this->input->post('login_email')).'">Click here </a>Resend verification Link');
+                  $this->session->set_flashdata('class', A_FAIL);
                     redirect(base_url());
                 }
             } else {
@@ -964,7 +965,7 @@ class User extends CI_Controller {
                     $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
                         "{name}" => $userName,
                         "{email}" => $this->input->post('forgot_email'),
-                        "{password}" => $this->encrypt->decode($record->password)
+                        "{password}" => $this->encryption->decrypt($record->password)
                     );
                     $subject = $emailTemplate->subject;
                     $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
@@ -1154,6 +1155,13 @@ class User extends CI_Controller {
             );
             $response = $this->user->editUser($updateUser, $this->session->userdata('user_id'));
             if ($response > 0) {
+                $$message = '';
+                $getrecord = getSingleRecord('user','id',$this->session->userdata('user_id'));
+                $email     = $getrecord->email;
+                $subject    = "Popin account has ben Cancelled";
+                $message   = "Dear ".$getrecord->firstName."\r\n\n";
+                $message  .= "Your popin account has ben Cancelled successfully";
+                sendMail($email,$subject,$message);
                 $affected_rows = $this->user->sessionLogout($this->session->userdata('session_login_id'));
                 $this->session->unset_userdata('session_login_id');
                 $this->session->unset_userdata('user_id');
@@ -1168,5 +1176,29 @@ class User extends CI_Controller {
             }
         }
     }
-
+    # Resend varification email if user not activate account
+    public function resendVerifyEmail($email){
+      $emailTemplate = $this->all_emails->getEmailTemplate('user-register');
+       $getEmailID   = urldecode($email);
+      $getData     =  $this->user->getActivateLink($getEmailID);
+       $activationLink = $getData['verificationCode'];
+       $userName = $getData['firstName'].' '.$getData['lastName'];
+      if (!empty($emailTemplate)) {
+          $siteEmailDetails = $this->all_emails->emailDetails();
+          $emailContent = $emailTemplate->content;
+          $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
+              "{name}" => $userName,
+              "{activationLink}" => '<a href="' . base_url('user/activation/' . $activationLink) . '">here</a>'
+          );
+          $subject = $emailTemplate->subject;
+          $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
+          $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
+          $to = array('email' => $this->input->post('reg_email'), 'name' => $userName);
+          $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
+          //If this email is exist and active then only email should be sent
+          $this->session->set_flashdata('message_notification', 'Resend Verification email has been sent successfully, please verify your email-address.');
+          $this->session->set_flashdata('class', A_SUC);
+          redirect(base_url());
+      }
+    }
 }

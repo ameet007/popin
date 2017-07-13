@@ -137,7 +137,7 @@ if ($module_heading != '') {
                             <li><a href='<?= site_url('rentals'); ?>'>Rentals</a></li>
                             <li <?= ($module_name == 'user' or $module_name == 'trust' or $module_name == 'photo' or $module_name == 'profile' or $module_name == 'reviews' or $module_name == 'references') ? 'class="active"' : ''; ?>><a href='<?php echo base_url('user/profile') ?>'>Profile</a></li>
                             <li <?= ($module_name == 'account' or $module_name == 'notifications' or $module_name == 'payment-methods' or $module_name == 'payout-preferences' or $module_name == 'transaction-history' or $module_name == 'privacy' or $module_name == 'security' or $module_name == 'connected-apps' or $module_name == 'settings' or $module_name == 'badges') ? 'class="active"' : ''; ?>><a href='<?php echo base_url('account'); ?>'>Account</a></li>
-                            <li><a href='#'>Credit</a></li>
+                            <li><a href='<?php echo site_url('invite') ?>'>Credit</a></li>
                         </ul>
                     </div>
                 </div>

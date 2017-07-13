@@ -81,7 +81,9 @@ class Dashboard extends CI_Controller
                         <td width="60"><center><!--<a href="javascript:;" class="update-msg-status" data-msg-id="'.$messages['id'].'" data-action="starred" data-status="'.$messages['status'].'"><i class="fa '. $star.'" aria-hidden="true"></i></a>&nbsp;&nbsp;--><img class="user-pic" src="'. base_url('uploads/user/thumb/'.$messages['userInfo']['picture']).'" alt="" width="50" height="50"></center></td>
                         <td width="80"><span class="dark-gery">'.$messages['userInfo']['fname'].' <br/>'. date("d/m/Y",$messages['createdDate']).'</span></td>
                         <td width="400">';
-                            if(isset($messages['spaceInfo'])):$HTML.= $messages['spaceInfo']['title'].", ".$messages['spaceInfo']['country']." <br/>";endif;$HTML.= nl2br($messages['message']);
+                            if(isset($messages['spaceInfo'])):$HTML.= $messages['spaceInfo']['title'].", ".$messages['spaceInfo']['country']." <br/>";endif;
+                            if(!empty($messages['subject'])):$HTML.= $messages['subject']."<br/><br/>";endif;
+                            $HTML.= nl2br($messages['message']);
                             if(!empty($messages['replies'])): foreach($messages['replies'] as $replies):$userInfo = $this->user->userInfo($replies['sender'],"firstName,lastName,avatar");
                             $HTML.='<blockquote>'.$replies['message'].'<span class="pull-right"> - '. $userInfo->firstName .'</span></blockquote>';
                             endforeach;endif;
@@ -164,12 +166,65 @@ class Dashboard extends CI_Controller
         echo json_encode($result);die();
     }
     
+    public function compose() {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $sender = $this->session->userdata('user_id');
+            $receiver = $this->input->post('user_id');
+            $subject = $this->input->post('subject');
+            $message = $this->input->post('message');
+            if(empty($receiver)){
+                $this->session->set_flashdata('message_notification', "Message receiver doesn't exists.");
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(site_url('compose'));
+            }elseif(empty($subject)){
+                $this->session->set_flashdata('message_notification', "Please enter message subject.");
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(site_url('compose'));
+            }
+            $rawData = array(
+                'sender'    => $sender,
+                'receiver'  => $receiver,
+                'subject'    => $subject,
+                'message'   => $message           
+            );
+            $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
+            $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
+            $rawData['ipAddress'] = $this->input->ip_address();
+
+            $response = $this->user->create_conversation($rawData);
+            if($response){
+                $this->session->set_flashdata('message_notification', 'Message sent successfully.');
+                $this->session->set_flashdata('class', A_SUC);
+            }else{
+                $this->session->set_flashdata('message_notification', 'Message sending failed.');
+                $this->session->set_flashdata('class', A_FAIL);
+            }
+            redirect(site_url('compose'));
+        }
+        $data['module_heading'] = 'Inbox';
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        $this->load->view('frontend/compose',$data);
+    }
+    public function search_user()
+    {
+        //get search term
+        $searchTerm = $this->input->get('term');
+        $user = $this->session->userdata('user_id');
+        //get matched data from newspaper table
+        $data = $this->user->fetch_users($user, $searchTerm);
+
+        //return json data
+        echo $data;
+        exit;
+    }
+
     public function wishlists()
     {
+        $userID = $this->session->userdata('user_id'); 
         $data['search_nav'] = 1;
     	$data['module_heading'] = 'Wishlists';
     	$data['userProfileInfo'] = $this->user->userProfileInfo();
-        
+        $data['userWishLists'] = $this->user->getWishLists($userID);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
     	$this->load->view('frontend/wishlists',$data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
@@ -180,6 +235,7 @@ class Dashboard extends CI_Controller
         $rawData = array(
             'user'    => $this->session->userdata('user_id'),
             'name'  => $this->input->post('name'),
+            'privacy'  => $this->input->post('privacy'),
             'createdDate'    => time(),
             'updatedDate'   => time(),
             'ipAddress'   => $this->input->ip_address()   
@@ -188,7 +244,7 @@ class Dashboard extends CI_Controller
         $wishlistID = $this->user->create_wishlist($rawData);
         if($wishlistID){
             $spaceID = $this->input->post('space');
-            $this->user->add_to_wishlist($wishlistID, $spaceID);
+            if(!empty($spaceID)){ $this->user->add_to_wishlist($wishlistID, $spaceID); }
             $result['success'] = TRUE;
             $result['message'] = 'Wish List created successfully.';
         }else{
@@ -203,5 +259,26 @@ class Dashboard extends CI_Controller
         $data['module_heading'] = 'Rentals';
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $this->load->view('frontend/your-rental',$data);
+    }
+    
+    public function invite()
+    {
+        $data['search_nav'] = 1;
+    	$data['module_heading'] = 'Wishlists';
+    	$data['userProfileInfo'] = $this->user->userProfileInfo();
+        
+        $referalLink = trim($data['userProfileInfo']->referalLink);
+        if(empty($referalLink)){
+            $rand = substr(uniqid('', true), -4);
+            $referral = strtolower(trim($data['userProfileInfo']->firstName)). substr(strtolower(trim($data['userProfileInfo']->lastName)), 0, 1).$rand;
+            
+            $update['referalLink'] = $referral;
+            $update['updatedDate'] = time();
+            $this->user->editUser($update, $data['userProfileInfo']->id);
+            $data['userProfileInfo']->referalLink = $referral;
+        }
+        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
+    	$this->load->view('frontend/invite',$data);
+        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
 }

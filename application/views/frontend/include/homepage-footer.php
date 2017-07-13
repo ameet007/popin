@@ -7,7 +7,7 @@
                         <?php $all_languages = unserialize(LANGUAGES);
                         foreach ($all_languages as $k => $v) {
                             ?>
-                            <option value="<?= $k; ?>"><?= $v; ?></option>
+                            <option value="<?= $k; ?>" <?= ($k == 'en'?'selected':''); ?> ><?= $v; ?></option>
 <?php } ?>
                     </select>
 
@@ -15,7 +15,7 @@
                         <?php $all_currency = unserialize(CURRENCIES);
                         foreach ($all_currency as $k => $v) {
                             ?>
-                            <option value="<?= $k; ?>"><?= $v; ?></option>
+                            <option value="<?= $k; ?>" <?= ($k == 'USD'?'selected':''); ?> ><?= $v; ?></option>
 <?php } ?>
                     </select>
                 </div>
@@ -48,8 +48,8 @@
                             } ?>
                             </ul>
     <?php } ?>
-                    </div>                
-<?php } ?> 
+                    </div>
+<?php } ?>
             </div>
             <div class="foot_bottom clearfix">
                 <div class="copy-right">
@@ -80,7 +80,7 @@ $(function () {
             $(this).addClass('active');
         }
     });
-    $('input.icon1').focus(function () {
+    $('#destination').focus(function () {
         $(this).attr('placeholder', 'Destination, city, address');
     }).blur(function () {
         $(this).attr('placeholder', 'Anywhere');
@@ -95,21 +95,24 @@ $(function () {
             $("#guest_open").slideUp();
         }
     });
+    var initialVal = parseInt($("input[name='professionals']").val());
     // This button will increment the value
     $('.qtyplus').click(function (e) {
         // Stop acting like a button
         e.preventDefault();
         // Get the field name
-        fieldName = $(this).attr('field');
+        var fieldName = $(this).attr('field');
         // Get its current value
         var currentVal = parseInt($('input[name=' + fieldName + ']').val());
         // If is not undefined
         if (!isNaN(currentVal)) {
             // Increment
-            $('input[name=' + fieldName + ']').val(currentVal + 1);
+            currentVal++;
+            $('input[name=' + fieldName + ']').val(currentVal);
+            $("button#guest_button span:eq(1)").text(currentVal + " professionals");
         } else {
             // Otherwise put a 0 there
-            $('input[name=' + fieldName + ']').val(0);
+            //$('input[name=' + fieldName + ']').val(0);
         }
     });
     // This button will decrement the value till 0
@@ -117,17 +120,33 @@ $(function () {
         // Stop acting like a button
         e.preventDefault();
         // Get the field name
-        fieldName = $(this).attr('field');
+        var fieldName = $(this).attr('field');
         // Get its current value
         var currentVal = parseInt($('input[name=' + fieldName + ']').val());
         // If it isn't undefined or its greater than 0
+        // Decrement one
+            currentVal--;
         if (!isNaN(currentVal) && currentVal > 0) {
-            // Decrement one
-            $('input[name=' + fieldName + ']').val(currentVal - 1);
+            
+            $('input[name=' + fieldName + ']').val(currentVal);
+            $("button#guest_button span:eq(1)").text(currentVal + " professionals");
         } else {
             // Otherwise put a 0 there
-            $('input[name=' + fieldName + ']').val(0);
+            //$('input[name=' + fieldName + ']').val(0);
         }
+    });
+    $('#guest-cancel').on("click", function(e) {
+        e.preventDefault(); 
+        $("input[name='professionals']").val(initialVal);
+        $("button#guest_button span:eq(1)").text(initialVal+" professionals");
+        $('#guest_open').slideToggle();
+        e.stopPropagation(); 
+    });
+    $('#guest-apply').on("click", function(e) {
+        e.preventDefault(); 
+        $("#space-search-form").submit();
+        $('#guest_open').slideToggle();
+        e.stopPropagation(); 
     });
 });
 </script>

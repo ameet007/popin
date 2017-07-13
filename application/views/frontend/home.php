@@ -470,8 +470,28 @@
 <script type="text/javascript">
     
     $(function () {
-        $('#demo-range').daterangepicker();
-        $('#demo-range').val('Anytime');
+        $('#demo-range').daterangepicker({
+            autoUpdateInput: false,
+            minDate: moment(),
+            //showDropdowns: true
+        }, 
+        function(start, end, label) {
+            //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            $("#checkIn").val(start.format('YYYY-MM-DD'));$("#checkOut").val(end.format('YYYY-MM-DD'));
+        });
+        $('#demo-range').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD MMM') + ' - ' + picker.endDate.format('DD MMM'));
+            $("#space-search-form").submit();
+        });
+        $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+            $(this).attr('placeholder', 'Anytime');
+        });
+        $('#demo-range').focus(function () {
+            $(this).attr('placeholder', 'Check In - Check Out');
+        }).blur(function () {
+            $(this).attr('placeholder', 'Anytime');
+        });
         //Initiate slider-one
         $('#jc1 .jcarousel')
                 .jcarousel({
@@ -518,6 +538,24 @@
                     margin: 20
                 }
             }
+        });
+    });
+</script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI&libraries=places"></script>
+<script type="text/javascript">
+    google.maps.event.addDomListener(window, 'load', function () {
+        var places = new google.maps.places.Autocomplete(document.getElementById('destination'));
+        google.maps.event.addListener(places, 'place_changed', function () {
+            var place = places.getPlace();
+            var address = place.formatted_address;
+            var latitude = place.geometry.location.lat();
+            var longitude = place.geometry.location.lng();
+            var mesg = "Address: " + address;
+            mesg += "\nLatitude: " + latitude;
+            mesg += "\nLongitude: " + longitude;
+            console.log(mesg);
+            $("#latitude").val(latitude);$("#longitude").val(longitude);
+            $("#space-search-form").submit();
         });
     });
 </script>

@@ -31,12 +31,31 @@ class FrontSpace extends CI_Model {
         return $this->db->get_where($table, array('id'=>$id,'status'=>'active'))->row_array();
     }
             
-    function getActiveListings($currentUser='') {
+    function getActiveListings($currentUser='', $filters = array()) {
         $response = array();
         if($currentUser != ""){
             $this->db->where("host != ",$currentUser);
         }
+        //$this->db->select("id, ABS(latitude - {$filters['latitude']}) as lat,ABS(longitude - {$filters['longitude']}) as lon");
+        // Apply filters from hompage header
+        if(!empty($filters)){
+            # Destination
+            if($filters['latitude'] !="" && $filters['longitude'] !=""){
+                $this->db->where("ABS(latitude - {$filters['latitude']}) <= 0.1");
+                $this->db->where("ABS(longitude - {$filters['longitude']}) <= 0.1");
+            }
+            # Professional capacity
+            if($filters['professionals'] !=""){
+                $this->db->where('professionalCapacity >=', $filters['professionals']);
+            }
+            
+        }
         $spaceData = $this->db->get_where('spaces', array('status' => 'Active'))->result_array();
+        //echo $this->db->last_query();
+//        echo "<pre>";
+//        print_r($spaceData);
+//        echo "</pre>";
+//        exit;
         $i = 0;
         foreach ($spaceData as $listing) {
             $establishmentType = $this->getDropdownDataRow('establishment_types', $listing['establishmentType']);

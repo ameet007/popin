@@ -75,7 +75,9 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
                             <div class="panel-heading">Your verified info</div>
                             <div class="panel-body">
                                 <h4>Email address</h4>
-                                <p>You have confirmed your email: <b><?= $userProfileInfo->email; ?></b>. A confirmed email is important to allow us to securely communicate with you.</p>                               
+                                <p>You have confirmed your email: <b><?= $userProfileInfo->email; ?></b>. A confirmed email is important to allow us to securely communicate with you.</p>
+                              <h4>Phone number</h4>  
+                              <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p>                             
                             </div>
                         </div>
                         <div class="panel panel-default profile-photo verified-info">
@@ -131,10 +133,10 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
                                         <input type="file" name="liabilityInsurance" id="liabilityInsurance">
                                     </div>
                                 </div>
-                                <h4>Phone number</h4>
-                                <p>Make it easier to communicate with a verified phone number. We’ll send you a code by SMS or read it to you over the phone. Enter the code below to confirm that you’re the person on the other end.</p>
-                                <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p>
-                                <div class="col-sm-6"><input type="text" name="phone" id="phone" value="<?= $userProfileInfo->phone; ?>" class="textbox"></div>
+                                <!-- <h4>Phone number</h4> -->
+                                <<!-- p>Make it easier to communicate with a verified phone number. We’ll send you a code by SMS or read it to you over the phone. Enter the code below to confirm that you’re the person on the other end.</p>
+                                <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p> -->
+                                <div class="col-sm-6"><!-- <input type="text" name="phone" id="phone" value="<?= $userProfileInfo->phone; ?>" class="textbox"> --></div>
                                 <div class="row mr15">
                                     <div class="col-md-8"><br>
                                         <h4>Google</h4>

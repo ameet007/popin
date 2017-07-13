@@ -5,7 +5,10 @@
     <div class="container">
         <div class="main-content">
             <div class="row">
-                <div class="col-md-3 all-msessage">
+                <div class="col-md-3">
+                    <a class="btn2" href="<?= site_url('compose'); ?>">Compose new message</a>
+                </div>
+                <div class="col-md-3 all-msessage pull-right">
                     <form id="inbox" method="post" action="">
                         <select name="status" onchange="this.form.submit();">
                             <option value="" <?= ($status == "")?"selected":"";?>>All Messages (<?= $userMessages['allCount']; ?>)</option>

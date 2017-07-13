@@ -75,36 +75,33 @@ $siteDetails = $CI->common->getSiteDetails();
                                 <?php else: ?>
                                 <div class="media-body">
                                     <div class="anywhere-main clearfix">
-                                        <ul class="clearfix">
-                                            <li class="anywhere">
-                                                <input class="icon1" type="text" placeholder="Anywhere" />
-                                            </li>
-                                            <li class="anytime">
-                                                <input class="icon1 icon2" type="text" id="demo-range" placeholder="Anytime" />
-                                            </li>
-                                            <li class="guest">
-                                                <button id="guest_button">
-                                                    <span><img src="<?= base_url('theme/front/img/head-guest-icon.png'); ?>" alt="" /></span>
-                                                    <span>1 professional</span>
-                                                </button>
-                                                <div id="guest_open" class="bz_guest_box clearfix" style="display: none;">
-                                                    <div class="feild">
-                                                        <label>Adults</label>
-                                                        <span><input value="" class="qtyminus" field="adult" type="button"> <input name="adult" value="0" class="qty" type="text"> <input value="" class="qtyplus" field="adult" type="button"></span>
+                                        <form id="space-search-form" method="post" action="<?= site_url('spaces'); ?>">
+                                            <ul class="clearfix">
+                                                <li class="anywhere">
+                                                    <input class="icon1" type="text" id="destination" name="destination" value="<?= isset($_POST['destination'])?$_POST['destination']:'';?>" placeholder="Anywhere" />
+                                                    <input type="hidden" id="latitude" name="latitude" value="<?= isset($_POST['latitude'])?$_POST['latitude']:'';?>" />
+                                                    <input type="hidden" id="longitude" name="longitude" value="<?= isset($_POST['longitude'])?$_POST['longitude']:'';?>" />
+                                                </li>
+                                                <li class="anytime">
+                                                    <input class="icon1 icon2" type="text" id="demo-range" placeholder="Anytime" />
+                                                    <input type="hidden" id="checkIn" name="checkIn" /><input type="hidden" id="checkOut" name="checkOut" />
+                                                </li>
+                                                <li class="guest">
+                                                    <button id="guest_button" type="button">
+                                                        <span><img src="<?= base_url('theme/front/img/head-guest-icon.png'); ?>" alt="" /></span>
+                                                        <span><?= isset($_POST['professionals'])?$_POST['professionals']:1;?> professionals</span>
+                                                    </button>
+                                                    <div id="guest_open" class="bz_guest_box clearfix" style="display: none;">
+                                                        <div class="feild">
+                                                            <label>Professionals</label>
+                                                            <span><input value="" class="qtyminus" field="professionals" type="button"> <input name="professionals" value="<?= isset($_POST['professionals'])?$_POST['professionals']:1;?>" class="qty" type="text" readonly> <input value="" class="qtyplus" field="professionals" type="button"></span>
+                                                        </div>
+                                                        <div class="pull-left"><a href="#" id="guest-cancel">Cancel</a></div>
+                                                        <div class="pull-right"><a href="#" id="guest-apply">Apply</a></div>
                                                     </div>
-                                                    <div class="feild">
-                                                        <label>Children<br/> <span class="age">Ages 2 - 12</span></label>
-                                                        <span><input value="" class="qtyminus" field="children" type="button"> <input name="children" value="0" class="qty" type="text"> <input value="" class="qtyplus" field="children" type="button"></span>
-                                                    </div>
-                                                    <div class="feild">
-                                                        <label>Infants<br/> <span class="age">Under 2</span></label>
-                                                        <span><input value="" class="qtyminus" field="infant" type="button"> <input name="infant" value="0" class="qty" type="text"> <input value="" class="qtyplus" field="infant" type="button"></span>
-                                                    </div>
-                                                    <div class="pull-left"><a href="#">Cancel</a></div>
-                                                    <div class="pull-right"><a href="#">Apply</a></div>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                                </li>
+                                            </ul>
+                                        </form>
                                     </div>
                                 </div>
                                 <?php endif; ?>

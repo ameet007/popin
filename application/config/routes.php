@@ -62,11 +62,11 @@ $route['admin/Settings/delet_space/(:num)'] = ADMIN_DIR.'/space/deleteSpace/$1';
 $route['spaces'] = 'home/spaces';
 $route['spaces/(:num)'] = 'home/rooms/$1';
 
-$route['inbox']       = 'Dashboard/inbox';
-$route['compose']     = 'Dashboard/compose';
-$route['rentals']     = 'Dashboard/rentals';
-$route['contactList'] = 'Dashboard/contactList';
-$route['wishlists']   = 'Dashboard/wishlists';
+$route['inbox'] = 'Dashboard/inbox';
+$route['compose'] = 'Dashboard/compose';
+$route['rentals'] = 'Dashboard/rentals';
+$route['wishlists'] = 'Dashboard/wishlists';
+$route['invite'] = 'Dashboard/invite';
 
 $route['listing'] = 'Listing/listing';
 $route['my-reservations'] = 'Listing/Listing2';

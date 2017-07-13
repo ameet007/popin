@@ -4,14 +4,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Profile extends CI_Controller
 {
 
-     public function __construct()
+    public function __construct()
     {
-         parent::__construct();
-         $this->load->helper('url');
-		     $this->load->helper('html');
-		     $this->load->helper('path');
-		     $this->load->helper('form');
-		     $this->load->helper('cookie');
+        parent::__construct();
+        $this->load->helper('url');
+	     $this->load->helper('html');
+	     $this->load->helper('path');
+	     $this->load->helper('form');
+	     $this->load->helper('cookie');
+	     $this->load->model(FRONT_DIR . '/FrontUser', 'host');
     }
 
 	public function index()

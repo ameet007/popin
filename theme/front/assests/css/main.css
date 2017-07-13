@@ -99,7 +99,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .home-head .anywhere-main {padding-left: 15px;}
 .home-head .anywhere-main ul {border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08); -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08); -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08); border: 1px solid #dbdbdb; display: inline-block;}
 .home-head .anywhere-main ul li {float: left; padding: 0 0 0 0; border-right: solid 1px #dbdbdb; transition: all 0.3s ease-in-out;}
-.home-head .anywhere-main ul li input.icon1 {background-color: transparent; background-image: url(../img/head-serach-icon.png); background-repeat: no-repeat; background-position: 5px center; border: none 0; padding: 10px 10px 10px 35px;}
+.home-head .anywhere-main ul li input.icon1 {background-color: transparent; background-image: url(../img/head-serach-icon.png); background-repeat: no-repeat; background-position: 5px center; border: none 0; padding: 10px 10px 10px 35px; transition: .2s}
 .home-head .anywhere-main ul li input.icon1, .head .anywhere-main ul li input.icon2, .head .anywhere-main .guest #guest_button {width: 160px;}
 .home-head .anywhere-main ul li input.icon1:focus, .head .anywhere-main ul li input.icon2:focus {width: 230px; border-bottom: solid 2px #008489;}
 .home-head .anywhere-main .guest #guest_button:focus {border-bottom: solid 2px #008489;}
@@ -109,10 +109,13 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .home-head .anywhere-main .guest .feild {margin-bottom: 20px; width: 100%;}
 .home-head .anywhere-main .guest #guest_button {padding: 10px 10px 7px 10px; border: 0 none; background-color: transparent; text-align: left}
 .home-head .anywhere-main .guest .bz_guest_bar {background-color: #1a1a1a; color: #fff; cursor: pointer; font-size: 16px; padding: 16px 20px; text-align: center;}
-.home-head .anywhere-main .guest .bz_guest_box {background-color: #ffffff; box-shadow: 0 2px 7px -3px rgba(0, 0, 0, 0.5); display: none; padding: 15px; position: absolute; left: 0; top: 100%; width: 265px; z-index: 1000;}
-.home-head .anywhere-main .bz_guest_box label {font-size: 18px; width: 115px; font-weight: 600; color: #222;}
+.home-head .anywhere-main .guest .bz_guest_box {background-color: #ffffff; box-shadow: 0 2px 7px -3px rgba(0, 0, 0, 0.5); display: none; padding: 15px; position: absolute; left: 0; top: 100%; width: 275px; z-index: 1000;}
+.home-head .anywhere-main .guest .bz_guest_box .feild {margin-bottom: 20px;width: 100%;}
+.home-head .anywhere-main .guest .bz_guest_box .feild > span {margin-left: 12px;}
+.home-head .anywhere-main .bz_guest_box label {font-size: 18px; width: 115px; font-weight: 600; color: #222;vertical-align: text-bottom;margin-bottom: 5px !important;}
 .home-head .anywhere-main .bz_guest_box label .age {font-size: 14px; font-weight: 400; line-height: 30px; }
 .home-head .anywhere-main .bz_guest_box input[type="text"] {background-color: #fff; height: 27px; text-align: center; width: 40px; border: none 0; font-weight: 600; font-size: 18px;}
+.home-head .anywhere-main .bz_guest_box input.qty {vertical-align: top;margin-top: 5px;}
 .home-head .anywhere-main .bz_guest_box input.qtyplus, .head .anywhere-main .bz_guest_box input.qtyminus {background-color: transparent; background-image: url("../img/minus-sing2.png"); background-position: center center; background-repeat: no-repeat; height: 32px; border:none 0; width: 32px;}
 .home-head .anywhere-main .bz_guest_box input.qtyplus {background-image: url("../img/puls-sing2.png");}
 .home-head .head-tab {padding-top: 15px;}
@@ -961,3 +964,65 @@ ul.wishlists li{padding: 15px 0; border-top: 1px solid #ccc;}
 ul.wishlists li:first-of-type{border-top: none;}
 ul.wishlists li > span {font-size: 16px;}
 .red{color: red;}
+/* Summernote */
+.note-editor {
+  position: relative;
+}
+.note-editor .btn-default {
+  background-color: transparent;
+  border-color: transparent !important;
+}
+.note-editor .btn-group-sm > .btn,
+.note-editor .btn-sm {
+  padding: 8px 12px !important;
+}
+.note-editor .note-toolbar {
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #eeeeee;
+  margin: 0;
+}
+.note-editor .note-statusbar {
+  background-color: #ffffff;
+}
+.note-editor .note-statusbar .note-resizebar {
+  border-top: none;
+  height: 15px;
+  padding-top: 3px;
+}
+.note-editor.note-frame {
+  border: 1px solid #eeeeee !important;
+}
+.note-popover .popover .popover-content {
+  padding: 5px 0 10px 5px;
+}
+.note-popover .btn-default {
+  background-color: transparent;
+  border-color: transparent !important;
+}
+.note-popover .btn-group-sm > .btn,
+.note-popover .btn-sm {
+  padding: 8px 12px !important;
+}
+.note-toolbar {
+  padding: 5px 0 10px 5px;
+}
+
+.referrals-app {background-color: #f5f5f5; text-align: center;background-image:url(../img/mentor-hero.png);   background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;}
+.referrals-app .container{position: relative;padding-bottom: 125px;}
+.referrals-app .profile-photo{height: 114px;width: 114px;margin-top: 50px;}
+.referrals-app h2{margin-top: 25px;margin-bottom: 15px;color: #fff;}
+.referrals-app p{margin-top: 25px;margin-bottom: 15px;color: #fff;font-size: 18px;line-height: 1.3em;}
+.image-round{border-radius: 50%;border: 2px solid #fff;}
+.share-box{position: relative;top: -120px;padding: 45px;background-color: #fff;border: 1px solid #dce0e0;}
+.share-box .input-group .form-control{height: 39px;}
+.share-box .or-separator {
+    background: none;height: 34px;position: relative;text-align: center;
+}
+.share-box .or-separator--text {
+    background-color: #fff;display: inline-block;padding: 8px;font-size: 14px;font-weight: bold;color: #767676;
+}
+.share-box .or-separator hr {
+    margin: -16px auto 10px;width: 100%;
+}

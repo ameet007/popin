@@ -854,6 +854,10 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
         $(this).toggle();
         $("form#wishlist-form").toggle();
     });
+    $('#wishListModal').on('hidden.bs.modal', function () {
+        $("#create-wishlist-btn").toggle();
+        $("form#wishlist-form").toggle();
+    });
     $('#wishlist-form').validate({
         rules: {
             'name' :{ required:true}

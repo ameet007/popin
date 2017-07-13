@@ -4,21 +4,21 @@
             <div class="foot_top clearfix">
                 <div class="col-lg-3 one-foruth">
                     <select name="site_language" id="site_language">
-					<?php $all_languages = unserialize(LANGUAGES); 
+					<?php $all_languages = unserialize(LANGUAGES);
 					foreach($all_languages as $k=>$v) { ?>
-					<option value="<?= $k; ?>"><?= $v; ?></option>
+					<option value="<?= $k; ?>" <?= ($userProfileInfo->language == $k?'selected':'');?> ><?= $v; ?></option>
 					<?php } ?>
 					</select>
-                    
+
                     <select name="site_currency" id="site_currency">
-					<?php $all_currency = unserialize(CURRENCIES); 
+					<?php $all_currency = unserialize(CURRENCIES);
 					foreach($all_currency as $k=>$v) { ?>
-					<option value="<?= $k; ?>"><?= $v; ?></option>
+					<option value="<?= $k; ?>" <?= ($userProfileInfo->currency == $k?'selected':'');?> ><?= $v; ?></option>
 					<?php } ?>
 					</select>
                 </div>
-                
-				<?php $all_footer_sections = unserialize(FOOTER_SECTION); 
+
+				<?php $all_footer_sections = unserialize(FOOTER_SECTION);
 				foreach($all_footer_sections as $k=>$v)
 				{
 					$CI =& get_instance();
@@ -29,12 +29,12 @@
 					print_r($pages_array);
 					exit;*/
 				?>
-				
+
 				<div class="col-lg-3 one-foruth pd-left">
                     <h5><?= $v; ?></h5>
 					<?php if(!empty($pages_array)) { ?>
 				   <ul>
-						<?php foreach($pages_array as $v) { 
+						<?php foreach($pages_array as $v) {
 						$CI =& get_instance();
 						$CI->load->model(ADMIN_DIR.'/AdminSettings','settings');
 						$pageDetail = $CI->settings->getPageDetail($v);
@@ -45,9 +45,9 @@
 						<?php } } ?>
                     </ul>
 					<?php } ?>
-                </div>                
+                </div>
 				<?php } ?>
-                
+
             </div>
             <div class="foot_bottom clearfix">
                 <div class="copy-right">
