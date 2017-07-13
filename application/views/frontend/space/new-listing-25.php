@@ -19,14 +19,10 @@
                         <div class="feild">
                             <label>Currency</label>
                             <select class="textbox" name="page7[currency]">
-                                <?php if($hostProfileInfo->currency != 'Sel'):?>
-                                <option value="<?= $hostProfileInfo->currency; ?>"><?= $hostProfileInfo->currency; ?></option>
-                                <?php else: ?>
                                 <?php $all_currency = unserialize(CURRENCIES); 
-                                foreach($all_currency as $k=>$v) { ?>
-                                <option value="<?= $k; ?>" <?php echo ((isset($stepData['step3']['page7']['currency']) && $stepData['step3']['page7']['currency'] == $k) || $hostProfileInfo->currency == $k)? 'selected' : ''?>><?= $v; ?></option>
-                                <?php } ?>
-                                <?php endif;?>
+                                 foreach($all_currency as $k=>$v) { ?>
+                                 <option value="<?= $k; ?>" <?php echo ((isset($stepData['step3']['page7']['currency']) && $stepData['step3']['page7']['currency'] == $k) || $hostProfileInfo->currency == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                 <?php } ?>
                             </select>
                         </div>
                         <div class="next-prevs clearfix">

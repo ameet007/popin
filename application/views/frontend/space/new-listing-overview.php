@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row clearfix">
             <div class="col-md-6 hi-cassiday">
-                <h2>Hi, <?php echo $userProfileInfo->firstName; ?>! Let’s get started <br/>listing your space.</h2>
+                <h2>Hi, <?php echo $userProfileInfo->firstName; ?>! Let’s get your <br/>listing ready to start renting <br/>your space.</h2>
                 <div class="step step1">
                     <strong>STEP 1</strong>
                     <h5>Workspaces, bathrooms, amenities and more</h5>

@@ -158,7 +158,7 @@ if(!empty($userProfileInfo->avatar)){
                             <p><?= $preview['spaceDescription']; ?></p>
                             <a data-toggle="modal" data-target="#myModal" href="#">Contact host</a>
                         </div>
-                        <?php $checkInOut = unserialize(TIMES); ?>
+                        <?php $checkIn = unserialize(TIMES); ?>
                         <div class="the-space">
                             <ul class="accomm clearfix">
                                 <li>The space</li>
@@ -170,7 +170,7 @@ if(!empty($userProfileInfo->avatar)){
                                     <a href="javascript:;" onclick="scrollToDiv('#house-rules');">House Rules</a>
                                 </li>
                                 <li>
-                                    <p>Check In:<strong><?php $day = strtolower(date("D")); echo $checkInOut[$preview["{$day}From"]] . ' - ' . $checkInOut[$preview["{$day}To"]]; ?></strong></p>
+                                    <p>Check In:<strong><?php $day = strtolower(date("D")); $checkIn[$preview["{$day}From"]] . ' - ' . $checkIn[$preview["{$day}To"]]; ?></strong></p>
                                     <p>Establishment type:<strong><?= $preview['establishmentType']; ?></strong></p>
                                     <p>Space type:<strong><?= $preview['spaceType']; ?></strong></p>
                                 </li>
@@ -583,7 +583,6 @@ if(!empty($userProfileInfo->avatar)){
             autoclose: true,
             format: 'dd-mm-yyyy',
             startDate: '<?= isset($available_dates)?date('d-m-Y', strtotime($available_dates['0'])):"d"; ?>', //-3d
-            endDate: '<?= isset($available_dates)?date('d-m-Y', strtotime(end($available_dates))):"d"; ?>',
             weekStart: 1,
             <?php if(isset($unavailable_dates)){ ?>datesDisabled: unavailableDates.unavailable_dates<?php }?>
         }) .on('change.dp', function (e) {

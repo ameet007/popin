@@ -45,7 +45,6 @@
                                                     <label for="numberNotification" class="col-sm-11">
                                                         <strong>Messages</strong>
                                                         <p>From partners and professionals</p>
-                                                        <sub>*we suggest you keep this on for the best success</sub>
                                                     </label>
                                                 </div>
                                             </div>
@@ -57,7 +56,6 @@
                                                     <label for="rentalUpdates" class="col-sm-11">
                                                         <strong>Rental Updates</strong>
                                                         <p>Requests, confirmations, changes and more</p>
-                                                        <sub>*we suggest you keep this on for the best success</sub>
                                                     </label>
                                                 </div>
                                             </div>

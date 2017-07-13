@@ -1,7 +1,7 @@
 <?php if ($message_notification = $this->session->flashdata('message_notification')) { ?>
     <!-- Message Notification Start -->
     <div id="message_notification">
-        <div class="alert alert-<?= $this->session->flashdata('class'); ?>">    
+        <div class="alert alert-<?= $this->session->flashdata('class'); ?>">
             <button class="close" data-dismiss="alert" type="button">×</button>
             <center><strong><?= $this->session->flashdata('message_notification'); ?></strong></center>
         </div>
@@ -27,7 +27,7 @@
                                                 <label for="countryResidence">Country of Residence <i class="fa fa-question-circle" aria-hidden="true"></i></label>
                                             </div>
                                             <div class="col-md-7">
-                                                <select id="countryResidence" name="countryResidence">
+                                                <select id="countryResidence" name="countryResidence" onchange="autoSave(this.id,this.value)" >
                                                     <?php
                                                     $all_country = unserialize(ALL_COUNTRY);
                                                     foreach ($all_country as $k => $v) {
@@ -37,21 +37,22 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <span>Click 'Save Country of Residence' to confirm. </span>
+                                        <!-- <span>Click 'Save Country of Residence' to confirm. </span> -->
                                     </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="panel-footer">
                                             <div class="align-right">
                                                 <button class="btn-red" type="submit" name='submit' id="submit">Save Country of Residence</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </form>
                             </div>
                         </div>
                         <div class="panel panel-default social-connec change-pass country-residence">
                             <div class="panel-heading">Cancel Account</div>
                             <div class="panel-body">
+                            <?php //echo sendMail(); ?>
                                 <!--<button class="btn-red openCancelAccountBox">Cancel my account</button>-->
                                 <button class="btn-red" id="btn-open-cancel">Cancel My Account</button>
                                 <div class="cancel-acc" id="div-cancel" style="display: none;">
@@ -161,4 +162,32 @@
         });
 
     });
+  function autoSave(fieldId,value)
+    	{
+    		var field = fieldId;
+        // console.log(fieldId+'<br>'+value)
+    		$.ajax({
+    							url: '<?= base_url('account/submit_settings'); ?>',
+    							type: 'POST',
+    							dataType: "json",
+    							data: {col:field,val:value},
+    							beforeSend: function(){
+    								$(".loader").show();
+    							},
+    							complete: function(){
+    								$('.loader').hide();
+    							},
+    							success: function(response) {
+                    //  console.log(response['class'])
+    								// if(response =='true')
+    								// {
+    									$('#message_notification').html('<div class="alert alert-<?= A_FAIL; ?>"><button class="close" data-dismiss="alert" type="button">×</button><strong>'+response['message']+'</strong></div>');
+    									//alert(response['message']);
+    								// }
+    								// else{
+    								// 	//$('#message_notification').html('<div class="alert alert-<?= A_SUC; ?>"><button class="close" data-dismiss="alert" type="button">×</button><strong>'+response['message']+'</strong></div>');
+    								// }
+    							}
+    						});
+    	}
 </script>

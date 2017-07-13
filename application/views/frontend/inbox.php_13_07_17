@@ -5,16 +5,7 @@
     <div class="container">
         <div class="main-content">
             <div class="row">
-<<<<<<< HEAD
-                <div class="col-md-6">
-                    <a class="btn2" href="<?= site_url('compose'); ?>">Compose new message</a>
-										<a class="btn2" href="<?= site_url('contactList'); ?>">Contact List</a>
-=======
-                <div class="col-md-3">
-                    <a class="btn2" href="<?= site_url('compose'); ?>">Compose new message</a>
->>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
-                </div>
-                <div class="col-md-3 all-msessage pull-right">
+                <div class="col-md-3 all-msessage">
                     <form id="inbox" method="post" action="">
                         <select name="status" onchange="this.form.submit();">
                             <option value="" <?= ($status == "")?"selected":"";?>>All Messages (<?= $userMessages['allCount']; ?>)</option>
@@ -40,7 +31,7 @@
                         <div class="table-responsive">
                             <table class="table table-condensed message-table">
                                 <tbody>
-                                    <?= $messages; ?>
+                                    <?= $messages; ?>                                
                                 </tbody>
                             </table>
                             <div style="text-align: center;display: none;" id="loader"><?php echo img(array("src"=>base_url("assets/images/loading-spinner-grey.gif"), "alt"=> "loading...")); ?></div>
@@ -74,7 +65,7 @@
                         <div class="sender clearfix">
                             <div class="pull-right">
                                 <button class="btn-red">Send Message</button>
-                            </div>
+                            </div> 
                         </div>
                     </form>
                 </div>
@@ -89,9 +80,9 @@ $("a.update-msg-status").on("click", function(){
         id = $(this).attr("data-msg-id"),
         action = $(this).attr("data-action"),
         status = $(this).attr("data-status");
-
+    
     var postData = {msg_id: id, action: action, status: status};
-
+    
     $.post("<?= site_url('dashboard/update_message_status');?>", postData, function(response){
         $this.html(response);
     });
@@ -115,10 +106,10 @@ $('#contact-form').validate({
         'message' : { required:"Please enter your message." }
     },
     submitHandler: function(form) {
-        $(form).parents('div.modal-body').block({
-            overlayCSS: { backgroundColor: '#E5E5E5' },
+        $(form).parents('div.modal-body').block({ 
+            overlayCSS: { backgroundColor: '#E5E5E5' }, 
             message: '<img src="<?= base_url(); ?>assets/images/loading-spinner-grey.gif" alt="please wait...">',
-            css: { border: 'none', backgroundColor: 'transparent' }
+            css: { border: 'none', backgroundColor: 'transparent' }  
         });
         $.ajax({
             url: form.action,
@@ -139,10 +130,10 @@ $('#contact-form').validate({
         });
     }
 });
-//Scroll script
+//Scroll script 
 var ajax_arry=[];
 var ajax_index =0;
-$(function () {
+$(function () {    
     $(window).scroll(function(){
         var height = $('.messageBlock').height();
         var scroll_top = $(this).scrollTop();

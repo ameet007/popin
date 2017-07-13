@@ -12,8 +12,8 @@
 <script src="<?php echo base_url()?>theme/front/assests/js/bxslider.js" type="text/javascript"></script>
 
 <div class="progress">
-    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
-
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:10%">
+        10% Complete
     </div>
 </div>
 <section class="middle-container new-partner14">

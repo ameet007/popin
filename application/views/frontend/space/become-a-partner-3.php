@@ -3,8 +3,8 @@
     <div class="container">
         <div class="row clearfix">
             <div class="col-md-6 hi-cassiday">
-                <h3>Finish the Listing</h3>
-<!--                <p>Let’s set up your pricing and figure out your renting calender.</p>-->
+                <h3>Last step!</h3>
+                <p>Let’s set up your pricing and figure out your renting calender.</p>
                 <div class="step">
                     <strong>STEP 1</strong>
                     <h5>Workspaces, bathrooms, amenities and more</h5>

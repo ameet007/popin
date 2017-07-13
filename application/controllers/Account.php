@@ -15,7 +15,6 @@ class Account extends CI_Controller {
     public function index() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = 'Account Notifications';
-
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/account', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
@@ -29,7 +28,7 @@ class Account extends CI_Controller {
         $this->load->view(FRONT_DIR . '/user/payment_methods', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
     }
-    
+
     public function payout_preferences() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = 'Payout Methods';
@@ -62,7 +61,7 @@ class Account extends CI_Controller {
         $this->load->view(FRONT_DIR . '/user/security', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
     }
-    
+
     public function connected_apps() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = 'Connected Apps';
@@ -218,23 +217,22 @@ class Account extends CI_Controller {
     }
 
     public function submit_settings() {
-        /* echo '<pre>';
-          print_r($_POST);
-          exit; */
         $settingsData = array(
-            "countryResidence" => $this->input->post('countryResidence'),
+            "countryResidence" => $this->input->post('val'),
             "updatedDate" => strtotime(date('Y-m-d H:i:s')),
             "ipAddress" => $this->input->ip_address()
         );
         $response = $this->user->editUser($settingsData, $this->session->userdata('user_id'));
         if ($response > 0) {
-            $this->session->set_flashdata('message_notification', 'Country of residance is updated successfully.');
-            $this->session->set_flashdata('class', A_SUC);
-            redirect(base_url('account/settings'));
+          echo 'true';
+            // $this->session->set_flashdata('message_notification', 'Country of residance is updated successfully.');
+            // $this->session->set_flashdata('class', A_SUC);
+            // redirect(base_url('account/settings'));
         } else {
-            $this->session->set_flashdata('message_notification', 'Failed to update Country of Residance.');
-            $this->session->set_flashdata('class', A_FAIL);
-            redirect(base_url('account/settings'));
+          echo 'false';
+            // $this->session->set_flashdata('message_notification', 'Failed to update Country of Residance.');
+            // $this->session->set_flashdata('class', A_FAIL);
+            // redirect(base_url('account/settings'));
         }
     }
 
@@ -490,10 +488,10 @@ class Account extends CI_Controller {
             redirect(base_url('account/payment-methods'));
         }
     }
-    
+
     function logout_user_log() {
         $id = $this->input->post('log_id');
-        
+
         $logData = array(
             "logoutDate" => strtotime(date('Y-m-d H:i:s')),
             "ipAddress" => $this->input->ip_address()
@@ -507,7 +505,7 @@ class Account extends CI_Controller {
         }
         die();
     }
-    
+
     function submit_gift_card() {
         $cardCode   = $this->input->post('giftCardCode');
         $giftBal    = $this->input->post('giftCardBalance');
@@ -524,7 +522,7 @@ class Account extends CI_Controller {
                 redirect(base_url('account/payment-methods'));
             }else{
                 $cardData = $cardQuery->row_array();
-                
+
                 $user_id = $this->session->userdata('user_id');
                 $data = array(
                     "giftCardBalance" => $giftBal + $cardData['amount'],
@@ -540,6 +538,6 @@ class Account extends CI_Controller {
             $this->session->set_flashdata('class', A_SUC);
             redirect(base_url('account/payment-methods'));
         }
-        
+
     }
 }
