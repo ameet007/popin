@@ -53,7 +53,7 @@ $("#spaces-form").submit(function(e){
         $(".loader").hide();
         $('#spaces-form button').text('Finished');
         window.location.href = "<?= site_url('Space/become-a-partner'); ?>";
-    });
+    })
 });
 </script>
 </body>

@@ -69,18 +69,15 @@ class Space extends CI_Controller {
         $header['step_info'] = "";
         $data['hostProfileInfo'] = $this->host->userProfileInfo();
 
-        if (empty($space_id)) {
-            $stepData = $this->session->userdata('stepData');
-            $space_id = $stepData['id'];
-        }
-        if (empty($space_id)) {
-            redirect('listing');
-        }else {
+        $stepData = $this->session->userdata('stepData');
+        $steps_completed = isset($stepData['steps_completed']) ? $stepData['steps_completed'] : 3;
+        if (!empty($space_id)) {
             $host_id = $this->session->userdata('user_id');
             $record = $this->space->get_space_data($space_id, $host_id);
             if(empty($record)){
                 redirect('listing');
             }
+            $record['steps_completed'] = $steps_completed;
             $this->session->set_userdata('stepData', $record);
         }
         $stepData = $this->session->userdata('stepData');
@@ -90,15 +87,11 @@ class Space extends CI_Controller {
         
         //echo "<pre>"; print_r($stepData); echo "</pre>";
 
-        
-        if ($record['step_1_percentage'] == 100 && $record['step_2_percentage'] < 100){
-            $view_file = 'become-a-partner-1';
-        }elseif ($record['step_1_percentage'] == 100 && $record['step_2_percentage'] == 100 && $record['step_3_percentage'] < 100){
+        $view_file = 'become-a-partner-1';
+        if ($steps_completed == 2){
             $view_file = 'become-a-partner-2';
-        }elseif ($record['step_1_percentage'] == 100 && $record['step_2_percentage'] == 100 && $record['step_3_percentage'] == 100){
+        }elseif ($steps_completed == 3){
             $view_file = 'become-a-partner-3';
-        }else{
-            $view_file = 'become-a-partner';
         }
 
         $this->load->view(FRONT_DIR . '/include-partner/header', $header);
@@ -215,7 +208,7 @@ class Space extends CI_Controller {
                 
                 $this->space->updateData($updateData,$stepData['id'],$host_id);
             }
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',20);
+
             $this->session->set_userdata('stepData', $stepData);
         }
         $this->restrict_direct_access_steps('step1', 'page1');
@@ -238,7 +231,6 @@ class Space extends CI_Controller {
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
                 $this->db->update('spaces', $updateData);
-                $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',30);
             }
         }
         $stepData['steps_completed'] = 2;
@@ -321,7 +313,7 @@ class Space extends CI_Controller {
                     $this->space->updateData($updateData, $stepData['id'], $host_id);
                 }
             }
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',40);
+
             $this->session->set_userdata('stepData', $stepData);
             die();
         }
@@ -358,7 +350,6 @@ class Space extends CI_Controller {
             $host_id = $this->session->userdata('user_id');
             $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
             $this->db->update('spaces', $updateData);
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',60);
         }
 
         $this->session->set_userdata('stepData', $stepData);
@@ -423,7 +414,6 @@ class Space extends CI_Controller {
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
                 $this->db->update('spaces', $updateData);
-                $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',80);
             }
         }
 
@@ -457,7 +447,7 @@ class Space extends CI_Controller {
         }else{
             $stepData['step1']['page5']['amenities'] = array();
         }
-        $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',90);
+
         $this->session->set_userdata('stepData', $stepData);
         exit;
     }
@@ -487,7 +477,7 @@ class Space extends CI_Controller {
         }else{
             $stepData['step1']['page6']['facilities'] = array();
         }
-        $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',100);
+        $stepData['steps_completed'] = 1;
         $this->session->set_userdata('stepData', $stepData);
         exit;
     }
@@ -585,8 +575,6 @@ class Space extends CI_Controller {
             $stepData['step2']['fileuploader'] = json_encode($fileuploader);
         }
         unset($stepData['step2']['galleryImage']);
-        $host_id = $this->session->userdata('user_id');
-        $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',40);
         $this->session->set_userdata('stepData', $stepData);
         exit;
     }
@@ -612,7 +600,6 @@ class Space extends CI_Controller {
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
                 $this->db->update('spaces', $updateData);
-                $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',50);
             }
         }
 
@@ -642,7 +629,6 @@ class Space extends CI_Controller {
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
                 $this->db->update('spaces', $updateData);
-                $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',60);
             }
         }
 
@@ -673,7 +659,6 @@ class Space extends CI_Controller {
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
                 $this->db->update('spaces', $updateData);
-                $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',70);
             }
         }
         $stepData['steps_completed'] = 2;
@@ -686,9 +671,6 @@ class Space extends CI_Controller {
         $header['step_info'] = $this->head_step_2;
         $data['hostProfileInfo'] = $this->host->userProfileInfo();
         if (!empty($data['hostProfileInfo']->avatar)){
-            $stepData = $this->session->userdata('stepData');
-            $host_id = $this->session->userdata('user_id');
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',90);
             redirect('Space/verify-phone');
         }
 
@@ -757,9 +739,6 @@ class Space extends CI_Controller {
                     "ipAddress" => $this->input->ip_address()
                 );
                 $this->space->editHost($profileData, $this->session->userdata('user_id'));
-                $stepData = $this->session->userdata('stepData');
-                $host_id = $this->session->userdata('user_id');
-                $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',90);
             }
         }
 
@@ -800,7 +779,7 @@ class Space extends CI_Controller {
                 $this->db->update('spaces', $updateData);
             }
         }
-        $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',100);
+        $stepData['steps_completed'] = 2;
         $this->session->set_userdata('stepData', $stepData);
         exit;
     }
@@ -822,7 +801,7 @@ class Space extends CI_Controller {
                 $host_id = $this->session->userdata('user_id');
                 $this->space->updateData($updateData, $stepData['id'], $host_id);
             }
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',10);
+
             $this->session->set_userdata('stepData', $stepData);
             die();
         }
@@ -855,7 +834,6 @@ class Space extends CI_Controller {
                 }
             }
             //echo "<pre>";print_r($stepData['step3']['page2']);echo "</pre>";exit;
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',20);
             $this->session->set_userdata('stepData', $stepData);
             redirect('Space/cleanup-procedures');
         }
@@ -883,7 +861,7 @@ class Space extends CI_Controller {
                 $host_id = $this->session->userdata('user_id');
                 $this->space->updateData($updateData, $stepData['id'], $host_id);
             }
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',40);
+
             $this->session->set_userdata('stepData', $stepData);
             die();
         }
@@ -946,7 +924,7 @@ class Space extends CI_Controller {
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
                 $this->db->update('spaces', $updateData);
             }
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',50);
+
             $this->session->set_userdata('stepData', $stepData);
             die();
         }
@@ -1003,7 +981,7 @@ class Space extends CI_Controller {
             }
 
             $stepData['step3']['page6'] = $this->space->getSpaceSettings($stepData['id'], $host_id);
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',70);
+
             $this->session->set_userdata('stepData', $stepData);
             die();
         }
@@ -1030,7 +1008,7 @@ class Space extends CI_Controller {
                     //print_r($response);exit;
                 }
             }
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',80);
+
             $this->session->set_userdata('stepData', $stepData);
             echo "success";
             die();
@@ -1057,7 +1035,7 @@ class Space extends CI_Controller {
                     $this->space->updateData($updateData, $stepData['id'], $host_id);
                 }
             }
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',90);
+
             $this->session->set_userdata('stepData', $stepData);
             die();
         }
@@ -1084,7 +1062,7 @@ class Space extends CI_Controller {
                     $this->space->updateData($updateData, $stepData['id'], $host_id);
                 }
             }
-            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',100);
+            $stepData['steps_completed'] = 3;
             $this->session->set_userdata('stepData', $stepData);
             die();
         }
@@ -1127,7 +1105,7 @@ class Space extends CI_Controller {
 
                 $this->space->updateData($updateData, $space_id, $host_id);
                 $this->session->unset_userdata('stepData');
-                redirect("listing");
+                redirect("Listing/listing");
             }
         }
         $this->restrict_direct_access_steps('step3','page8');
@@ -1143,8 +1121,9 @@ class Space extends CI_Controller {
         $stepData = $this->session->userdata('stepData');
         if(!isset($stepData['step2']['gallery']) || empty($stepData['step2']['gallery'])){
             $stepData['steps_completed'] = '1';
-            $this->session->set_userdata('stepData', $stepData);
-            redirect('Space/become-a-partner');
         }
+        
+        $this->session->set_userdata('stepData', $stepData);
+        redirect('Space/become-a-partner');
     }
 }

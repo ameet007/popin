@@ -1,12 +1,12 @@
-<?php 
+<?php
 include_once APPPATH."libraries/google-api-php-client/Google_Client.php";
 include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Service.php";
-		
+
 		// Google Project API Credentials
 		$clientId = '962031527806-lgqqsh28c4cn3g15c758i7pcasct4g33.apps.googleusercontent.com';
         $clientSecret = '5rrDAy51MKP6M0kYZY86XbZt';
         $redirectUrl = base_url() . 'user/google_verification';
-		
+
 		// Google Client Configuration
         $gClient = new Google_Client();
         $gClient->setApplicationName(SITE_DISPNAME);
@@ -30,10 +30,10 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
 <?php if($message_notification = $this->session->flashdata('message_notification')) { ?>
 									<!-- Message Notification Start -->
 									<div id="message_notification">
-									<div class="alert alert-<?= $this->session->flashdata('class'); ?>">    
+									<div class="alert alert-<?= $this->session->flashdata('class'); ?>">
 										<button class="close" data-dismiss="alert" type="button">×</button>
 										<strong>
-											<?= $this->session->flashdata('message_notification'); ?> 
+											<?= $this->session->flashdata('message_notification'); ?>
 										</strong>
 									</div>
 									</div>
@@ -75,7 +75,14 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
                             <div class="panel-heading">Your verified info</div>
                             <div class="panel-body">
                                 <h4>Email address</h4>
-                                <p>You have confirmed your email: <b><?= $userProfileInfo->email; ?></b>. A confirmed email is important to allow us to securely communicate with you.</p>                               
+                                <p>You have confirmed your email: <b><?= $userProfileInfo->email; ?></b>. A confirmed email is important to allow us to securely communicate with you.</p>
+                              <h4>Phone number</h4>
+                              <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p>
+															<?php
+								 						    if ($userProfileInfo->googleVerified == 'Yes') { ?>
+															<h4>Google</h4>
+                              <p>Your <?= SITE_DISPNAME; ?> account is Connected with Goole account.</p>
+															<?php } ?>
                             </div>
                         </div>
                         <div class="panel panel-default profile-photo verified-info">
@@ -83,7 +90,7 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
                             <div class="panel-body">
                                 <div class="row mr15">
                                     <div class="col-md-9">
-											<?php 
+											<?php
 											if($userProfileInfo->licenceCopy!='')
 											{
 												$licenceLink = base_url('uploads/user/document/'.$userProfileInfo->licenceCopy);
@@ -131,27 +138,36 @@ include_once APPPATH."libraries/google-api-php-client/contrib/Google_Oauth2Servi
                                         <input type="file" name="liabilityInsurance" id="liabilityInsurance">
                                     </div>
                                 </div>
-                                <h4>Phone number</h4>
-                                <p>Make it easier to communicate with a verified phone number. We’ll send you a code by SMS or read it to you over the phone. Enter the code below to confirm that you’re the person on the other end.</p>
-                                <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p>
-                                <div class="col-sm-6"><input type="text" name="phone" id="phone" value="<?= $userProfileInfo->phone; ?>" class="textbox"></div>
-                                <div class="row mr15">
-                                    <div class="col-md-8"><br>
-                                        <h4>Google</h4>
-                                        Connect your <?= SITE_DISPNAME; ?> account to your Goole account for simplicity and ease.
-                                    </div>
-                                    <div class="col-md-4 align-center">
-                                        <?php if($userProfileInfo->googleVerified=='Yes'){ ?><a href="javascript:void(0);" class="btn btn-default">Verified</a><?php } else { ?><a class="btn btn-default btn-file" href="<?php echo $authUrl; ?>"> Connect with Google </a> <?php } ?>
-                                    </div>
-                                </div>
-								<input type="hidden" name="OldLicenceCopy" id="OldLicenceCopy" value="<?= $userProfileInfo->licenceCopy; ?>">
-								<input type="hidden" name="OldEstablishmentLicence" id="OldEstablishmentLicence" value="<?= $userProfileInfo->establishmentLicence; ?>">
-								<input type="hidden" name="OldLiabilityInsurance" id="OldLiabilityInsurance" value="<?= $userProfileInfo->liabilityInsurance; ?>">
-								<input type="submit" name="submit" id="submit" class="btn btn-red pull-right" value="Update">
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                                <!-- <h4>Phone number</h4> -->
+                                <!-- p>Make it easier to communicate with a verified phone number. We’ll send you a code by SMS or read it to you over the phone. Enter the code below to confirm that you’re the person on the other end.</p>
+                                <p>Your number is only shared with another <?php// SITE_DISPNAME; ?> member once you have a confirmed booking.</p> -->
+                                <div class="col-sm-6"><input type="hidden" name="phone" id="phone" value="4521" class="textbox"></div>
+																	<input type="hidden" name="OldLicenceCopy" id="OldLicenceCopy" value="<?= $userProfileInfo->licenceCopy; ?>">
+																	<input type="hidden" name="OldEstablishmentLicence" id="OldEstablishmentLicence" value="<?= $userProfileInfo->establishmentLicence; ?>">
+																	<input type="hidden" name="OldLiabilityInsurance" id="OldLiabilityInsurance" value="<?= $userProfileInfo->liabilityInsurance; ?>">
+																	<input type="submit" name="submit" id="submit" class="btn btn-red pull-right" value="Upload">
+                  </div>
+            </div>
+						 <?php
+						    if ($userProfileInfo->googleVerified != 'Yes') { ?>
+								<div class="panel panel-default profile-photo verified-info">
+										<div class="panel-heading">Not Verified Google</div>
+										<div class="panel-body">
+											<div class="row mr15">
+													<div class="col-md-8"><br>
+															<h4>Google</h4>
+															Connect your <?= SITE_DISPNAME; ?> account to your Goole account for simplicity and ease.
+													</div>
+													<div class="col-md-4 align-center">
+															<?php if($userProfileInfo->googleVerified=='Yes'){ ?><a href="javascript:void(0);" class="btn btn-default">Verified</a><?php } else { ?><a class="btn btn-default btn-file" href="<?php echo $authUrl; ?>"> Connect with Google </a> <?php } ?>
+													</div>
+											</div>
+										</div>
+								</div>
+						<?php   }
+						?>
+                </div>
+            </article>
 				</form>
 			</div>
         </div>
@@ -162,7 +178,7 @@ $(document).ready(function(e) {
 		$('#trustProfile').validate({
 					rules: {
 						phone : {required:true},
-						licenceCopy	: 	{	
+						licenceCopy	: 	{
 										   extension	:	"jpg|png|jpeg|gif|doc|pdf|docx"
 										},
 						establishmentLicence : {
@@ -174,7 +190,7 @@ $(document).ready(function(e) {
 					},
 					messages : {
 						phone : {required : "Please Enter Phone Number"},
-						licenceCopy : { 
+						licenceCopy : {
 										   extension : "Allowed File Types Are JPG, PNG, JPEG, GIF, Doc, Pdf, Docx"
 									  },
 						establishmentLicence : {
@@ -195,11 +211,11 @@ $(document).ready(function(e) {
 						else if(element.attr("name")=='liabilityInsurance')
 						{
 							error.appendTo('.liabilityInsuranceError');
-						} 
+						}
 						else {
 							error.insertAfter(element);
 						}
 					}
-				});		
+				});
     });
 </script>

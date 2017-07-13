@@ -1,9 +1,6 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Home extends CI_Controller {
-
     public function __construct() {
         parent::__construct();
         $this->load->model(FRONT_DIR . '/FrontUser', 'user');
@@ -18,12 +15,11 @@ class Home extends CI_Controller {
         } else {
             $data = array();
         }
-
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
         $this->load->view(FRONT_DIR . '/home', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
-    
+
     public function spaces() {
         $currentUser = '';
         if ($this->session->userdata('user_id') != '') {
@@ -37,7 +33,7 @@ class Home extends CI_Controller {
         $this->load->view(FRONT_DIR . '/spaces', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
-    
+
     public function rooms($space_id = '') {
         if (empty($space_id)) {
             redirect("Listing/listing");
@@ -48,7 +44,7 @@ class Home extends CI_Controller {
         {
             $data['userProfileInfo'] = $this->user->userProfileInfo();
             $currentUser = $this->session->userdata('user_id');
-        }        
+        }
 
         if (!empty($space_id)) {
             //$host_id = $this->session->userdata('user_id');
@@ -60,12 +56,12 @@ class Home extends CI_Controller {
         }
         $data['search_nav'] = 1;
         $data['space_id'] = $space_id;
-        $data['space_types'] = $this->space->getDropdownData('space_types');
+        $data['workspace_options'] = $this->space->getDropdownData('workspace_options');
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
         $this->load->view(FRONT_DIR . '/booking', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
-    
+
     function send_message_submit() {
         $spaceId = $this->input->post('space');
         $hostId = $this->input->post('host');
@@ -74,7 +70,7 @@ class Home extends CI_Controller {
         $checkOut = $this->input->post('checkOut');
         $professionals = $this->input->post('professionals');
         $message = $this->input->post('message');
-        
+
         $messageBody = "<b>Check In: </b>{$checkIn}<br/><b>Check Out: </b>{$checkOut}<br/><br/>";
         $messageBody .= "<b>Number of professionals: </b>{$professionals}<br/><br/>";
         $messageBody .= nl2br($message);
@@ -83,12 +79,12 @@ class Home extends CI_Controller {
             'space_id' => $spaceId,
             'sender' => $guestId,
             'receiver' => $hostId,
-            'message' => $messageBody            
+            'message' => $messageBody
         );
         $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
         $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
         $rawData['ipAddress'] = $this->input->ip_address();
-        
+
         $response = $this->user->create_conversation($rawData);
         if($response){
             $result['success'] = TRUE;
@@ -104,21 +100,21 @@ class Home extends CI_Controller {
         //print_r($rawData);
         // get base price and currency
         $spaceData = $this->db->select('base_price,currency')->get_where('spaces', array('id'=>$rawData['space']))->row_array();
-        
+
         // Start date
 	$checkIn = strtotime($rawData['checkIn']);
 	// End date
 	$checkOut = strtotime($rawData['checkOut']);
-        
+
         $date1=date_create(date("Y-m-d", $checkIn));
         $date2=date_create(date("Y-m-d", $checkOut));
         $diff=date_diff($date1,$date2);
         $nights = $diff->format("%a");
-        
+
         $currentySymbol = getCurrency_symbol($spaceData['currency']);
         $basePrice = $spaceData['base_price'];
         $totalBasePrice = 0;
-        
+
         $tooltip = '<table class="table" style="margin-bottom: 0px;">
                             <thead><th colspan="2">Base Price Breakdown</th></thead>
                             <tbody>';
@@ -127,17 +123,17 @@ class Home extends CI_Controller {
                                 $tooltip .= '<tr><td>'.date("d-m-Y", $checkIn).'</td><td>'.$currentySymbol.number_format($basePrice).'</td></tr>';
                                 $checkIn = strtotime("+1 day", $checkIn);
                             }
-                                
+
                                 $tooltip .= '<tr><th>Total Base Price</th><th>'.$currentySymbol.number_format($totalBasePrice).'</th></tr>';
                     $tooltip .= '</tbody>
                     </table>';
         //$tooltip="";
-        $serviceCharges = $totalBasePrice * 12 / 100;      
+        $serviceCharges = $totalBasePrice * 12 / 100;
         $finalAmount = $totalBasePrice + $serviceCharges;
         $this->session->set_userdata('checkout_amount', $finalAmount);
         $this->session->set_userdata('checkout_currency', $spaceData['currency']);
         $reponse = '<tr>
-                        <td>'.$currentySymbol.number_format($basePrice).' x '.$nights.' nights 
+                        <td>'.$currentySymbol.number_format($basePrice).' x '.$nights.' nights
                             <i class="fa fa-question-circle" data-toggle="tooltip" title=\''.$tooltip.'\' data-html="true"></i></td>
                         <td>'.$currentySymbol.number_format($totalBasePrice).'</td>
                     </tr>
@@ -166,8 +162,8 @@ class Home extends CI_Controller {
         if(!empty($bookingId)){
             //Set variables for paypal form
             $returnURL = site_url().'home/payment_success'; //payment success url
-            $cancelURL = site_url().'home/payment_cancel'; //payment cancel url
-            $notifyURL = site_url().'home/payment_ipn'; //ipn url
+            $cancelURL = base_url().'home/payment_cancel'; //payment cancel url
+            $notifyURL = base_url().'home/payment_ipn'; //ipn url
 
             $logo = 'http://www.neurons-it.in/Popin/uploads/site/thumb/logo.png';
             $spaceId = $rawData['space'];
@@ -193,15 +189,12 @@ class Home extends CI_Controller {
             $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
         }
     }
-    function payment_success(){        
+    function payment_success(){
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = "";
-        
+
         //get the transaction data
         $data['paypalInfo'] = $this->input->post();
-//        echo "<pre>";
-//        print_r($data['paypalInfo']);
-//        echo "</pre>";
         $data['title'] = "Payment Submitted";
         $data['message'] = "Thank you!! your payment is being processed.";
         //pass the transaction data to view
@@ -209,11 +202,11 @@ class Home extends CI_Controller {
         $this->load->view(FRONT_DIR . '/booking_status', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
      }
-     
+
      function payment_cancel(){
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = "";
-        
+
         $data['title'] = "Payment Cancelled";
         $data['message'] = "Your payment is cancelled successfully.";
         //pass the transaction data to view
@@ -221,45 +214,65 @@ class Home extends CI_Controller {
         $this->load->view(FRONT_DIR . '/booking_status', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
      }
-     
+
      //insert transaction data
     public function insertTransaction($data = array()){
         $insert = $this->db->insert('payments',$data);
         return $insert?true:false;
     }
-     
+
      function payment_ipn(){
         //paypal return transaction details array
         $paypalInfo    = $this->input->post();
-        $paypalURL = $this->paypal_lib->paypal_url;        
+
+        $data['user_id'] = $paypalInfo['custom'];
+        $data['booking_id']    = $paypalInfo["item_number"];
+        $data['txn_id']    = $paypalInfo["txn_id"];
+        $data['payment_gross'] = $paypalInfo["mc_gross"];
+        $data['currency_code'] = $paypalInfo["mc_currency"];
+        $data['payer_email'] = $paypalInfo["payer_email"];
+        $data['payment_status']    = $paypalInfo["payment_status"];
+        $data['payment_date']    = $paypalInfo["payment_date"];
+
+        $paypalURL = $this->paypal_lib->paypal_url;
         $result    = $this->paypal_lib->curlPost($paypalURL,$paypalInfo);
-        //$result    = $this->paypal_lib->validate_ipn();
+
         //check whether the payment is verified
         if(preg_match("/VERIFIED/i",$result)){
-        //if($result){
-            $data['user_id'] = $paypalInfo['custom'];
-            $data['booking_id']    = $paypalInfo["item_number"];
-            $data['txn_id']    = $paypalInfo["txn_id"];
-            $data['payment_gross'] = $paypalInfo["mc_gross"];
-            $data['currency_code'] = $paypalInfo["mc_currency"];
-            $data['payer_email'] = $paypalInfo["payer_email"];
-            $data['payment_status']    = $paypalInfo["payment_status"];
-            $data['payment_date']    = $paypalInfo["payment_date"];
             //insert the transaction data into the database
-            $response = $this->insertTransaction($data);
-            if($response){
-                $updateData = array(
-                    'paymentStatus' => ucfirst($data['payment_status']),
-                    'transactionId' => $data['txn_id'],
-                    'paymentAccount' => $data['payer_email'],
-                    'updatedDate' => time()
-                );
-                $this->db->where('id', $data['booking_id'])->update('space_booking', $updateData);
-            }
+            $this->insertTransaction($data);
         }
     }
     public function about() {
         exit('hello');
     }
-
+ # Customer USer profile
+ public function customerDetails($userID='1') {
+     if ($this->session->userdata('user_id') != '') {
+         $data['userProfileInfo'] = $this->user->userProfileInfo();
+     } else {
+         $data['userProfileInfo'] = array();
+     }
+      $data['customerID']  = $userID;
+      $data['checkStatus'] = $this->user->checkContactList($userID,$this->session->userdata('user_id')); 
+      $this->load->view(FRONT_DIR . '/profileDetails', $data);
+ }
+ # add customer data from the databse
+ public function addContact(){
+    $data    = $this->input->post();
+    $userID  = $this->session->userdata('user_id');
+    $contact = array();
+    $contact['userIID']     = $userID;
+    $contact['addUserID ']  = $data['contactUserID'];
+    $contact['status']      = 'Active';
+    $contact['createdDate'] = time();
+    $contact['updatedDate'] = time();
+    $contact['ipAddress ']  = $this->input->ip_address();
+    $check = $this->user->addContactList($contact);
+    if ($check > 0) {
+        echo '1';
+    }else{
+       echo '2';
+    }
+ }
 }

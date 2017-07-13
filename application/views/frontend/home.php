@@ -470,7 +470,17 @@
 <script type="text/javascript">
     
     $(function () {
-        $('#demo-range').daterangepicker();
+        $('#demo-range').daterangepicker({
+            autoUpdateInput: false,
+            minDate: moment(),
+            //showDropdowns: true
+        });
+        $('#demo-range').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'));
+        });
+        $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('Anytime');
+        });
         $('#demo-range').val('Anytime');
         //Initiate slider-one
         $('#jc1 .jcarousel')

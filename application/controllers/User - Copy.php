@@ -10,8 +10,6 @@ class User extends CI_Controller {
         $this->load->model(FRONT_DIR . '/FrontUser', 'user');
         $this->load->model(FRONT_DIR . '/FrontEmails', 'all_emails');
         $this->load->model(FRONT_DIR . '/FrontSubscriber', 'subscriber');
-        // $this->load->library('encrypt');
-        $this->load->library('encryption');
     }
 
     public function ajax_submit_basic() {
@@ -365,7 +363,7 @@ class User extends CI_Controller {
             }
 
             $settingData = array(
-                // "phone" => $this->input->post('phone'),
+                "phone" => $this->input->post('phone'),
                 "licenceCopy" => $licenceCopy,
                 "establishmentLicence" => $establishmentLicence,
                 "liabilityInsurance" => $liabilityInsurance,
@@ -605,31 +603,10 @@ class User extends CI_Controller {
                 );
                 $updateRecord = $this->user->editUser($updateData, $check_user->id);
                 if ($updateRecord > 0) {
-                    $this->load->library('user_agent');
-                    if ($this->agent->is_browser())
-                    {
-                        $agent = $this->agent->browser(); //$this->agent->version();
-                    }
-                    elseif ($this->agent->is_robot())
-                    {
-                        $agent = $this->agent->robot();
-                    }
-                    elseif ($this->agent->is_mobile())
-                    {
-                        $agent = $this->agent->mobile();
-                    }
-                    else
-                    {
-                        $agent = 'Unidentified User Agent';
-                    }
-                    $this->load->helper('popin');
                     $loginData = array(
                         "userId" => $check_user->id,
                         "loginDate" => strtotime(date('Y-m-d H:i:s')),
-                        "device" => $this->agent->platform(),
-                        "browser" => $agent,
-                        "ipAddress" => $this->input->ip_address(),
-                        "location" => get_location_from_ip($this->input->ip_address())
+                        "ipAddress" => $this->input->ip_address()
                     );
                     $session_logs = $this->user->loginRecord($loginData);
                     //Insert data in to the Logins table code end
@@ -638,25 +615,23 @@ class User extends CI_Controller {
                     $this->session->set_userdata('session_login_id', $session_logs);
                     $this->session->set_flashdata('message_notification', 'Your Account Is Verfied With Google And Profile Has Been Updated');
                     $this->session->set_flashdata('class', A_SUC);
-                    redirect(site_url('dashboard'));
                 } else {
                     $this->session->set_flashdata('message_notification', 'Something Went Wrong, Please Try Again Later In Some Time');
                     $this->session->set_flashdata('class', A_FAIL);
-                    redirect(base_url());
                 }
+                redirect(base_url());
             } else {
                 $password = $this->randomString();
                 $userRegisterData = array(
                     "googleVerified" => 'Yes',
                     "firstName" => $userProfile['given_name'],
                     "lastName" => $userProfile['family_name'],
-                    "createdDate" => strtotime(date('Y-m-d H:i:s')),
                     "updatedDate" => strtotime(date('Y-m-d H:i:s')),
                     "ipAddress" => $this->input->ip_address(),
                     "status" => 'Active',
                     "googleEmail" => $userProfile['email'],
                     "email" => $userProfile['email'],
-                    "password" => $this->encryption->encrypt($password),
+                    "password" => $this->encrypt->encode($password),
                     "gender" => ucfirst($userProfile['gender'])
                 );
                 $id = $this->user->addUser($userRegisterData);
@@ -683,6 +658,7 @@ class User extends CI_Controller {
                         $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
                         $to = array('email' => $userProfile['email'], 'name' => $userName);
                         $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
+
                         //If this email is exist and active then only email should be sent
                     }
 
@@ -699,9 +675,9 @@ class User extends CI_Controller {
     }
 
     public function submit_register() {
-         // echo '<pre>';
-         //  print_r($_POST);
-         //  exit;
+        /* echo '<pre>';
+          print_r($_POST);
+          exit; */
         $config = array(
             array(
                 'field' => 'reg_firstName',
@@ -771,29 +747,25 @@ class User extends CI_Controller {
             redirect(base_url());
         } else {
             $activationLink = md5($this->input->post('reg_email'));
-            $newsLetter = isset($_POST['newsLetter'])?$_POST['newsLetter']:'No';
-            $pass = $this->input->post('reg_password');
             $userRegisterData = array(
                 "firstName" => $this->input->post('reg_firstName'),
                 "lastName" => $this->input->post('reg_lastName'),
                 "email" => $this->input->post('reg_email'),
-                // "password" => $this->encrypt->encode($pass),
-                "password" => $this->encryption->encrypt($pass),
+                "password" => $this->encrypt->encode($this->input->post('reg_password')),
                 "dobMonth" => $this->input->post('reg_dobMonth'),
                 "dobDay" => $this->input->post('reg_dobDay'),
                 "dobYear" => $this->input->post('reg_dobYear'),
                 "verificationCode" => $activationLink,
                 "status" => 'Pending',
-                "newsLetter" => $newsLetter,
+                "newsLetter" => $this->input->post('newsLetter'),
                 "createdDate" => strtotime(date('Y-m-d H:i:s')),
                 "updatedDate" => strtotime(date('Y-m-d H:i:s')),
                 "ipAddress" => $this->input->ip_address()
             );
-            // print_r($userRegisterData);exit;
             $id = $this->user->addUser($userRegisterData);
             if ($id > 0) {
-                $userName = $this->input->post('reg_firstName') . ' ' . $this->input->post('reg_lastName');
-                if ($newsLetter == 'Yes') {
+                $userName = $this->input->post('reg_firstName') . '&nbsp;' . $this->input->post('reg_lastName');
+                if ($this->input->post('newsLetter') == 'Yes') {
                     // It means user wants to subscribe newsletter
                     $subscriberData = array(
                         "user" => $id,
@@ -812,6 +784,10 @@ class User extends CI_Controller {
                 $emailTemplate = $this->all_emails->getEmailTemplate('user-register');
                 if (!empty($emailTemplate)) {
                     $siteEmailDetails = $this->all_emails->emailDetails();
+
+                    /* echo '<pre>';
+                      print_r($siteEmailDetails);
+                      exit; */
                     $emailContent = $emailTemplate->content;
                     $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
                         "{name}" => $userName,
@@ -821,16 +797,14 @@ class User extends CI_Controller {
                     $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
                     $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
                     $to = array('email' => $this->input->post('reg_email'), 'name' => $userName);
-
                     $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
 
                     //If this email is exist and active then only email should be sent
-                    $this->session->set_flashdata('message_notification', 'Your registration has been done successfully, please verify your email-address.');
-                    $this->session->set_flashdata('class', A_SUC);
-                    redirect(base_url());
                 }
 
-
+                $this->session->set_flashdata('message_notification', 'Your Registration Has Been Done Successfully');
+                $this->session->set_flashdata('class', A_SUC);
+                redirect(base_url());
             } else {
                 $this->session->set_flashdata('message_notification', 'Your Registration Has Not Been Done Successfully');
                 $this->session->set_flashdata('class', A_FAIL);
@@ -894,17 +868,15 @@ class User extends CI_Controller {
                     {
                         $agent = 'Unidentified User Agent';
                     }
-
+                    
                     $user_id = $record->id;
-                    $this->load->helper('popin');
                     //Insert data in to the Logins table code start
                     $loginData = array(
                         "userId" => $user_id,
                         "loginDate" => strtotime(date('Y-m-d H:i:s')),
                         "device" => $this->agent->platform(),
                         "browser" => $agent,//$this->input->user_agent()
-                        "ipAddress" => $this->input->ip_address(),
-                        "location" => get_location_from_ip($this->input->ip_address())
+                        "ipAddress" => $this->input->ip_address()
                     );
                     $session_logs = $this->user->loginRecord($loginData);
                     //Insert data in to the Logins table code end
@@ -915,7 +887,7 @@ class User extends CI_Controller {
                     $this->session->set_flashdata('class', A_SUC);
                     redirect(base_url() . "dashboard");
                 } else {
-                    $this->session->set_flashdata('message_notification', 'Your account status is ' . strtolower($status) . ', please verify your email-address.<a href="'.base_url('user/resendVerifyEmail').'/'.urlencode($this->input->post('login_email')).'">Click here </a>Resend verification Link');
+                    $this->session->set_flashdata('message_notification', 'Your Account Is ' . $status . ', Please Contact Admin To Activate Your Account');
                     $this->session->set_flashdata('class', A_FAIL);
                     redirect(base_url());
                 }
@@ -931,7 +903,7 @@ class User extends CI_Controller {
         $affected_rows = $this->user->sessionLogout($this->session->userdata('session_login_id'));
         $this->session->unset_userdata('session_login_id');
         $this->session->unset_userdata('user_id');
-        $this->session->set_flashdata('alert_message', 'You have been logged out successfully.');
+        $this->session->set_flashdata('message_notification', 'You Have Been Logged Out Successfully');
         $this->session->set_flashdata('class', A_SUC);
         redirect(base_url());
     }
@@ -965,7 +937,7 @@ class User extends CI_Controller {
                     $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
                         "{name}" => $userName,
                         "{email}" => $this->input->post('forgot_email'),
-                        "{password}" => $this->encryption->decrypt($record->password)
+                        "{password}" => $this->encrypt->decode($record->password)
                     );
                     $subject = $emailTemplate->subject;
                     $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
@@ -1132,11 +1104,27 @@ class User extends CI_Controller {
           exit; */
         $config = array(
             array(
-                'field' => 'canCancel',
-                'label' => 'Can Cancel',
+                'field' => 'reason',
+                'label' => 'Reason for Cancel',
                 'rules' => 'required',
                 'errors' => array(
-                    'required' => 'Please confirm you choice to cancel your ' . SITE_DISPNAME . ' account.'
+                    'required' => 'Please Select One Reason To Cancel Your Account'
+                ),
+            ),
+            array(
+                'field' => 'detail',
+                'label' => 'Detail',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter The Detail To Cancel Your Account'
+                ),
+            ),
+            array(
+                'field' => 'canContact',
+                'label' => 'Can Contact',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select Can ' . SITE_DISPNAME . ' Contact You For More Details ?'
                 ),
             )
         );
@@ -1148,58 +1136,42 @@ class User extends CI_Controller {
             $this->session->set_flashdata('class', A_FAIL);
             redirect(base_url('user/settings'));
         } else {
-            $updateUser = array(
-                "status" => 'Cancel',
+            $cancelData = array(
+                "reason" => $this->input->post('reason'),
+                "detail" => $this->input->post('detail'),
+                "canContact" => $this->input->post('canContact'),
+                "createdDate" => strtotime(date('Y-m-d H:i:s')),
+                "user" => $this->session->userdata('user_id'),
                 "updatedDate" => strtotime(date('Y-m-d H:i:s')),
                 "ipAddress" => $this->input->ip_address()
             );
-            $response = $this->user->editUser($updateUser, $this->session->userdata('user_id'));
-            if ($response > 0) {
-                $$message = '';
-                $getrecord = getSingleRecord('user','id',$this->session->userdata('user_id'));
-                $email     = $getrecord->email;
-                $subject    = "Popin account has ben Cancelled";
-                $message   = "Dear ".$getrecord->firstName."\r\n\n";
-                $message  .= "Your popin account has ben Cancelled successfully";
-                sendMail($email,$subject,$message);
-                $affected_rows = $this->user->sessionLogout($this->session->userdata('session_login_id'));
-                $this->session->unset_userdata('session_login_id');
-                $this->session->unset_userdata('user_id');
+            $id = $this->user->addCancelDetail($cancelData);
+            if ($id > 0) {
+                $updateUser = array(
+                    "status" => 'Cancel',
+                    "updatedDate" => strtotime(date('Y-m-d H:i:s')),
+                    "ipAddress" => $this->input->ip_address()
+                );
+                $response = $this->user->editUser($updateUser, $this->session->userdata('user_id'));
+                if ($response > 0) {
+                    $affected_rows = $this->user->sessionLogout($this->session->userdata('session_login_id'));
+                    $this->session->unset_userdata('session_login_id');
+                    $this->session->unset_userdata('user_id');
 
-                $this->session->set_flashdata('message_notification', 'Your Account Cancelled Successfully');
-                $this->session->set_flashdata('class', A_SUC);
-                redirect(base_url(''));
+                    $this->session->set_flashdata('message_notification', 'Your Account Cancelled Successfully');
+                    $this->session->set_flashdata('class', A_SUC);
+                    redirect(base_url(''));
+                } else {
+                    $this->session->set_flashdata('message_notification', 'Your Account Not Cancelled Successfully');
+                    $this->session->set_flashdata('class', A_FAIL);
+                    redirect(base_url('user/settings'));
+                }
             } else {
                 $this->session->set_flashdata('message_notification', 'Your Account Not Cancelled Successfully');
                 $this->session->set_flashdata('class', A_FAIL);
-                redirect(base_url('account/settings'));
+                redirect(base_url('user/settings'));
             }
         }
-    }
-    # Resend varification email if user not activate account
-    public function resendVerifyEmail($email){
-      $emailTemplate = $this->all_emails->getEmailTemplate('user-register');
-       $getEmailID   = urldecode($email);
-      $getData     =  $this->user->getActivateLink($getEmailID);
-       $activationLink = $getData['verificationCode'];
-       $userName = $getData['firstName'].' '.$getData['lastName'];
-      if (!empty($emailTemplate)) {
-          $siteEmailDetails = $this->all_emails->emailDetails();
-          $emailContent = $emailTemplate->content;
-          $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
-              "{name}" => $userName,
-              "{activationLink}" => '<a href="' . base_url('user/activation/' . $activationLink) . '">here</a>'
-          );
-          $subject = $emailTemplate->subject;
-          $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
-          $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
-          $to = array('email' => $this->input->post('reg_email'), 'name' => $userName);
-          $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
-          //If this email is exist and active then only email should be sent
-          $this->session->set_flashdata('message_notification', 'Resend Verification email has been sent successfully, please verify your email-address.');
-          $this->session->set_flashdata('class', A_SUC);
-          redirect(base_url());
-      }
     }
 
 }

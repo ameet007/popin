@@ -38,28 +38,28 @@ class FrontEmails extends CI_Model {
 				foreach($param as $varName=>$varValue)
 				{
 					$content = str_replace($varName,$varValue,$content);
-				}	
-				/*echo '<pre>';
-				print_r($from);
-				print_r($to);
-				exit($content);*/
-				$this->email->from($from['email'],$from['name']);
-				$this->email->to($to['email']);			
+				}
+				 $fromSend = $from['email'];
+				 $check = sendMailAdmin($to['email'],$subject,$content,$fromSend);
+				// echo '<pre>';
+				// print_r($from);
+				// print_r($to);
+				// echo $content;exit;
+			 //   $this->email->from($from['email'],$from['name']);
+			 //   $this->email->to($to['email']);			
 				/*$this->email->from('vanak@neurons-it.in', 'Aliasgar Vanak');
 				$this->email->to('aliasgar.vanak@gmail.com','Ali');*/
-				
-				$this->email->subject($subject);
-				$this->email->message($content);
-
-				if($this->email->send())
-				{
+				// $this->email->subject($subject);
+				// $this->email->message($content);
+				if($check == 1)
+			   {
 					// It means email sent..
-					return true;
-				}
-				else
+			   		return true;
+			   	}
+			  	else
 				{
 					//Email is not sent..
-					return false;
+				return false;
 				}
 	}
 	

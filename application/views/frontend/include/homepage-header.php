@@ -3,7 +3,6 @@ $CI = & get_instance();
 $CI->load->model(FRONT_DIR . '/FrontCommon', 'common');
 $siteDetails = $CI->common->getSiteDetails();
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>

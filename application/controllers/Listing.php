@@ -6,7 +6,11 @@ class Listing extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->helper(array('url','html','path','form','cookie', 'popin'));
+        $this->load->helper('url');
+        $this->load->helper('html');
+        $this->load->helper('path');
+        $this->load->helper('form');
+        $this->load->helper('cookie');
         $this->load->model(FRONT_DIR . '/FrontUser', 'user');
         $this->load->model(FRONT_DIR . '/FrontSpace', 'space_model');
     }
@@ -93,7 +97,7 @@ class Listing extends CI_Controller {
                     $spaceData['spaceType'] = $spaceType['name'];
                 }
                 $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->limit('1')->get_where('space_gallery', array('space' => $spaceData['id']))->row_array();
-                $basePrice = (!empty($spaceData['base_price']))? getCurrency_symbol($spaceData['currency']). number_format($spaceData['base_price']):'';
+                $basePrice = (!empty($spaceData['base_price']))? $spaceData['currency']. number_format($spaceData['base_price']):'';
                 $HTML.='<div class="item col-sm-6 col-md-4 col-lg-4">
                     <div class="slide-main clearfix">
                         <div class="slide-contant">
@@ -101,8 +105,8 @@ class Listing extends CI_Controller {
                             <div class="img" style="background-image: url('. base_url('uploads/user/gallery/'.$spaceGallery['image']).');">
                             </div>
                             <div class="content">
-                                <p><strong>'.$basePrice.' · '.$spaceData['spaceTitle'].' </strong></p>
-                                <p><span>'. $spaceData['establishmentType'].'/'.$spaceData['spaceType'].' · </span> '. $spaceData['workSpaceCount']." workspaces".'</p>
+                                <p><strong>'.$basePrice.'<span></span> '.$spaceData['spaceTitle'].' </strong></p>
+                                <p><span>'. $spaceData['establishmentType'].'/'.$spaceData['spaceType'].' ·</span> '. $spaceData['workSpaceCount']." workspaces".'</p>
                                 <div class="review">
                                     <span><img src="'. base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
                                     <span><img src="'. base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>

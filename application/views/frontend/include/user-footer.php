@@ -6,14 +6,14 @@
                     <select name="site_language" id="site_language">
 					<?php $all_languages = unserialize(LANGUAGES); 
 					foreach($all_languages as $k=>$v) { ?>
-					<option value="<?= $k; ?>"><?= $v; ?></option>
+					<option value="<?= $k; ?>" <?= ($userProfileInfo->language == $k?'selected':'');?> ><?= $v; ?></option>
 					<?php } ?>
 					</select>
                     
                     <select name="site_currency" id="site_currency">
 					<?php $all_currency = unserialize(CURRENCIES); 
 					foreach($all_currency as $k=>$v) { ?>
-					<option value="<?= $k; ?>"><?= $v; ?></option>
+					<option value="<?= $k; ?>" <?= ($userProfileInfo->currency == $k?'selected':'');?> ><?= $v; ?></option>
 					<?php } ?>
 					</select>
                 </div>

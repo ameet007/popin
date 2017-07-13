@@ -1,9 +1,11 @@
 <?php if ($message_notification = $this->session->flashdata('message_notification')) { ?>
     <!-- Message Notification Start -->
     <div id="message_notification">
-        <div class="alert alert-<?= $this->session->flashdata('class'); ?>">
+        <div class="alert alert-<?= $this->session->flashdata('class'); ?>">    
             <button class="close" data-dismiss="alert" type="button">×</button>
-            <center><strong><?= $this->session->flashdata('message_notification'); ?></strong></center>
+            <strong>
+                <?= $this->session->flashdata('message_notification'); ?> 
+            </strong>
         </div>
     </div>
     <!-- Message Notification End -->
@@ -13,7 +15,10 @@
         <div class="main-content">
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
-                    <?php $this->load->view(FRONT_DIR . '/include/account-sidebar');?>
+                    <div class="sidenav-list">
+                        <?php $this->load->view(FRONT_DIR . '/user/account-sidebar'); ?>
+                    </div>
+                    <a class="btn btn-default btn-block" href="javascript:void(0);">Rental Credit</a>
                 </aside>
                 <article class="col-lg-9 main-right">
                     <div class="panel-group">
@@ -27,7 +32,7 @@
                                                 <label for="countryResidence">Country of Residence <i class="fa fa-question-circle" aria-hidden="true"></i></label>
                                             </div>
                                             <div class="col-md-7">
-                                                <select id="countryResidence" name="countryResidence" onchange="autoSave(this.id,this.value)" >
+                                                <select id="countryResidence" name="countryResidence">
                                                     <?php
                                                     $all_country = unserialize(ALL_COUNTRY);
                                                     foreach ($all_country as $k => $v) {
@@ -37,37 +42,55 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <!-- <span>Click 'Save Country of Residence' to confirm. </span> -->
+                                        <span>Click 'Save Country of Residence' to confirm. </span>
                                     </div>
-                                    <!-- <div class="row">
+                                    <div class="row">
                                         <div class="panel-footer">
                                             <div class="align-right">
                                                 <button class="btn-red" type="submit" name='submit' id="submit">Save Country of Residence</button>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </form>
                             </div>
                         </div>
                         <div class="panel panel-default social-connec change-pass country-residence">
                             <div class="panel-heading">Cancel Account</div>
                             <div class="panel-body">
-                            <?php //echo sendMail(); ?>
                                 <!--<button class="btn-red openCancelAccountBox">Cancel my account</button>-->
                                 <button class="btn-red" id="btn-open-cancel">Cancel My Account</button>
-                                <div class="cancel-acc" id="div-cancel" style="display: none;">
-                                    <form name="cancel_account" id="cancel_account" method="post" action="<?= base_url('user/cancel_account'); ?>">
+                                <div class="cancel-acc" id="div-cancel">
+                                    <form name="cancel_account" id="cancel_account" method="post" action="<?= base_url('user/cancel_account/'); ?>">
                                         <div class="row">
                                             <div class="col-md-7">
+                                                <h5>Tell us why you're leaving</h5>
+                                                <div class="space-2">
+                                                    <?php
+                                                    $reasons = unserialize(CAN_REASON);
+                                                    foreach ($reasons as $k => $v) {
+                                                        ?>
+                                                        <label for="reason_safety_concerns">
+                                                            <input id="reason_safety_concerns" name="reason" value="<?= $k; ?>" type="radio">
+                                                            <?= $v; ?>
+                                                        </label>
+                                                    <?php } ?>
+                                                    <p class="reasonError"></p>
+                                                </div>
+                                                <div class="space-2">
+                                                    <label for="detail">
+                                                        Care to tell us more?
+                                                    </label>
+                                                    <textarea class="textarea input-block" id="detail" name="detail"></textarea>
+                                                </div>
                                                 <div class="space-2">
                                                     <label>
-                                                        Are you sure, you want to cancel your account?
+                                                        Can we contact you for more details?
                                                     </label>
                                                     <label class="label-inline" for="reason_yes">
-                                                        <input id="reason_yes" name="canCancel" value="Yes" type="radio"> Yes
+                                                        <input id="canContact" name="canContact" value="Yes" type="radio" checked> Yes
                                                     </label>
                                                     <label class="label-inline" for="reason_no">
-                                                        <input id="reason_no" name="canCancel" value="No" type="radio"> No
+                                                        <input id="canContact" name="canContact" value="No" type="radio"> No
                                                     </label>
                                                 </div>
                                                 <h5>What's going to happen</h5>
@@ -81,7 +104,7 @@
                                                 </ul>
                                                 <div class="tow-btn">
                                                     <button class="btn-red" type="submit" name="submit">Cancel my account</button>
-                                                    <button class="btn btn-default" id="btn-close-cancel" type="button">Don't cancel account</button>
+                                                    <button class="btn btn-default" id="btn-close-cancel">Don't cancel account</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
@@ -135,15 +158,15 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        //$('#div-cancel').hide();
+        $('#div-cancel').hide();
         $('#btn-open-cancel').click(function () {
             $('#div-cancel').show();
             $(this).hide();
-        });
+        })
         $('#btn-close-cancel').click(function () {
             $('#div-cancel').hide();
             $('#btn-open-cancel').show();
-        });
+        })
 
         $('.openCancelAccountBox').click(function () {
             $('#cancelAccountModel').modal('show');
@@ -151,43 +174,23 @@
 
         $('#cancel_account').validate({
             rules: {
-                canCancel: {required: true}
+                reason: {required: true},
+                detail: {required: true}
             },
             messages: {
-                canCancel: {required: "Please confirm you choice to cancel your account."}
+                reason: {required: "Please Select One Reason To Cancel Your Account"},
+                detail: {required: "Please Enter Details To Cancel Your Account"}
             },
             errorPlacement: function (error, element) {
-                error.insertAfter(element.parent().parent());
+                if (element.attr('name') == 'reason')
+                {
+                    error.appendTo('.reasonError');
+                } else
+                {
+                    error.insertAfter(element);
+                }
             }
         });
 
     });
-  function autoSave(fieldId,value)
-    	{
-    		var field = fieldId;
-        // console.log(fieldId+'<br>'+value)
-    		$.ajax({
-    							url: '<?= base_url('account/submit_settings'); ?>',
-    							type: 'POST',
-    							dataType: "json",
-    							data: {col:field,val:value},
-    							beforeSend: function(){
-    								$(".loader").show();
-    							},
-    							complete: function(){
-    								$('.loader').hide();
-    							},
-    							success: function(response) {
-                    //  console.log(response['class'])
-    								// if(response =='true')
-    								// {
-    									$('#message_notification').html('<div class="alert alert-<?= A_FAIL; ?>"><button class="close" data-dismiss="alert" type="button">×</button><strong>'+response['message']+'</strong></div>');
-    									//alert(response['message']);
-    								// }
-    								// else{
-    								// 	//$('#message_notification').html('<div class="alert alert-<?= A_SUC; ?>"><button class="close" data-dismiss="alert" type="button">×</button><strong>'+response['message']+'</strong></div>');
-    								// }
-    							}
-    						});
-    	}
 </script>

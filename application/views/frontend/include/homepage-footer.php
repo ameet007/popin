@@ -7,7 +7,7 @@
                         <?php $all_languages = unserialize(LANGUAGES);
                         foreach ($all_languages as $k => $v) {
                             ?>
-                            <option value="<?= $k; ?>"><?= $v; ?></option>
+                            <option value="<?= $k; ?>" <?= ($k == 'en'?'selected':''); ?> ><?= $v; ?></option>
 <?php } ?>
                     </select>
 
@@ -15,7 +15,7 @@
                         <?php $all_currency = unserialize(CURRENCIES);
                         foreach ($all_currency as $k => $v) {
                             ?>
-                            <option value="<?= $k; ?>"><?= $v; ?></option>
+                            <option value="<?= $k; ?>" <?= ($k == 'USD'?'selected':''); ?>  ><?= $v; ?></option>
 <?php } ?>
                     </select>
                 </div>

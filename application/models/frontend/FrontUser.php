@@ -114,7 +114,7 @@ class FrontUser extends CI_Model {
         $query = $this->db->select('id,status,password')->from('user')->where($where)->get();
 
         $user_data = $query->row();
-        if ($this->encrypt->decode($user_data->password) == $this->input->post('login_password')) {
+        if ($this->encryption->decrypt($user_data->password) == $this->input->post('login_password')) {
             return $user_data;
         } else {
             return array();
@@ -210,26 +210,24 @@ class FrontUser extends CI_Model {
         $this->db->insert('conversation', $data);
         return $this->db->insert_id();
     }
-    
-    function create_wishlist($data) {
-        $this->db->insert('wishlist_master', $data);
-        return $this->db->insert_id();
-    }
-    
-    function add_to_wishlist($wishlist_id, $space_id) {
-        $hasData = $this->db->where(array('wishlist_id'    => $wishlist_id,'space_id'  => $space_id))->get('wishlists')->num_rows();
-        if($hasData == 0){
-            $rawData = array(
-                'wishlist_id'    => $wishlist_id,
-                'space_id'  => $space_id,
-                'status' => 1,
-                'createdDate'    => time(),
-                'updatedDate'   => time(),
-                'ipAddress'   => $this->input->ip_address()   
-            );
-            $this->db->insert('wishlists', $rawData);
-            return $this->db->insert_id();
-        }        
+
+    public function fetch_users($userId, $term)
+    {
+        $responseData = array();
+
+        $users = $this->db->select('*')->where(array('status' => 'Active'))->like('firstName', $term, 'both')->or_like('email', $term, 'both')->get('user')->result_array();
+
+        foreach ($users as $user) {
+            if($userId != $user['id']){
+                $item ['id']        = $user['id'];
+                $item ['name']      = trim($user['firstName']) . " " . trim($user['lastName']);
+                $item ['email']     = trim($user['email']);
+
+                array_push($responseData, $item);
+            }
+        }
+        sort($responseData);
+        return json_encode($responseData);
     }
 
     public function spaceInfo($id, $select = "*") {
@@ -237,7 +235,7 @@ class FrontUser extends CI_Model {
         $query = $this->db->select($select)->from('spaces')->where($where)->get();
         return $query->row_array();
     }
-    
+
     public function getSpaceGallery($space_id){
         $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->get_where('space_gallery', array('space' => $space_id))->result_array();
         if(!empty($spaceGallery)){
@@ -320,15 +318,15 @@ class FrontUser extends CI_Model {
             $i=0;
             foreach ($rentals as $rental) {
                 $response[$i]['booking'] = $rental;
-                
+
                 $spaceInfo = $this->spaceInfo($rental['space']);
                 $response[$i]['space']['title'] = $spaceInfo['spaceTitle'];
                 $response[$i]['space']['country'] = $spaceInfo['country'];
                 $spaceGallery = $this->getSpaceGallery($rental['space']);
                 if($spaceGallery){
-                    $response[$i]['space']['image'] = base_url('uploads/user/gallery/'.$spaceGallery[0]); 
+                    $response[$i]['space']['image'] = base_url('uploads/user/gallery/'.$spaceGallery[0]);
                 }else{
-                    $response[$i]['space']['image'] = base_url('theme/front/img/nav-icon1.jpg'); 
+                    $response[$i]['space']['image'] = base_url('theme/front/img/nav-icon1.jpg');
                 }
                 $i++;
             }
@@ -336,6 +334,91 @@ class FrontUser extends CI_Model {
         }else{
             return false;
         }
+    }
+
+    function getWishLists($user) {
+        $wishLists = $this->db->select('id,name,privacy')->where('user', $user)->order_by('updatedDate','desc')->get('wishlist_master')->result_array();
+        $response = array();
+        if(!empty($wishLists)){
+            $i = 0;
+            foreach($wishLists as $wishList){
+                $response[$i] = $wishList;
+                $userLists = $this->getUserWishLists($wishList['id']);
+                foreach($userLists as $userList){
+                    $spaceInfo = $this->spaceInfo($userList['space_id']);
+                    if(!empty($spaceInfo)){
+                        $image = '';
+                        $spaceGallery = $this->getSpaceGallery($spaceInfo['id']);
+                        if($spaceGallery){
+                            $image = base_url('uploads/user/gallery/'.$spaceGallery[0]);
+                        }
+                        $response[$i]['userLists'][] = array(
+                            'space_id' => $spaceInfo['id'],
+                            'title' => $spaceInfo['spaceTitle'],
+                            'professionals' => $spaceInfo['professionalCapacity'],
+                            'image' => $image
+                        );
+                    }
+                }
+                $i++;
+            }
+        }
+        //echo "<pre>";        print_r($response);exit;
+        return $response;
+    }
+
+    function getUserWishLists($wishlist) {
+        return $this->db->select('space_id')->where(array('wishlist_id' => $wishlist, 'status' => 1))->get('wishlists')->result_array();
+    }
+
+    function create_wishlist($data) {
+        $this->db->insert('wishlist_master', $data);
+        return $this->db->insert_id();
+    }
+
+    function add_to_wishlist($wishlist_id, $space_id) {
+        $hasData = $this->db->where(array('wishlist_id'    => $wishlist_id,'space_id'  => $space_id))->get('wishlists')->num_rows();
+        if($hasData == 0){
+            $rawData = array(
+                'wishlist_id'    => $wishlist_id,
+                'space_id'  => $space_id,
+                'status' => 1,
+                'createdDate'    => time(),
+                'updatedDate'   => time(),
+                'ipAddress'   => $this->input->ip_address()
+            );
+            $this->db->insert('wishlists', $rawData);
+            return $this->db->insert_id();
+        }
+    }
+    # get user activate Link
+    public function getActivateLink($email)
+    {
+      return $this->db->get_where('user',array('email'=>$email))->row_array();
+    }
+    # get Contact list from the booking table
+    public function bookContactList($userId,$requestData){
+      $response = array();
+
+      //$this->db->where("(sender = {$userId} OR receiver = {$userId}) AND parent = 0");
+      $this->db->where('userIID', $userId);
+      $this->db->limit($requestData['limit'], $requestData['start']);
+      $conversations = $this->db->order_by('id', 'desc')->get('address_book')->result_array();
+      // echo $this->db->last_query();exit;
+      if (!empty($conversations)) {
+          $response['messages'] = $conversations;
+      } else {
+          $response['messages'] = array();
+      }
+      return $response;
+    }
+    # Add list of contact
+    public function addContactList($request){
+     $this->db->insert('address_book',$request);
+     return $this->db->affected_rows();
+    }
+    public function checkContactList($addUserId,$userID){
+      return $this->db->get_where('address_book',array('userIID'=>$userID,'addUserID'=>$addUserId))->row_array();
     }
 }
 
