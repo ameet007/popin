@@ -335,6 +335,42 @@ class FrontUser extends CI_Model {
             return false;
         }
     }
+    
+    private function createRentalRecord($rawData){
+        $i=0;$response = array();
+        if (!empty($rawData)) {            
+            foreach ($rawData as $rental) {
+                $response[$i]['booking'] = $rental;
+
+                $spaceInfo = $this->spaceInfo($rental['space']);
+                $response[$i]['space']['title'] = $spaceInfo['spaceTitle'];
+                $response[$i]['space']['country'] = $spaceInfo['country'];
+                $spaceGallery = $this->getSpaceGallery($rental['space']);
+                if($spaceGallery){
+                    $response[$i]['space']['image'] = base_url('uploads/user/gallery/'.$spaceGallery[0]);
+                }else{
+                    $response[$i]['space']['image'] = base_url('theme/front/img/nav-icon1.jpg');
+                }
+                $i++;
+            }
+        }
+        return $response;
+    }
+    
+    function getUserRentals($user){
+        $result = array();
+        $today = date('Y-m-d');
+        
+        $upcoming = $this->db->where(array('user' => $user,'checkIn >' => $today))->order_by('updatedDate', 'desc')->get('space_booking')->result_array();
+        $result['upcoming'] = $this->createRentalRecord($upcoming);
+        
+        $past = $this->db->where(array('user' => $user,'checkIn <' => $today))->order_by('updatedDate', 'desc')->get('space_booking')->result_array();
+        $result['past'] = $this->createRentalRecord($past);
+//        echo "<pre>";
+//        print_r($result);
+//        exit;
+        return $result;
+    }
 
     function getWishLists($user) {
         $wishLists = $this->db->select('id,name,privacy')->where('user', $user)->order_by('updatedDate','desc')->get('wishlist_master')->result_array();

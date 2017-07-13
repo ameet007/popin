@@ -165,6 +165,8 @@ class Home extends CI_Controller {
         $userID = $this->session->userdata('user_id'); //current user id
         $rawData = $this->input->post();
         $rawData['user'] = $userID;
+        $rawData['checkIn'] = date("Y-m-d", strtotime($this->input->post('checkIn')));
+        $rawData['checkOut'] = date("Y-m-d", strtotime($this->input->post('checkOut')));
         $rawData['bookingType'] = 'Day';
         $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
         $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));

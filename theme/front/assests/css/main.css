@@ -390,7 +390,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .rentals-banner .pull-right { padding-right: 20%;}
 .rentals-section {}
 .rentals-section h2 {font-size: 20px; line-height: 20px; color: #484848; margin-bottom: 20px;}
-.rentals-section .one-third {text-align: center;}
+.rentals-section .one-third {text-align: center;margin-bottom: 20px;}
 .rentals-section .one-third .one-third-main {border: solid 1px #dce0e0;}
 .rentals-section .one-third .img {margin-bottom: 15px;}
 .rentals-section .one-third h3 {font-size: 16px; line-height: 16px; color: #484848; margin-bottom: 15px;}

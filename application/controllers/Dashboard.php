@@ -258,6 +258,8 @@ class Dashboard extends CI_Controller
     {
         $data['module_heading'] = 'Rentals';
         $data['userProfileInfo'] = $this->user->userProfileInfo();
+        $userID = $this->session->userdata('user_id'); 
+        $data['userRentals'] = $this->user->getUserRentals($userID);
         $this->load->view('frontend/your-rental',$data);
     }
     
