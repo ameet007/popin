@@ -164,7 +164,7 @@ class Dashboard extends CI_Controller
         }
         echo json_encode($result);die();
     }
-    public function compose() {
+    public function compose($userId = '') {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $sender = $this->session->userdata('user_id');
             $receiver = $this->input->post('user_id');
@@ -199,7 +199,10 @@ class Dashboard extends CI_Controller
             }
             redirect(site_url('compose'));
         }
-        $data['module_heading'] = 'Inbox';
+        if(!empty($userId)){
+            $data['contactUser'] = $this->user->userInfo($userId, "id,firstName,lastName");
+        }
+        $data['module_heading'] = 'Compose Message';
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $this->load->view('frontend/compose',$data);
     }
@@ -296,22 +299,23 @@ class Dashboard extends CI_Controller
             // print_r($modelData['data']['messages']);exit;
             foreach($modelData['data']['messages'] as $messages){
                    $getUserInfo  = getSingleRecord('user','id',$messages['addUserID']);
+                   $avatar = ($getUserInfo->avatar != '' && file_exists('uploads/user/thumb/' . $getUserInfo->avatar)) ? $getUserInfo->avatar : 'user_pic-225x225.png';
               $HTML .='<li class="media">
                 <a class="pull-left" href="#">
-                  <img style="width: 125px;" class="media-object img-circle" src="'.base_url().'uploads/user/thumb/'.($getUserInfo->avatar != '' ? $getUserInfo->avatar : 'user_pic-225x225.png').'" alt="profile">
+                  <img style="width: 125px;" class="media-object img-circle" src="'.base_url().'uploads/user/thumb/'.$avatar.'" alt="profile">
                 </a>
                 <div class="media-body">
                   <div class="well well-lg">
                       <h4 class="media-heading text-uppercase reviews">'.$getUserInfo->firstName.' '.$getUserInfo->lastName.'</h4>
                       <ul class="media-date text-uppercase reviews list-inline">
                         <li class="dd">'.date('M',$messages['createdDate']).'</li>
-                        <li class="mm">'.date('dd',$messages['createdDate']).'</li>
+                        <li class="mm">'.date('d',$messages['createdDate']).'</li>
                         <li class="aaaa">'.date('Y',$messages['createdDate']).'</li>
                       </ul>
                       <p class="media-comment">
                         '.$getUserInfo->aboutYou.'
                       </p>
-                      <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Send Message</a>
+                      <a class="btn btn-info btn-circle text-uppercase" href="'. site_url('compose/'.$getUserInfo->id).'" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Send Message</a>
                       <!--<a class="btn btn-warning btn-circle text-uppercase" data-toggle="collapse">'.$messages['status'].'</a>-->
                   </div>
                 </div>

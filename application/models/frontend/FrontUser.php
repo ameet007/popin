@@ -215,16 +215,16 @@ class FrontUser extends CI_Model {
     {
         $responseData = array();
 
-        $users = $this->db->select('*')->where(array('status' => 'Active'))->like('firstName', $term, 'both')->or_like('email', $term, 'both')->get('user')->result_array();
+        $users = $this->db->select('user.*')->join('address_book', 'user.id = address_book.addUserID')->where(array('address_book.userID' => $userId,'address_book.status' => 'Active'))->like('user.firstName', $term, 'both')->or_like('user.email', $term, 'both')->get('user')->result_array();
 
         foreach ($users as $user) {
-            if($userId != $user['id']){
-                $item ['id']        = $user['id'];
-                $item ['name']      = trim($user['firstName']) . " " . trim($user['lastName']);
-                $item ['email']     = trim($user['email']);
+            $item ['id']        = $user['id'];
+            $item ['name']      = trim($user['firstName']) . " " . trim($user['lastName']);
+            $item ['email']     = trim($user['email']);
+            $avatar = ($user['avatar'] != '' && file_exists('uploads/user/thumb/' . $user['avatar'])) ? $user['avatar'] : 'user_pic-225x225.png';
+            $item ['image']     = trim($avatar);
 
-                array_push($responseData, $item);
-            }
+            array_push($responseData, $item);
         }
         sort($responseData);
         return json_encode($responseData);
@@ -344,6 +344,8 @@ class FrontUser extends CI_Model {
 
                 $spaceInfo = $this->spaceInfo($rental['space']);
                 $response[$i]['space']['title'] = $spaceInfo['spaceTitle'];
+                $response[$i]['space']['city'] = $spaceInfo['city'];
+                $response[$i]['space']['state'] = $spaceInfo['state'];
                 $response[$i]['space']['country'] = $spaceInfo['country'];
                 $spaceGallery = $this->getSpaceGallery($rental['space']);
                 if($spaceGallery){

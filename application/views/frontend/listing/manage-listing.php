@@ -191,8 +191,8 @@
                                             <div class="pull-right"><?=$listing['suitablePets']?></div>
                                         </li>
                                     </ul>
-                                    <?php if(isset($listing['additionalRules']) && !empty($listing['additionalRules'])){ ?>
                                     <h4>Additional rules</h4>
+                                    <?php if(isset($listing['additionalRules']) && !empty($listing['additionalRules'])){ ?>                                    
                                     <ul>
                                     <?php  foreach($listing['additionalRules'] as $additionalRules){ ?>
                                         <li><?php echo $additionalRules; ?><a class="clos cancel-rule pull-right" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a></li>

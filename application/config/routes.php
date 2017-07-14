@@ -64,6 +64,7 @@ $route['spaces/(:num)'] = 'home/rooms/$1';
 
 $route['inbox'] = 'Dashboard/inbox';
 $route['compose'] = 'Dashboard/compose';
+$route['compose/(:num)'] = 'Dashboard/compose/$1';
 $route['rentals'] = 'Dashboard/rentals';
 $route['wishlists'] = 'Dashboard/wishlists';
 $route['invite']    = 'Dashboard/invite';

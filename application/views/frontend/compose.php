@@ -29,8 +29,8 @@
                                                 <label for="to">To:</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input type='hidden' id='user-id' name='user_id' value=''/>
-                                                <input class="form-control" id="to_user" name="to_user" type="text" placeholder="Type email or name..." required="" />
+                                                <input type='hidden' id='user-id' name='user_id' value='<?= isset($contactUser)?$contactUser->id:''; ?>'/>
+                                                <input class="form-control" id="to_user" name="to_user" type="text" placeholder="Type name..." value="<?= isset($contactUser)?$contactUser->firstName.' '.$contactUser->lastName:''; ?>" required="" />
                                             </div>
                                         </div>
                                     </div>
@@ -88,19 +88,21 @@
             //autoFocus: true,
             minLength: 3,
             focus: function( event, ui ) {
-                $( "#to_user" ).val( ui.item.name + " <" + ui.item.email + ">" );
+                $( "#to_user" ).val( ui.item.name );
                 $( "#user-id" ).val( ui.item.id );
                 return false;
             },
             select: function( event, ui ) {
-                $( "#to_user" ).val( ui.item.name + " <" + ui.item.email + ">" );
+                //$( "#to_user" ).val( ui.item.name + " <" + ui.item.email + ">" );
+                $( "#to_user" ).val( ui.item.name );
                 $( "#user-id" ).val( ui.item.id );
                 return false;
             }
         })
         .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
            return $( "<li>" )
-           .append( "<a><b>" + item.name + "</b><br>" + item.email + "</a>" )
+           //.append( "<a><b>" + item.name + "</b><br>" + item.email + "</a>" )
+           .append( "<a><img src='<?= base_url('uploads/user/thumb/'); ?>"+item.image+"' height='50' width='50'>&nbsp;&nbsp;<b>" + item.name + "</b></a>" )
            .appendTo( ul );
         };
     });
