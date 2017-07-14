@@ -112,7 +112,7 @@ if(!empty($userProfileInfo->avatar)){
                         <li>
                             <span><a href="#" id="create-wishlist-btn">Create New Wish List</a></span>
                         </li>
-                        <?php if(!empty($wishlistMaster)): $added= FALSE; foreach($wishlistMaster as $wishlist):  $class=""; ?>
+                        <?php $added= FALSE; if(!empty($wishlistMaster)): foreach($wishlistMaster as $wishlist):  $class=""; ?>
                         <?php if(isset($wishlist['userLists']) && !empty($wishlist['userLists'])){ foreach($wishlist['userLists'] as $userWishlist){
                             if($userWishlist['space_id'] == $space_id){
                                 $class = "red";
