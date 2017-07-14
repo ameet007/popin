@@ -71,6 +71,7 @@ $route['contactList'] = 'Dashboard/contactList';
 
 $route['listing'] = 'Listing/listing';
 $route['preview-listing/(:num)'] = 'Listing/preview_listing/$1';
+$route['manage-listing/(:num)'] = 'Listing/manage_listing/$1';
 $route['my-reservations'] = 'Listing/Listing2';
 $route['reservation-requirements'] = 'Listing/Listing3';
 
