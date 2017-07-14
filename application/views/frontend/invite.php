@@ -61,6 +61,29 @@ $(document).ready(function(){
         </div>
     </div>    
 </section>
+<div class="container">
+<h3 style="text-align: center;" >You'v got <span><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format((!empty($userProfileInfo->referalAmount)?$userProfileInfo->referalAmount:'000')); ?></span> in travel to credit to spend !</h3><br>
+<?php 
+   $getResult = getMultiRecord('join_account_master','provide_link_userID',$userProfileInfo->id);
+   
+   if (!empty($getResult)) {
+       foreach ($getResult as $key => $value) {
+           $user = getSingleRecord('user','id',$value['activate_link_userID']);
+      // print_r($user->firstName);       
+            ?>
+        <table class="table">
+            <tbody>
+              <tr>
+                <td align="left" style="width:10%;"><img style="width: 55px;" class="profile-photo image-round" src="<?php echo base_url().'uploads/user/'.(!empty($user->avatar)?$user->avatar:'user_pic-225x225.png'); ?>" alt="avatar" /></td>
+                <td align="left" style="width:70%;" ><?php echo $user->firstName.' '.$user->lastName;?></td>
+                <td align="right" style="width:20%;" ><i class="fa fa-inr" aria-hidden="true"></i> <?= number_format($user->referalAmount).'  '.$user->status; ?></td>
+              </tr>
+            </tbody>
+        </table>
+   <?php    }
+   }
+ ?>
+</div>
 <script>
 function copyToClipboard(id, element) {
   var $temp = $("<input>");
