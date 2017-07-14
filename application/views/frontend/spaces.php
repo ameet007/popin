@@ -71,7 +71,7 @@
                 <?php if(!empty($listings)):?>
                 <?php foreach($listings as $listing): if(isset($listing['gallery']) && !empty($listing['gallery'])){?>
                 <?php
-                $basePrice = (!empty($listing['base_price']))? $listing['currency']. number_format($listing['base_price']):'';
+                $basePrice = (!empty($listing['base_price']))? getCurrency_symbol($listing['currency']). number_format($listing['base_price']):'';
                 $spaceTitle = $listing['spaceTitle'];
                 $rentType = $listing['establishmentType'].'/'.$listing['spaceType'];
                 $workspaces = $listing['workSpaceCount']." workspaces";
@@ -85,8 +85,8 @@
                                     <div class="img" style="background-image: url(<?= base_url('uploads/user/gallery/'.$image); ?>);">
                                     </div>
                                     <div class="content">
-                                        <p><strong><?= $basePrice; ?><span></span> <?= $spaceTitle; ?> </strong></p>
-                                        <p><span><?= $rentType; ?> ·</span> <?= $workspaces; ?></p>
+                                        <p><strong><?= $basePrice; ?> · <?= $spaceTitle; ?> </strong></p>
+                                        <p><span><?= $rentType; ?> · </span> <?= $workspaces; ?></p>
                                         <div class="review">
                                             <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
                                             <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
