@@ -838,9 +838,147 @@ class User extends CI_Controller {
             }
         }
     }
+   # add referral amount and user registration
+    public function submit_referral_register(){
+      // echo '<pre>';
+      //     print_r($_POST);
+      //     exit;
+        $config = array(
+            array(
+                'field' => 'reg_firstName',
+                'label' => 'First Name',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter Your First Name'
+                ),
+            ),
+            array(
+                'field' => 'reg_lastName',
+                'label' => 'Last Name',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter Your Last Name'
+                ),
+            ),
+            array(
+                'field' => 'reg_email',
+                'label' => 'Email Address',
+                'rules' => 'required|valid_email|is_unique[user.email]',
+                'errors' => array(
+                    'required' => 'Please Enter The Banner Link',
+                    'valid_email' => 'Please Enter Valid Email Address',
+                    'is_unique' => 'This Email Address Is Already Exist, Please Use Another Email Address'
+                ),
+            ),
+            array(
+                'field' => 'reg_password',
+                'label' => 'Password',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter The Password'
+                ),
+            ),
+            array(
+                'field' => 'reg_dobMonth',
+                'label' => 'DOB Month',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter Your DOB Month'
+                ),
+            ),
+            array(
+                'field' => 'reg_dobDay',
+                'label' => 'DOB Day',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter Your DOB Day'
+                ),
+            ),
+            array(
+                'field' => 'reg_dobYear',
+                'label' => 'DOB Year',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter Your DOB Year'
+                ),
+            )
+        );
 
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(base_url('referral/'.$this->input->post('referralID')));
+        } else {
+            $activationLink = md5($this->input->post('reg_email'));
+            $newsLetter = isset($_POST['newsLetter'])?$_POST['newsLetter']:'No';
+            $pass = $this->input->post('reg_password');
+            $userRegisterData = array(
+                "firstName" => $this->input->post('reg_firstName'),
+                "lastName" => $this->input->post('reg_lastName'),
+                "email" => $this->input->post('reg_email'),
+                "password" => $this->encryption->encrypt($pass),
+                "dobMonth" => $this->input->post('reg_dobMonth'),
+                "dobDay" => $this->input->post('reg_dobDay'),
+                "dobYear" => $this->input->post('reg_dobYear'),
+                "verificationCode" => $activationLink,
+                "status" => 'Pending',
+                "newsLetter" => $newsLetter,
+                "createdDate" => strtotime(date('Y-m-d H:i:s')),
+                "updatedDate" => strtotime(date('Y-m-d H:i:s')),
+                "referalAmount" => $this->input->post('joinUserAmount'),
+                "ipAddress" => $this->input->ip_address()
+            );
+            $id = $this->user->addUser($userRegisterData);
+            if ($id > 0) {
+                $this->user->joinNewAccount($this->input->post('userID'),$id,$this->input->post('userAmount'));
+                $userName = $this->input->post('reg_firstName') . ' ' . $this->input->post('reg_lastName');
+                if ($newsLetter == 'Yes') {
+                    // It means user wants to subscribe newsletter
+                    $subscriberData = array(
+                        "user" => $id,
+                        "name" => $userName,
+                        "status" => 'Pending',
+                        "email" => $this->input->post('reg_email'),
+                        "createdDate" => strtotime(date('Y-m-d H:i:s')),
+                        "updatedDate" => strtotime(date('Y-m-d H:i:s')),
+                        "ipAddress" => $this->input->ip_address()
+                    );
+
+                    $this->subscriber->addSubscriber($subscriberData);
+                }
+
+                //Email Should Be Sent
+                $emailTemplate = $this->all_emails->getEmailTemplate('user-register');
+                if (!empty($emailTemplate)) {
+                    $siteEmailDetails = $this->all_emails->emailDetails();
+                    $emailContent = $emailTemplate->content;
+                    $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
+                        "{name}" => $userName,
+                        "{activationLink}" => '<a href="' . base_url('user/activation/' . $activationLink) . '">here</a>'
+                    );
+                    $subject = $emailTemplate->subject;
+                    $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
+                    $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
+                    $to = array('email' => $this->input->post('reg_email'), 'name' => $userName);
+
+                    $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
+
+                    //If this email is exist and active then only email should be sent
+                    $this->session->set_flashdata('message_notification', 'Your registration has been done successfully, please verify your email-address.');
+                    $this->session->set_flashdata('class', A_SUC);
+                    redirect(base_url());
+                }
+
+
+            } else {
+                $this->session->set_flashdata('message_notification', 'Your Registration Has Not Been Done Successfully');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(base_url('referral/'.$this->input->post('referralID')));
+            }
+        }
+    }
     public function check_exist_email() {
-
         if ($this->input->post('reg_email') != '') {
             if ($this->input->post('id') != '') {
                 $id = $this->input->post('id');

@@ -66,7 +66,8 @@ $route['inbox'] = 'Dashboard/inbox';
 $route['compose'] = 'Dashboard/compose';
 $route['rentals'] = 'Dashboard/rentals';
 $route['wishlists'] = 'Dashboard/wishlists';
-$route['invite'] = 'Dashboard/invite';
+$route['invite']    = 'Dashboard/invite';
+$route['referral/(:any)']  = 'Dashboard/referral/$1';
 $route['contactList'] = 'Dashboard/contactList';
 
 $route['listing'] = 'Listing/listing';
