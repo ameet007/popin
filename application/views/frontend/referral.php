@@ -1,9 +1,4 @@
 <?php
-if(!empty($userProfileInfo->avatar)){
-    $user_profile_photo = base_url('uploads/user/'.$userProfileInfo->avatar);
-}else{
-    $user_profile_photo = base_url('uploads/user/user_pic-225x225.png');
-}
 $getAmount   = getSingleRecord('settings','id','1');
 $getUserInfo = getSingleRecord('user','referalLink',$referralID);
 if (!empty($getUserInfo)) {
