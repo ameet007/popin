@@ -58,6 +58,14 @@ class FrontSpace extends CI_Model {
 //        exit;
         $i = 0;
         foreach ($spaceData as $listing) {
+            $establishmentType = $this->getDropdownDataRow('establishment_types', $listing['establishmentType']);
+            if(!empty($establishmentType)){
+                $listing['establishmentType'] = $establishmentType['name'];
+            }
+            $spaceType = $this->getDropdownDataRow('space_types', $listing['spaceType']);
+            if(!empty($spaceType)){
+                $listing['spaceType'] = $spaceType['name'];
+            }
             $response[$i] = $listing;
             $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->get_where('space_gallery', array('space' => $listing['id']))->result_array();
             if (!empty($spaceGallery)) {
@@ -72,9 +80,15 @@ class FrontSpace extends CI_Model {
     }
 
     function get_user_listings($requestData){
-        $arr = array('host' => $requestData['user_id']);
-        $this->db->order_by("id","desc");
+        $arr = array('host' => $requestData['user_id'],'status'=>'Active');
+        $this->db->order_by("updatedDate","desc");
         $this->db->limit($requestData['limit'], $requestData['start']);
+        return $this->db->get_where("spaces",$arr)->result_array();
+    }
+    function get_user_listings_inprogress($requestData){
+        $arr = array('host' => $requestData['user_id'],'status'=>'Pending');
+        $this->db->order_by("updatedDate","desc");
+        //$this->db->limit($requestData['limit'], $requestData['start']);
         return $this->db->get_where("spaces",$arr)->result_array();
     }
 
@@ -83,6 +97,9 @@ class FrontSpace extends CI_Model {
         $spaceData = $this->db->get_where('spaces', array('id' => $space_id, 'host' => $host_id))->row_array();
         if(!empty($spaceData)){
         $response['id'] = $spaceData['id'];
+        $response['step_1_percentage'] = $spaceData['step_1_percentage'];
+        $response['step_2_percentage'] = $spaceData['step_2_percentage'];
+        $response['step_3_percentage'] = $spaceData['step_3_percentage'];
         $response['status'] = $spaceData['status'];
         $response['start'] = array(
             'establishment' => $spaceData['establishmentType'],
@@ -247,6 +264,19 @@ class FrontSpace extends CI_Model {
         );
         }
         return $response;
+    }
+    
+    public function setPercentageComplete($space_id, $host_id, $field, $value, $force=false){
+        $rowQuery = $this->db->select($field)->where(array('id' => $space_id, 'host' => $host_id))->get('spaces');
+        if($rowQuery->num_rows() > 0){
+            $rowData = $rowQuery->row_array();
+//            if($field == 'step_2_percentage' && $rowData[$field] != 100){
+//                $value = $rowData[$field] + $value;
+//            }
+            if($force == true || $rowData[$field] < $value){                
+                $this->db->where(array('id' => $space_id, 'host' => $host_id))->update('spaces', array($field => $value));
+            }
+        }
     }
 
     public function getSpaceSettings($space_id, $host_id) {
