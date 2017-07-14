@@ -1,5 +1,10 @@
 <?php
-
+function print_array($array, $exit=TRUE){
+    echo "<pre>";
+    print_r($array);
+    echo "</pre>";
+    if($exit){ die(); }
+}
 function get_available_slot($date, $inputArray) {
     if (!in_array($date, $inputArray)) {
         $startDate = date("F d, Y", strtotime($date));

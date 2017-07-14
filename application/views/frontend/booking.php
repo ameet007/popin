@@ -94,11 +94,12 @@ if(!empty($userProfileInfo->avatar)){
                         </button>
                         <strong>Please enter your wish list name below</strong>
                     </div>
-                    <form id="wishlist-form" method="post" action="<?php echo site_url("dashboard/create_wishlist"); ?>" novalidate>
+                    <form id="wishlist-form" method="post" action="<?php echo site_url("dashboard/create_wishlist"); ?>" novalidate autocomplete="off"<?php if(!empty($wishlistMaster)){ echo " style='display:none;'";}?>>
                         <input type="hidden" name="space" value="<?= $space_id; ?>">
                         <div class="form-group">
                             <label for="wishlist_name">Name</label>
                             <input class="textbox" id="wishlist_name" name="name" placeholder="Name your Wish List" required>
+                            <input class="textbox" name="privacy" type="hidden" value="everyone">
                         </div>
                         <div class="sender clearfix">
                             <div class="pull-right">
@@ -107,10 +108,18 @@ if(!empty($userProfileInfo->avatar)){
                             </div> 
                         </div>
                     </form>
-                    <ul class="wishlists">
+                    <ul class="wishlists"<?php if(!empty($wishlistMaster)){ echo " style='display:block;'";}?>>
                         <li>
                             <span><a href="#" id="create-wishlist-btn">Create New Wish List</a></span>
                         </li>
+                        <?php if(!empty($wishlistMaster)): foreach($wishlistMaster as $wishlist):  $class=""; ?>
+                        <?php if(isset($wishlist['userLists']) && !empty($wishlist['userLists'])){ foreach($wishlist['userLists'] as $userWishlist){
+                            if($userWishlist['space_id'] == $space_id){
+                                $class = "red";
+                            }
+                        }} ?>
+                        <li><span><?= $wishlist['name']; ?></span><span class="pull-right"><i class="fa fa-heart <?= isset($class)?$class:'';?>"></i></span></li>
+                        <?php endforeach; endif; ?>
                     </ul>
                 </div>
             </div>
@@ -208,7 +217,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                             <a href="javascript:void(0);" class="openSignInBox">Contact host</a>
                             <?php } ?>
                         </div>
-                        <?php $checkIn = unserialize(TIMES); ?>
+                        <?php $checkInOut = unserialize(TIMES); ?>
                         <div class="the-space">
                             <ul class="accomm clearfix">
                                 <li>The space</li>
@@ -220,7 +229,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                     <a href="javascript:;" onclick="scrollToDiv('#house-rules');">House Rules</a>
                                 </li>
                                 <li>
-                                    <p>Check In:<strong><?php $day = strtolower(date("D")); $checkIn[$preview["{$day}From"]] . ' - ' . $checkIn[$preview["{$day}To"]]; ?></strong></p>
+                                    <p>Check In:<strong><?php $day = strtolower(date("D")); echo $checkInOut[$preview["{$day}From"]] . ' - ' . $checkInOut[$preview["{$day}To"]]; ?></strong></p>
                                     <p>Establishment type:<strong><?= $preview['establishmentType']; ?></strong></p>
                                     <p>Space type:<strong><?= $preview['spaceType']; ?></strong></p>
                                 </li>
@@ -248,8 +257,9 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                             if(!in_array($amenity, $amenityArray)){
                                     ?>
                                     <p <?php if($count > 2){ echo "class='amenity hidden'";}?>><strong><?= $amenity; ?></strong></p>
-                                    <?php  $count++;}}} ?>
+                                    <?php  $count++;}} ?>
                                     <a href="#" class="show-more" data-target-key="amenity">+ More</a>
+                                    <?php }?>
                                 </li>
                                 <li>
                                     <?php 
@@ -292,28 +302,20 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                     <p><strong>Workspace <?= $i; ?></strong></p>
                                     <p>
                                         <?php
-                                            $workspaceInfo="";
-                                            foreach($workspace_options as $v){
-                                                if($workSpaceDetail["ws{$i}"]["sp".$v['id']] != 0){
-                                                    $workspaceInfo .= $workSpaceDetail["ws{$i}"]["sp".$v['id']]." ".$v['name'].", ";
+                                            foreach($space_types as $v){
+                                                if(isset($workSpaceDetail["ws{$i}"]["sp"]) && $workSpaceDetail["ws{$i}"]["sp"] == $v['id']){
+                                                    echo $v['name'];
                                                 }
                                             }
-                                            echo rtrim($workspaceInfo, ", ");
                                         ?>
                                     </p>
-                                    <?php }elseif(isset($workSpaceDetail["cm"])){?>
-                                    <p><strong>Common spaces</strong></p>
-                                    <p>
-                                        <?php
-                                            $workspaceInfo="";
-                                            foreach($workspace_options as $v){
-                                                if($workSpaceDetail["cm"]["sp".$v['id']] != 0){
-                                                    $workspaceInfo .= $workSpaceDetail["cm"]["sp".$v['id']]." ".$v['name'].", ";
-                                                }
-                                            }
-                                            echo rtrim($workspaceInfo, ", ");
-                                        ?>
-                                    </p>
+                                    
+                                    <?php
+                                        if(isset($workSpaceDetail["ws{$i}"]["cm"])){
+                                            echo "<p>In Common Space</p>";
+                                        }
+                                    ?>
+                                    
                                     <?php }?>
                                 </li>
                                 <?php }}?>
@@ -663,6 +665,7 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
             autoclose: true,
             format: 'dd-mm-yyyy',
             startDate: '<?= isset($available_dates)?date('d-m-Y', strtotime($available_dates['0'])):"d"; ?>', //-3d
+            endDate: '<?= isset($available_dates)?date('d-m-Y', strtotime(end($available_dates))):"d"; ?>',
             weekStart: 1,
             <?php if(isset($unavailable_dates)){ ?>datesDisabled: unavailableDates.unavailable_dates<?php }?>
         }) .on('change.dp', function (e) {

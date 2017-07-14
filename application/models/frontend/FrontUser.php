@@ -375,7 +375,7 @@ class FrontUser extends CI_Model {
     }
 
     function getWishLists($user) {
-        $wishLists = $this->db->select('id,name,privacy')->where('user', $user)->order_by('updatedDate','desc')->get('wishlist_master')->result_array();
+        $wishLists = $this->db->select('id,user,name,privacy')->where('user', $user)->order_by('updatedDate','desc')->get('wishlist_master')->result_array();
         $response = array();
         if(!empty($wishLists)){
             $i = 0;

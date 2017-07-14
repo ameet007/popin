@@ -60,10 +60,11 @@ class Home extends CI_Controller {
             }
             $data['hostProfileInfo'] = $this->space->hostProfileInfo($data['preview']['host']);
             $data['wishlistMaster'] = $this->user->getWishLists($currentUser);
+            //print_array($data['wishlistMaster']);
         }
         $data['search_nav'] = 1;
         $data['space_id'] = $space_id;
-        $data['workspace_options'] = $this->space->getDropdownData('workspace_options');
+        $data['space_types'] = $this->space->getDropdownData('space_types');
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
         $this->load->view(FRONT_DIR . '/booking', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
