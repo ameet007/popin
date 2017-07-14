@@ -37,7 +37,8 @@ if (!empty($getUserInfo)) {
     .btn {
     font-family: 'Roboto', sans-serif;
     display: inline-block;;
-    font-size: 18px    line-height: 2;
+    font-size: 18px;
+    line-height: 2;
     font-weight: 800;
     height: 62px;
     vertical-align: top;

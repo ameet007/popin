@@ -9,7 +9,7 @@
         <div class="row clearfix">
             <div class="col-md-8">
                 <div class="space-are">
-                    <h3>What kind of space are you listing?</h3>
+                    <h3>What kind of business space are you listing?</h3>
                     <form action="<?php echo site_url('Space/professionals'); ?>" method="post" enctype="multipart/form-data">
                         <div class="feild">
                             <label>What type of establishment is this?</label>

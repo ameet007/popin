@@ -132,7 +132,7 @@ if ($module_heading != '') {
                             $module_name = $this->uri->segment($last);
                             ?>
                             <li><a href='<?php echo site_url('dashboard') ?>'>Dashboard</a></li>
-                            <li><a href='<?= site_url('inbox'); ?>'>Inbox</a></li>
+                            <li <?= ($module_name == 'compose' or $module_name == 'contactList' or $module_name == 'inbox') ? 'class="active"' : ''; ?>><a href='<?= site_url('inbox'); ?>'>Inbox</a></li>
                             <li <?= ($module_name == 'listing' or $module_name == 'my-reservations' or $module_name == 'reservation-requirements') ? 'class="active"' : ''; ?>><a href='<?php echo base_url('listing'); ?>'>Listings</a></li>
                             <li><a href='<?= site_url('rentals'); ?>'>Rentals</a></li>
                             <li <?= ($module_name == 'user' or $module_name == 'trust' or $module_name == 'photo' or $module_name == 'profile' or $module_name == 'reviews' or $module_name == 'references') ? 'class="active"' : ''; ?>><a href='<?php echo base_url('user/profile') ?>'>Profile</a></li>

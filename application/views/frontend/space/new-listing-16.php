@@ -36,7 +36,7 @@
                             </label>
                         </div>
                         <?php } ?>
-                        <p>More requirements can mean fewar rentals</p>
+                        <p>More requirements can mean fewer rentals</p>
                         <div class="next-prevs clearfix">
                             <div class="pull-left">
                                 <a class="gost-btn" href="<?php echo site_url('Space/become-a-partner/'.$stepData['id']); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>

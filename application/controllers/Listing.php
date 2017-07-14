@@ -105,7 +105,7 @@ class Listing extends CI_Controller {
                                 <h4>'.$spaceData['spaceType'].' in '.$spaceData['city'].', '.$spaceData['state'].'</h4>
                                 <p>Last updated on '.date("F d, Y",$spaceData['updatedDate']).'</p>
                                 <div class="three-btn">
-                                    <a href="" class="btn2">Manage listing</a>
+                                    <a href="'. site_url('manage-listing/'.$spaceData['id']).'" class="btn2">Manage listing</a>
                                     <a href="" class="green-btn">Calender</a>
                                     <a href="'. site_url('preview-listing/'.$spaceData['id']).'"><button class="btn">Preview</button></a>
                                 </div>
@@ -141,6 +141,27 @@ class Listing extends CI_Controller {
         $this->load->view(FRONT_DIR . '/include-partner/preview-header');
         $this->load->view(FRONT_DIR . '/listing/preview-listing', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
+    }
+    
+    public function manage_listing($space_id = '') {
+        if (empty($space_id)) {
+            redirect("Listing/listing");
+        }
+        $this->load->helper('inflector');
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        if (!empty($space_id)) {
+            $host_id = $this->session->userdata('user_id');
+            $data['listing'] = $this->space_model->get_space_preview_data($space_id, $host_id);
+            if(empty($data['listing'])){
+                redirect('listing');
+            }
+            $data['space_types'] = $this->space_model->getDropdownData('space_types');
+        }
+//        echo "<pre>";
+//        print_r($data['listing']);
+//        echo "</pre>";
+        $data['module_heading'] = "Manage Listing";
+        $this->load->view(FRONT_DIR . '/listing/manage-listing', $data);
     }
 
     public function Listing2() {
