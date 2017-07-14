@@ -440,7 +440,7 @@ class FrontUser extends CI_Model {
       $response = array();
 
       //$this->db->where("(sender = {$userId} OR receiver = {$userId}) AND parent = 0");
-      $this->db->where('user', $userId);
+      $this->db->where('userID', $userId);
       $this->db->limit($requestData['limit'], $requestData['start']);
       $conversations = $this->db->order_by('id', 'desc')->get('address_book')->result_array();
       // echo $this->db->last_query();exit;
@@ -457,7 +457,7 @@ class FrontUser extends CI_Model {
      return $this->db->affected_rows();
     }
     public function checkContactList($addUserId,$userID){
-      return $this->db->get_where('address_book',array('user'=>$userID,'addressUser'=>$addUserId))->row_array();
+      return $this->db->get_where('address_book',array('userID'=>$userID,'addUserID'=>$addUserId))->row_array();
     }
 }
 
