@@ -474,16 +474,6 @@
             autoUpdateInput: false,
             minDate: moment(),
             //showDropdowns: true
-<<<<<<< HEAD
-        });
-        $('#demo-range').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'));
-        });
-        $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('Anytime');
-        });
-        $('#demo-range').val('Anytime');
-=======
         }, 
         function(start, end, label) {
             //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
@@ -502,7 +492,6 @@
         }).blur(function () {
             $(this).attr('placeholder', 'Anytime');
         });
->>>>>>> 70d77155cb0f2d6758400f9ae74bcd1ebb2f7359
         //Initiate slider-one
         $('#jc1 .jcarousel')
                 .jcarousel({
