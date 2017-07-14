@@ -7,7 +7,7 @@
                 <p>Now let’s get some details about your business so you can publish your listing.</p>
                 <div class="step">
                     <strong>STEP 1</strong>
-                    <h5>Workspaces, bathrooms, amenities and more</h5>
+                    <h5>Establishment, workspaces, amenities and more</h5>
                     <a href="<?php echo site_url('Space/establishment'); ?>">Change</a>
                 </div>
                 <div class="step step2">

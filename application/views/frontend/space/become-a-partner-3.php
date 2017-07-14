@@ -7,7 +7,7 @@
                 <p>Let’s set up your pricing and figure out your renting calender.</p>
                 <div class="step">
                     <strong>STEP 1</strong>
-                    <h5>Workspaces, bathrooms, amenities and more</h5>
+                    <h5>Establishment, workspaces, amenities and more</h5>
                     <a href="<?php echo site_url('Space/establishment'); ?>">Change</a>
                 </div>
                 <div class="step">

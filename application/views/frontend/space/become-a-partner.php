@@ -6,7 +6,7 @@
                 <h2>Hi, <?php echo $hostProfileInfo->firstName; ?>! Let’s get your <br/>listing ready to start renting <br/>your space.</h2>
                 <div class="step step1">
                     <strong>STEP 1</strong>
-                    <h5>Workspaces, bathrooms, amenities and more</h5>
+                    <h5>Establishment, workspaces, amenities and more</h5>
                     <a href="<?php echo site_url('Space/establishment'); ?>">Change</a>
                 </div>
                 <div class="step step2">

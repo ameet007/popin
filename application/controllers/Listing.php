@@ -32,9 +32,9 @@ class Listing extends CI_Controller {
         $modelData['page']  = $rawdata['page'];
         $modelData['limit'] = $rawdata['limit'];
         $data['listings']   = $this->listingBuilderHTML($modelData);
-
+        $data['inprogress']  = $this->space_model->get_user_listings_inprogress($rawdata);
         $data['module_heading'] = 'My Listing';
-        $this->load->view('frontend/listing', $data);
+        $this->load->view('frontend/listing/listing', $data);
     }
 
     public function listingData(){
@@ -93,43 +93,66 @@ class Listing extends CI_Controller {
                     $spaceData['spaceType'] = $spaceType['name'];
                 }
                 $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->limit('1')->get_where('space_gallery', array('space' => $spaceData['id']))->row_array();
-                $basePrice = (!empty($spaceData['base_price']))? getCurrency_symbol($spaceData['currency']). number_format($spaceData['base_price']):'';
-                $HTML.='<div class="item col-sm-6 col-md-4 col-lg-4">
-                    <div class="slide-main clearfix">
-                        <div class="slide-contant">
-                            <a href="'. site_url('Space/become-a-partner/'.$spaceData['id']).'">
-                            <div class="img" style="background-image: url('. base_url('uploads/user/gallery/'.$spaceGallery['image']).');">
-                            </div>
-                            <div class="content">
-                                <p><strong>'.$basePrice.' · '.$spaceData['spaceTitle'].' </strong></p>
-                                <p><span>'. $spaceData['establishmentType'].'/'.$spaceData['spaceType'].' · </span> '. $spaceData['workSpaceCount']." workspaces".'</p>
-                                <div class="review">
-                                    <span><img src="'. base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
-                                    <span><img src="'. base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
-                                    <span><img src="'. base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
-                                    <span>1 review</span>
+                //$basePrice = (!empty($spaceData['base_price']))? getCurrency_symbol($spaceData['currency']). number_format($spaceData['base_price']):'';
+                
+                $HTML.='<div class="media">
+                            <div class="media-left">
+                                <div class="inner">
+                                    <img src="'. base_url('uploads/user/gallery/'.$spaceGallery['image']).'" alt="" />
                                 </div>
                             </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>';
+                            <div class="media-body media-middle">
+                                <h4>'.$spaceData['spaceType'].' in '.$spaceData['city'].', '.$spaceData['state'].'</h4>
+                                <p>Last updated on '.date("F d, Y",$spaceData['updatedDate']).'</p>
+                                <div class="three-btn">
+                                    <a href="" class="btn2">Manage listing</a>
+                                    <a href="" class="green-btn">Calender</a>
+                                    <a href="'. site_url('preview-listing/'.$spaceData['id']).'"><button class="btn">Preview</button></a>
+                                </div>
+                            </div>
+                        </div>';
             }
             $HTML.="<input type='hidden' class='nextpage' value='".$page."'>";
         }
         return $HTML;
     }
+    
+    public function preview_listing($space_id = '') {
+        if (empty($space_id)) {
+            redirect("Listing/listing");
+        }
+        $this->load->helper('inflector');
+        $header['userProfileInfo'] = $data['userProfileInfo'] = $this->user->userProfileInfo();
+        
+
+        if (!empty($space_id)) {
+            $host_id = $this->session->userdata('user_id');
+            $data['preview'] = $this->space_model->get_space_preview_data($space_id, $host_id);
+            if(empty($data['preview'])){
+                redirect('listing');
+            }
+            $data['hostProfileInfo'] = $this->space_model->hostProfileInfo($data['preview']['host']);
+        }
+        //echo "<pre>"; print_r($data); echo "</pre>";exit;
+        $data['establishment_types'] = $this->space_model->getDropdownData('establishment_types');
+        $data['space_types'] = $this->space_model->getDropdownData('space_types');
+        $header['search_nav'] = 1;
+        //$this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $header);
+        $this->load->view(FRONT_DIR . '/include-partner/preview-header');
+        $this->load->view(FRONT_DIR . '/listing/preview-listing', $data);
+        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
+    }
 
     public function Listing2() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = 'My Reservations';
-        $this->load->view('frontend/listing2', $data);
+        $this->load->view('frontend/listing/listing2', $data);
     }
 
     public function Listing3() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = 'Reservation Requirements';
-        $this->load->view('frontend/listing3', $data);
+        $this->load->view('frontend/listing/listing3', $data);
     }
 
 }

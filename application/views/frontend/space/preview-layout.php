@@ -76,17 +76,17 @@ if(!empty($userProfileInfo->avatar)){
     </div>
 </div>
 <div id="black_overlay"><a onclick="close_gallery()" href="#"><img src="<?php echo base_url('theme/front/assests/')?>img/big-close-icon.png" alt=""/></a></div>
-<div class="banner-partner">
+<?php
+if(isset($preview['gallery']) && !empty($preview['gallery'])){
+    $preview_photo = base_url('uploads/user/gallery/').$preview['gallery'][0];
+}else{
+    $preview_photo = base_url('theme/front/assests/img/preview-no-photo.png');
+}
+?>
+<div class="banner-partner" style="background-image:url(<?php echo $preview_photo; ?>);">
     <div class="container">
-        <div class="row">
-            <?php
-            if(isset($preview['gallery']) && !empty($preview['gallery'])){
-                $preview_photo = base_url('uploads/user/gallery/').$preview['gallery'][0];
-            }else{
-                $preview_photo = base_url('theme/front/assests/img/preview-no-photo.png');
-            }
-            ?>
-            <img src="<?php echo $preview_photo; ?>" alt="preview photo" />
+        <div class="row">           
+            <img class="preview-banner" src="<?php echo $preview_photo; ?>" alt="preview photo" />
         </div>
         <?php if(isset($preview['gallery']) && !empty($preview['gallery']) && count($preview['gallery']) > 1){ ?>
         <div class="view-photo">
