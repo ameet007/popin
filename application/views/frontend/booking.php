@@ -112,10 +112,11 @@ if(!empty($userProfileInfo->avatar)){
                         <li>
                             <span><a href="#" id="create-wishlist-btn">Create New Wish List</a></span>
                         </li>
-                        <?php if(!empty($wishlistMaster)): foreach($wishlistMaster as $wishlist):  $class=""; ?>
+                        <?php if(!empty($wishlistMaster)): $added= FALSE; foreach($wishlistMaster as $wishlist):  $class=""; ?>
                         <?php if(isset($wishlist['userLists']) && !empty($wishlist['userLists'])){ foreach($wishlist['userLists'] as $userWishlist){
                             if($userWishlist['space_id'] == $space_id){
                                 $class = "red";
+                                $added = TRUE;
                             }
                         }} ?>
                         <li><span><?= $wishlist['name']; ?></span><span class="pull-right"><i class="fa fa-heart <?= isset($class)?$class:'';?>"></i></span></li>
@@ -452,7 +453,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                 <?php if($this->session->userdata('user_id')!= NULL){ ?>
                 <div class="content clearfix wishlist-section">
                     <div class="col-xs-12">
-                        <button class="btn btn-default wide" data-toggle="modal" data-target="#wishListModal"><i class="fa fa-heart-o"></i>&nbsp;Save to Wish List</button>
+                        <button class="btn btn-default wide" data-toggle="modal" data-target="#wishListModal"><i class="fa <?= $added?'fa-heart red':'fa-heart-o';?>"></i>&nbsp;Save to Wish List</button>
 
                         <p></p>
                     </div>
