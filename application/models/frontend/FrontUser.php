@@ -459,6 +459,46 @@ class FrontUser extends CI_Model {
     public function checkContactList($addUserId,$userID){
       return $this->db->get_where('address_book',array('userID'=>$userID,'addUserID'=>$addUserId))->row_array();
     }
+    public function checkAlreadyJoinAccount($userID){
+        $query = $this->db->get_where('join_account_master',array('provide_link_userID'=>$userID))->result_array();
+        if (!empty($query)) {
+            foreach ($query as $key => $value) {
+                $getUserInfo = getSingleRecord('user','id',$value['activate_link_userID']);
+                if (empty($getUserInfo)) {
+                   return 'true';
+                }else{
+                    return 'false';
+                }
+            }
+        }else{
+            return 'true';
+        }
+    }
+    # send invitation email from the user
+    public function sendInvitationMail($emailList,$link,$userRecord){
+        // $email,$from  Referral Link
+         $smsmessage = '';
+         $subjectTitle = "Welcome to Popin join with Us.";
+          foreach ($emailList as $key => $value) {
+              $email = $value;
+              $smsmessage .= "Hi !\r\n\n";
+              $smsmessage .= "&nbsp;&nbsp;&nbsp;".$userRecord->firstName." ".$userRecord->lastName." has ben send you Referral like.\n";
+              $smsmessage .= "Click on the button below to Join with Popin";
+              $smsmessage .= "<a href='".$link."' style='text-decoration: none;background: #f75134;padding: 15px 22px 15px 22px;border-radius: 10px;color: #ebf1de;font-size: 17px;font-weight: 800;'>Join With Us</a>";
+              sendMailAdmin($email,$subjectTitle,$smsmessage,'Popin@Popin.com');
+          }
+          return 1;
+    }
+    #join acount
+    public function joinNewAccount($userID,$joinUserId,$amount){
+        $sql = 'UPDATE user SET referalAmount = referalAmount+'.$amount.' WHERE id='.$userID;
+        $this->db->query($sql);
+        $joinUser = array();
+        $joinUser['provide_link_userID']  = $userID;
+        $joinUser['activate_link_userID'] = $joinUserId;
+        $joinUser['join_date']            = time();
+        $this->db->insert('join_account_master',$joinUser);
+    }
 }
 
 ?>

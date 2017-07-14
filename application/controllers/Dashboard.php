@@ -338,17 +338,15 @@ class Dashboard extends CI_Controller
             echo $messasgeData;
         }
     }   
-    public function invite()
-    {
+    public function invite(){
         $data['search_nav'] = 1;
     	$data['module_heading'] = 'Wishlists';
     	$data['userProfileInfo'] = $this->user->userProfileInfo();
-        
         $referalLink = trim($data['userProfileInfo']->referalLink);
         if(empty($referalLink)){
             $rand = substr(uniqid('', true), -4);
-            $referral = strtolower(trim($data['userProfileInfo']->firstName)). substr(strtolower(trim($data['userProfileInfo']->lastName)), 0, 1).$rand;
-            
+            $name = explode(' ',$data['userProfileInfo']->firstName);
+            $referral = strtolower(trim($name[0])). substr(strtolower(trim($data['userProfileInfo']->lastName)), 0, 1).$rand;
             $update['referalLink'] = $referral;
             $update['updatedDate'] = time();
             $this->user->editUser($update, $data['userProfileInfo']->id);
@@ -357,5 +355,37 @@ class Dashboard extends CI_Controller
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
     	$this->load->view('frontend/invite',$data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
+    }
+  # referral registration page
+    public function referral($referralNumber){
+        $data['module_heading'] = 'Wishlists';
+        if ($this->session->userdata('user_id') != '') {
+            $data['userProfileInfo'] = $this->user->userProfileInfo();
+        } else {
+            $data = array();
+        }
+        $data['referralID']     = $referralNumber;
+        $getUserInfo = getSingleRecord('user','referalLink',$referralNumber);
+        if (!empty($getUserInfo)) {
+             $alreadyJoin = $this->user->checkAlreadyJoinAccount($getUserInfo->id);
+             if ($alreadyJoin == 'true') {
+                 $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
+                 $this->load->view('frontend/referral',$data);
+                 $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer'); 
+             }else{
+            redirect(base_url());
+             }
+        }else{
+            redirect(base_url());
+        }
+    }
+    public function send_invitation(){
+        $data = $this->input->post();
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        $emailList = explode(",",$data['contacts']);
+        $check = $this->user->sendInvitationMail($emailList,$data['link'],$data['userProfileInfo']);
+        $this->session->set_flashdata('message_notification', 'Your invitation has ben sent Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+       redirect(base_url('invite'));
     }
 }
