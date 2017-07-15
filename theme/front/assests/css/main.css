@@ -1034,6 +1034,7 @@ ul.wishlists li > span {font-size: 16px;}
 .share-box .or-separator hr {
     margin: -16px auto 10px;width: 100%;
 }
+
 a button.btn{color: #333 !important;}
 #wishListModal .list-progress .main-right .media-left .inner {width: 200px !important;}
 #wishListModal .modal-footer{text-align: left;}
@@ -1106,8 +1107,9 @@ a button.btn{color: #333 !important;}
 .booking-summry .house-rul ul li:last-child {border-bottom: none 0;}
 .booking-summry .house-rul p {font-size: 16px; color: #484848; margin-bottom: 16px; line-height: 20px;}
 .booking-summry .house-rul h4 {font-size: 16px; font-weight: 600; line-height: 16px; color: #999; margin-bottom: 15px;}
-.booking-summry h2.stp {font-size: 28px; line-height: 28px; color: #dce0e0; border-bottom: solid 2px #dce0e0; border-top: solid 2px #dce0e0; padding: 15px 0;}
-.booking-summry h2.stp a{font-size: 14px; line-height: 14px; vertical-align: middle;}
+.booking-summry h2.stp1 {font-size: 28px; line-height: 28px; color: #dce0e0; border-bottom: solid 2px #dce0e0; padding: 15px 0;}
+.booking-summry h2.stp2 {font-size: 28px; line-height: 28px; color: #dce0e0; border-bottom: solid 2px #dce0e0; border-top: solid 2px #dce0e0; padding: 15px 0;}
+.booking-summry h2.stp1 a{font-size: 16px; line-height: 14px; vertical-align: middle;}
 .booking-summry .summry-left .btn-red {margin-bottom: 25px;}
 .booking-summry .summry-right .img {position: relative; margin-bottom: 15px;}
 .booking-summry .summry-right .img > img {width:100%;}
@@ -1118,7 +1120,7 @@ a button.btn{color: #333 !important;}
 .booking-summry .summry-right h5 {font-weight: 600; color: #767676; margin-bottom: 15px; line-height: 20px;}
 .booking-summry .summry-right h2 {line-height: 30px;}
 .booking-summry .summry-right .content ul li {padding: 20px 0; border-top: solid 1px #dce0e0;}
-.booking-summry .summry-right .content ul li:first-child {background-image: url(../img/arrow-img.png); background-position: 40% center; background-repeat: no-repeat;}
+.booking-summry .summry-right .content ul li:first-child {background-image: url(../img/arrow-img.png); background-position: 45% center; background-repeat: no-repeat;}
 .booking-summry .summry-right .content ul li p {font-size:16px; line-height: 22px; color: #484848;}
 .booking-summry .summry-right .content ul li strong {display: block;}
 .booking-summry .summry-right .content ul li .pull-left p, .booking-summry .summry-right .content ul li .pull-right p {margin-bottom: 15px; font-size: 14px;}

@@ -61,6 +61,7 @@ $route['admin/Settings/delet_space/(:num)'] = ADMIN_DIR.'/space/deleteSpace/$1';
 
 $route['spaces'] = 'home/spaces';
 $route['spaces/(:num)'] = 'home/rooms/$1';
+$route['home/request-to-book'] = 'home/request_to_book';
 
 $route['inbox'] = 'Dashboard/inbox';
 $route['compose'] = 'Dashboard/compose';

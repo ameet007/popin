@@ -426,7 +426,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                     </div>
                 </div>
                 <div class="content clearfix mr20">
-                    <form id="booking-form" method="post" action="<?= site_url('home/book_space'); ?>">
+                    <form id="booking-form" method="post" action="<?= site_url('home/request-to-book'); ?>">
                         <input type="hidden" name="space" value="<?= $space_id; ?>">
                         <div class="feild clearfix">
                             <div class="col-sm-6">
@@ -441,7 +441,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                         <div class="feild clearfix">
                             <div class="col-xs-12">
                                 <label>Professionals</label>
-                                <select class="textbox" name="professionals">
+                                <select class="selectbox" name="professionals">
                                     <?php for($i=1; $i<=$preview['professionalCapacity'];$i++){ ?>
                                     <option value="<?= $i; ?>"><?= $i; ?> professionals</option>
                                     <?php } ?>

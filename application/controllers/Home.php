@@ -66,7 +66,7 @@ class Home extends CI_Controller {
         $data['space_id'] = $space_id;
         $data['space_types'] = $this->space->getDropdownData('space_types');
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
-        $this->load->view(FRONT_DIR . '/booking', $data);
+        $this->load->view(FRONT_DIR . '/booking_management/booking', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
 
@@ -136,7 +136,7 @@ class Home extends CI_Controller {
                     $tooltip .= '</tbody>
                     </table>';
         //$tooltip="";
-        $serviceCharges = $totalBasePrice * 12 / 100;
+        $serviceCharges = round($totalBasePrice * 12 / 100);
         $finalAmount = $totalBasePrice + $serviceCharges;
         $this->session->set_userdata('checkout_amount', $finalAmount);
         $this->session->set_userdata('checkout_currency', $spaceData['currency']);
@@ -158,9 +158,25 @@ class Home extends CI_Controller {
                 . '<input type="hidden" name="numberBooking" value="'.$nights.'">';
         echo $reponse;die();
     }
+    
+    public function request_to_book() {
+        $rawData = $this->input->post();
+        if(empty($rawData)){
+            redirect('spaces');
+        }
+        //print_array($rawData, FALSE);
+        $userID = $this->session->userdata('user_id'); //current user id
+        $data['booking'] = $rawData;
+        $data['spaceInfo'] = $this->user->spaceInfo($rawData['space']);
+        $data['spaceGallery'] = $this->user->getSpaceGallery($rawData['space']);
+        $data['userInfo'] = $this->user->userInfo($userID);
+        $data['hostInfo'] = $this->user->userInfo($data['spaceInfo']['host']);
+        $this->load->view(FRONT_DIR . '/booking_management/booking_summary', $data);
+    }
     public function book_space(){
         $userID = $this->session->userdata('user_id'); //current user id
         $rawData = $this->input->post();
+        //print_array($rawData);
         $rawData['user'] = $userID;
         $rawData['checkIn'] = date("Y-m-d", strtotime($this->input->post('checkIn')));
         $rawData['checkOut'] = date("Y-m-d", strtotime($this->input->post('checkOut')));
@@ -206,10 +222,10 @@ class Home extends CI_Controller {
         //get the transaction data
         $data['paypalInfo'] = $this->input->post();
         $data['title'] = "Payment Submitted";
-        $data['message'] = "Thank you!! your payment is being processed.";
+        $data['message'] = "Thank you! Your payment is being processed, and we’ll let you know when it’s been received.";
         //pass the transaction data to view
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header',$data);
-        $this->load->view(FRONT_DIR . '/booking_status', $data);
+        $this->load->view(FRONT_DIR . '/booking_management/booking_status', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
      }
 
@@ -221,7 +237,7 @@ class Home extends CI_Controller {
         $data['message'] = "Your payment is cancelled successfully.";
         //pass the transaction data to view
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header',$data);
-        $this->load->view(FRONT_DIR . '/booking_status', $data);
+        $this->load->view(FRONT_DIR . '/booking_management/booking_status', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
      }
 
