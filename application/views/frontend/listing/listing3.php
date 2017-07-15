@@ -12,9 +12,9 @@
                         <div class="panel panel-default your-reservations">
                             <div class="panel-heading">Verified ID</div>
                             <div class="panel-body">
-                                <p>Your guests will need to verify their ID before booking with you. <a href="#">Learn More</a></p>
+                                <p>Your professionals will need to verify their ID before renting with you. <a href="#">Learn More</a></p>
                                 <label for="user_preference">
-                                    <input type="checkbox" id="user_preference" /> Require guests to go through verification
+                                    <input type="checkbox" id="user_preference" /> Require professionals to go through verification
                                 </label>
                                 <button class="btn-red">Save Reservation Requirements</button>
                             </div>

@@ -11,4 +11,4 @@
         <li><a href="<?php echo site_url('account/badges') ?>" title="Badges">Badges</a></li>
     </ul>
 </div>
-<a class="btn btn-default btn-block" href="javascript:;">Rental Credit</a>
+<!--<a class="btn btn-default btn-block" href="javascript:;">Rental Credit</a>-->

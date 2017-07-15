@@ -248,6 +248,12 @@ class FrontUser extends CI_Model {
             return false;
         }
     }
+    
+    public function bookingInfo($id, $select = "*") {
+        $where = array("id=" => $id);
+        $query = $this->db->select($select)->from('space_booking')->where($where)->get();
+        return $query->row_array();
+    }
 
     function getUserMessages($userId, $status = "", $requestData) {
         $response = array();
@@ -415,9 +421,17 @@ class FrontUser extends CI_Model {
         $this->db->insert('wishlist_master', $data);
         return $this->db->insert_id();
     }
+    
+    function check_wishlist_record($data){
+        return $this->db->where($data)->get('wishlists')->num_rows();
+    }
+    
+    function check_space_in_wishlist($space_id){
+        return $this->db->join('wishlist_master','wishlist_master.id=wishlists.wishlist_id')->where(array('space_id'  => $space_id,'status'=>1))->get('wishlists')->num_rows();
+    }
 
     function add_to_wishlist($wishlist_id, $space_id) {
-        $hasData = $this->db->where(array('wishlist_id'    => $wishlist_id,'space_id'  => $space_id))->get('wishlists')->num_rows();
+        $hasData = $this->db->where(array('wishlist_id' => $wishlist_id,'space_id'  => $space_id))->get('wishlists')->num_rows();
         if($hasData == 0){
             $rawData = array(
                 'wishlist_id'    => $wishlist_id,
@@ -428,7 +442,33 @@ class FrontUser extends CI_Model {
                 'ipAddress'   => $this->input->ip_address()
             );
             $this->db->insert('wishlists', $rawData);
-            return $this->db->insert_id();
+            $insert_id = $this->db->insert_id();
+            
+            $this->db->where('id', $wishlist_id)->update('wishlist_master', array('updatedDate'=>time()));
+            return $insert_id;
+        }
+    }
+    
+    function update_wishlist($where) {
+        $hasData = $this->db->where($where)->get('wishlists');
+        if($hasData->num_rows() == 1){
+            $data = $hasData->row_array();
+            if($data['status'] == 1){                
+                //already added => removed
+                $status = 0;
+            }else{
+                // removed => added
+                $status = 1;
+            }
+            $rawData = array(
+                        'status' => $status,
+                        'updatedDate'   => time(),
+                        'ipAddress'   => $this->input->ip_address()
+                    );
+            $this->db->where($where)->update('wishlists', $rawData);
+            
+            if($status){ $this->db->where('id', $where['wishlist_id'])->update('wishlist_master', array('updatedDate'=>time()));}
+            return $status;
         }
     }
     # get user activate Link

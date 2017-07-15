@@ -1,6 +1,7 @@
 <?php
 	$this->load->view('frontend/include/user-header');
 ?>
+<?php if(empty($userRentals['upcoming']) && empty($userRentals['past'])):?>
 <div class="rentals-banner">
     <div class="container">
         <div class="pull-left">
@@ -13,6 +14,7 @@
         </div>
     </div>
 </div>
+<?php endif;?>
 <?php if(!empty($userRentals['upcoming'])):?>
 <section class="middle-container rentals-section">
     <div class="container">
@@ -29,7 +31,7 @@
                         <p><?php echo date("M d", strtotime($rental['booking']['checkIn'])); ?>: 8:00a-12p <br/><?php echo $rental['space']['city'].' '.$rental['space']['state'].', '.$rental['space']['country']; ?></p>
                         <ul>
                             <li></li>
-                            <li><p>View Receipt</p></li>
+                            <li><a href="<?= site_url('rentals/receipt/'.$rental['booking']['id']);?>">View Receipt</a></li>
                         </ul>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ class Dashboard extends CI_Controller
     {
         parent::__construct();
         $this->load->model(FRONT_DIR . '/FrontUser', 'user');
+        $this->load->model(FRONT_DIR . '/FrontSpace', 'space');
     }
 
     public function index()
@@ -254,6 +255,24 @@ class Dashboard extends CI_Controller
         }
         echo json_encode($result);die();
     }
+    
+    function add_to_wishlist() {
+
+        $postData = $this->input->post();
+        $isPresent = $this->user->check_wishlist_record($postData);
+        if(!$isPresent){
+            $this->user->add_to_wishlist($postData['wishlist_id'], $postData['space_id']);
+            $result['success'] = 2;
+            $result['addedInAny'] = $this->user->check_space_in_wishlist($postData['space_id']);
+            $result['message'] = 'Added to wishlist successfully.';
+        }else{
+            $response = $this->user->update_wishlist($postData);
+            $result['success'] = $response;
+            $result['addedInAny'] = $this->user->check_space_in_wishlist($postData['space_id']);
+            $result['message'] = 'Wishlist updated successfully.';
+        }
+        echo json_encode($result);die();
+    }
 
     public function rentals()
     {
@@ -262,6 +281,20 @@ class Dashboard extends CI_Controller
         $userID = $this->session->userdata('user_id'); 
         $data['userRentals'] = $this->user->getUserRentals($userID);
         $this->load->view('frontend/your-rental',$data);
+    }
+    public function rental_receipt($id)
+    {
+        $data['search_nav'] = 1;
+        $data['module_heading'] = 'Rentals Receipt';
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        $data['bookingInfo'] = $this->user->bookingInfo($id);
+        if(empty($data['bookingInfo'])){
+            redirect('rentals');
+        }
+        $data['spaceInfo'] = $this->user->spaceInfo($data['bookingInfo']['space']);
+        $data['userInfo'] = $this->user->userInfo($data['bookingInfo']['user']);
+        $data['hostInfo'] = $this->user->userInfo($data['spaceInfo']['host']);
+        $this->load->view('frontend/your-rental2',$data);
     }
     # get add user list on the add book
     public function contactList(){

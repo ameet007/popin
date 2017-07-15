@@ -1,71 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Popln</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="format-detection" content="telephone=no" />
-<link href="<?php echo base_url('theme/front/assests/css/nav.css')?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('theme/front/assests/css/font-awesome.min.css')?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('theme/front/assests/css/bootstrap.css')?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('theme/front/assests/css/main.css')?>" rel="stylesheet" type="text/css" />
-<script src="<?php echo base_url('theme/front/assests/js/html5.js')?>"></script>
-<link href="<?php echo base_url('theme/front/assests/css/media.css')?>" rel="stylesheet" type="text/css" />
-</head>
-<body>
-<header class="head">
-    <div class="header_top">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object" src="<?php echo base_url('theme/front/assests/img/logo.png')?>" alt="logo" />
-                            </a>
-                        </div>
-                        <div class="media-body">
-                           <div class="col-lg-3">
-                                <div class="input-group">
-                                    <span class="input-group-btn">
-                                       <button class="btn btn-default" type="button"><img src="<?php echo base_url('theme/front/assests/img/head-serach-icon.png')?>" alt="" /></button>
-                                    </span>
-                                    <input type="text" class="form-control" placeholder="Search" />
-                                </div><!-- /input-group -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="pro_img">
-                        <img src="<?php echo base_url('theme/front/assests/img/profile-pic.png')?>" alt="" />
-                    </div>
-                    <ul class="nav navbar-nav navbar-right navi">
-                        <li><a href="#">Become a Partner</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rentals <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Messages</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-<div class="print-section">
+<?php
+	$this->load->view('frontend/include/user-header');
+?>
+<?php $all_countries = unserialize(ALL_COUNTRY); ?>
+<!--<div class="print-section">
     <div class="container">
         <div class="row">
             <div class="media">
                 <div class="media-left col-md-3">
-                    <a href="#"><i class="fa fa-arrow-left" aria-hidden="true"></i> To ltinerary</a>
+                    <a href="#"><i class="fa fa-arrow-left" aria-hidden="true"></i> To Itinerary</a>
                 </div>
                 <div class="media-body">
                     <button class="btn btn-default"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
@@ -73,17 +15,17 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <section class="middle-container receipt-section">
     <div class="container">
         <div class="row">
             <div class="receipt-top clearfix">
-                <h2>Receipt: 4 hours in Orange, CA</h2>
+                <h2>Receipt: 4 hours in <?= $spaceInfo['city'].', '.$spaceInfo['state']; ?></h2>
                 <div class="pull-left">
-                    <p>Booked by <strong>Cassidy Garcia</strong> <br/>Wednesday, Mar 1,2017</p>
+                    <p>Booked by <strong><?= $userInfo->firstName.' '.$userInfo->lastName; ?></strong> <br/><?= date("l, M d, Y", $bookingInfo['createdDate']); ?></p>
                 </div>
                 <div class="pull-right">
-                    <p><strong>Accepted</strong> <br/>5AMCEE</p>
+                    <p><strong><?= $bookingInfo['partnerStatus']; ?></strong><br><?= $bookingInfo['transactionId']; ?></p>
                 </div>
             </div>
             <div class="row receipt-slip clearfix">
@@ -92,22 +34,26 @@
                         <ul>
                             <li class="clearfix">
                                 <div class="pull-left">
-                                    <span>Pop ln</span>
-                                    <strong>Mar 3, 2017: 8a</strong>
+                                    <span>Pop In</span>
+                                    <strong><?= date("M d, Y", strtotime($bookingInfo['checkIn'])); ?>: 8a</strong>
                                 </div>
                                 <div class="pull-right">
                                     <span>Pop Out</span>
-                                    <strong>Mar 3, 2017: 12p</strong>
+                                    <strong><?= date("M d, Y", strtotime($bookingInfo['checkOut'])); ?>: 12p</strong>
                                 </div>
                             </li>
                             <li>
-                                <h4>Shared Space</h4>
-                                <p>Private Workspace in Orange <br/>133 Main Street <br/>Orange, CA 92886 <br/>United States</p>
-                                <p class="mr0">Hosted by Freya Wilkerson <br/>Phone: +1(805) 235-1550</p>
+                                <?php 
+                                $establishmentType = $this->space->getDropdownDataRow('establishment_types', $spaceInfo['establishmentType']); 
+                                $spaceType = $this->space->getDropdownDataRow('space_types', $spaceInfo['spaceType']);
+                                ?>
+                                <h4><?= $establishmentType['name']; ?></h4>
+                                <p><?= $spaceType['name']; ?> in <?= $spaceInfo['city']; ?> <br/><?= $spaceInfo['streetAddress']; ?> <?= !empty(trim($spaceInfo['suiteBuilding']))?'<br>'.$spaceInfo['suiteBuilding']:''; ?><br/><?= $spaceInfo['city']; ?>, <?= $spaceInfo['state']; ?> <?= $spaceInfo['zipCode']; ?> <br/><?= $all_countries[$spaceInfo['country']]; ?></p>
+                                <p class="mr0">Hosted by <?= $hostInfo->firstName.' '.$hostInfo->lastName; ?> <br/>Phone: <?= $spaceInfo['mobileNumber']; ?></p>
                             </li>
                             <li>
-                                <h4>1 Professional on this rental</h4>
-                                <div class="media">
+                                <h4><?= $bookingInfo['professionals']; ?> Professional(s) on this rental</h4>
+<!--                                <div class="media">
                                      <div class="media-left">
                                          <a href="#"><img class="media-object" src="<?php echo base_url('theme/front/assests/img/small-pic1.png')?>" alt=""></a>
                                      </div>
@@ -115,24 +61,29 @@
                                          <p>Cassidy Garcia</p>
                                      </div>
                                 </div>
-                                <a href="#"> &nbsp;+&nbsp; &nbsp; 1 more guest</a>
+                                <a href="#"> &nbsp;+&nbsp; &nbsp; 1 more guest</a>-->
                             </li>
                         </ul>
                     </div>
                     <div class="receipt-left business-trip">
                         <h3>Business trip notes</h3>
-                        <span class="font12">None added</span>
+                        <span class="font12"><?= !empty(trim($bookingInfo['professionalNote']))?$bookingInfo['professionalNote']:'None added'; ?></span>
                     </div>
                 </div>
+                <?php $bookingCurrency = getCurrency_symbol($bookingInfo['currency']); ?>
                 <div class="col-md-7">
                     <div class="receipt-right">
                         <h3>Charges</h3>
                         <ul>
                             <li class="clearfix">
-                                <div class="pull-left">$10 x 4 hours</div>
-                                <div class="pull-right">$40</div>
+                                <div class="pull-left"><?= $bookingCurrency.$bookingInfo['amount']; ?> x <?= $bookingInfo['numberBooking'].' '.strtolower($bookingInfo['bookingType']).'(s)'; ?></div>
+                                <div class="pull-right"><?= $bookingCurrency.($bookingInfo['amount'] * $bookingInfo['numberBooking']); ?></div>
                             </li>
                             <li class="clearfix">
+                                <div class="pull-left">Additional Charges</div>
+                                <div class="pull-right"><?= $bookingCurrency.$bookingInfo['addtionalCosts']; ?></div>
+                            </li>
+<!--                            <li class="clearfix">
                                 <div class="pull-left">Cleaning fees</div>
                                 <div class="pull-right">$5</div>
                             </li>
@@ -143,30 +94,38 @@
                             <li class="clearfix">
                                 <div class="pull-left">Coupon discount</div>
                                 <div class="pull-right">$5</div>
-                            </li>
+                            </li>-->
                         </ul>
                         <footer class="clearfix">
                             <div class="pull-left"><strong>Total</strong></div>
-                            <div class="pull-right"><strong>$45</strong></div>
+                            <div class="pull-right"><strong><?= $bookingCurrency.$bookingInfo['totalAmount']; ?></strong></div>
                         </footer>
                     </div>
+                    
                     <div class="receipt-right payment">
                         <h3>Payment</h3>
                         <ul>
+                            <?php if(!$bookingInfo['transactionId']): ?>
                             <li class="clearfix">
-                                <div class="pull-left">Charged to VISA ****7435 <br/>Mar 1, 2017</div>
-                                <div class="pull-right">$45</div>
+                                <div class="pull-left">Status: <?= $bookingInfo['paymentStatus'] ?></div>
                             </li>
+                            <?php else: ?>
+                            <li class="clearfix">
+                                <div class="pull-left">Charged to <?= $bookingInfo['paymentAccount']; ?> <br/><?= date("M d, Y", $bookingInfo['updatedDate']); ?></div>
+                                <div class="pull-right"><?= $bookingCurrency.$bookingInfo['totalAmount']; ?></div>
+                            </li>
+                            <?php endif;?>
                         </ul>
                         <footer class="clearfix">
                             <a href="#">Add billing details</a>
                         </footer>
                     </div>
+                    
                 </div>
             </div>
             <div class="cost-per">
-                <strong>Cost per professional</strong>
-                <p>This rental was <strong>$11.25</strong> per person, per hour, including <br/>taxes and other fees</p>
+                <strong>Cost per hour</strong>
+                <p>This rental was <strong><?= getCurrency_symbol($spaceInfo['currency']).$spaceInfo['base_price']; ?></strong> per hour, excluding <br/>taxes and other fees</p>
                 <strong>Security Deposit</strong>
                 <p>A Partner requires a Security Deposit of $50 to book this <br />listing. The Renter is responsible for the amount of the <br/>Security Deposit, but it will not be charged unless the partner makes a claim</p>
             </div>
@@ -176,7 +135,7 @@
                     <p>Visit the <a href="#">Help Center</a> for any questions.</p>
                 </div>
                 <div class="pull-right">
-                    <p>5AMCEE <br/>Booked by <strong>Cassidy Garcia</strong> <br/>Wednesday, Mar 1, 2017</p>
+                    <p><?= $bookingInfo['transactionId']; ?> <br/>Booked by <strong><?= $userInfo->firstName.' '.$userInfo->lastName; ?></strong> <br/><?= date("l, M d, Y", $bookingInfo['createdDate']); ?></p>
                 </div>
             </div>
             <div class="policy">
@@ -185,79 +144,10 @@
                 <p><strong>Explanation of Security Deposit</strong></p>
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                 <p>Payment Processed by:<br/><strong>Popln, Inc.</strong><br/>1253 E. Imperial Highway<br/>Placentia, CA 92870</p>
-                <p>Popln, Inc.<br/>1253 E. Imperial Highway<br/>Placentia, CA 92870</p>
             </div>
         </div>
     <div>
 </section>
-<footer class="foot">
-    <div class="container">
-        <div class="row">
-            <div class="foot_top clearfix">
-                <div class="col-lg-3 one-foruth">
-                    <select><option value="id">Bahasa Indonesia</option><option value="ms">Bahasa Melayu</option><option value="ca">Català</option><option value="da">Dansk</option><option value="de">Deutsch</option><option value="en">English</option><option value="es">Español</option><option value="el">Eλληνικά</option><option value="fr">Français</option><option value="it">Italiano</option><option value="hu">Magyar</option><option value="nl">Nederlands</option><option value="no">Norsk</option><option value="pl">Polski</option><option value="pt">Português</option><option value="fi">Suomi</option><option value="sv">Svenska</option><option value="tr">Türkçe</option><option value="is">Íslenska</option><option value="cs">Čeština</option><option value="ru">Русский</option><option value="th">ภาษาไทย</option><option value="zh">中文 (简体)</option><option value="zh-TW">中文 (繁體)</option><option value="ja">日本語</option><option value="ko">한국어</option></select>
-                    
-                    <select><option value="AED">AED</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="BGN">BGN</option><option value="BRL">BRL</option><option value="CAD">CAD</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CZK">CZK</option><option value="DKK">DKK</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="HKD">HKD</option><option value="HRK">HRK</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="JPY">JPY</option><option value="KRW">KRW</option><option value="MAD">MAD</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="NOK">NOK</option><option value="NZD">NZD</option><option value="PEN">PEN</option><option value="PHP">PHP</option><option value="PLN">PLN</option><option value="RON">RON</option><option value="RUB">RUB</option><option value="SAR">SAR</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="THB">THB</option><option value="TRY">TRY</option><option value="TWD">TWD</option><option value="UAH">UAH</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="VND">VND</option><option value="ZAR">ZAR</option></select>
-                </div>
-                <div class="col-lg-3 one-foruth pd-left">
-                    <h5>Popln</h5>
-                    <ul>
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">Policies</a></li>
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">Diversity &amp; Belonging</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 one-foruth pd-left">
-                    <h5>Discover</h5>
-                    <ul>
-                        <li><a href="#">Trust &amp; Safety</a></li>
-                        <li><a href="#">Travel Credit</a></li>
-                        <li><a href="#">Gift Cards</a></li>
-                        <li><a href="#">Popln Citizen</a></li>
-                        <li><a href="#">Business Travel</a></li>
-                        <li><a href="#">Guidebooks</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 one-foruth pd-left">
-                    <h5>Hosting</h5>
-                    <ul>
-                        <li><a href="#">Why Host</a></li>
-                        <li><a href="#">Hospitality</a></li>
-                        <li><a href="#">Responsible Hosting</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="foot_bottom clearfix">
-                <div class="copy-right">
-                    <p>&copy Popln, Inc.</p>
-                </div>
-                <div class="terms">
-                    <ul>
-                        <li><a href="#">Terms</a></li>
-                        <li><a href="#">Privacy</a></li>
-                        <li><a href="#">Site Map</a></li>
-                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<script src="<?php echo base_url('theme/front/assests/js/jQuery.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/nav.js')?>" type="text/javascript"></script>
-<script src="<?php echo base_url('theme/front/assests/js/bootstrap.min.js')?>" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).on('change', ':file', function() {
-    var input = $(this),
-        numFiles = input.get(0).files ? input.get(0).files.length : 1,
-        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    input.trigger('fileselect', [numFiles, label]);
-});
-</script>
-</body>
-</html>
+<?php
+	$this->load->view('frontend/include/user-footer');
+?>

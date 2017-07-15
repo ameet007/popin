@@ -342,12 +342,12 @@ class User extends CI_Controller {
           print_r($liabilityInsuranceResponse);
           exit; */
 
-        $this->form_validation->set_rules($config);
+        /*$this->form_validation->set_rules($config);
         if ($this->form_validation->run() == FALSE or $licenceCopyResponse['error'] != '' or $establishmentLicenceResponse['error'] != '' or $liabilityInsuranceResponse['error']) {
             $this->session->set_flashdata('message_notification', validation_errors() . $licenceCopyResponse['error'] . $establishmentLicenceResponse['error'] . $liabilityInsuranceResponse['error']);
             $this->session->set_flashdata('class', A_FAIL);
             redirect(base_url('user/trust/'));
-        } else {
+        } else {*/
             if ($licenceCopyResponse['file_name'] != '') {
                 $licenceCopy = $licenceCopyResponse['file_name'];
             } else {
@@ -382,7 +382,7 @@ class User extends CI_Controller {
                 $this->session->set_flashdata('class', A_FAIL);
                 redirect(base_url('user/trust/'));
             }
-        }
+        //}
     }
 
     public function submit_avatar() {

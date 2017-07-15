@@ -14,7 +14,7 @@
                 <div class="media-body">
                     <h4 class="media-heading">Earn $5 rental credit</h4>
                     <p>Give your colleagues $5 off their first rental on Popln and you’ll get up to $20 rental credit.</p>
-                    <button class="btn2">Invite Colleagues</button>
+                    <a href="<?= site_url('invite'); ?>"><button class="btn2">Invite Colleagues</button></a>
                     <button class="btn btn-default" data-dismiss="alert" aria-label="close">Later</button>
                 </div>
             </div>
@@ -75,9 +75,9 @@
                             <div class="panel-heading">Notifications</div>
                             <div class="panel-body">
                                 <ul>
-                                    <li class="clearfix"><a href="#"><?= ucfirst($userProfileInfo->firstName); ?>, new spaces have arrived! Book now before they run out.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
-                                    <li class="clearfix"><a href="#">Book workshops. led by experienced business owners. Now over, 51 to choose form.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
-                                    <li class="clearfix"><a href="#">Invite your friend to join Popln and you’ll get $10 after their first rental.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
+                                    <li class="clearfix"><a href="<?= site_url('spaces'); ?>"><?= ucfirst($userProfileInfo->firstName); ?>, new spaces have arrived! Book now before they run out.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
+                                    <li class="clearfix"><a href="<?= site_url('spaces'); ?>">Book workspaces. led by experienced business owners. Now over, 51 to choose form.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
+                                    <li class="clearfix"><a href="<?= site_url('invite'); ?>">Invite your friend to join Popln and you’ll get $10 after their first rental.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
                                 </ul>
                             </div>
                         </div>
