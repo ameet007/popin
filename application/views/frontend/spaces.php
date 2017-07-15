@@ -76,7 +76,7 @@
                 $rentType = $listing['establishmentType'].'/'.$listing['spaceType'];
                 $workspaces = $listing['workSpaceCount']." workspaces";
                 ?>
-                <div class="col-md-6 owl-carousel">
+                <div class="col-sm-6 col-md-6 col-lg-4 owl-carousel">
                     <?php foreach($listing['gallery'] as $image):?>
                     <div class="item">
                         <div class="slide-main clearfix">

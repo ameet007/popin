@@ -79,9 +79,17 @@ if(!empty($userProfileInfo->avatar)){
         </div>
     </div>
 </div>
+<?php
+if(isset($preview['gallery']) && !empty($preview['gallery'])){
+    $preview_photo = base_url('uploads/user/gallery/').$preview['gallery'][0];
+}else{
+    $preview_photo = base_url('theme/front/assests/img/preview-no-photo.png');
+}
+?>
+<?php $all_countries = unserialize(ALL_COUNTRY); ?>
 <div class="modal fade" id="wishListModal" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content list-progress">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Save to Wish List</h4>
@@ -119,26 +127,36 @@ if(!empty($userProfileInfo->avatar)){
                                 $added = TRUE;
                             }
                         }} ?>
-                        <li><span><?= $wishlist['name']; ?></span><span class="pull-right"><i class="fa fa-heart <?= isset($class)?$class:'';?>"></i></span></li>
+                        <li class="add-to-wishlist" data-space-id="<?= $space_id; ?>" data-wishlist-id="<?= $wishlist['id']; ?>"><span><?= $wishlist['name']; ?></span><span class="pull-right"><i class="fa fa-heart <?= isset($class)?$class:'';?>"></i></span></li>
                         <?php endforeach; endif; ?>
                     </ul>
                 </div>
             </div>
-            <div class="modal-footer">
-                
+            <div class="modal-footer main-right">
+                <div class="media">
+                    <div class="media-left">
+                        <div class="inner">
+                            <img src="<?= $preview_photo;?>" alt="" />
+                        </div>
+                    </div>
+                    <div class="media-body media-middle">
+                        <h4><?= $preview['spaceTitle']; ?></h4>
+                        <p><?= $preview['spaceType']; ?> in <?= $preview['city'].', '.$preview['state'].', '.$all_countries[$preview['country']]; ?></p>
+                        <div class="review">
+                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
+                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
+                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
+                            <span>20 reviews</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="black_overlay"><a onclick="close_gallery()" href="#"><img src="<?php echo base_url('theme/front/assests/')?>img/big-close-icon.png" alt=""/></a></div>
-<?php
-if(isset($preview['gallery']) && !empty($preview['gallery'])){
-    $preview_photo = base_url('uploads/user/gallery/').$preview['gallery'][0];
-}else{
-    $preview_photo = base_url('theme/front/assests/img/preview-no-photo.png');
-}
-?>
+
 <div class="banner-partner" style="background-image:url(<?php echo $preview_photo; ?>);">
     <div class="container">
         <div class="row">           
@@ -190,7 +208,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading"><?= $preview['spaceTitle']; ?></h4>
-                                <?php $all_countries = unserialize(ALL_COUNTRY); ?>
+                                
                                 <p><?= $preview['city'].', '.$preview['state'].', '.$all_countries[$preview['country']]; ?></p>
                                 <ul class="clearfix">
                                     <li>
@@ -453,7 +471,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                 <?php if($this->session->userdata('user_id')!= NULL){ ?>
                 <div class="content clearfix wishlist-section">
                     <div class="col-xs-12">
-                        <button class="btn btn-default wide" data-toggle="modal" data-target="#wishListModal"><i class="fa <?= $added?'fa-heart red':'fa-heart-o';?>"></i>&nbsp;Save to Wish List</button>
+                        <button class="btn btn-default wide" data-toggle="modal" data-target="#wishListModal"><i class="fa <?= $added?'fa-heart red':'fa-heart-o';?>"></i>&nbsp;<?= $added?'Saved':'Save';?> to Wish List</button>
 
                         <p></p>
                     </div>
@@ -905,5 +923,23 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
                 }
             });
         }
+    });
+    $(document).on('click', 'li.add-to-wishlist', function(){
+        var $this = $(this);
+        var wishlist_id = $(this).attr('data-wishlist-id');
+        var space_id = $(this).attr('data-space-id');
+        var params = {wishlist_id: wishlist_id, space_id: space_id};
+        $.post("<?= site_url('dashboard/add_to_wishlist')?>", params, function(response){
+            var result = JSON.parse(response);
+            if(result.success === 1 || result.success === 2){
+                $this.find('i.fa').addClass('red');
+                $(".wishlist-section button").html('<i class="fa fa-heart red"></i>&nbsp;Saved to Wish List');
+            }else if(result.success === 0){
+                $this.find('i.fa').removeClass('red');
+            }
+            if(result.addedInAny === 0){
+                $(".wishlist-section button").html('<i class="fa fa-heart-o"></i>&nbsp;Save to Wish List');
+            }
+        });
     });
 </script>
