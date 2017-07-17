@@ -2,9 +2,7 @@
 <div class="content-page">
     <div class="content">
         <div class="container">
-
             <!-- BEGIN PAGE BASE CONTENT -->
-
             <!--Module Title-->    
             <div class="row">
                 <div class="col-md-12">
@@ -68,7 +66,8 @@
                                                     <span></span>
                                                 </label>
                                             </th>
-                                            <th width="30%"> Name </th>
+                                            <th width="10%"> Industry </th>
+                                            <th width="20%"> Name </th>
                                             <th width="20%"> Created Date</th>
                                             <th width="20%"> Updated Date</th>
                                             <th width="15%"> Status </th>
@@ -76,6 +75,9 @@
                                         </tr>
                                         <tr role="row" class="filter">
                                             <td> </td>
+                                            <td>
+                                                <!-- <input type="text" class="form-control form-filter input-sm" name="industry"> -->
+                                            </td>
                                             <td>
                                                 <input type="text" class="form-control form-filter input-sm" name="name">
                                             </td>

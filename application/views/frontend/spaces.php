@@ -77,7 +77,7 @@
                 $rentType = $listing['establishmentType'].'/'.$listing['spaceType'];
                 $workspaces = $listing['workSpaceCount']." workspaces";
                 ?>
-                <div class="col-sm-6 col-md-6 col-lg-4 owl-carousel">
+                <div class="col-md-6 owl-carousel">
                     <?php foreach($listing['gallery'] as $image):?>
                     <div class="item">
                         <div class="slide-main clearfix">
@@ -130,20 +130,26 @@
         <!-- display all information on the map -->
         <?php 
         $getViewHtml = array();
+        $count = 1;
         $basePrice = $spaceTitle = $rentType= $workspaces='';
         foreach($listings as $listing): if(isset($listing['gallery']) && !empty($listing['gallery'])){
               $basePrice = (!empty($listing['base_price']))? getCurrency_symbol($listing['currency']). number_format($listing['base_price']):'';
                 $spaceTitle = $listing['spaceTitle'];
                 $rentType   = $listing['establishmentType'].'/'.$listing['spaceType'];
                 $workspaces = $listing['workSpaceCount']." workspaces";
+
         foreach($listing['gallery'] as $image):
-            $newHTMl  =  '<span><img style="height:120px;width:100%;" src="'.base_url('uploads/user/gallery/'.$image).'"></span><div class="content mapContent"><p><strong>'.$basePrice.'.'.$spaceTitle.'</strong></p><p><span style="font-family: \'Roboto\', sans-serif;" >'.$rentType.'· </span> .'.$workspaces.'</p><div class="review">
+            if ($count == 1) {
+               $newHTMl  =  '<span><img style="height:120px;width:100%;" src="'.base_url('uploads/user/gallery/'.$image).'"></span><div class="content mapContent"><p><strong>'.$basePrice.' · '.$spaceTitle.'</strong></p><p><span style="font-family: \'Roboto\', sans-serif;" >'.$rentType.' · </span>'.$workspaces.'</p><div class="review">
                 <span><img src="'.base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
                 <span><img src="'.base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
                 <span><img src="'.base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
                 <span>1 review</span>
-            </div></div>';
+            </div></div>';    
+            $count++;
+            }
         endforeach;
+        $count = 1;
          $get['gallery']   = $newHTMl;
          $get['latitude']  = $listing['latitude'];
          $get['longitude'] = $listing['longitude'];
@@ -406,8 +412,8 @@ function initialize() {
             // text: 'Price',
             // },
             // label: "<p style='color:red;' >hello</p>",
-            animation:google.maps.Animation.DROP,
-           icon: 'http://www.codeshare.co.uk/images/blue-pin.png'
+           // animation:google.maps.Animation.DROP,
+          // icon: 'http://www.codeshare.co.uk/images/blue-pin.png'
         });
      google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
@@ -423,7 +429,7 @@ function initialize() {
         });
     }
     google.maps.event.addDomListener(window, 'load', initialize);
-           // The function to trigger the marker click, 'id' is the reference index to the 'markers' array.
+    // The function to trigger the marker click, 'id' is the reference index to the 'markers' array.
     function myClick(id){
         google.maps.event.trigger(markers[id], 'click');
     }
