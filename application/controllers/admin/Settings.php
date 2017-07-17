@@ -1,9 +1,6 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Settings extends CI_Controller {
-
     public function __construct() {
         parent::__construct();
         $this->load->model(ADMIN_DIR . '/adminLogin', 'login');
@@ -11,6 +8,8 @@ class Settings extends CI_Controller {
         $this->adminProfileInfo = $this->login->adminProfileInfo();
         $this->load->model(ADMIN_DIR . '/AdminSettings', 'settings');
         $this->load->model(ADMIN_DIR . '/AdminEstablishment', 'faq_category');
+        $this->load->model(ADMIN_DIR . '/AdminIndustry', 'get_industry');
+        $this->load->model(ADMIN_DIR . '/AdminAmenities', 'get_amenities');
         $this->load->library('form_validation');
     }
     function image_upload($filename, $path = 'site/', $oldImage = '') {
@@ -518,6 +517,8 @@ class Settings extends CI_Controller {
             $possible_status_changes = '';
             $row = array();
             $row[] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $fc->id . '"/><span></span></label>';
+            $indurty = getSingleRecord('industry','id',$fc->industry_ID);
+            $row[]   = ucfirst($indurty->industry_name);
             $row[] = ucfirst($fc->name);
             $row[] = date(DATE_FORMAT, $fc->createdDate);
             $row[] = date(DATE_FORMAT, $fc->updatedDate);
@@ -589,6 +590,14 @@ class Settings extends CI_Controller {
      public function update_Establishment() {
         $config = array(
             array(
+                'field' => 'industry',
+                'label' => 'industry',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The Industry'
+                ),
+            ),
+            array(
                 'field' => 'name',
                 'label' => 'Establishment Name',
                 'rules' => 'required|min_length[3]|max_length[255]',
@@ -619,6 +628,7 @@ class Settings extends CI_Controller {
                 "status" => $this->input->post('status'),
                 "updatedDate" => strtotime(date('Y-m-d H:i:s')),
                 "description" => $this->input->post('description'),
+                "industry_ID" => $this->input->post('industry'),
                 "id" => $this->input->post('id')
             );
             $response = $this->faq_category->editEstablishment($establishmentData);
@@ -644,6 +654,14 @@ class Settings extends CI_Controller {
     }
     public function add_Establishment(){
         $config = array(
+            array(
+                'field' => 'industry',
+                'label' => 'industry',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The Industry'
+                ),
+            ),
             array(
                 'field' => 'name',
                 'label' => 'Establishment Name',
@@ -674,7 +692,8 @@ class Settings extends CI_Controller {
                 "status" => $this->input->post('status'),
                 "createdDate" => strtotime(date('Y-m-d H:i:s')),
                 "updatedDate" => strtotime(date('Y-m-d H:i:s')),
-                "description" => $this->input->post('description')
+                "description" => $this->input->post('description'),
+                "industry_ID" => $this->input->post('industry')
             );
             $response = $this->faq_category->addEstablishment($EstablishmentData);
             if ($response > 0) {
@@ -685,6 +704,413 @@ class Settings extends CI_Controller {
                 $this->session->set_flashdata('message_notification', 'Establishment Type Not Added Successfully');
                 $this->session->set_flashdata('class', A_FAIL);
                 redirect(ADMIN_DIR . '/settings/add');
+            }
+        }
+    }
+    public function industry_list() {
+        $data = array();
+        $data['module_heading']   = 'Industry List';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/industry/industry_list', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+      public function get_all_industry_list() {
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+            $response = $this->get_industry->updateStatus($_POST['id'], $_REQUEST['customActionName']);
+            $status = $response['status'];
+            $message = $response['message'];
+        }
+        $list = $this->get_industry->get_datatables();
+        // print_r($list);
+        $data = array();
+        $no = $_POST['start'];
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $fc) {
+            $no++;
+            $possible_status_changes = '';
+            $row = array();
+            $row[] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $fc->id . '"/><span></span></label>';
+            $row[] = ucfirst($fc->industry_name);
+            $row[] = date(DATE_FORMAT, $fc->create_date);
+            $row[] = date(DATE_FORMAT, $fc->update_date);
+            if ($fc->status == 'Activate') {
+                $row[] = '<button class="btn btn-success">Active</button>';
+            } else if ($fc->status == 'Inactive') {
+                $row[] = '<button class="btn btn-warning">Inactive</button>';
+            } else {
+                $row[] = '<button class="btn btn-danger">' . $fc->status . '</button>';
+            }
+            //add html for action
+            $row[] = '<div class="btn-group btn-info">
+                        <a data-toggle="dropdown" href="javascript:;" class="btn purple" aria-expanded="true">
+                        <i class="fa fa-user"></i> Settings
+                        <i class="fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                            <a  href="' . base_url(ADMIN_DIR . '/Settings/updateIndustry/' . $fc->id) . '"><i class="fa fa-pencil"></i> Edit</a>
+                            </li>
+                          <li>
+                           <a  href="' . base_url(ADMIN_DIR . '/Settings/deleteIndustry/' . $fc->id) . '"><i class="fa fa-trash"></i> Delete</a>
+                          </li>
+                        </ul>
+                    </div>';
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->get_industry->count_all(),
+            "recordsFiltered" => $this->get_industry->count_filtered(),
+            "data" => $data,
+        );
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+
+            $output["customActionStatus"] = $status; // OK for success and NOt OK for fail. pass custom message(useful for getting status of group actions)
+            $output["customActionMessage"] = $message; // pass custom message(useful for getting status of group actions)
+        }
+        //output to json format
+        echo json_encode($output);
+    }
+     // Delete establishment type 
+    public function deleteIndustry() {
+        $array = $this->uri->uri_to_assoc();
+        $indutry    = $array['deleteIndustry'];
+        $response = $this->get_industry->deleteindustryValue($indutry);
+        if ($response > 0) {
+            $this->session->set_flashdata('message_notification', 'Industry has ben Deleted Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+            redirect(ADMIN_DIR . '/Settings/industry_list');
+        } else {
+            $this->session->set_flashdata('message_notification', 'Industry Not Deleted Successfully');
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/Settings/industry_list');
+        }
+    }
+    public function addIndustry() {
+        $data = array();
+        $data['module_heading']   = 'Add New Industry';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/industry/add', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+    public function add_psot_industry(){
+        $config = array(
+            array(
+                'field' => 'name',
+                'label' => 'Industry Name',
+                'rules' => 'required|min_length[3]|max_length[255]',
+                'errors' => array(
+                    'required' => 'Please Enter The Industry Name',
+                    'min_length' => 'Minimum 3 Characters Long Industry Name Is Required',
+                    'max_length' => 'Maximum 255 Characters Long Industry Name Is Required'
+                ),
+            ),
+            array(
+                'field' => 'status',
+                'label' => 'Status',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter The Industry type Status'
+                ),
+            )
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', 'danger');
+            redirect(ADMIN_DIR . '/Settings/add_psot_industry');
+        } else {
+            $industryData = array(
+                "industry_name" => $this->input->post('name'),
+                "status" => $this->input->post('status'),
+                "create_date" => strtotime(date('Y-m-d H:i:s')),
+                "update_date" => strtotime(date('Y-m-d H:i:s'))
+            );
+            $response = $this->get_industry->addSpace($industryData);
+            if ($response > 0) {
+                $this->session->set_flashdata('message_notification', 'Industry has ben Added Successfully');
+                $this->session->set_flashdata('class', A_SUC);
+                redirect(ADMIN_DIR . '/Settings/industry_list');
+            } else {
+                $this->session->set_flashdata('message_notification', 'Industry Not Added Successfully');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(ADMIN_DIR . '/Settings/add_psot_industry');
+            }
+        }
+    }
+     # Update space 
+    public function updateIndustry() {
+        $data = array();
+        $data['module_heading'] = 'Update Industry';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $industryID = $this->uri->segment('4');
+        $data['industry'] = $this->get_industry->viewIndustry($industryID);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/industry/edit', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+     public function update_Industry() {
+        $config = array(
+            array(
+                'field' => 'name',
+                'label' => 'Industry Name',
+                'rules' => 'required|min_length[3]|max_length[255]',
+                'errors' => array(
+                    'required' => 'Please Enter The Industry Name',
+                    'min_length' => 'Minimum 3 Characters Long Industry Name Is Required',
+                    'max_length' => 'Maximum 255 Characters Long Industry Name Is Required'
+                ),
+            ),
+            array(
+                'field' => 'status',
+                'label' => 'Status',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The Industry Status'
+                ),
+            )
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/Settings/updateIndustry/' . $this->input->post('id'));
+        } else {
+
+            $industryData = array(
+                "industry_name" => $this->input->post('name'),
+                "status" => $this->input->post('status'),
+                "update_date" => strtotime(date('Y-m-d H:i:s')),
+                "id" => $this->input->post('id')
+            );
+            $response = $this->get_industry->editIndustry($industryData);
+            if ($response > 0) {
+                $this->session->set_flashdata('message_notification', 'Industry Updated Successfully');
+                $this->session->set_flashdata('class', A_SUC);
+                redirect(ADMIN_DIR . '/Settings/industry_list');
+            } else {
+                $this->session->set_flashdata('message_notification', 'Industry Not Updated Successfully');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(ADMIN_DIR . '/Settings/updateIndustry/'.$this->input->post('id'));
+            }
+        }
+    }
+    # AMENITIES CODE START HERE
+    public function amenities_list(){
+        $data = array();
+        $data['module_heading']   = 'Amenities List';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/amenities/amenities_list', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+    public function get_all_amenities_list() {
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+            $response = $this->get_amenities->updateStatus($_POST['id'], $_REQUEST['customActionName']);
+            $status = $response['status'];
+            $message = $response['message'];
+        }
+        $list = $this->get_amenities->get_datatables();
+        // print_r($list);
+        $data = array();
+        $no = $_POST['start'];
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $fc) {
+            $no++;
+            $possible_status_changes = '';
+            $row = array();
+            $row[] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $fc->id . '"/><span></span></label>';
+            $indurty = getSingleRecord('industry','id',$fc->industry_id);
+            $row[]   = ucfirst($indurty->industry_name);
+            $row[] = ucfirst($fc->amenities_name);
+            $row[] = date(DATE_FORMAT, $fc->create_date);
+            $row[] = date(DATE_FORMAT, $fc->update_date);
+            if ($fc->status == 'active') {
+                $row[] = '<button class="btn btn-success">Active</button>';
+            } else if ($fc->status == 'inactive') {
+                $row[] = '<button class="btn btn-warning">Inactive</button>';
+            } else {
+                $row[] = '<button class="btn btn-danger">' . $fc->status . '</button>';
+            }
+            //add html for action
+            $row[] = '<div class="btn-group btn-info">
+                        <a data-toggle="dropdown" href="javascript:;" class="btn purple" aria-expanded="true">
+                        <i class="fa fa-user"></i> Settings
+                        <i class="fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                            <a  href="' . base_url(ADMIN_DIR . '/Settings/updateAmenities/' . $fc->id) . '"><i class="fa fa-pencil"></i> Edit</a>
+                            </li>
+                          <li>
+                           <a  href="' . base_url(ADMIN_DIR . '/Settings/deleteAmenities/' . $fc->id) . '"><i class="fa fa-trash"></i> Delete</a>
+                          </li>
+                        </ul>
+                    </div>';
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->get_amenities->count_all(),
+            "recordsFiltered" => $this->get_amenities->count_filtered(),
+            "data" => $data,
+        );
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+
+            $output["customActionStatus"] = $status; // OK for success and NOt OK for fail. pass custom message(useful for getting status of group actions)
+            $output["customActionMessage"] = $message; // pass custom message(useful for getting status of group actions)
+        }
+        //output to json format
+        echo json_encode($output);
+    }
+     public function addAmenities() {
+        $data = array();
+        $data['module_heading']   = 'Add New Amenities';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/amenities/add', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+    public function add_psot_Amenities(){
+        $config = array(
+            array(
+                'field' => 'industry',
+                'label' => 'Industry list',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The Industry'
+                ),
+            ),
+            array(
+                'field' => 'name',
+                'label' => 'Industry Name',
+                'rules' => 'required|min_length[3]|max_length[255]',
+                'errors' => array(
+                    'required' => 'Please Enter The Amenities Name',
+                    'min_length' => 'Minimum 3 Characters Long Amenities Name Is Required',
+                    'max_length' => 'Maximum 255 Characters Long Amenities Name Is Required'
+                ),
+            ),
+            array(
+                'field' => 'status',
+                'label' => 'Status',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The Industry type Status'
+                ),
+            )
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', 'danger');
+            redirect(ADMIN_DIR . '/Settings/addAmenities');
+        } else {
+            $amenities = array(
+                "amenities_name" => $this->input->post('name'),
+                "status" => $this->input->post('status'),
+                "industry_id" => $this->input->post('industry'),
+                "create_date" => strtotime(date('Y-m-d H:i:s')),
+                "update_date" => strtotime(date('Y-m-d H:i:s'))
+            );
+            $response = $this->get_amenities->addAmenities($amenities);
+            if ($response > 0) {
+                $this->session->set_flashdata('message_notification', 'Amenities has ben Added Successfully');
+                $this->session->set_flashdata('class', A_SUC);
+                redirect(ADMIN_DIR . '/Settings/amenities_list');
+            } else {
+                $this->session->set_flashdata('message_notification', 'Amenities Not Added Successfully');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(ADMIN_DIR . '/Settings/addAmenities');
+            }
+        }
+    }
+     // Delete establishment type 
+    public function deleteAmenities() {
+        $array = $this->uri->uri_to_assoc();
+        $amenities    = $array['deleteAmenities'];
+        $response = $this->get_amenities->deleteAmenitiesValue($amenities);
+        if ($response > 0) {
+            $this->session->set_flashdata('message_notification', 'Amenities has ben Deleted Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+            redirect(ADMIN_DIR . '/Settings/amenities_list');
+        } else {
+            $this->session->set_flashdata('message_notification', 'Amenities Not Deleted Successfully');
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/Settings/amenities_list');
+        }
+    }
+    # Update space 
+    public function updateAmenities() {
+        $data = array();
+        $data['module_heading'] = 'Update Amenities';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $amenitiesID = $this->uri->segment('4');
+        $data['amenities'] = $this->get_amenities->viewAmenities($amenitiesID);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/amenities/edit', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+     public function update_Amenities() {
+        $config = array(
+            array(
+                'field' => 'industry',
+                'label' => 'Industry list',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The Industry'
+                ),
+            ),
+            array(
+                'field' => 'name',
+                'label' => 'Industry Name',
+                'rules' => 'required|min_length[3]|max_length[255]',
+                'errors' => array(
+                    'required' => 'Please Enter The Amenities Name',
+                    'min_length' => 'Minimum 3 Characters Long Amenities Name Is Required',
+                    'max_length' => 'Maximum 255 Characters Long Amenities Name Is Required'
+                ),
+            ),
+            array(
+                'field' => 'status',
+                'label' => 'Status',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The Industry type Status'
+                ),
+            )
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/Settings/updateAmenities/' . $this->input->post('id'));
+        } else {
+
+            $amenitiesData = array(
+                "amenities_name" => $this->input->post('name'),
+                "status" => $this->input->post('status'),
+                "industry_id" => $this->input->post('industry'),
+                "update_date" => strtotime(date('Y-m-d H:i:s')),
+                "id" => $this->input->post('id')
+            );
+            $response = $this->get_amenities->editAmenities($amenitiesData);
+            if ($response > 0) {
+                $this->session->set_flashdata('message_notification', 'Amenities has ben Updated Successfully');
+                $this->session->set_flashdata('class', A_SUC);
+                redirect(ADMIN_DIR . '/Settings/amenities_list');
+            } else {
+                $this->session->set_flashdata('message_notification', 'Amenities Not Updated Successfully');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(ADMIN_DIR . '/Settings/updateAmenities/'.$this->input->post('id'));
             }
         }
     }

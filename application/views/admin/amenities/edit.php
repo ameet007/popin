@@ -24,11 +24,12 @@
 							</div>
 						</div>
                         <!-- end row -->
+
                         <div class="row">
                            <div class="col-sm-12">
                                 <div class="card-box">
-                        			<form class="form-horizontal" role="form" name="edit_faq_category" id="edit_faq_category" method="post" action="<?= base_url(ADMIN_DIR.'/settings/update_Establishment/'); ?>" enctype="multipart/form-data">
-                        			 <div class="form-group">
+                        			<form class="form-horizontal" role="form" name="edit_faq_category" id="edit_faq_category" method="post" action="<?= base_url(ADMIN_DIR.'/settings/update_Amenities/'); ?>" enctype="multipart/form-data">
+	                                          <div class="form-group">
 	                                                <label for="image" class="col-sm-3 control-label">Industry list</label>
 	                                                <div class="col-sm-9">
 	                                                 <select name="industry" id="industry" class="form-control">
@@ -36,22 +37,16 @@
                                                             <?php 
                                                               $industry = getMultiRecord('industry','status','Activate');
                                                               foreach ($industry as $key => $value) {
-                                                              echo '<option value="'.$value['id'].'" '.($establishment->industry_ID == $value['id']?'selected':'' ).' >'.$value['industry_name'].'</option>';
+                                                              echo '<option value="'.$value['id'].'" '.($value['id']==$amenities->industry_id?'selected':'').' >'.$value['industry_name'].'</option>';
                                                               }
                                                              ?>
                                                             </select>
 	                                                </div>
 	                                            </div>
-	                                            <div class="form-group">
-	                                                <label for="caption" class="col-sm-3 control-label">Establishment Name</label>
-	                                                <div class="col-sm-9">
-	                                                 <input type="text" placeholder="General" name="name" class="form-control" id="name" value="<?= $establishment->name; ?>">
-	                                                </div>
-	                                            </div>
 	                                             <div class="form-group">
-	                                                <label for="caption" class="col-sm-3 control-label">Description</label>
+	                                                <label for="name" class="col-sm-3 control-label">Amenities Name</label>
 	                                                <div class="col-sm-9">
-	                                                 <textarea class="form-control" name="description" ><?= $establishment->description; ?></textarea>
+	                                                 <input type="text" placeholder="enter amenities name" name="name" id="name" class="form-control" value="<?= $amenities->amenities_name; ?>">
 	                                                </div>
 	                                            </div>
 	                                            <div class="form-group">
@@ -59,14 +54,14 @@
 	                                                <div class="col-sm-9">
 	                                                 <select name="status" id="status" class="form-control">
                                                                     <option value=""></option>
-                                                                    <option value="active" <?php echo ($establishment->status=='active')?'selected':''; ?>>Active</option>
-                                                                    <option value="inactive" <?php echo ($establishment->status=='inactive')?'selected':''; ?>>Inactive</option>
+                                                                    <option value="active" <?php echo ($amenities->status=='active')?'selected':''; ?>>Active</option>
+                                                                    <option value="inactive" <?php echo ($amenities->status=='inactive')?'selected':''; ?>>Inactive</option>
                                                      </select>
 	                                                </div>
 	                                            </div>
-	  	                                            <div class="form-group m-b-0">
+	                                            <div class="form-group m-b-0">
 	                                                <div class="col-sm-offset-3 col-sm-9">
-                                                  	  <input type="hidden" name="id" value="<?= $establishment->id; ?>" id="id">
+                                                  	  <input type="hidden" name="id" value="<?= $amenities->id; ?>" id="id">
                                                       <button type="submit" class="btn btn-info waves-effect waves-light" id="submit" name="submit">Update</button>
 	                                                </div>
 	                                            </div>
@@ -78,24 +73,3 @@
                         <!-- end row -->
                     </div> <!-- container -->
                 </div> <!-- content -->
-<script>
-  //   $(document).ready(function(e) {
-		
-		// $('#edit_faq_category').validate({
-		// 			rules: {
-		// 				name		:	{	required:	true,
-		// 									remote :  {
-		// 							  			url: "<?= base_url(ADMIN_DIR.'/faq_category/check_exist_name'); ?>",
-  //       										type: "post" ,
-		// 										data : {faq_category_id :'<?= $establishment->id; ?>'}
-		// 									}
-		// 				},
-		// 				status 		: 	{	required:	true}
-		// 				},
-		// 			messages : {
-		// 				name:{required:"Please Enter FAQ Category Name",remote:"This Category Name Is Already Exist, Please Try With Another Name"},
-		// 				status	:	{	required:"Please Select Customer Status"}
-		// 			}
-		// 		});
-  //   });
-    </script>

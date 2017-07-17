@@ -1,13 +1,13 @@
 <?php
 
-class AdminEstablishment extends CI_Model {
+class AdminIndustry extends CI_Model {
 	
-	var $table = 'establishment_types';
-  	var $select_fields = 'id,name,createdDate,updatedDate,status,industry_ID';
+	var $table = 'industry';
+  	var $select_fields = 'id,industry_name,create_date,update_date,status';
    	var $where_condition = "id!='0'";
-    var $column_order = array('id','id','name','createdDate','updatedDate','status','industry_ID',null); //set column field database for datatable orderable
-    var $column_search = array('id','name','createdDate','updatedDate','status','industry_ID'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('id' => 'ASC'); // default order 
+    var $column_order = array('id','id','industry_name','create_date','update_date','status',null); //set column field database for datatable orderable
+    var $column_search = array('id','industry_name','create_date','update_date','status'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $order = array('id' => 'desc'); // default order 
 	 private function get_datatables_query()
 		{
 			$this->db->from($this->table);
@@ -40,10 +40,10 @@ class AdminEstablishment extends CI_Model {
 			{
 				$this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
 			} 
-			if(isset($_POST['name']) and $_POST['name']!='')
+			if(isset($_POST['industry_name']) and $_POST['industry_name']!='')
 			{
 				//$this->db->where('fname="'.($_POST['fname']).'"');
-				$this->db->like('name',$_POST['name']);
+				$this->db->like('industry_name',$_POST['industry_name']);
 			}
 			if((!empty($_POST['order_date_from']) and !empty($_POST['order_date_to'])))
 			{
@@ -53,8 +53,8 @@ class AdminEstablishment extends CI_Model {
 				$to_date_ymd = strtotime($to_date[2].'-'.$to_date[1].'-'.$to_date[0]);
 				if($from_date_ymd<=$to_date_ymd)
 				{
-					$this->db->where('createdDate >=', $from_date_ymd);
-					$this->db->where('createdDate <=', $to_date_ymd);
+					$this->db->where('create_date >=', $from_date_ymd);
+					$this->db->where('create_date <=', $to_date_ymd);
 				}	
 			}
 			if((!empty($_POST['order_date_from_updated']) and !empty($_POST['order_date_to_updated'])))
@@ -65,8 +65,8 @@ class AdminEstablishment extends CI_Model {
 				$to_date_ymd = strtotime($to_date[2].'-'.$to_date[1].'-'.$to_date[0]);
 				if($from_date_ymd<=$to_date_ymd)
 				{
-					$this->db->where('updatedDate >=', $from_date_ymd);
-					$this->db->where('updatedDate <=', $to_date_ymd);
+					$this->db->where('update_date >=', $from_date_ymd);
+					$this->db->where('update_date <=', $to_date_ymd);
 				}	
 			}
 			if(isset($_POST['status']) and $_POST['status']!='')
@@ -99,30 +99,27 @@ class AdminEstablishment extends CI_Model {
 		$this->db->from($this->table);
 	    return $this->db->count_all_results();
     }
-	
-	
-	
-	public function addEstablishment($data){
+	public function addSpace($data){
         //Insert Query Goes here...
 		$this->db->insert($this->table,$data);
 		return $this->db->affected_rows();
 	}
-	public function deleteEstablishmentType($establishmentID)
+	public function deleteindustryValue($indutryID)
 	{
-		$this->db->where('id', $establishmentID);
+		$this->db->where('id', $indutryID);
    		$this->db->delete($this->table); 
 		return $this->db->affected_rows();
 	}	
-	public function editEstablishment($data)
+	public function editIndustry($data)
 	{
 		$where = array("id"=>$data['id']);
 		$this->db->where($where);
 		$this->db->update($this->table,$data);
 		return $this->db->affected_rows();			
 	}
-	public function viewEstablishment($id)
+	public function viewIndustry($id)
 	{
-		$this->db->select('id,name,status,description,industry_ID');
+		$this->db->select('id,industry_name,status');
 		$this->db->from($this->table);
 		$this->db->where('id',$id);
 		$query = $this->db->get();		
@@ -146,11 +143,11 @@ class AdminEstablishment extends CI_Model {
 		}
 		if($wrong == true)
 		{
-			return array("status"=>"NOT OK","message"=>"Selected Establishment Type Status Not Updated Sucessfully");
+			return array("status"=>"NOT OK","message"=>"Selected industry Status Not Updated Sucessfully");
 		}
 		else
 		{
-			return array("status"=>"OK","message"=>"Selected Establishment Type Status Updated Successfully");
+			return array("status"=>"OK","message"=>"Selected industry Status Updated Successfully");
 		}
 	}
 	
