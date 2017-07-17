@@ -19,6 +19,8 @@
                         <li><a href="<?= base_url(ADMIN_DIR . '/email_template/lists'); ?>"><i class="fa fa-envelope-o"></i>Email Templates</a></li>
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/footer'); ?>"><i class="fa fa-gear"></i>Footer Settings</a></li>
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/establishment_list'); ?>"><i class="fa fa-info"></i>Establishment Type</a></li>
+                        <li><a href="<?= base_url(ADMIN_DIR . '/settings/industry_list'); ?>"><i class="fa fa-industry" aria-hidden="true"></i>Manage Industry</a></li>
+                        <li><a href="<?= base_url(ADMIN_DIR . '/settings/amenities_list'); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Manage Amenities</a></li>
                         <li><a href="<?= base_url('admin/Settings/spaceList'); ?>"><i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>Space Type</a></li>
                     </ul>
                 </li>
