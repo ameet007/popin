@@ -44,8 +44,7 @@ $(document).ready(function() {
                     url: '<?= site_url('Listing/fetch_reservations'); ?>',
                     type: 'POST',
                     data: {
-                        custom_param1: 'something',
-                        custom_param2: 'somethingelse'
+                        space_id: '<?= $space_id; ?>'
                     },
                     error: function() {
                         alert('there was an error while fetching events!');
