@@ -565,16 +565,17 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
     });
 
     <?php
+    $unavailable_dates = $available_dates = array();
     if(isset($preview['calendar']['available_dates']) && !empty($preview['calendar']['available_dates'])){
         $available_dates = $preview['calendar']['available_dates'];
     }
     if(isset($preview['calendar']['unavailable_dates']) && !empty($preview['calendar']['unavailable_dates'])){
-        $unavailable_dates = json_encode($preview['calendar']);
+        $unavailable_dates = $preview['calendar']['unavailable_dates'];
     }    
     ?>
-    var unavailableDates = [];
-    <?php if(isset($unavailable_dates)){ ?>
-        unavailableDates = <?= $unavailable_dates; ?>;
+    var availableDates = [],unavailableDates = [];
+    <?php if(isset($available_dates) && !empty($available_dates)){ ?>
+        availableDates = <?= json_encode($available_dates); ?>;
     <?php }?>
     $(document).ready(function(){
         $( "#startDate, #startDate2" ).datepicker({
@@ -582,13 +583,33 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
             orientation: "bottom",
             autoclose: true,
             format: 'dd-mm-yyyy',
-            startDate: '<?= isset($available_dates)?date('d-m-Y', strtotime($available_dates['0'])):"d"; ?>', //-3d
             weekStart: 1,
-            <?php if(isset($unavailable_dates)){ ?>datesDisabled: unavailableDates.unavailable_dates<?php }?>
+            beforeShowDay: function (date){
+                var dmy = date.getDate().padLeft() + "-" + (date.getMonth()+1).padLeft() + "-" + date.getFullYear();
+
+                //console.log(dmy+' : '+($.inArray(dmy, availableDates)));
+                //console.log(unavailableDates);
+                if ($.inArray(dmy, availableDates) !== -1) {
+                    return {
+                        enabled: true,
+                        tooltip: 'Available'
+                    };
+                } else{
+                    return {
+                        enabled: false,
+                        tooltip: 'Unavailable'
+                    };
+                    //unavailableDates.push(dmy);
+                }
+            }
         }) .on('change.dp', function (e) {
             dateChanged(e);
             //console.log($(e.target).attr('id'));
         });
+        //console.log(unavailableDates);
+        $('#startDate, #startDate2').datepicker('setDatesDisabled', unavailableDates);
+        $('#startDate, #startDate2').datepicker('setStartDate', '<?= isset($available_dates)?get_start_date_by_currentdate($available_dates,$unavailable_dates):null; ?>');
+        $('#startDate, #startDate2').datepicker('setEndDate', '<?= isset($available_dates)?get_end_date_by_currentdate($available_dates,$unavailable_dates):null; ?>');
     });
     function dateChanged(event) {
         var start_date = $('#'+$(event.target).attr('id')).val();
@@ -620,15 +641,16 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
             endDate: maxDate,
             orientation: "bottom",
             autoclose: true,
-            weekStart: 1,
-            //maxDate: new Date(newyr, 12, 0, 0) , 
-            //yearRange: "-150:+0",
+            weekStart: 1
         });
+        
+        $("#endDate").datepicker("setDate",minDate);
+        $("#endDate").focus();
     }
     Number.prototype.padLeft = function(base,chr){
         var  len = (String(base || 10).length - String(this).length)+1;
         return len > 0? new Array(len).join(chr || '0')+this : this;
-    }
+    };
     
     $('.owl-carousel').owlCarousel({
         loop:true,

@@ -379,6 +379,16 @@ class FrontUser extends CI_Model {
 //        exit;
         return $result;
     }
+    
+    function getUserReservations($user){
+        $this->db->select("space_booking.id as id, spaces.spaceTitle as title, space_booking.checkIn as start, space_booking.checkOut as end");
+        $this->db->join('spaces', 'user.id = spaces.host');
+        $this->db->join('space_booking', 'spaces.id = space_booking.space');
+        $result = $this->db->where(array('user.id' => $user))->get('user')->result_array();
+
+        //print_array($result);
+        return $result;
+    }
 
     function getWishLists($user) {
         $wishLists = $this->db->select('id,user,name,privacy')->where('user', $user)->order_by('updatedDate','desc')->get('wishlist_master')->result_array();

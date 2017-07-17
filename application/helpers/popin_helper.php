@@ -15,7 +15,37 @@ function get_available_slot($date, $inputArray) {
 
     return $startDate;
 }
+function get_start_date_by_currentdate($availableArray,$unavailableArray) {
+    $today = strtotime(date("Y-m-d"));
+    
+    $startDate = null;
+    if(!empty($availableArray)){
+        for($i=0;$i<count($availableArray);$i++){
+            if(strtotime($availableArray[$i]) < $today){
+                continue;
+            }else{
+                $startDate = $availableArray[$i];
+                break;
+            }
+        }
+    }else{
+        $startDate = date("Y-m-d",$today);
+    }
 
+    return $startDate;
+}
+function get_end_date_by_currentdate($availableArray,$unavailableArray) {
+    $today = strtotime(date("Y-m-d"));
+    
+    $endDate = null;
+    if(strtotime(end($availableArray)) >= $today){
+        $endDate = end($availableArray);
+    }else{
+        $endDate = end($unavailableArray);
+    }
+    
+    return $endDate;
+}
 //Converting timestamp to time ago e.g 1 day ago, 2 days ago…
 function time_elapsed_string($datetime, $full = false) {
     $now = new DateTime;

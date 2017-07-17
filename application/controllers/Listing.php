@@ -106,7 +106,7 @@ class Listing extends CI_Controller {
                                 <p>Last updated on '.date("F d, Y",$spaceData['updatedDate']).'</p>
                                 <div class="three-btn">
                                     <a href="'. site_url('manage-listing/'.$spaceData['id']).'" class="btn2">Manage listing</a>
-                                    <a href="" class="green-btn">Calender</a>
+                                    <a href="'. site_url('manage-calendar/'.$spaceData['id']).'" class="green-btn">Calender</a>
                                     <a href="'. site_url('preview-listing/'.$spaceData['id']).'"><button class="btn">Preview</button></a>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@ class Listing extends CI_Controller {
         //$this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $header);
         $this->load->view(FRONT_DIR . '/include-partner/preview-header');
         $this->load->view(FRONT_DIR . '/listing/preview-listing', $data);
-        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
+        $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
     }
     
     public function manage_listing($space_id = '') {
@@ -162,6 +162,33 @@ class Listing extends CI_Controller {
 //        echo "</pre>";
         $data['module_heading'] = "Manage Listing";
         $this->load->view(FRONT_DIR . '/listing/manage-listing', $data);
+    }
+    
+    public function manage_calendar($space_id = '') {
+        if (empty($space_id)) {
+            redirect("Listing/listing");
+        }
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        if (!empty($space_id)) {
+            $host_id = $this->session->userdata('user_id');
+            $data['listing'] = $this->space_model->get_space_preview_data($space_id, $host_id);
+            if(empty($data['listing'])){
+                redirect('listing');
+            }
+            $data['space_types'] = $this->space_model->getDropdownData('space_types');
+        }
+//        echo "<pre>";
+//        print_r($data['listing']);
+//        echo "</pre>";
+        $data['module_heading'] = "Manage Listing Calendar";
+        $this->load->view(FRONT_DIR . '/listing/manage-calendar', $data);
+    }
+    
+    public function fetch_reservations() {
+        //echo '[{"title":"All Day Event","start":"2017-05-01"},{"title":"Long Event","start":"2017-05-07","end":"2017-05-10"},{"id":999,"title":"Repeating Event","start":"2017-05-09T16:00:00"},{"id":999,"title":"Repeating Event","start":"2017-05-16T16:00:00"},{"title":"Conference","start":"2017-05-11","end":"2017-05-13"},{"title":"Meeting","start":"2017-05-12 10:30","end":"2017-05-12 12:30"},{"title":"Lunch","start":"2017-05-12 12:30:00"},{"title":"Meeting","start":"2017-05-12T14:30:00"},{"title":"Happy Hour","start":"2017-05-12T17:30:00"},{"title":"Dinner","start":"2017-05-12T20:00:00"},{"title":"Birthday Party","start":"2017-05-13T07:00:00"},{"title":"Click for Google","url":"http://google.com/","start":"2017-05-28"}]';
+        $userID = $this->session->userdata('user_id'); 
+        $hostReservations = $this->user->getUserReservations($userID);
+        echo json_encode($hostReservations);
     }
 
     public function Listing2() {

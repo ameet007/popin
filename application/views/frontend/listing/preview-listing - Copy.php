@@ -39,46 +39,43 @@ if(!empty($userProfileInfo->avatar)){
                     </div>
                     <div class="host-from">
                         <h4>When are you traveling?</h4>
-                        <form id="contact-form" method="post" action="<?php echo site_url("home/send_message_submit"); ?>">
-                            <input type="hidden" name="host" value="<?= $hostProfileInfo->id; ?>">
-                            <input type="hidden" name="space" value="<?= $space_id; ?>">
-                            <div class="feild"> 
-                                <ul class="clearfix">
-                                    <li>
-                                        <label>Check In</label>
-                                        <input id="startDate2" class="textbox" type="text" name="checkIn" placeholder="Check In" />
-                                    </li>
-                                    <li>
-                                        <label>Check Out</label>
-                                        <input id="endDate2" class="textbox" type="text" name="checkOut" placeholder="Check Out" disabled="" />
-                                    </li>
-                                </ul>
+                        <div class="feild"> 
+                            <ul class="clearfix">
+                                <li>
+                                    <label>Check In</label>
+                                    <input id="startDate2" class="textbox" type="text" placeholder="Check In" />
+                                </li>
+                                <li>
+                                    <label>Check Out</label>
+                                    <input id="endDate2" class="textbox" type="text" placeholder="Check Out" disabled="" />
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="feild"> 
+                            <select class="selectbox">
+                                <?php for($i=1; $i<=$preview['professionalCapacity'];$i++){ ?>
+                                <option><?= $i; ?> professionals</option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="feild">
+                            <textarea class="textarea" placeholder="Start your message..."></textarea>
+                        </div>
+                        <div class="sender clearfix">
+                            <div class="pull-left">
+                                <img src="<?= $user_profile_photo; ?>" alt="" />
                             </div>
-                            <div class="feild"> 
-                                <select class="selectbox" name="professionals">
-                                    <?php for($i=1; $i<=$preview['professionalCapacity'];$i++){ ?>
-                                    <option value="<?= $i; ?>"><?= $i; ?> professionals</option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="feild">
-                                <textarea class="textarea" name="message" placeholder="Start your message..."></textarea>
-                            </div>
-                            <div class="sender clearfix">
-                                <div class="pull-left">
-                                    <img src="<?= $user_profile_photo; ?>" alt="" />
-                                </div>
-                                <div class="pull-right">
-                                    <button class="btn-red" type="submit">Send Message</button>
-                                </div> 
-                            </div>
-                        </form>
+                            <div class="pull-right">
+                                <button class="btn-red">Send Message</button>
+                            </div> 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div id="black_overlay"><a onclick="close_gallery()" href="#"><img src="<?php echo base_url('theme/front/assests/')?>img/big-close-icon.png" alt=""/></a></div>
 <?php
 if(isset($preview['gallery']) && !empty($preview['gallery'])){
     $preview_photo = base_url('uploads/user/gallery/').$preview['gallery'][0];
@@ -86,78 +83,19 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
     $preview_photo = base_url('theme/front/assests/img/preview-no-photo.png');
 }
 ?>
-<?php $all_countries = unserialize(ALL_COUNTRY); ?>
-<div class="modal fade" id="wishListModal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content list-progress">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Save to Wish List</h4>
-            </div>
-            <div class="modal-body row">                
-                <div class="col-lg-offset-1 col-lg-9 host-from">
-                    <div class="alert alert-info" style="display: none;">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong>Please enter your wish list name below</strong>
-                    </div>
-                    <form id="wishlist-form" method="post" action="<?php echo site_url("dashboard/create_wishlist"); ?>" novalidate autocomplete="off"<?php if(!empty($wishlistMaster)){ echo " style='display:none;'";}?>>
-                        <input type="hidden" name="space" value="<?= $space_id; ?>">
-                        <div class="form-group">
-                            <label for="wishlist_name">Name</label>
-                            <input class="textbox" id="wishlist_name" name="name" placeholder="Name your Wish List" required>
-                            <input class="textbox" name="privacy" type="hidden" value="everyone">
-                        </div>
-                        <div class="sender clearfix">
-                            <div class="pull-right">
-                                <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                                <button class="btn2" type="submit">Create</button>
-                            </div> 
-                        </div>
-                    </form>
-                    <ul class="wishlists"<?php if(!empty($wishlistMaster)){ echo " style='display:block;'";}?>>
-                        <li>
-                            <span><a href="#" id="create-wishlist-btn">Create New Wish List</a></span>
-                        </li>
-                        <?php $added= FALSE; if(!empty($wishlistMaster)): foreach($wishlistMaster as $wishlist):  $class=""; ?>
-                        <?php if(isset($wishlist['userLists']) && !empty($wishlist['userLists'])){ foreach($wishlist['userLists'] as $userWishlist){
-                            if($userWishlist['space_id'] == $space_id){
-                                $class = "red";
-                                $added = TRUE;
-                            }
-                        }} ?>
-                        <li class="add-to-wishlist" data-space-id="<?= $space_id; ?>" data-wishlist-id="<?= $wishlist['id']; ?>"><span><?= $wishlist['name']; ?></span><span class="pull-right"><i class="fa fa-heart <?= isset($class)?$class:'';?>"></i></span></li>
-                        <?php endforeach; endif; ?>
-                    </ul>
+<div class="banner-partner" style="background-image:url(<?php echo $preview_photo; ?>);">
+    <div class="bannerBg">
+        <div class="container">
+            <div class="row">
+                <div class="pull-left">
+                    <span style="line-height: 2;"><strong>Preview mode:</strong><span>This is how professionals will see your listing</span></span>
                 </div>
-            </div>
-            <div class="modal-footer main-right">
-                <div class="media">
-                    <div class="media-left">
-                        <div class="inner">
-                            <img src="<?= $preview_photo;?>" alt="" />
-                        </div>
-                    </div>
-                    <div class="media-body media-middle">
-                        <h4><?= $preview['spaceTitle']; ?></h4>
-                        <p><?= $preview['spaceType']; ?> in <?= $preview['city'].', '.$preview['state'].', '.$all_countries[$preview['country']]; ?></p>
-                        <div class="review">
-                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
-                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
-                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
-                            <span>20 reviews</span>
-                        </div>
-                    </div>
+                <div class="pull-right">
+                    <a href="<?= site_url('Space/become-a-partner/'. $preview['id']); ?>" class="gost-reverse-btn">Edit Listing</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div id="black_overlay"><a onclick="close_gallery()" href="#"><img src="<?php echo base_url('theme/front/assests/')?>img/big-close-icon.png" alt=""/></a></div>
-
-<div class="banner-partner" style="background-image:url(<?php echo $preview_photo; ?>);">
     <div class="container">
         <div class="row">           
             <img class="preview-banner" src="<?php echo $preview_photo; ?>" alt="preview photo" />
@@ -208,7 +146,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading"><?= $preview['spaceTitle']; ?></h4>
-                                
+                                <?php $all_countries = unserialize(ALL_COUNTRY); ?>
                                 <p><?= $preview['city'].', '.$preview['state'].', '.$all_countries[$preview['country']]; ?></p>
                                 <ul class="clearfix">
                                     <li>
@@ -230,13 +168,9 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                             <h3>About this listing</h3>
 <!--                            <p>My place is close to civil center, Disneyland. You’ll love my place because of. <br />My place is good for couples.</p>-->
                             <p><?= $preview['spaceDescription']; ?></p>
-                            <?php if($this->session->userdata('user_id')!= NULL){ ?>
                             <a data-toggle="modal" data-target="#myModal" href="#">Contact host</a>
-                            <?php }else{ ?>
-                            <a href="javascript:void(0);" class="openSignInBox">Contact host</a>
-                            <?php } ?>
                         </div>
-                        <?php $checkInOut = unserialize(TIMES); ?>
+                        <?php $checkIn = unserialize(TIMES); ?>
                         <div class="the-space">
                             <ul class="accomm clearfix">
                                 <li>The space</li>
@@ -248,7 +182,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                     <a href="javascript:;" onclick="scrollToDiv('#house-rules');">House Rules</a>
                                 </li>
                                 <li>
-                                    <p>Check In:<strong><?php $day = strtolower(date("D")); echo $checkInOut[$preview["{$day}From"]] . ' - ' . $checkInOut[$preview["{$day}To"]]; ?></strong></p>
+                                    <p>Check In:<strong><?php $day = strtolower(date("D")); $checkIn[$preview["{$day}From"]] . ' - ' . $checkIn[$preview["{$day}To"]]; ?></strong></p>
                                     <p>Establishment type:<strong><?= $preview['establishmentType']; ?></strong></p>
                                     <p>Space type:<strong><?= $preview['spaceType']; ?></strong></p>
                                 </li>
@@ -263,7 +197,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                     if(!empty($preview['amenities'])){
                                         $count = 0;
                                     foreach($amenities as $aminity => $values){ 
-                                        if(in_array($aminity, $preview['amenities'])){ 
+                                        if(!empty($preview['amenities']) && in_array($aminity, $preview['amenities'])){ 
                                             $aminity_value = "<strong>".$aminity."</strong>";
                                         }else{
                                             $aminity_value = "<strike>".$aminity."</strike>";
@@ -403,11 +337,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                             <div class="media-body">
                                 <h4 class="media-heading"><?= $hostProfileInfo->firstName.' '.$hostProfileInfo->lastName; ?></h4>
                                 <p><?= $hostProfileInfo->countryResidence;?> - Joined in <?= date('F Y', $hostProfileInfo->createdDate)?></p>
-                                <?php if($this->session->userdata('user_id')!= NULL){ ?>
                                 <a data-toggle="modal" data-target="#myModal" class="btn-red" href="#">Contact host</a>
-                                <?php }else{ ?>
-                                <a class="btn-red openSignInBox" href="javascript:void(0);">Contact host</a>
-                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -425,58 +355,32 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                         <p>Per hour</p>
                     </div>
                 </div>
-                <div class="content clearfix mr20">
-                    <form id="booking-form" method="post" action="<?= site_url('home/request-to-book'); ?>">
-                        <input type="hidden" name="space" value="<?= $space_id; ?>">
-                        <div class="feild clearfix">
-                            <div class="col-sm-6">
-                                <label for="startDate">Check In</label>
-                                <input id="startDate" class="textbox" name="checkIn" type="text" placeholder="dd-mm-yyyy" />
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="endDate">Check Out</label>
-                                <input id="endDate" class="textbox" name="checkOut" type="text" placeholder="dd-mm-yyyy" disabled="" />
-                            </div>
+                <div class="content clearfix">
+                    <div class="feild clearfix">
+                        <div class="col-sm-6">
+                            <label for="startDate">Check In</label>
+                            <input id="startDate" class="textbox " type="text" placeholder="dd-mm-yyyy" />
                         </div>
-                        <div class="feild clearfix">
-                            <div class="col-xs-12">
-                                <label>Professionals</label>
-                                <select class="selectbox" name="professionals">
-                                    <?php for($i=1; $i<=$preview['professionalCapacity'];$i++){ ?>
-                                    <option value="<?= $i; ?>"><?= $i; ?> professionals</option>
-                                    <?php } ?>
-                                </select>
-                            </div>
+                        <div class="col-sm-6">
+                            <label for="endDate">Check Out</label>
+                            <input id="endDate" class="textbox " type="text" placeholder="dd-mm-yyyy" disabled="" />
                         </div>
-                        <div class="feild clearfix bookingInfo hidden">
-                            <div class="col-xs-12">
-                                <table class="table" style="margin-bottom: 0px;">
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="feild clearfix">
                         <div class="col-xs-12">
-                            <?php if($this->session->userdata('user_id')!= NULL){ ?>
-                            <button type="submit" class="btn-red wide">Request to Book</button>
-                            <?php }else{ ?>
-                            <a href="javascript:void(0);" class="btn-red openSignInBox">Request to Book</a>
-                            <?php } ?>
-                            
-                            <p>You won’t be charged yet</p>
+                            <label>Professionals</label>
+                            <select class="textbox">
+                                <?php for($i=1; $i<=$preview['professionalCapacity'];$i++){ ?>
+                                <option><?= $i; ?> professionals</option>
+                                <?php } ?>
+                            </select>
                         </div>
-                    </form>
-                </div>
-                <?php if($this->session->userdata('user_id')!= NULL){ ?>
-                <div class="content clearfix wishlist-section">
+                    </div>
                     <div class="col-xs-12">
-                        <button class="btn btn-default wide" data-toggle="modal" data-target="#wishListModal"><i class="fa <?= $added?'fa-heart red':'fa-heart-o';?>"></i>&nbsp;<?= $added?'Saved':'Save';?> to Wish List</button>
-
-                        <p></p>
+                        <a href="#" class="btn-red">Book</a>
+                        <p>You won’t be charged yet</p>
                     </div>
                 </div>
-                <?php } ?>
             </div>
         </div>
         <div class="row">
@@ -602,18 +506,13 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
         </div>
     </div>    
 </section>
-<?php
-if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($preview['latitude']) && !empty($preview['longitude'])){
-    $editMode = TRUE;
-}else{
-    $editMode = FALSE;
-}
-?>
 <script src="<?php echo base_url('theme/front/assests/')?>js/owl.carousel.js" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/front/assests/')?>js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/admin/plugins/bootstrap-datetimepicker/')?>js/bootstrap-datetimepicker.min.js" type="text/javascript" charset="UTF-8"></script>
 <script src="<?php echo base_url('theme/front/assests/')?>js/galleria-1.5.7.js" type="text/javascript"></script>
 <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI" type="text/javascript"></script>
+
 <script type="text/javascript">
-    //$('[data-toggle="tooltip"]').tooltip('show');
     // Load the Fullscreen theme
     Galleria.loadTheme('<?php echo base_url('theme/front/assests/')?>fullscreen/galleria.fullscreen.js');
     var check = 0;
@@ -661,7 +560,7 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
         if($(this).attr('href') == "#menu3" && map_shown == false){
             map_shown = true;
             //init_map();
-            <?php if($editMode){ ?> load_map(); <?php }?>
+            load_map();
         }        
     });
 
@@ -679,43 +578,41 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
         availableDates = <?= json_encode($available_dates); ?>;
     <?php }?>
     $(document).ready(function(){
-        $( "#startDate, #startDate2" ).datepicker({
+        $( "#startDate, #startDate2" ).datetimepicker({
             //title: "Check In Date",
+            bootcssVer:3,
             orientation: "bottom",
             autoclose: true,
-            format: 'dd-mm-yyyy',
-            weekStart: 1,
-            beforeShowDay: function (date){
-                var dmy = date.getDate().padLeft() + "-" + (date.getMonth()+1).padLeft() + "-" + date.getFullYear();
+            format: 'dd-mm-yyyy - HH:ii P',
+            showMeridian: true,
+            weekStart: 1,            
+            onRenderDay: function(date) {
+                var dmy = date.getFullYear() + "-" + (date.getMonth()+1).padLeft() + "-" + date.getDate().padLeft();
 
                 //console.log(dmy+' : '+($.inArray(dmy, availableDates)));
-                //console.log(unavailableDates);
-                if ($.inArray(dmy, availableDates) !== -1) {
-                    return {
-                        enabled: true,
-                        tooltip: 'Available'
-                    };
+                console.log(unavailableDates);
+                if ($.inArray(dmy, availableDates) !== -1 && $.inArray(dmy, unavailableDates) !== -1) {
+                    //return [true, "","Available"]; 
+                    unavailableDates.push(dmy);
+                    
                 } else{
-                    return {
-                        enabled: false,
-                        tooltip: 'Unavailable'
-                    };
-                    //unavailableDates.push(dmy);
+                    //return [false,"","unAvailable"]; 
                 }
-            }
+            },
+            //datesDisabled: unavailableDates
         }) .on('change.dp', function (e) {
             dateChanged(e);
             //console.log($(e.target).attr('id'));
         });
-        //console.log(unavailableDates);
-        $('#startDate, #startDate2').datepicker('setDatesDisabled', unavailableDates);
-        $('#startDate, #startDate2').datepicker('setStartDate', '<?= isset($available_dates)?get_start_date_by_currentdate($available_dates,$unavailable_dates):null; ?>');
-        $('#startDate, #startDate2').datepicker('setEndDate', '<?= isset($available_dates)?get_end_date_by_currentdate($available_dates,$unavailable_dates):null; ?>');
+        console.log(unavailableDates);
+        $('#startDate, #startDate2').datetimepicker('setDatesDisabled', unavailableDates);
+        //$('#startDate, #startDate2').datetimepicker('setStartDate', '<?= isset($available_dates)?get_start_date_by_currentdate($available_dates,$unavailable_dates):null; ?>');
+        //$('#startDate, #startDate2').datetimepicker('setEndDate', '<?= isset($available_dates)?get_end_date_by_currentdate($available_dates,$unavailable_dates):null; ?>');
     });
     function dateChanged(event) {
         var start_date = $('#'+$(event.target).attr('id')).val();
 
-        $("#endDate,#endDate2").datepicker("destroy");
+        $("#endDate,#endDate2").datetimepicker("destroy");
         $('#endDate,#endDate2').prop('disabled', false);
 
         var startDate = new Date(start_date.substring(6, 10), start_date.substring(3, 5)-1, start_date.substring(0, 2));
@@ -735,23 +632,23 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
                     endDate.getFullYear()
                   ].join('-');
 
-        $( "#endDate,#endDate2" ).datepicker({
+        $( "#endDate,#endDate2" ).datetimepicker({
             title: "Min stay: <?= $preview['minStay']; ?> nights, Max stay: <?= $preview['maxStay']; ?> nights",
-            format: "dd-mm-yyyy",
+            format: 'dd-mm-yyyy - HH:ii P',
+            showMeridian: true,
             startDate: minDate,
             endDate: maxDate,
             orientation: "bottom",
             autoclose: true,
-            weekStart: 1
+            weekStart: 1,
+            //maxDate: new Date(newyr, 12, 0, 0) , 
+            //yearRange: "-150:+0",
         });
-        
-        $("#endDate").datepicker("setDate",minDate);
-        $("#endDate").focus();
     }
     Number.prototype.padLeft = function(base,chr){
         var  len = (String(base || 10).length - String(this).length)+1;
         return len > 0? new Array(len).join(chr || '0')+this : this;
-    };
+    }
     
     $('.owl-carousel').owlCarousel({
         loop:true,
@@ -769,45 +666,22 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
             }
         }
     });
-    $("#endDate").on("change", function(){
-        fetch_booking_info();
-    });
     function scrollToDiv(div_id){
         $('html, body').animate({ scrollTop: $(div_id).offset().top}, 1000);
-        if(div_id === ".right-side"){ $("#startDate").focus(); }
+        if(div_id == ".right-side"){ $("#startDate").focus(); }
     }
-    function fetch_booking_info(){
-        $("form#booking-form").parent().block({ 
-            overlayCSS: { backgroundColor: '#E5E5E5' }, 
-            message: '<img src="<?= base_url(); ?>assets/images/loading-spinner-grey.gif" alt="please wait...">',
-            css: { border: 'none', backgroundColor: 'transparent' }  
-        });
-        $.ajax({
-            url: "<?= site_url('home/get_booking_info'); ?>",
-            type: "POST",
-            data: $("form#booking-form").serialize(),
-            success: function(response) {
-                $("form#booking-form").parent().unblock();
-                $(".bookingInfo table tbody").html(response);
-                $(".bookingInfo").removeClass('hidden');
-                $('[data-toggle="tooltip"]').tooltip();
-            },
-            error: function(response){
-                $("form#booking-form").parent().unblock();
-            }
-        });
-    }
-    <?php if($editMode){ ?>
     function load_map(){
         geocoder = new google.maps.Geocoder();
 
         geocoder.geocode( { 'address': "<?= $preview['full_address']; ?>" }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-
-//                var latitude = results[0].geometry.location.lat();
-//                var longitude = results[0].geometry.location.lng();
+                <?php if(!empty($preview['latitude']) && !empty($preview['longitude'])): ?>
                 var lattitude = <?= $preview['latitude']; ?>;
                 var longitude = <?= $preview['longitude']; ?>;
+                <?php else: ?>
+                var lattitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                <?php endif;?>
 
                 var latlngPos = new google.maps.LatLng(lattitude, longitude);
 
@@ -844,121 +718,4 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
             }
         });
     }
-    <?php }?>
-    $('#booking-form').validate({
-        rules: {
-            'checkIn' :{ required:true},
-            'checkOut' : { required:true},
-            'professionals' : { required:  true }
-        },
-        messages : {
-            'checkIn' :{ required:"Please select a check in date."},
-            'checkOut' : { required:"Please select a check out date."},
-            'professionals' : { required:"Please select number of professionals."}
-        }
-    });
-    $('#contact-form').validate({
-        rules: {
-            'checkIn' :{ required:true},
-            'checkOut' : { required:true},
-            'professionals' : { required:  true },
-            'message' : {required:true}
-        },
-        messages : {
-            'checkIn' :{ required:"Please select a check in date."},
-            'checkOut' : { required:"Please select a check out date."},
-            'professionals' : { required:"Please select number of professionals."},
-            'message' : { required:"Please enter your message." }
-        },
-        submitHandler: function(form) {
-            $(form).parents('div.modal-body').block({ 
-                overlayCSS: { backgroundColor: '#E5E5E5' }, 
-                message: '<img src="<?= base_url(); ?>assets/images/loading-spinner-grey.gif" alt="please wait...">',
-                css: { border: 'none', backgroundColor: 'transparent' }  
-            });
-            $.ajax({
-                url: form.action,
-                type: form.method,
-                data: $(form).serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    $(form).parents('div.modal-body').unblock();
-                    $(".host-popup-content .alert strong").text(response.message);
-                    if(response.success){
-                        
-                    }
-                    $(form).trigger('reset');
-                },
-                error: function(response){
-                    $(form).parents('div.modal-body').unblock();
-                }
-            });
-        }
-    });
-    /* Wish List related code */
-    $("a#create-wishlist-btn").on("click", function(e){
-        e.preventDefault();
-        $(this).toggle();
-        $("form#wishlist-form").toggle();
-    });
-    $('#wishListModal').on('hidden.bs.modal', function () {
-        $("#create-wishlist-btn").toggle();
-        $("form#wishlist-form").toggle();
-    });
-    $('#wishlist-form').validate({
-        rules: {
-            'name' :{ required:true}
-        },
-        messages : {
-            'name' :{ required:"Please enter your wishlist name."}
-        },
-        submitHandler: function(form) {
-            $(form).parents('div.modal-content').block({ 
-                overlayCSS: { backgroundColor: '#E5E5E5' }, 
-                message: '<img src="<?= base_url(); ?>assets/images/loading-spinner-grey.gif" alt="please wait...">',
-                css: { border: 'none', backgroundColor: 'transparent' }  
-            });
-            $.ajax({
-                url: form.action,
-                type: form.method,
-                data: $(form).serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    $(form).parents('div.modal-content').unblock();
-                    $(form).parents('div.modal-body').find(".alert strong").text(response.message);
-                    $(form).parents('div.modal-body').find(".alert").show();
-                    if(response.success){
-                        var list_name = $(form).find("input[name='name']").val();
-                        $(form).next("ul.wishlists").append('<li><span>'+list_name+'</span><span class="pull-right"><i class="fa fa-heart red"></i></span></li>');
-                        $(form).next("ul.wishlists").show();
-                        $(form).hide();
-                        //$(".wishlist-section p").text("Saved to "+list_name);
-                        $(".wishlist-section .fa").removeClass("fa-heart-o").addClass("fa-heart red");
-                    }
-                    $(form).trigger('reset');
-                },
-                error: function(response){
-                    $(form).parents('div.modal-content').unblock();
-                }
-            });
-        }
-    });
-    $(document).on('click', 'li.add-to-wishlist', function(){
-        var $this = $(this);
-        var wishlist_id = $(this).attr('data-wishlist-id');
-        var space_id = $(this).attr('data-space-id');
-        var params = {wishlist_id: wishlist_id, space_id: space_id};
-        $.post("<?= site_url('dashboard/add_to_wishlist')?>", params, function(response){
-            var result = JSON.parse(response);
-            if(result.success === 1 || result.success === 2){
-                $this.find('i.fa').addClass('red');
-                $(".wishlist-section button").html('<i class="fa fa-heart red"></i>&nbsp;Saved to Wish List');
-            }else if(result.success === 0){
-                $this.find('i.fa').removeClass('red');
-            }
-            if(result.addedInAny === 0){
-                $(".wishlist-section button").html('<i class="fa fa-heart-o"></i>&nbsp;Save to Wish List');
-            }
-        });
-    });
 </script>

@@ -1,4 +1,4 @@
-<?php $stepData = $this->session->userdata('stepData');//print_r($stepData); ?>
+<?php $stepData = $this->session->userdata('stepData');//print_array($stepData); ?>
 <div class="progress">
     <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
         70% Complete
@@ -182,7 +182,7 @@
                     var month = monthString.replace(/[0-9]/g, '');
                     buttonObj[month]      = "0";
                 }
-                //console.log('slots ', slotsObj);
+                console.log('slots ', slotsObj);
                 //console.log('button ', buttonObj);
             });
  

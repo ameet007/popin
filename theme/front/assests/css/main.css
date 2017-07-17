@@ -703,6 +703,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .new-partner37 .fc-content-skeleton > table > thead td {height:95px;}
 .new-partner37 .fc-content-skeleton > table > tbody {display:none}
 .new-partner37 .fc-day-number {font-size:19px; color:#484848;float: left !important;padding: 15px 10px;}
+#calendar .fc-day-number {font-size:19px; color:#484848;text-align: left; padding: 15px 10px;}
 .new-partner37 .fc-content-skeleton > table > thead td.fc-day-top.fc-past {background-color:#eeeeee !important;cursor: not-allowed;}
 /*.new-partner37 .fc-content-skeleton > table > thead td.fc-day-top.fc-today {background-color:#fcf8e3 !important;}*/
 .new-partner37 .fc-content-skeleton > table > thead td.fc-day-top.space-available {background-color:transparent;}

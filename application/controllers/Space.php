@@ -1017,7 +1017,7 @@ class Space extends CI_Controller {
 
     public function calendar() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-//            print_r($_POST);exit;
+            //print_r($_POST);
             $stepData = $this->session->userdata('stepData');
 
             if (!empty($_POST)) {
@@ -1027,7 +1027,7 @@ class Space extends CI_Controller {
 
                     $response = $this->space->updateCalendarData($calendarData, $stepData['id']);
                     $stepData['step3']['calendar'] = $response;
-                    //print_r($response);exit;
+                    //print_r($response);
                 }
             }
             $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',80);

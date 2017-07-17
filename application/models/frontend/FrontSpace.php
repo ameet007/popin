@@ -241,17 +241,13 @@ class FrontSpace extends CI_Model {
             'maxStay' => $spaceData['maxStay']
         );
         
-        $spaceDates = $this->db->select('spaceDate,startTime,endTime')->get_where('space_available_slots', array('space' => $space_id))->result_array();
-        if(!empty($spaceDates)){
-            foreach ($spaceDates as $spaceDate) {
-                $response['step3']['calendar']['available_dates'][] = $spaceDate['spaceDate'];
-            }
+        $spaceAvailableDates = $this->db->select('spaceDate')->get_where('space_available_slots', array('space' => $space_id))->row_array();
+        if(!empty($spaceAvailableDates)){
+            $response['step3']['calendar']['available_dates'] = json_decode($spaceAvailableDates['spaceDate'], TRUE);
         }
-        $spaceDates = $this->db->select('spaceDate,startTime,endTime')->get_where('space_unavailable_slots', array('space' => $space_id))->result_array();
-        if(!empty($spaceDates)){
-            foreach ($spaceDates as $spaceDate) {
-                $response['step3']['calendar']['unavailable_dates'][] = $spaceDate['spaceDate'];
-            }
+        $spaceUnavailableDates = $this->db->select('spaceDate')->get_where('space_unavailable_slots', array('space' => $space_id))->row_array();
+        if(!empty($spaceUnavailableDates)){
+            $response['step3']['calendar']['unavailable_dates'] = json_decode($spaceUnavailableDates['spaceDate'], TRUE);
         }
         
         $response['step3']['page7'] = array(
@@ -307,41 +303,42 @@ class FrontSpace extends CI_Model {
             if($status["canBook"] == 0){
                 $tableName = "space_unavailable_slots";
                 $responseIndex = "unavailable_dates";
-                
-                $existingDate = $this->db->get_where('space_available_slots', array('space' => $space_id, 'spaceDate' => $date))->num_rows();
-                if($existingDate > 0){
-                    $this->db->where(array('space' => $space_id, 'spaceDate' => $date));
-                    $this->db->delete('space_available_slots');
-                }
             }else{
                 $tableName = "space_available_slots";
                 $responseIndex = "available_dates";
-                
-                $existingDate = $this->db->get_where('space_unavailable_slots', array('space' => $space_id, 'spaceDate' => $date))->num_rows();
-                if($existingDate > 0){
-                    $this->db->where(array('space' => $space_id, 'spaceDate' => $date));
-                    $this->db->delete('space_unavailable_slots');
-                }
             }
-            
-            $existingDate = $this->db->get_where($tableName, array('space' => $space_id, 'spaceDate' => $date))->num_rows();
-            if($existingDate == 0){
-                $queryData['space']         = $space_id;
-                $queryData['spaceDate']     = $date;
-                $queryData['createdDate']   = strtotime(date('Y-m-d H:i:s'));
-                $queryData['updatedDate']   = strtotime(date('Y-m-d H:i:s'));
-                $queryData['ipAddress']     = $this->input->ip_address();
-                $this->db->insert($tableName, $queryData);
-                $response[$responseIndex][] = $date;
-            }else{
-                $queryData['updatedDate']   = strtotime(date('Y-m-d H:i:s'));
-                $queryData['ipAddress']     = $this->input->ip_address();
-                $this->db->where(array('space' => $space_id, 'spaceDate' => $date));
-                $this->db->update($tableName, $queryData);
-                $response[$responseIndex][] = $date;
-            }
+            $response[$responseIndex][] = $date;
         }
+        if(isset($response['unavailable_dates'])){
+            sort($response['unavailable_dates']);
+            $this->updateCalendarRecords("space_unavailable_slots", "unavailable_dates", $space_id, $response);
+        }
+        if(isset($response['available_dates'])){
+            sort($response['available_dates']);
+            $this->updateCalendarRecords("space_available_slots", "available_dates", $space_id, $response);
+        }
+        
         return $response;
+    }
+    
+    private function updateCalendarRecords($tableName, $responseIndex, $space_id, $response) {
+        $existingDate = $this->db->get_where($tableName, array('space' => $space_id))->num_rows();
+        if($existingDate == 0){
+            $queryData['space']         = $space_id;
+            $queryData['spaceDate']     = json_encode($response[$responseIndex]);
+            $queryData['createdDate']   = strtotime(date('Y-m-d H:i:s'));
+            $queryData['updatedDate']   = strtotime(date('Y-m-d H:i:s'));
+            $queryData['ipAddress']     = $this->input->ip_address();
+            $this->db->insert($tableName, $queryData);
+            return $this->db->insert_id();
+        }else{
+            $queryData['spaceDate']     = json_encode($response[$responseIndex]);
+            $queryData['updatedDate']   = strtotime(date('Y-m-d H:i:s'));
+            $queryData['ipAddress']     = $this->input->ip_address();
+            $this->db->where(array('space' => $space_id));
+            $this->db->update($tableName, $queryData);
+            return $this->db->affected_rows();
+        }
     }
     
     public function get_space_preview_data($space_id, $host_id='') {
@@ -387,20 +384,19 @@ class FrontSpace extends CI_Model {
             if (!empty($response['cleanUpProcedure'])) {
                 $response['cleanUpProcedure'] = explode(' | ', $response['cleanUpProcedure']);
             }
-            $spaceDates = $this->db->select('spaceDate,startTime,endTime')->get_where('space_unavailable_slots', array('space' => $space_id))->result_array();
-            if(!empty($spaceDates)){
-                foreach ($spaceDates as $spaceDate) {
-                    $response['calendar']['unavailable_dates'][] = $spaceDate['spaceDate'];
-                }
+            
+            $spaceAvailableDates = $this->db->select('spaceDate')->get_where('space_available_slots', array('space' => $space_id))->row_array();
+            if(!empty($spaceAvailableDates)){
+                $response['calendar']['available_dates'] = json_decode($spaceAvailableDates['spaceDate'], TRUE);
+                array_walk($response['calendar']['available_dates'], array($this, 'change_format'));
+            }
+            $spaceUnavailableDates = $this->db->select('spaceDate')->get_where('space_unavailable_slots', array('space' => $space_id))->row_array();
+            if(!empty($spaceUnavailableDates)){
+                $response['calendar']['unavailable_dates'] = json_decode($spaceUnavailableDates['spaceDate'], TRUE);
                 array_walk($response['calendar']['unavailable_dates'], array($this, 'change_format'));
             }
-            $spaceDates = $this->db->select('spaceDate,startTime,endTime')->get_where('space_available_slots', array('space' => $space_id))->result_array();
-            if(!empty($spaceDates)){
-                foreach ($spaceDates as $spaceDate) {
-                    $response['calendar']['available_dates'][] = $spaceDate['spaceDate'];
-                }
-                //array_walk($response['calendar']['available_dates'], array($this, 'change_format'));
-            }
+            
+            
             $all_countries = unserialize(ALL_COUNTRY);
 
             $response['full_address'] = $response['streetAddress'];
@@ -417,7 +413,7 @@ class FrontSpace extends CI_Model {
     }
     function change_format(&$item, $key)
     {
-        $item = date("d/m/Y", strtotime($item));
+        $item = date("d-m-Y", strtotime($item));
     }
     
     function remove_gallery_image($space_id, $image){
