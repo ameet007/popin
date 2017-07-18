@@ -699,7 +699,7 @@ class Settings extends CI_Controller {
             if ($response > 0) {
                 $this->session->set_flashdata('message_notification', 'Establishment Type has ben Added Successfully');
                 $this->session->set_flashdata('class', A_SUC);
-                redirect(ADMIN_DIR . '/settings/establishment_list');
+                redirect(ADMIN_DIR . '/settings/add');
             } else {
                 $this->session->set_flashdata('message_notification', 'Establishment Type Not Added Successfully');
                 $this->session->set_flashdata('class', A_FAIL);
@@ -834,7 +834,7 @@ class Settings extends CI_Controller {
             if ($response > 0) {
                 $this->session->set_flashdata('message_notification', 'Industry has ben Added Successfully');
                 $this->session->set_flashdata('class', A_SUC);
-                redirect(ADMIN_DIR . '/Settings/industry_list');
+                redirect(ADMIN_DIR . '/Settings/addIndustry');
             } else {
                 $this->session->set_flashdata('message_notification', 'Industry Not Added Successfully');
                 $this->session->set_flashdata('class', A_FAIL);
@@ -1036,7 +1036,7 @@ class Settings extends CI_Controller {
             if ($response > 0) {
                 $this->session->set_flashdata('message_notification', 'Amenities has ben Added Successfully');
                 $this->session->set_flashdata('class', A_SUC);
-                redirect(ADMIN_DIR . '/Settings/amenities_list');
+                redirect(ADMIN_DIR . '/Settings/addAmenities');
             } else {
                 $this->session->set_flashdata('message_notification', 'Amenities Not Added Successfully');
                 $this->session->set_flashdata('class', A_FAIL);
