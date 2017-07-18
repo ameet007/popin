@@ -29,9 +29,12 @@ function getSingleRecord($table,$column,$condication){
     $tableRecord->load->database();
     return $tableRecord->db->get_where($table,array($column=>$condication))->row();
 }
-function getMultiRecord($table,$column,$condication){
+function getMultiRecord($table,$column,$condication,$orderBy='',$orderType=''){
     $tableRecord =& get_instance();
     $tableRecord->load->database();
+     if (!empty($orderBy)) {
+         $tableRecord->db->order_by($orderBy,$orderType);
+     }
     return $tableRecord->db->get_where($table,array($column=>$condication))->result_array();
 }
 ?>

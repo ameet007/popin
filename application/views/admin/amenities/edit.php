@@ -35,7 +35,7 @@
 	                                                 <select name="industry" id="industry" class="form-control" onchange="onchange_industry(this.value)" >
                                                             <option value="">Select industry</option>
                                                             <?php 
-                                                              $industry = getMultiRecord('industry','status','active');
+                                                              $industry = getMultiRecord('industry','status','active','industry_name','asc');
                                                               foreach ($industry as $key => $value) {
                                                               echo '<option value="'.$value['id'].'" '.($value['id']==$amenities->industry_id?'selected':'').' >'.$value['industry_name'].'</option>';
                                                               }
@@ -100,7 +100,7 @@
                 </div> <!-- content -->
 <script type="text/javascript">
     	function  onchange_industry(getID) {
-    	  var establishment	 = '<?php echo json_encode(getMultiRecord('establishment_types','status','active'));?>';
+    	  var establishment	 = '<?php echo json_encode(getMultiRecord('establishment_types','status','active','name','asc'));?>';
     	  var html = '';
     	      html = '<div class="form-group">'+
                      '<label for="image" class="col-sm-3 control-label">Establishment list</label>'+
