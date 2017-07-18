@@ -381,7 +381,7 @@ class FrontUser extends CI_Model {
     }
     
     function getUserReservations($user, $space){
-        $this->db->select("space_booking.id as id, spaces.spaceTitle as title, space_booking.checkIn as start, space_booking.checkOut as end");
+        $this->db->select("space_booking.id as id, CONCAT(spaces.spaceTitle, ' · ', spaces.professionalCapacity, ' Professional(s)') as title, space_booking.checkIn as start, space_booking.checkOut as end");
         $this->db->join('spaces', 'user.id = spaces.host');
         $this->db->join('space_booking', 'spaces.id = space_booking.space');
         $result = $this->db->where(array('user.id' => $user,'spaces.id'=>$space))->get('user')->result_array();

@@ -320,8 +320,8 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 /*Profile Page css start*/
 .profile-section {}
 .profile-section .required {margin-bottom: 20px;}
-.profile-section .required .main-input {margin-bottom: 15px;}
-.profile-section .required label {color: #484848; padding-top: 8px;}
+.profile-section .required .main-input, .listing-sett .main-input {margin-bottom: 15px;}
+.profile-section .required label, .listing-sett label {color: #484848; padding-top: 8px;}
 .profile-section .required input {}
 .profile-section .required .main-input p {padding-top: 5px;}
 .profile-section .required select {width: auto; appearance:none; -moz-appearance:none; -webkit-appearance:none; display: inline-block;}
@@ -701,6 +701,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .new-partner37 .fc-toolbar .fc-center h2 {font-size:16px; line-height:16px;}
 .new-partner37 .fc tbody .fc-row .fc-content-skeleton table {height:95px;}
 .new-partner37 .fc-content-skeleton > table > thead td {height:95px;}
+.manage-calendar .fc-content-skeleton > table > thead td {height:95px;border-color: #ddd !important;}
 .new-partner37 .fc-content-skeleton > table > tbody {display:none}
 .new-partner37 .fc-day-number {font-size:19px; color:#484848;float: left !important;padding: 15px 10px;}
 #calendar .fc-day-number {font-size:19px; color:#484848;text-align: left; padding: 15px 10px;}

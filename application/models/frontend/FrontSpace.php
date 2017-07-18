@@ -107,6 +107,7 @@ class FrontSpace extends CI_Model {
             'full_address' => ''
         );
         $response['step1']['page1'] = array(
+            'industryType' => $spaceData['industryType'],
             'establishmentType' => $spaceData['establishmentType'],
             'spaceType' => $spaceData['spaceType'],
             'establishmentLicence' => $spaceData['establishmentLicence'],
@@ -350,12 +351,19 @@ class FrontSpace extends CI_Model {
         $response = $this->db->get_where('spaces', array('id' => $space_id))->row_array();
                 
         if(!empty($response)){
+            $industryType = $this->getDropdownDataRow('industry', $response['industryType']);
+            if(!empty($industryType)){
+                $response['industryTypeId'] = $industryType['id'];
+                $response['industryType'] = $industryType['industry_name'];
+            }
             $establishmentType = $this->getDropdownDataRow('establishment_types', $response['establishmentType']);
             if(!empty($establishmentType)){
+                $response['establishmentTypeId'] = $establishmentType['id'];
                 $response['establishmentType'] = $establishmentType['name'];
             }
             $spaceType = $this->getDropdownDataRow('space_types', $response['spaceType']);
             if(!empty($spaceType)){
+                $response['spaceTypeId'] = $spaceType['id'];
                 $response['spaceType'] = $spaceType['name'];
             }
             if (!empty($response['amenities'])) {
