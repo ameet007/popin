@@ -46,8 +46,8 @@
                                                        	<div class="col-sm-8">
 														<select class="table-group-action-input form-control" name="status">
                                                             <option value="">Select...</option>
-                                                            <option value="Activate">Active</option>
-                                                            <option value="Inactive">Inactive</option>
+                                                            <option value="active">Active</option>
+                                                            <option value="inactive">Inactive</option>
                                                         </select></div>
                                                        	<div class="col-sm-4">
                                                        		 <button class="btn btn-teal btn-bordered waves-light waves-effect  m-b-5 table-group-action-submit"> Submit</button>
@@ -117,8 +117,8 @@
                                                                 <td>
                                                                     <select name="status" class="form-control form-filter input-sm">
                                                                         <option value="">Select...</option>
-                                                                        <option value="Activate">Active</option>
-                                                                        <option value="Inactive">Inactive</option>
+                                                                        <option value="active">Active</option>
+                                                                        <option value="inactive">Inactive</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>

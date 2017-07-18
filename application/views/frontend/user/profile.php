@@ -28,7 +28,7 @@
                             <li><a href="<?php echo base_url('user/references')?>">References</a></li>
                         </ul>
                     </div>
-                    <a class="btn btn-default btn-block" href="javascript:void(0);">View Profile</a>
+                    <a class="btn btn-default btn-block" href="<?php echo base_url('user/viewProfile')?>">View Profile</a>
                 </aside>
 				<form name="editBasicProfile" id="editBasicProfile" method="post" action="<?= base_url('user/submit_basic'); ?>">
                 <article class="col-lg-9 main-right">

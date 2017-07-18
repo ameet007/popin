@@ -40,8 +40,8 @@
 	                                                <div class="col-sm-9">
 	                                                 <select name="status" id="status" class="form-control">
                                                             <option value=""></option>
-                                                            <option value="Activate" selected>Active</option>
-                                                            <option value="Inactive">Inactive</option>
+                                                            <option value="active" selected>Active</option>
+                                                            <option value="inactive">Inactive</option>
                                                             </select>
 	                                                </div>
 	                                            </div>

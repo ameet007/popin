@@ -43,7 +43,7 @@
                     <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Referral bonus and rules </span></a>
                 </li>
                 <li>
-                    <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage user messages </span></a>
+                    <a href="<?= base_url(ADMIN_DIR . '/PosteList/messageListing'); ?>" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage user messages </span></a>
                 </li>
                 <li>
                     <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Email Templates and Newsletters </span></a>
