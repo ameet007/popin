@@ -1,4 +1,4 @@
-<?php $stepData = $this->session->userdata('stepData'); ?>
+<?php $stepData = $this->session->userdata('stepData'); print_array($stepData);?>
 <div class="progress">
     <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
         90% Complete

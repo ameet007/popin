@@ -25,7 +25,7 @@ $zip = $state = $city = $street = "";
             <div class="col-md-8">
                 <div class="space-are">
                     <h3>Where’s your business located?</h3>
-                    <?php if(isset($stepData['start']['full_address'])): ?><h4 class="mr15"><?= $stepData['start']['full_address'];?></h4><?php endif;?>
+                    <?php if(isset($stepData['start']['full_address']) && $editMode == TRUE): ?><h4 class="mr15"><?= $stepData['start']['full_address'];?></h4><?php endif;?>
                     <form id="location-form" action="<?php echo site_url('Space/location_submit'); ?>" method="post" <?php if($editMode){ echo "style='display: none;'"; }?>>
                         <div class="feild">
                             <label>Country</label>

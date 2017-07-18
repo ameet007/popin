@@ -348,7 +348,7 @@ class Space extends CI_Controller {
 
         if (!empty($_POST)) {
             $stepData['step1']['page3']['bathrooms'] = (int) $this->input->post('bathrooms');
-            $stepData['step1']['page3']['bathroomADACompliant'] = isset($_POST['bathroomADACompliant']) ? 'Yes' : 'No';
+            $stepData['step1']['page3']['bathroomADACompliant'] = $this->input->post('bathroomADACompliant');
         }
 
         if (isset($stepData['id'])) {
@@ -434,10 +434,13 @@ class Space extends CI_Controller {
     public function amenities() {
         $this->restrict_direct_access_steps('step1', 'page4');
         $header['step_info'] = $this->head_step_1;
-        //$stepData = $this->session->userdata('stepData');
+        $stepData = $this->session->userdata('stepData');
+        $industry = $stepData['step1']['page1']['industryType'];
+        $establishment = $stepData['step1']['page1']['establishmentType'];
         //echo "<pre>";print_r($stepData);echo "</pre>";
+        $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
         $this->load->view(FRONT_DIR . '/include-partner/header', $header);
-        $this->load->view(FRONT_DIR . '/space/new-listing-6');
+        $this->load->view(FRONT_DIR . '/space/new-listing-6', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/footer');
     }
 

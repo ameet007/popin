@@ -30,6 +30,10 @@ class FrontSpace extends CI_Model {
     public function getDropdownDataRow($table, $id){
         return $this->db->get_where($table, array('id'=>$id,'status'=>'active'))->row_array();
     }
+    
+    public function collectAmenities($industry, $establishment) {
+        return $this->db->order_by('amenitiesType','asc')->get_where("amenities", array('industry_id'=>$industry,'establishment_id'=>$establishment,'status'=>'active'))->result_array();
+    }
             
     function getActiveListings($currentUser='', $filters = array()) {
         $response = array();

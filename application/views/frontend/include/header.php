@@ -46,6 +46,12 @@ else{
 	color:red !important;
 }
 </style>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip('show');
+    });
+    
+</script>
 </head>
 <body>
 <header class="head">
