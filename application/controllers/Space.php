@@ -138,6 +138,7 @@ class Space extends CI_Controller {
         } else {
             $stepData = $this->session->userdata('stepData');
         }
+        $data['industries'] = $this->space->getDropdownData('industry');
         $data['establishment_types'] = $this->space->getDropdownData('establishment_types');
         $data['space_types'] = $this->space->getDropdownData('space_types');
         //echo "<pre>"; print_r($stepData); echo "</pre>";exit;
@@ -203,15 +204,14 @@ class Space extends CI_Controller {
                     redirect('Space/establishment');
                 }                
             }
-
+            $host_id = $this->session->userdata('user_id');
             if (!isset($stepData['id'])) {
                 $insertData = $stepData['step1']['page1'];
-                $insertData['host'] = $this->session->userdata('user_id');
+                $insertData['host'] = $host_id;
 
                 $stepData['id'] = $this->space->insertData($insertData);
             } else {
-                $updateData = $stepData['step1']['page1'];
-                $host_id = $this->session->userdata('user_id');
+                $updateData = $stepData['step1']['page1'];                
                 
                 $this->space->updateData($updateData,$stepData['id'],$host_id);
             }

@@ -79,9 +79,11 @@ function time_elapsed_string($datetime, $full = false) {
 }
 
 function get_location_from_ip($ip_address) {
+    $response_location = "";
+    return $response_location;
     $location = json_decode(file_get_contents('http://freegeoip.net/json/' . $ip_address), TRUE);
 
-    $response_location = "";
+    
     if (!empty($location)):
         if (!empty($location['city'])) {
             $response_location .= $location['city'] . ", ";

@@ -78,6 +78,7 @@ $route['listing'] = 'Listing/listing';
 $route['preview-listing/(:num)'] = 'Listing/preview_listing/$1';
 $route['manage-listing/(:num)'] = 'Listing/manage_listing/$1';
 $route['manage-calendar/(:num)'] = 'Listing/manage_calendar/$1';
+$route['view-reservations/(:num)'] = 'Listing/view_reservations/$1';
 $route['my-reservations'] = 'Listing/Listing2';
 $route['reservation-requirements'] = 'Listing/Listing3';
 

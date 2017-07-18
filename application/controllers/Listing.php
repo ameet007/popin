@@ -106,7 +106,7 @@ class Listing extends CI_Controller {
                                 <p>Last updated on '.date("F d, Y",$spaceData['updatedDate']).'</p>
                                 <div class="three-btn">
                                     <a href="'. site_url('manage-listing/'.$spaceData['id']).'" class="btn2">Manage listing</a>
-                                    <a href="'. site_url('manage-calendar/'.$spaceData['id']).'" class="green-btn">Calender</a>
+                                    <a href="'. site_url('view-reservations/'.$spaceData['id']).'" class="green-btn">View Reservations</a>
                                     <a href="'. site_url('preview-listing/'.$spaceData['id']).'"><button class="btn">Preview</button></a>
                                 </div>
                             </div>
@@ -155,16 +155,45 @@ class Listing extends CI_Controller {
             if(empty($data['listing'])){
                 redirect('listing');
             }
+            
+            $data['industries'] = $this->space_model->getDropdownData('industry');
+            $data['establishment_types'] = $this->space_model->getDropdownData('establishment_types');
             $data['space_types'] = $this->space_model->getDropdownData('space_types');
         }
-//        echo "<pre>";
-//        print_r($data['listing']);
-//        echo "</pre>";
+        //print_array($data['listing']);
+        $data['space_id'] = $space_id;
         $data['module_heading'] = "Manage Listing";
         $this->load->view(FRONT_DIR . '/listing/manage-listing', $data);
     }
     
-    public function manage_calendar($space_id = '') {
+    public function update_listing_details() {
+        $user_id = $this->session->userdata('user_id');
+        $space_id = $this->input->post('space_id');
+        $rawData = $this->input->post();
+        unset($rawData['space_id']);
+        $this->space_model->updateData($rawData, $space_id, $user_id);
+        
+        $response['success'] = true;
+        if(isset($rawData['latitude']) && isset($rawData['longitude'])){
+            $response['address'] = true;
+            
+            $all_countries = unserialize(ALL_COUNTRY);
+            $country = $all_countries[$rawData['country']];
+            
+            $response['full_address'] = $rawData['streetAddress'];
+            if (!empty($rawData['suiteBuilding'])){
+                $response['full_address'] .= ' ' . $rawData['suiteBuilding'];
+            }
+            $response['full_address'] .= ', ' . $rawData['city'] . ', ';
+            $response['full_address'] .= $rawData['state'] . ', ';
+            $response['full_address'] .= $rawData['zipCode'] . ', ';
+            $response['full_address'] .= $country;
+        }
+        echo json_encode($response);
+        die();
+    }
+    
+    public function view_reservations($space_id = '') {
         if (empty($space_id)) {
             redirect("Listing/listing");
         }
@@ -175,13 +204,39 @@ class Listing extends CI_Controller {
             if(empty($data['listing'])){
                 redirect('listing');
             }
-            $data['space_types'] = $this->space_model->getDropdownData('space_types');
         }
-//        echo "<pre>";
-//        print_r($data['listing']);
-//        echo "</pre>";
+        //print_array($data['listing']);
         $data['space_id'] = $space_id;
-        $data['module_heading'] = "Manage Listing Calendar";
+        $data['module_heading'] = "View Reservations";
+        $this->load->view(FRONT_DIR . '/listing/view-reservations', $data);
+    }
+    
+    public function manage_calendar($space_id = '') {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $rawData = $this->input->post();
+            if (!empty($rawData)) {
+                $space_id = $this->input->post('space_id');
+                $calendarData = $this->input->post('dates');
+
+                $this->space_model->updateCalendarData($calendarData, $space_id);
+            }
+            echo "success";
+            die();
+        }
+        if (empty($space_id)) {
+            redirect("Listing/listing");
+        }
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        if (!empty($space_id)) {
+            $host_id = $this->session->userdata('user_id');
+            $data['listing'] = $this->space_model->get_space_data($space_id, $host_id);
+            if(empty($data['listing'])){
+                redirect('listing');
+            }
+        }
+        //print_array($data['listing']);
+        $data['space_id'] = $space_id;
+        $data['module_heading'] = "Manage Calendar";
         $this->load->view(FRONT_DIR . '/listing/manage-calendar', $data);
     }
     

@@ -34,7 +34,7 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
                         <h3>How many workspaces does your space have?</h3>
                         <div class="feild">
                             <div class="main">
-                                <input type='text' class="textbox" name='workSpaceCount' value='<?php echo isset($stepData['step1']['page2']['workSpaceCount'])? $stepData['step1']['page2']['workSpaceCount'] : '1'?> workspaces' class='qty' />
+                                <input type='text' class="textbox" name='workSpaceCount' value='<?php echo isset($stepData['step1']['page2']['workSpaceCount'])? $stepData['step1']['page2']['workSpaceCount'] : '0'?> workspaces' class='qty' />
                                 <input type='button' value='' class='qtyminus' field='workSpaceCount' />
                                 <input type='button' value='' class='qtyplus' field='workSpaceCount' />
                             </div>
