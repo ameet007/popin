@@ -112,7 +112,7 @@
                                         <label class="align-right col-sm-3">Preferred Language</label>
                                         <div class="col-sm-9">
                                             <select class="selectbox" name="language" id="language" onchange="autoSave(this.id,this.value)">
-                                               <?= $all_languages = unserialize(LANGUAGES); 
+                                               <?php $all_languages = unserialize(LANGUAGES); 
 											   foreach($all_languages as $k=>$v)
 											   { ?>
 												   <option value="<?= $k; ?>" <?= ($userProfileInfo->language==$k)?'selected':''; ?>><?= $v; ?></option>
@@ -216,7 +216,7 @@
                                         <label class="align-right col-sm-3">Languages</label>
                                         <div class="col-sm-9 number-add">
                                         <select data-placeholder="Please Select Languages" name="languages[]" id="languages" onChange="getSelectedOptions(this)"  multiple class="selectbox chosen-select" tabindex="8">
-										  <?= $all_languages = unserialize(LANGUAGES); 
+										  <?php
 												 $language_arr = explode(',',$userProfileInfo->languages);
 											   foreach($all_languages as $k=>$v)
 											   { ?>

@@ -32,7 +32,9 @@ class FrontSpace extends CI_Model {
     }
     
     public function collectAmenities($industry, $establishment) {
-        return $this->db->order_by('amenitiesType','asc')->get_where("amenities", array('industry_id'=>$industry,'establishment_id'=>$establishment,'status'=>'active'))->result_array();
+        $response['Important'] = $this->db->select('id,amenities_name as name')->get_where("amenities", array('industry_id'=>$industry,'establishment_id'=>$establishment,'amenitiesType'=>'1','status'=>'active'))->result_array();
+        $response['General'] = $this->db->select('id,amenities_name as name')->get_where("amenities", array('industry_id'=>$industry,'establishment_id'=>$establishment,'amenitiesType'=>'2','status'=>'active'))->result_array();
+        return $response;
     }
             
     function getActiveListings($currentUser='', $filters = array()) {
@@ -150,7 +152,7 @@ class FrontSpace extends CI_Model {
         
         if (!empty($spaceData['amenities'])) {
             $response['step1']['page5'] = array(
-                'amenities' => explode(' | ', $spaceData['amenities'])
+                'amenities' => json_decode($spaceData['amenities'], true)
             );
         }
         if (!empty($spaceData['facility'])) {
@@ -371,7 +373,7 @@ class FrontSpace extends CI_Model {
                 $response['spaceType'] = $spaceType['name'];
             }
             if (!empty($response['amenities'])) {
-                $response['amenities'] = explode(' | ', $response['amenities']);
+                $response['amenities'] = json_decode($response['amenities'], true);
             }
 
             if (!empty($response['facility'])) {

@@ -1,4 +1,5 @@
-<?php $stepData = $this->session->userdata('stepData'); print_array($stepData);?>
+<link href="<?= base_url('theme/front/assests/css/chosen.css'); ?>" rel="stylesheet" type="text/css" />
+<?php $stepData = $this->session->userdata('stepData'); //print_array($stepData);?>
 <div class="progress">
     <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
         90% Complete
@@ -10,31 +11,38 @@
             <div class="col-md-8">
                 <div class="space-are">
                     <h3>What amenities do you offer?</h3>
-                    <form id="amenities-form" action="<?php echo site_url('Space/amenities_submit'); ?>" method="post">
-                        <?php $amenities = unserialize(AMENITIES); 
-                        foreach($amenities as $k=>$v){ ?>
+                    <form id="amenities-form" action="<?php echo site_url('Space/amenities_submit'); ?>" method="post" autocomplete="off">
+                        <?php foreach($amenities['Important'] as $k => $amtyI){ ?>
                         <div class="feild">
                             <label for="<?= $k; ?>">
-                                <input id="<?= $k; ?>" type="checkbox" name="amenities[]" value="<?= $k; ?>" <?php echo (isset($stepData['step1']['page5']['amenities']) && !empty($stepData['step1']['page5']['amenities']) && in_array($k, $stepData['step1']['page5']['amenities']))? 'checked' : ''?>> <?= $k; ?>
-                                <?php if(!empty($v['desc'])): ?>
-                                <span><?= $v['desc']; ?></span>
-                                <?php endif;?>
+                                <input id="<?= $k; ?>" type="checkbox" name="amenities[main][]" value="<?= $amtyI['id']; ?>" <?php echo (isset($stepData['step1']['page5']['amenities']['main']) && !empty($stepData['step1']['page5']['amenities']['main']) && in_array($amtyI['id'], $stepData['step1']['page5']['amenities']['main']))? 'checked' : ''?>> <?= $amtyI['name']; ?>
+                                <?php //if(!empty($v['desc'])): ?>
+<!--                                <span></span>-->
+                                <?php //endif;?>
                             </label>
                         </div>
                         <?php } ?> 
+                        <div class="feild amenity <?php if(!isset($stepData['step1']['page5']['amenities']['main']) && empty($stepData['step1']['page5']['amenities']['main'])){ echo "hidden";}?>">
+                            <label>More amenities</label>
+                            <select class="selectbox  chosen-select" name="amenities[main][]" data-placeholder="Select Amenities" multiple>
+                                <?php foreach($amenities['General'] as $amtyG){ ?>
+                                <option value="<?= $amtyG['id']; ?>" <?php echo (isset($stepData['step1']['page5']['amenities']['main']) && !empty($stepData['step1']['page5']['amenities']['main']) && in_array($amtyG['id'], $stepData['step1']['page5']['amenities']['main']))? 'selected' : ''?>><?= $amtyG['name']; ?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                        <div class="feild"><a href="#" class="show-more" data-target-key="amenity"><?php echo (isset($stepData['step1']['page5']['amenities']['main']) && !empty($stepData['step1']['page5']['amenities']['main']))? '- Less' : '+ Expand More'?></a></div>
+                        
                         <div class="add-rules">
                             <div class="additional-rules">
                                 <?php 
-                                if(isset($stepData['step1']['page5']['amenities']) && !empty($stepData['step1']['page5']['amenities'])){ 
-                                    $amenityArray = array_keys($amenities);
-                                    foreach($stepData['step1']['page5']['amenities'] as $amenity){
-                                        if(!in_array($amenity, $amenityArray)){
+                                if(isset($stepData['step1']['page5']['amenities']['other']) && !empty($stepData['step1']['page5']['amenities']['other'])){
+                                    foreach($stepData['step1']['page5']['amenities']['other'] as $amenity){
                                 ?>
                                 <div class="append-div">
-                                    <input class="textbox" name="amenities[]" value="<?= $amenity; ?>" type="text" readonly />
+                                    <input class="textbox" name="amenities[other][]" value="<?= $amenity; ?>" type="text" readonly />
                                     <a class="clos cancel-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a>
                                 </div>
-                                <?php }}} ?>
+                                <?php }} ?>
                             </div>
                             <div class="clearfix">
                                 <span class="pull-left"><input id="rule-text" class="textbox" type="text" placeholder="Add your own amenities" ></span>
@@ -64,11 +72,35 @@
 </section>
 <style>
     .new-partner25 .add-rules .pull-left .textbox{
-        width: 300px;
+        width: 337px;
     }
+    ul.chosen-choices{margin: 0 !important;}
+    ul.chosen-results{ margin: 0 4px 4px 0 !important; }
+    ul.chosen-results li{ margin: 0 !important; }
+    
 </style>
+<script src="<?= base_url('theme/front/assests/js/chosen.js'); ?>"  type="text/javascript"></script>
 <script type="text/javascript">
 $(".loader").hide();
+$('.chosen-select').chosen();
+$(document).on('click', 'a.show-more', function(e){
+    e.preventDefault();
+    var $this = $(this), target = $(this).attr("data-target-key");
+
+    //$("."+target).toggle();
+    $( "."+target ).toggleClass(function() {
+        if ( $( this ).is( ".hidden" ) ) {
+            console.log('shown');
+            $this.html('- Less');
+            return "hidden";
+        } else {
+            console.log('hidden');
+            $this.html('+ Expand More');
+            return "hidden";
+        }
+
+    });
+});
 $("#amenities-form").submit(function(e){
     e.preventDefault();
     $(".loader").show();
@@ -82,7 +114,7 @@ $("#amenities-form").submit(function(e){
 $('#add-rule').click(function(){
     var text = $('#rule-text').val();
     if(text.trim() !== ""){
-        $('.additional-rules').append('<div class="append-div"><input class="textbox" name="amenities[]" value="'+text+'" type="text" readonly /><a class="clos cancel-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a></div>');
+        $('.additional-rules').append('<div class="append-div"><input class="textbox" name="amenities[other][]" value="'+text+'" type="text" readonly /><a class="clos cancel-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a></div>');
         $('#rule-text').val('');
     }
 });
