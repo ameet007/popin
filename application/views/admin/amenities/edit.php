@@ -32,7 +32,7 @@
 	                                          <div class="form-group">
 	                                                <label for="image" class="col-sm-3 control-label">Industry list</label>
 	                                                <div class="col-sm-9">
-	                                                 <select name="industry" id="industry" class="form-control">
+	                                                 <select name="industry" id="industry" class="form-control" onchange="onchange_industry(this.value)" >
                                                             <option value="">Select industry</option>
                                                             <?php 
                                                               $industry = getMultiRecord('industry','status','Activate');
@@ -43,10 +43,35 @@
                                                             </select>
 	                                                </div>
 	                                            </div>
+	                                            <span id="showEstablishment">
+	                                            <div class="form-group">
+	                                               <label for="image" class="col-sm-3 control-label">Establishment list</label>
+	                                                <div class="col-sm-9">
+	                                                 <select name="establishment" id="establishment" class="form-control">
+                                                     <option value="">Select establishment type</option>
+                                                        <?php 
+                                                         $establishment = getMultiRecord('establishment_types','status','active');
+                                                          foreach ($establishment as $key => $value) {
+                                                          	     if ($amenities->industry_id == $value['industry_ID']) {
+                                                                  echo '<option value="'.$value['id'].'" '.($value['id']==$amenities->establishment_id?'selected':'').' >'.$value['name'].'</option>';
+                                                                }
+                                                            }
+                                                        ?>
+                                                    </select>
+	                                                </div>
+	                                            </div>
+	                                            </span>
 	                                             <div class="form-group">
 	                                                <label for="name" class="col-sm-3 control-label">Amenities Name</label>
 	                                                <div class="col-sm-9">
 	                                                 <input type="text" placeholder="enter amenities name" name="name" id="name" class="form-control" value="<?= $amenities->amenities_name; ?>">
+	                                                </div>
+	                                            </div>
+	                                            <div class="form-group">
+	                                                <label for="image" class="col-sm-3 control-label">Important</label>
+	                                                <div class="col-sm-9">
+	                                                <label class="radio-inline"><input type="radio" value="2" name="important" <?= ($amenities->amenitiesType == 2?'checked':''); ?> >No</label>
+	                                                <label class="radio-inline"><input type="radio" value="1" name="important" <?= ($amenities->amenitiesType == 1?'checked':''); ?> >Yes</label>
 	                                                </div>
 	                                            </div>
 	                                            <div class="form-group">
@@ -73,3 +98,20 @@
                         <!-- end row -->
                     </div> <!-- container -->
                 </div> <!-- content -->
+<script type="text/javascript">
+    	function  onchange_industry(getID) {
+    	  var establishment	 = '<?php echo json_encode(getMultiRecord('establishment_types','status','active'));?>';
+    	  var html = '';
+    	      html = '<div class="form-group">'+
+                     '<label for="image" class="col-sm-3 control-label">Establishment list</label>'+
+                     '<div class="col-sm-9"><select name="establishment" id="establishment" class="form-control">'+
+                      '<option value="">Select establishment type</option>';
+    	      $.each(JSON.parse(establishment), function(idx, obj) {
+    	      	  if (obj.industry_ID == getID) {
+    	      	  	html += '<option value="'+obj.id+'">'+obj.name+'</option>';
+    	      	  }
+              });
+              html += '</select></div></div>';
+              $('#showEstablishment').html(html);
+    	}
+</script>

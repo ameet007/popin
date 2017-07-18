@@ -927,8 +927,10 @@ class Settings extends CI_Controller {
             $possible_status_changes = '';
             $row = array();
             $row[] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $fc->id . '"/><span></span></label>';
-            $indurty = getSingleRecord('industry','id',$fc->industry_id);
+            $indurty       = getSingleRecord('industry','id',$fc->industry_id);
+            $establishment = getSingleRecord('establishment_types','id',$fc->establishment_id);
             $row[]   = ucfirst($indurty->industry_name);
+            $row[]   = ucfirst($establishment->name);
             $row[] = ucfirst($fc->amenities_name);
             $row[] = date(DATE_FORMAT, $fc->create_date);
             $row[] = date(DATE_FORMAT, $fc->update_date);
@@ -989,8 +991,16 @@ class Settings extends CI_Controller {
                 ),
             ),
             array(
+                'field' => 'establishment',
+                'label' => 'establishment list',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The establishment type'
+                ),
+            ),
+            array(
                 'field' => 'name',
-                'label' => 'Industry Name',
+                'label' => 'Amenities Name',
                 'rules' => 'required|min_length[3]|max_length[255]',
                 'errors' => array(
                     'required' => 'Please Enter The Amenities Name',
@@ -1003,7 +1013,7 @@ class Settings extends CI_Controller {
                 'label' => 'Status',
                 'rules' => 'required',
                 'errors' => array(
-                    'required' => 'Please Select The Industry type Status'
+                    'required' => 'Please Select The Amenities type Status'
                 ),
             )
         );
@@ -1014,11 +1024,13 @@ class Settings extends CI_Controller {
             redirect(ADMIN_DIR . '/Settings/addAmenities');
         } else {
             $amenities = array(
-                "amenities_name" => $this->input->post('name'),
-                "status" => $this->input->post('status'),
-                "industry_id" => $this->input->post('industry'),
-                "create_date" => strtotime(date('Y-m-d H:i:s')),
-                "update_date" => strtotime(date('Y-m-d H:i:s'))
+                "amenities_name"   => $this->input->post('name'),
+                "status"           => $this->input->post('status'),
+                "industry_id"      => $this->input->post('industry'),
+                "establishment_id" => $this->input->post('establishment'),
+                "amenitiesType"    => $this->input->post('important'),
+                "create_date"      => strtotime(date('Y-m-d H:i:s')),
+                "update_date"      => strtotime(date('Y-m-d H:i:s'))
             );
             $response = $this->get_amenities->addAmenities($amenities);
             if ($response > 0) {
@@ -1070,8 +1082,16 @@ class Settings extends CI_Controller {
                 ),
             ),
             array(
+                'field' => 'establishment',
+                'label' => 'establishment list',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The establishment type'
+                ),
+            ),
+            array(
                 'field' => 'name',
-                'label' => 'Industry Name',
+                'label' => 'Amenities Name',
                 'rules' => 'required|min_length[3]|max_length[255]',
                 'errors' => array(
                     'required' => 'Please Enter The Amenities Name',
@@ -1084,7 +1104,7 @@ class Settings extends CI_Controller {
                 'label' => 'Status',
                 'rules' => 'required',
                 'errors' => array(
-                    'required' => 'Please Select The Industry type Status'
+                    'required' => 'Please Select The Amenities type Status'
                 ),
             )
         );
@@ -1099,6 +1119,8 @@ class Settings extends CI_Controller {
                 "amenities_name" => $this->input->post('name'),
                 "status" => $this->input->post('status'),
                 "industry_id" => $this->input->post('industry'),
+                "establishment_id" => $this->input->post('establishment'),
+                "amenitiesType"    => $this->input->post('important'),
                 "update_date" => strtotime(date('Y-m-d H:i:s')),
                 "id" => $this->input->post('id')
             );

@@ -66,14 +66,16 @@
                                                                         <span></span>
                                                                     </label>
                                                                 </th>
-                                                                <th width="10%">Industry</th>
-                                                                <th width="30%"> Name </th>
-                                                                <th width="20%"> Created Date</th>
-                                                                <th width="20%"> Updated Date</th>
+                                                                <th width="13%">Industry</th>
+                                                                <th width="17%">Establishment</th>
+                                                                <th width="20%"> Name </th>
+                                                                <th width="15%"> Created Date</th>
+                                                                <th width="15%"> Updated Date</th>
                                                                 <th width="15%"> Status </th>
                                                                 <th width="13%"> Actions </th>
                                                             </tr>
                                                             <tr role="row" class="filter">
+                                                                <td> </td>
                                                                 <td> </td>
                                                                 <td> </td>
                                                                 <td>
