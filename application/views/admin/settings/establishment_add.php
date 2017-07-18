@@ -35,7 +35,7 @@
 	                                                 <select name="industry" id="industry" class="form-control">
                                                             <option value="">Select industry</option>
                                                             <?php 
-                                                              $industry = getMultiRecord('industry','status','active');
+                                                              $industry = getMultiRecord('industry','status','active','industry_name','asc');
                                                               foreach ($industry as $key => $value) {
                                                               echo '<option value="'.$value['id'].'">'.$value['industry_name'].'</option>';
                                                               }

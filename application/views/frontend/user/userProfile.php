@@ -1,3 +1,8 @@
+<link href="<?php echo base_url('theme/front/userProfile/'); ?>css/nav.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url('theme/front/userProfile/'); ?>css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url('theme/front/userProfile/'); ?>css/main.css" rel="stylesheet" type="text/css" />
+<script src="<?php echo base_url('theme/front/userProfile/'); ?>js/html5.js"></script>
+<link href="<?php echo base_url('theme/front/userProfile/'); ?>css/media.css" rel="stylesheet" type="text/css" />
 <section class="middle-container account-section profile-section user-sh">
     <div class="container">
         <div class="main-content">
