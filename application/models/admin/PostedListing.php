@@ -1,13 +1,13 @@
 <?php
 
-class AdminAmenities extends CI_Model {
+class PostedListing extends CI_Model {
 	
-	var $table = 'amenities';
-  	var $select_fields = 'id,amenities_name,establishment_id,amenitiesType,create_date,update_date,status,industry_id';
+	var $table = 'spaces';
+  	var $select_fields = 'id,establishmentType,spaceType,workSpaceCount,spaceTitle,currency,base_price,createdDate,status';
    	var $where_condition = "id!='0'";
-    var $column_order = array('id','id','industry_name','establishment_id','amenitiesType','create_date','update_date','status','industry_id',null); //set column field database for datatable orderable
-    var $column_search = array('id','industry_name','establishment_id','amenitiesType','create_date','update_date','status','industry_id'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('id' => 'desc'); // default order 
+    var $column_order = array('id','id','establishmentType','spaceType','workSpaceCount','spaceTitle','currency','base_price','createdDate','status',null); //set column field database for datatable orderable
+    var $column_search = array('id','establishmentType','spaceType','workSpaceCount','spaceTitle','currency','base_price','updatedDate','status'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $order = array('id' => 'DESC'); // default order 
 	 private function get_datatables_query()
 		{
 			$this->db->from($this->table);
@@ -40,10 +40,10 @@ class AdminAmenities extends CI_Model {
 			{
 				$this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
 			} 
-			if(isset($_POST['industry_name']) and $_POST['industry_name']!='')
+			if(isset($_POST['name']) and $_POST['name']!='')
 			{
 				//$this->db->where('fname="'.($_POST['fname']).'"');
-				$this->db->like('industry_name',$_POST['industry_name']);
+				$this->db->like('name',$_POST['name']);
 			}
 			if((!empty($_POST['order_date_from']) and !empty($_POST['order_date_to'])))
 			{
@@ -53,20 +53,8 @@ class AdminAmenities extends CI_Model {
 				$to_date_ymd = strtotime($to_date[2].'-'.$to_date[1].'-'.$to_date[0]);
 				if($from_date_ymd<=$to_date_ymd)
 				{
-					$this->db->where('create_date >=', $from_date_ymd);
-					$this->db->where('create_date <=', $to_date_ymd);
-				}	
-			}
-			if((!empty($_POST['order_date_from_updated']) and !empty($_POST['order_date_to_updated'])))
-			{
-				$from_date = explode('/', $_POST['order_date_from_updated']);
-				$from_date_ymd = strtotime($from_date[2].'-'.$from_date[1].'-'.$from_date[0]);
-				$to_date = explode('/', $_POST['order_date_to_updated']);;
-				$to_date_ymd = strtotime($to_date[2].'-'.$to_date[1].'-'.$to_date[0]);
-				if($from_date_ymd<=$to_date_ymd)
-				{
-					$this->db->where('update_date >=', $from_date_ymd);
-					$this->db->where('update_date <=', $to_date_ymd);
+					$this->db->where('createdDate >=', $from_date_ymd);
+					$this->db->where('createdDate <=', $to_date_ymd);
 				}	
 			}
 			if(isset($_POST['status']) and $_POST['status']!='')
@@ -99,32 +87,6 @@ class AdminAmenities extends CI_Model {
 		$this->db->from($this->table);
 	    return $this->db->count_all_results();
     }
-	public function addAmenities($data){
-        //Insert Query Goes here...
-		$this->db->insert($this->table,$data);
-		return $this->db->affected_rows();
-	}
-	public function deleteAmenitiesValue($amenitiesID)
-	{
-		$this->db->where('id', $amenitiesID);
-   		$this->db->delete($this->table); 
-		return $this->db->affected_rows();
-	}	
-	public function editAmenities($data)
-	{
-		$where = array("id"=>$data['id']);
-		$this->db->where($where);
-		$this->db->update($this->table,$data);
-		return $this->db->affected_rows();			
-	}
-	public function viewAmenities($id)
-	{
-		$this->db->select('id,industry_id,amenities_name,amenitiesType,establishment_id,status');
-		$this->db->from($this->table);
-		$this->db->where('id',$id);
-		$query = $this->db->get();		
-		return $query->row();
-	}
 	public function updateStatus($id = array(), $status)
 	{
 		$affected_rows = '';
@@ -143,11 +105,11 @@ class AdminAmenities extends CI_Model {
 		}
 		if($wrong == true)
 		{
-			return array("status"=>"NOT OK","message"=>"Selected Amenities Status Not Updated Sucessfully");
+			return array("status"=>"NOT OK","message"=>"Selected Posted listing Status Not Updated Sucessfully");
 		}
 		else
 		{
-			return array("status"=>"OK","message"=>"Selected Amenities Status Updated Successfully");
+			return array("status"=>"OK","message"=>"Selected Posted listing Status Updated Successfully");
 		}
 	}
 	
