@@ -273,15 +273,18 @@ class Home extends CI_Controller {
         exit('hello');
     }
  # Customer USer profile
- public function customerDetails($userID='1') {
+ public function viewProfile($userID='1') {
      if ($this->session->userdata('user_id') != '') {
          $data['userProfileInfo'] = $this->user->userProfileInfo();
      } else {
          $data['userProfileInfo'] = array();
      }
       $data['customerID']  = $userID;
+      $data['module_heading'] = 'My Profile';
       $data['checkStatus'] = $this->user->checkContactList($userID,$this->session->userdata('user_id')); 
-      $this->load->view(FRONT_DIR . '/profileDetails', $data);
+       $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
+       $this->load->view(FRONT_DIR . '/user/userProfile', $data);
+       $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
  }
  # add customer data from the databse
  public function addContact(){

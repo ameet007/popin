@@ -3,13 +3,37 @@
 <link href="<?php echo base_url('theme/front/userProfile/'); ?>css/main.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url('theme/front/userProfile/'); ?>js/html5.js"></script>
 <link href="<?php echo base_url('theme/front/userProfile/'); ?>css/media.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+                    .badgePill_186vx4j {
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 18px !important;
+    display: inline-block !important;
+    padding: 6px 9px !important;
+    min-width: 28px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    vertical-align: middle !important;
+    background: -webkit-linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
+    background: -moz-linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
+    background: linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
+    line-height: 1.1 !important;
+    text-rendering: optimizelegibility !important;
+    text-align: center !important;
+}
+.user-sh .pro-con span {
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+</style>
 <section class="middle-container account-section profile-section user-sh">
     <div class="container">
         <div class="main-content">
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
                     <div class="profile-pic">
-                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-5.jpg" alt="" />
+                        <img src="<?php echo base_url('uploads/user/thumb/').(!empty($userProfileInfo->avatar)?$userProfileInfo->avatar:'user_pic-225x225.png');?>" alt="" />
                     </div>
                     <div class="panel-group">
                         <div class="panel panel-default verified-info">
@@ -51,6 +75,17 @@
                                     <li class="clearfix">
                                         <div class="pull-left">
                                             <strong>Languages</strong>
+                                            <?php
+                                            //language = explode(",",$userProfileInfo->languages);
+                                               //print_r($language);
+                                                  // $languagesList = unserialize(LANGUAGES);
+                                                  // foreach ($languagesList as $k => $v) {
+
+                                                  // }
+                                                  // print_r($languagesList);
+                                                  // $result = array_diff($language,$languagesList);
+                                                  // print_r($result);
+                                             ?>
                                             <p>Dutesch, English, Italiano</p>
                                         </div>
                                     </li>
@@ -76,16 +111,16 @@
                 </aside>
                 <article class="col-lg-9 main-right">
                     <div class="pro-con">
-                        <h2>Hey, I’m Cassidy!</h2>
-                        <p><strong>Us . Joined in April 2017</strong></p>
+                        <h2>Hey, I’m <?= $userProfileInfo->firstName.' '.$userProfileInfo->lastName; ?>!</h2>
+                        <p><strong>Us . Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
                         <div class="report">
                             <span><img src="<?php echo base_url('theme/front/profile'); ?>/popin-flag.png" alt="" /> Report this user</span>
                         </div>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        <p><?= $userProfileInfo->aboutYou; ?>.</p>
                         <ul class="superhost">
                             <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/superhost.png" alt="" /></span> Superhost</li>
-                            <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/reivew-s.png" alt="" /></span> Reviews</li>
-                            <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/refrecen.png" alt="" /></span> References</li>
+                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15">132</span></div></span> Reviews</li>
+                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15">2</span></div></span> References</li>
                             <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/ver.png" alt="" /></span> Verified</li>
                         </ul>
                         <div class="review-sec">
