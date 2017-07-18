@@ -249,7 +249,13 @@ class User extends CI_Controller {
         $this->load->view(FRONT_DIR . '/user/profile', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
     }
-
+   public function viewProfile() {
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        $data['module_heading'] = 'My Profile';
+        $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
+        $this->load->view(FRONT_DIR . '/user/userProfile', $data);
+        $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
+    }
     public function reviews() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
 

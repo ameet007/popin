@@ -11,8 +11,9 @@ class Logout extends CI_Controller{
 		$this->load->model(ADMIN_DIR.'/adminLogin','adminLogin');
 		$affected_rows = $this->adminLogin->sessionLogout($this->session->userdata('session_login_id'));
 		if($affected_rows>0)
-		{
+		{  
 			$this->session->unset_userdata('admin_id');
+			$this->session->sess_destroy();
 			$this->session->set_flashdata('message_notification','You have been logged out successfully');
 			$this->session->set_flashdata('class',A_SUC);
 			redirect(ADMIN_DIR.'/login');

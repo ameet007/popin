@@ -35,7 +35,7 @@
 	                                                 <select name="industry" id="industry" class="form-control" onchange="onchange_industry(this.value)" >
                                                             <option value="">Select industry</option>
                                                             <?php 
-                                                              $industry = getMultiRecord('industry','status','Activate');
+                                                              $industry = getMultiRecord('industry','status','active');
                                                               foreach ($industry as $key => $value) {
                                                               echo '<option value="'.$value['id'].'" '.($value['id']==$amenities->industry_id?'selected':'').' >'.$value['industry_name'].'</option>';
                                                               }

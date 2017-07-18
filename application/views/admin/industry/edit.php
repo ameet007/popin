@@ -40,8 +40,8 @@
 	                                                <div class="col-sm-9">
 	                                                 <select name="status" id="status" class="form-control">
                                                                     <option value=""></option>
-                                                                    <option value="Activate" <?php echo ($industry->status=='Activate')?'selected':''; ?>>Active</option>
-                                                                    <option value="Inactive" <?php echo ($industry->status=='Inactive')?'selected':''; ?>>Inactive</option>
+                                                                    <option value="active" <?php echo ($industry->status=='active')?'selected':''; ?>>Active</option>
+                                                                    <option value="inactive" <?php echo ($industry->status=='inactive')?'selected':''; ?>>Inactive</option>
                                                      </select>
 	                                                </div>
 	                                            </div>

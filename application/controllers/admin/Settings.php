@@ -736,10 +736,10 @@ class Settings extends CI_Controller {
             $row[] = ucfirst($fc->industry_name);
             $row[] = date(DATE_FORMAT, $fc->create_date);
             $row[] = date(DATE_FORMAT, $fc->update_date);
-            if ($fc->status == 'Activate') {
-                $row[] = '<button class="btn btn-success">Active</button>';
-            } else if ($fc->status == 'Inactive') {
-                $row[] = '<button class="btn btn-warning">Inactive</button>';
+            if ($fc->status == 'active') {
+                $row[] = '<button class="btn btn-success">active</button>';
+            } else if ($fc->status == 'inactive') {
+                $row[] = '<button class="btn btn-warning">inactive</button>';
             } else {
                 $row[] = '<button class="btn btn-danger">' . $fc->status . '</button>';
             }
