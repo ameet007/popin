@@ -76,7 +76,15 @@
                                         <tr role="row" class="filter">
                                             <td> </td>
                                             <td>
-                                                <!-- <input type="text" class="form-control form-filter input-sm" name="industry"> -->
+                                             <select name="industry" class="form-control form-filter input-sm">
+                                               <option value="">Select...</option>
+                                               <?php 
+                                                 $industry = getMultiRecord('industry','status','active','industry_name','asc');
+                                                foreach ($industry as $key => $value) {
+                                                  echo '<option value="'.$value['id'].'">'.$value['industry_name'].'</option>';
+                                                  }
+                                                ?>
+                                             </select>
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control form-filter input-sm" name="name">
@@ -120,7 +128,7 @@
                                             <td>
                                                 <select name="status" class="form-control form-filter input-sm">
                                                     <option value="">Select...</option>
-                                                    <option value="Active">Active</option>
+                                                    <option value="active">Active</option>
                                                     <option value="inactive">Inactive</option>
                                                 </select>
                                             </td>

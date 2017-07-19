@@ -78,8 +78,28 @@
                                                             </tr>
                                                             <tr role="row" class="filter">
                                                                 <td> </td>
-                                                                <td> </td>
-                                                                <td> </td>
+                                                                <td> 
+                                                                <select name="industry" class="form-control form-filter input-sm">
+                                                                   <option value="">Select...</option>
+                                                                   <?php 
+                                                                     $industry = getMultiRecord('industry','status','active','industry_name','asc');
+                                                                    foreach ($industry as $key => $value) {
+                                                                      echo '<option value="'.$value['id'].'">'.$value['industry_name'].'</option>';
+                                                                      }
+                                                                    ?>
+                                                                 </select>
+                                                                </td>
+                                                                <td>
+                                                                <select name="establishment" class="form-control form-filter input-sm">
+                                                                   <option value="">Select...</option>
+                                                                   <?php 
+                                                                     $establishment = getMultiRecord('establishment_types','status','active','name','asc');
+                                                                    foreach ($establishment as $key => $value) {
+                                                                      echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
+                                                                      }
+                                                                    ?>
+                                                                 </select>
+                                                                 </td>
                                                                 <td>
                                                                 	<input type="text" class="form-control form-filter input-sm" name="amenities_name">
                                                                 </td>

@@ -45,6 +45,14 @@ class AdminAmenities extends CI_Model {
 				//$this->db->where('fname="'.($_POST['fname']).'"');
 				$this->db->like('industry_name',$_POST['industry_name']);
 			}
+			if(isset($_POST['industry']) and $_POST['industry']!='')
+			{
+				$this->db->like('industry_id',$_POST['industry']);
+			}
+			if(isset($_POST['establishment']) and $_POST['establishment']!='')
+			{
+				$this->db->like('establishment_id',$_POST['establishment']);
+			}
 			if((!empty($_POST['order_date_from']) and !empty($_POST['order_date_to'])))
 			{
 				$from_date = explode('/', $_POST['order_date_from']);

@@ -511,6 +511,9 @@ class FrontUser extends CI_Model {
     public function checkContactList($addUserId,$userID){
       return $this->db->get_where('address_book',array('userID'=>$userID,'addUserID'=>$addUserId))->row_array();
     }
+    public function getSpaceList($userID){
+      return $this->db->get_where('spaces',array('host'=>$userID))->result();
+    }
     public function checkAlreadyJoinAccount($userID){
         $query = $this->db->get_where('join_account_master',array('provide_link_userID'=>$userID))->result_array();
         if (!empty($query)) {

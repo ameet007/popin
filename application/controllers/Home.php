@@ -276,9 +276,10 @@ class Home extends CI_Controller {
      } else {
          $data['userProfileInfo'] = array();
      }
-      $data['customerID']  = $userID;
-      $data['module_heading'] = 'My Profile';
-      $data['checkStatus'] = $this->user->checkContactList($userID,$this->session->userdata('user_id')); 
+       $data['customerID']     = $userID;
+       $data['module_heading'] = 'My Profile';
+       $data['checkStatus']    = $this->user->checkContactList($userID,$this->session->userdata('user_id'));
+       $data['spaceList']      = $this->user->getSpaceList($this->session->userdata('user_id')); 
        $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
        $this->load->view(FRONT_DIR . '/user/userProfile', $data);
        $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
