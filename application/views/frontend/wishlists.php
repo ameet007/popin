@@ -23,6 +23,17 @@
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <?php else: ?>
+            <div class="rentals-banner clearfix">
+                <div class="pull-left">
+                    <h2>Save and Share anything on PopIn</h2>
+                    <p>Wish Lists make it easy to find the perfect space and plan a rental with others</p>
+                    <a class="btn2" href="#" data-toggle="modal" data-target="#wishlistModal">Create a Wish List</a>
+                </div>
+                <div class="pull-right">
+                    <img src="<?= base_url('theme/front/assests/img/wishlist-banner.png'); ?>" alt="">
+                </div>
+            </div>
             <?php endif; ?>
             <div class="wishlist-list">
                 <h3>Popular Lists</h3>
