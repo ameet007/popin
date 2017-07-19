@@ -129,7 +129,6 @@ $(".loader").hide();
     geocoder = new google.maps.Geocoder();
 
     geocoder.geocode( { 'address': full_address }, function(results, status) {
-        console.log(status);
         if (status == google.maps.GeocoderStatus.OK) {
             // log out results from geocoding
             //console.log(results);parseFloat
@@ -189,7 +188,6 @@ $('#location-form').validate({
                 geocoder = new google.maps.Geocoder();
 
                 geocoder.geocode( { 'address': response.full_address }, function(results, status) {
-                    console.log(status);
                     if (status == google.maps.GeocoderStatus.OK) {
                         // log out results from geocoding
                         //console.log(results);parseFloat
