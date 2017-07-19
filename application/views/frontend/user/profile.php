@@ -102,7 +102,8 @@
                                     <div class="row">
                                         <label class="align-right col-sm-3">Phone Number <i class="fa fa-lock" aria-hidden="true"></i></label>
                                         <div class="col-sm-9 number-add">
-                                            <input class="textbox" type="text" placeholder="(+1)123-456-789" name="phone" id="phone" onchange="autoSave(this.id,this.value)" value="<?= $userProfileInfo->phone; ?>" />
+                                            <u><p style="cursor:pointer;" data-toggle="modal" data-target="#myModal" >Click here Add Phone Number</p></u>
+                                            <!-- <input class="textbox" type="text" placeholder="(+1)123-456-789" name="phone" id="phone" onchange="autoSave(this.id,this.value)" value="<?= $userProfileInfo->phone; ?>" /> -->
                                             <p>This is only shared once you have a confirmed booking with another <?= SITE_DISPNAME; ?> user. This is how we can all get in touch.</p>
                                         </div>
                                     </div>
@@ -362,3 +363,77 @@ $(document).ready(function(e){
 });
 	  
     </script>
+    <style type="text/css">
+ .modal-header {
+    padding: 15px;
+    background-color: #bdc1c3;
+    color: rgba(216, 27, 16, 0.98);
+}
+input.form-control.addCountry {
+    width: 85px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    position: relative;
+    left: 11px;
+    font-size: 20px;
+}
+input.form-control.number {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /*padding-right: 125px;*/
+    font-size: 20px;
+}
+    </style>
+    <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog" style="margin-top: 200px;">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="modal-title">Add Phone Number</h3>
+        </div>
+        <div class="modal-body">
+        <form id="numberVerify" class="form-inline">
+           <div class="form-group" style="margin-left: 10px;margin-bottom:10px;">
+               <center> <label for="email">Change country:</label>
+                <select class="form-control" name="country" onchange="onchangeCountry()" >
+                     <?php $all_countries = unserialize(MOBILECODES); 
+                        foreach($all_countries as $k=>$v){ ?>
+                        <option value="<?= $v['code']; ?>" myTag="<?= $k; ?>" ><?= ucfirst(strtolower($v['name'])); ?></option>
+                   <?php } ?>
+                </select>
+              </div> 
+              <div class="form-group">
+                <label for="email">Phone Number:</label>
+                <input type="text" class="form-control addCountry" name="code" readonly="">
+                <input type="text"  class="form-control number" id="phone" name="phone"> 
+              </div>
+              </center>
+        </div>
+        <div class="modal-footer">
+          <button style="font-size: 21px;" type="button" class="btn btn-danger">Verify</button>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <script type="text/javascript">
+  function onchangeCountry(){
+    var countryCode = '+'+$('select[name="country"]').val();
+    //var element = $(this);
+    // var myTag = $('option:selected','select[name="country"]').attr('mytag');
+    // console.log(myTag);
+   $('input[name="code"]').val(countryCode);
+  }
+  // $('#numberVerify').validate({
+  //   rules: {
+  //       phone :{ required:true,numbre:true}
+  //   }
+  //   messages : {
+  //          phone :{ required:"Phone number cannot be empty"}
+  //    }
+  // });
+  </script>
