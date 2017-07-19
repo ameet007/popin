@@ -512,7 +512,7 @@ class FrontUser extends CI_Model {
       return $this->db->get_where('address_book',array('userID'=>$userID,'addUserID'=>$addUserId))->row_array();
     }
     public function getSpaceList($userID){
-       $sql='SELECT `spaces`.*, `industry_name` AS industryName,a.name as establishmentName,b.name as spaceName from spaces INNER JOIN industry ON spaces.industryType=industry.id INNER JOIN establishment_types AS a ON spaces.establishmentType= a.id INNER JOIN space_types as b ON spaces.spaceType=b.id WHERE host='.$userID;
+       $sql='SELECT `spaces`.*, `industry_name` AS industryName,a.name as establishmentName,b.name as spaceName from spaces INNER JOIN industry ON spaces.industryType=industry.id INNER JOIN establishment_types AS a ON spaces.establishmentType= a.id INNER JOIN space_types as b ON spaces.spaceType=b.id WHERE status= "Active" AND  host='.$userID;
       return $this->db->query($sql)->result();
     }
     public function checkAlreadyJoinAccount($userID){

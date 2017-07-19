@@ -33,7 +33,7 @@
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
                     <div class="profile-pic">
-                        <img src="<?php echo base_url('uploads/user/thumb/').(!empty($userProfileInfo->avatar)?$userProfileInfo->avatar:'user_pic-225x225.png');?>" alt="" />
+                        <img src="<?php echo base_url('uploads/user/').(!empty($userProfileInfo->avatar)?$userProfileInfo->avatar:'user_pic-225x225.png');?>" alt="" />
                     </div>
                     <div class="panel-group">
                         <div class="panel panel-default verified-info">
