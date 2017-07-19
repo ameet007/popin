@@ -1,8 +1,4 @@
-<link href="<?php echo base_url('theme/front/userProfile/'); ?>css/nav.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('theme/front/userProfile/'); ?>css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('theme/front/userProfile/'); ?>css/main.css" rel="stylesheet" type="text/css" />
-<script src="<?php echo base_url('theme/front/userProfile/'); ?>js/html5.js"></script>
-<link href="<?php echo base_url('theme/front/userProfile/'); ?>css/media.css" rel="stylesheet" type="text/css" />
+
 <style type="text/css">
 .badgePill_186vx4j {
     border-radius: 6px !important;
@@ -33,7 +29,7 @@
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
                     <div class="profile-pic">
-                        <img src="<?php echo base_url('uploads/user/thumb/').(!empty($userProfileInfo->avatar)?$userProfileInfo->avatar:'user_pic-225x225.png');?>" alt="" />
+                        <img src="<?php echo base_url('uploads/user/').(!empty($userProfileInfo->avatar)?$userProfileInfo->avatar:'user_pic-225x225.png');?>" alt="" />
                     </div>
                     <div class="panel-group">
                         <div class="panel panel-default verified-info">

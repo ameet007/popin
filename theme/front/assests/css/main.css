@@ -1132,3 +1132,31 @@ a button.btn{color: #333 !important;}
 .booking-summry .pay-m .ple-let p {line-height: 20px; margin-bottom: 15px; font-size: 14px;}
 .booking-summry .pay-m .house-rul {background-color: transparent; padding: 0;}
 .booking-summry .pay-m .house-rul p {font-size: 14px;}
+/*17.07.2017*/
+.user-sh {}
+.user-sh .listin-g {}
+.user-sh .listin-g h3 {font-weight: 700; color: #484848; margin-bottom: 20px;}
+.user-sh .listin-g .box {position: relative; margin-bottom: 20px;}
+.user-sh .listin-g .box img {width: 100%;}
+.user-sh .listin-g .box .text {position: absolute; left: 0; bottom: 20px; width: 100%; color: #fff; font-size: 16px; line-height: 20px; text-transform: uppercase; text-align: center;}
+.user-sh .listin-g .box .text span {text-transform: none; display: block;}
+.user-sh .pro-con span {margin-bottom: 40px;}
+.user-sh .pro-con p {line-height: 20px;}
+.user-sh ul.superhost li {display: inline-block; margin-right: 20px;}
+.user-sh ul.superhost li span {margin-right: 5px; display: inline-block;}
+.user-sh .review-sec h3 {font-weight: 600; margin-bottom: 15px; color: #484848;}
+.user-sh .review-sec h3 span{font-size: 18px; color: #76768b; display: inline-block; font-weight: 400; margin-bottom: 0;}
+.user-sh .review-sec h4 {font-size: 16px; font-weight: 600; margin-bottom: 15px; color: #484848;}
+.user-sh .review-sec .media {margin-bottom: 25px;}
+.user-sh .review-sec .media-left .inner {width: 130px; text-align: center;}
+.user-sh .review-sec .media-left .inner img {display: inline-block; margin-bottom: 5px;}
+.user-sh .review-sec .media footer { border-bottom: solid 1px #dce0e0; padding-bottom: 15px;}
+.user-sh .review-sec .media footer span{color: #767676; font-size: 12px; margin-bottom: 0;}
+.user-sh .review-sec .media footer span a {text-transform: uppercase; font-size: 14px;}
+.user-sh .review-sec .media .see-more {margin-top: 25px; display: inline-block;}
+.user-sh .review-sec .media .align-right p {margin-bottom: 0;}
+/**/
+.wish-lists .rentals-banner h2 {line-height: 40px;}
+.wish-lists .rentals-banner {padding: 0 0 20px 0;}
+.wish-lists .rentals-banner .pull-left {padding-left: 8%; padding-top: 30px; width: 42%;}
+.wish-lists .rentals-banner .pull-right {padding-right: 10%;}
