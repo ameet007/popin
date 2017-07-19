@@ -13,7 +13,7 @@
                     <form action="<?php echo site_url('Space/professionals'); ?>" method="post" enctype="multipart/form-data">
                         <div class="feild">
                             <label>What type of industry is this?</label>
-                            <select class="selectbox" name="page1[industryType]" onchange="onchange_industry(this.value)">
+                            <select class="selectbox" name="page1[industryType]" onchange="onchange_industry(this.value)" required>
                                 <option value="" selected disabled>Select industry</option>
                                 <?php foreach($industries as $industry){ ?>
                                 <option value="<?= $industry['id']; ?>" <?php echo (isset($stepData['step1']['page1']['industryType']) && $stepData['step1']['page1']['industryType'] == $industry['id'])? 'selected' : ''?>><?= $industry['industry_name']; ?></option>
@@ -22,7 +22,7 @@
                         </div>
                         <div class="feild">
                             <label>What type of establishment is this?</label>
-                            <select class="selectbox" name="page1[establishmentType]">
+                            <select class="selectbox" name="page1[establishmentType]" required>
                                 <option value="" selected disabled>Select establishment type</option>
                                 <?php foreach($establishment_types as $establishment){ if (isset($stepData['step1']['page1']['industryType'])&&$stepData['step1']['page1']['industryType'] == $establishment['industry_ID']) {?>
                                 <option value="<?= $establishment['id']; ?>" <?php echo (isset($stepData['start']['establishment']) && $stepData['start']['establishment'] == $establishment['id'])? 'selected' : ''?>><?= $establishment['name']; ?></option>
@@ -31,7 +31,7 @@
                         </div>
                         <div class="feild">
                             <label>What type of space is this?</label>
-                            <select class="selectbox" name="page1[spaceType]">
+                            <select class="selectbox" name="page1[spaceType]" required>
                                 <option value="" selected disabled>Select space type</option>
                                 <?php foreach($space_types as $space){ ?>
                                 <option value="<?= $space['id']; ?>" <?php echo (isset($stepData['start']['space']) && $stepData['start']['space'] == $space['id'])? 'selected' : ''?>><?= $space['name']; ?></option>
@@ -142,6 +142,21 @@
         $(':file').on('fileselect', function(event, numFiles, label) {
             console.log(numFiles);
             console.log(label);
+        });
+        
+        $('form').validate({
+            rules: {
+                'page1[industryType]' :{ required:true},
+                'page1[establishmentType]' : { required:true},
+                'page1[spaceType]' : { required:  true },
+                'page1[establishmentLicence]' : {required:true}
+            },
+            messages : {
+                'page1[industryType]' :{ required:"Please select an industry type."},
+                'page1[establishmentType]' : { required:"Please select an establishment type."},
+                'page1[spaceType]' : { required:"Please select a space type."},
+                'page1[establishmentLicence]' : { required:"Please enter Establishment Licence Number." }
+            }
         });
     });
     $(document).on('change', ':file', function() {

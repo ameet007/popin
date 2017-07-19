@@ -102,7 +102,7 @@ class AdminIndustry extends CI_Model {
 	public function addSpace($data){
         //Insert Query Goes here...
 		$this->db->insert($this->table,$data);
-		return $this->db->affected_rows();
+		return $this->db->insert_id();
 	}
 	public function deleteindustryValue($indutryID)
 	{
