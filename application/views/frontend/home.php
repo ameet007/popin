@@ -473,7 +473,12 @@
         $('#demo-range').daterangepicker({
             autoUpdateInput: false,
             minDate: moment(),
-            //showDropdowns: true
+            //showDropdowns: true,
+            //timePicker: true,
+            //timePickerIncrement: 30,
+            locale: {
+                format: 'DD MMM' //MM/DD/YYYY h:mm A
+            }
         }, 
         function(start, end, label) {
             //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
@@ -481,7 +486,7 @@
         });
         $('#demo-range').on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('DD MMM') + ' - ' + picker.endDate.format('DD MMM'));
-            $("#space-search-form").submit();
+            mergeForms("space_search_form", "space_filter_form");
         });
         $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
@@ -555,7 +560,7 @@
             mesg += "\nLongitude: " + longitude;
             console.log(mesg);
             $("#latitude").val(latitude);$("#longitude").val(longitude);
-            $("#space-search-form").submit();
+            mergeForms("space_search_form", "space_filter_form");
         });
     });
 </script>

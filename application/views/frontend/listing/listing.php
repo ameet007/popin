@@ -8,16 +8,16 @@
                 </aside>
                 <article class="col-sm-9 main-right">                    
                     <div class="panel-group">
-                        <?php if(empty($listings)){?>
+                        <?php if(empty($listings) && empty($inprogress)){?>
                         <div class="panel panel-default your-listings">
                             <div class="panel-body">
                                 <h3>You don’t have any listings!</h3>
-                                <p>Make money by renting out your extra space on Popln. You’ll also get to meet interesting travelers from around the world!</p>
+                                <p>Make money by renting out your extra space on Popln. You’ll also get to meet interesting professionals from around the world!</p>
                                 <a class="green-btn" href="<?php echo site_url()?>Space">Post a new listing</a>
                             </div>
                         </div>
                         <?php }else{ ?>
-                        <?php if(!empty($inprogress)){?>
+                        <?php if(!empty($inprogress)){ ?>
                         <div class="panel panel-default your-reservations">
                             <div class="panel-heading">In progress</div>
                             <div class="panel-body">
@@ -60,6 +60,7 @@
                             </div>
                         </div>
                         <?php } ?>
+                        <?php if(!empty($listings)){ ?>
                         <div class="panel panel-default your-reservations">
                             <div class="panel-heading">Listed</div>
                             <div id="listingBlock" class="panel-body">
@@ -67,7 +68,7 @@
                                 <div style="text-align: center;display: none;" id="loader"><?php echo img(array("src"=>base_url("assets/images/loading-spinner-grey.gif"), "alt"=> "loading...")); ?></div>
                             </div>
                         </div>
-                        <?php }?>
+                        <?php }}?>
                     </div>
                 </article>
             </div>
