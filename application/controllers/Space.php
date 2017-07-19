@@ -121,9 +121,8 @@ class Space extends CI_Controller {
                 redirect('listing');
             }
             $data['hostProfileInfo'] = $this->space->hostProfileInfo($data['preview']['host']);
-            $industry = $data['preview']['industryType'];
-            $establishment = $data['preview']['establishmentType'];
-            //echo "<pre>";print_r($stepData);echo "</pre>";
+            $industry = $data['preview']['industryTypeId'];
+            $establishment = $data['preview']['establishmentTypeId'];
             $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
         }
         //echo "<pre>"; print_r($data); echo "</pre>";exit;

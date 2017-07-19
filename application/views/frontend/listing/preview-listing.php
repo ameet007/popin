@@ -188,29 +188,38 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                 </li>
                             </ul>
                         </div>
-                        <?php $amenities = unserialize(AMENITIES); $facilities = unserialize(SPACES); ?>
+                        <?php $facilities = unserialize(SPACES); ?>
                         <div class="the-space">
                             <ul class="accomm amenities clearfix">
                                 <li>Amenities</li>
                                 <li>
-                                    <?php 
-                                    if(!empty($preview['amenities'])){
-                                        $count = 0;
-                                    foreach($amenities as $aminity => $values){ 
-                                        if(!empty($preview['amenities']) && in_array($aminity, $preview['amenities'])){ 
-                                            $aminity_value = "<strong>".$aminity."</strong>";
+                                    <?php if(!empty($preview['amenities']['main'])){
+                                    foreach($amenities['Important'] as $aminity){ 
+                                        if(!empty($preview['amenities']['main']) && in_array($aminity['id'], $preview['amenities']['main'])){ 
+                                            $aminity_value = "<strong>".$aminity['name']."</strong>";
                                         }else{
-                                            $aminity_value = "<strike>".$aminity."</strike>";
+                                            $aminity_value = "<strike>".$aminity['name']."</strike>";
                                         }
                                     ?>
-                                    <p <?php if($count > 2){ echo "class='amenity hidden'";}?>><?php if(!empty($values['icon']) && in_array($aminity, $preview['amenities'])){ ?><span><img src="<?php echo base_url('theme/front/assests/img/'.$values['icon'])?>" alt="" /></span><?php } ?><?= $aminity_value; ?></p>
-                                    <?php $count++; }
-                                    $amenityArray = array_keys($amenities);
-                                    foreach($preview['amenities'] as $amenity){
-                                            if(!in_array($amenity, $amenityArray)){
+                                    <p><?= $aminity_value; ?></p>
+                                    <?php }?>
+                                    <?php
+                                    foreach($amenities['General'] as $aminity){ 
+                                        if(!empty($preview['amenities']['main']) && in_array($aminity['id'], $preview['amenities']['main'])){ 
+                                            $aminity_value = "<strong>".$aminity['name']."</strong>";
+                                        }else{
+                                            $aminity_value = "<strike>".$aminity['name']."</strike>";
+                                        }
                                     ?>
-                                    <p <?php if($count > 2){ echo "class='amenity hidden'";}?>><strong><?= $amenity; ?></strong></p>
-                                    <?php  $count++;}} ?>
+                                    <p class="amenity hidden"><?= $aminity_value; ?></p>
+                                    <?php }?>
+                                    <?php
+                                    if(!empty($preview['amenities']['other'])){
+                                    foreach($preview['amenities']['other'] as $aminity){ 
+                                        $aminity_value = "<strong>".$aminity."</strong>";
+                                    ?>
+                                    <p class="amenity hidden"><?= $aminity_value; ?></p>
+                                    <?php }}?>
                                     <a href="#" class="show-more" data-target-key="amenity">+ More</a>
                                     <?php }?>
                                 </li>
@@ -225,7 +234,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                             $facility_value = "<strike>".$facility."</strike>";
                                         }
                                     ?>
-                                    <p <?php if($count > 2){ echo "class='amenity hidden'";}?>><?php if(!empty($values['icon']) && in_array($facility, $preview['amenities'])){ ?><span><img src="<?php echo base_url('theme/front/assests/img/'.$values['icon'])?>" alt="" /></span><?php } ?><?= $facility_value; ?></p>
+                                    <p <?php if($count > 4){ echo "class='amenity hidden'";}?>><?php if(!empty($values['icon']) && in_array($facility, $preview['amenities'])){ ?><span><img src="<?php echo base_url('theme/front/assests/img/'.$values['icon'])?>" alt="" /></span><?php } ?><?= $facility_value; ?></p>
                                     <?php $count++;}}?>
                                 </li>
                             </ul>
