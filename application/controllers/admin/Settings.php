@@ -931,9 +931,9 @@ class Settings extends CI_Controller {
             $establishment = getSingleRecord('establishment_types','id',$fc->establishment_id);
             $row[]   = ucfirst($indurty->industry_name);
             $row[]   = ucfirst($establishment->name);
-            $row[] = ucfirst($fc->amenities_name);
-            $row[] = date(DATE_FORMAT, $fc->create_date);
-            $row[] = date(DATE_FORMAT, $fc->update_date);
+            $row[]   = ucfirst($fc->amenities_name);
+            $row[]   = ($fc->amenitiesType == 1?'<button class="btn btn-danger">Important</button>':'<button class="btn btn-default">Not Important</button>');
+            $row[]   = date(DATE_FORMAT, $fc->create_date);
             if ($fc->status == 'active') {
                 $row[] = '<button class="btn btn-success">Active</button>';
             } else if ($fc->status == 'inactive') {
