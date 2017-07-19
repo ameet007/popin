@@ -4,7 +4,7 @@
 <script src="<?php echo base_url('theme/front/userProfile/'); ?>js/html5.js"></script>
 <link href="<?php echo base_url('theme/front/userProfile/'); ?>css/media.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
-                    .badgePill_186vx4j {
+.badgePill_186vx4j {
     border-radius: 6px !important;
     color: #ffffff !important;
     font-weight: bold !important;
@@ -42,18 +42,19 @@
                                 <ul>
                                     <li class="clearfix">
                                         <div class="pull-left">
-                                            <p>Government ID</p>
+                                            <p title="Verified info" >Government ID</p>
                                         </div>
                                         <div class="pull-right">
-                                            <img src="<?php echo base_url('theme/front/profile'); ?>/right-singh.png" alt="" />
+                                            <img title="Verified info" src="<?php echo base_url('theme/front/profile'); ?>/right-singh.png" alt="" />
                                         </div>
                                     </li>
                                     <li class="clearfix">
                                         <div class="pull-left">
-                                            <p>Email address</p>
+                                            <p title="Verified info" >Email address</p>
                                         </div>
                                         <div class="pull-right">
-                                            <img src="<?php echo base_url('theme/front/profile'); ?>/right-singh.png" alt="" />
+                                            <img title="Verified info" src="<?php echo base_url('theme/front/profile'); ?>/right-singh.png" alt="" />
+                                            <!-- <span class="screen-reader-only">Verified</span> -->
                                         </div>
                                     </li>
                                     <li class="clearfix">
@@ -75,18 +76,22 @@
                                     <li class="clearfix">
                                         <div class="pull-left">
                                             <strong>Languages</strong>
+                                             <p>
                                             <?php
-                                            //language = explode(",",$userProfileInfo->languages);
-                                               //print_r($language);
-                                                  // $languagesList = unserialize(LANGUAGES);
-                                                  // foreach ($languagesList as $k => $v) {
-
-                                                  // }
-                                                  // print_r($languagesList);
-                                                  // $result = array_diff($language,$languagesList);
-                                                  // print_r($result);
+                                            $language = explode(",",$userProfileInfo->languages);
+                                            $count = 1;
+                                                $languagesList = unserialize(LANGUAGES);
+                                                foreach ($languagesList as $k => $v) {
+                                                    if (in_array($k, $language)){
+                                                         echo $v;
+                                                           if (count($language) != $count) {
+                                                                echo ', ';
+                                                                $count++;
+                                                           }
+                                                      }
+                                                  }
                                              ?>
-                                            <p>Dutesch, English, Italiano</p>
+                                           </p>
                                         </div>
                                     </li>
                                 </ul>
@@ -118,9 +123,9 @@
                         </div>
                         <p><?= $userProfileInfo->aboutYou; ?>.</p>
                         <ul class="superhost">
-                            <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/superhost.png" alt="" /></span> Superhost</li>
+                            <!-- <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/superhost.png" alt="" /></span> Superhost</li> -->
                             <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15">132</span></div></span> Reviews</li>
-                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15">2</span></div></span> References</li>
+                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?php echo count(getMultiRecord('join_account_master','provide_link_userID',$userProfileInfo->id)) ?></span></div></span> References</li>
                             <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/ver.png" alt="" /></span> Verified</li>
                         </ul>
                         <div class="review-sec">

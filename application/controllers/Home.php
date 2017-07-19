@@ -29,12 +29,8 @@ class Home extends CI_Controller {
             $data = array();
         }
         $filters = $this->input->post();
-//        echo "<pre>";
-//        print_r($filters);
-//        echo "</pre>";
         $data['space_types'] = $this->space->getDropdownData('space_types');
         $data['listings'] = $this->space->getActiveListings($currentUser, $filters);
-        
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
         $this->load->view(FRONT_DIR . '/spaces', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
@@ -108,8 +104,6 @@ class Home extends CI_Controller {
     }
     function get_booking_info() {
         $rawData = $this->input->post();
-        //print_r($rawData);
-        // get base price and currency
         $spaceData = $this->db->select('base_price,currency')->get_where('spaces', array('id'=>$rawData['space']))->row_array();
 
         // Start date

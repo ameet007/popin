@@ -133,7 +133,11 @@ class AdminAmenities extends CI_Model {
 			$wrong = false;
 			$where = array("id"=>$id);
 			$this->db->where($where);
-			$data = array("status"=>$status);
+              if ($status == '1' || $status == '2') {
+              $data = array("amenitiesType"=>$status);	
+              }else{
+              $data = array("status"=>$status);  	
+              }
 			$this->db->update($this->table,$data);
 			$affected_rows = $this->db->affected_rows();	
 			if($affected_rows<1)

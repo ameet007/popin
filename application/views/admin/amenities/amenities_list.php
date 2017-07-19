@@ -47,6 +47,8 @@
                                                             <option value="">Select...</option>
                                                             <option value="active">Active</option>
                                                             <option value="inactive">Inactive</option>
+                                                            <option value="1">Important</option>
+                                                            <option value="2">Not Important</option>
                                                         </select></div>
                                                        	<div class="col-sm-4">
                                                        		 <button class="btn btn-teal btn-bordered waves-light waves-effect  m-b-5 table-group-action-submit"> Submit</button>
@@ -69,8 +71,8 @@
                                                                 <th width="13%">Industry</th>
                                                                 <th width="17%">Establishment</th>
                                                                 <th width="20%"> Name </th>
+                                                                <th width="15%"> Important Type</th>
                                                                 <th width="15%"> Created Date</th>
-                                                                <th width="15%"> Updated Date</th>
                                                                 <th width="15%"> Status </th>
                                                                 <th width="13%"> Actions </th>
                                                             </tr>
@@ -81,6 +83,7 @@
                                                                 <td>
                                                                 	<input type="text" class="form-control form-filter input-sm" name="amenities_name">
                                                                 </td>
+                                                                <td> </td>
                                                                 <td>
                                                                     <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
                                                                         <input type="text" class="form-control form-filter input-sm" readonly name="order_date_from" placeholder="From">
@@ -99,7 +102,7 @@
                                                                         </span>
                                                                     </div>
                                                                 </td>
-                                                                <td>
+                                                                <!-- <td>
                                                                     <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
                                                                         <input type="text" class="form-control form-filter input-sm" readonly name="order_date_from_updated" placeholder="From">
                                                                         <span class="input-group-btn">
@@ -116,7 +119,7 @@
                                                                             </button>
                                                                         </span>
                                                                     </div>
-                                                                </td>
+                                                                </td> -->
                                                                 <td>
                                                                     <select name="status" class="form-control form-filter input-sm">
                                                                         <option value="">Select...</option>
