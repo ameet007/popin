@@ -1136,4 +1136,59 @@ class Settings extends CI_Controller {
             }
         }
     }
+    
+    /*public function importAmenities() {
+        $this->load->library('PHPExcel');
+
+        $objReader = PHPExcel_IOFactory::createReader('Excel2007');
+        $objPHPExcel = $objReader->load("Establishment-Amenities-List.xlsx");
+
+        foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+            $industryName = trim($worksheet->getTitle());
+            $industryData = array(
+                "industry_name" => $industryName,
+                "create_date" => strtotime(date('Y-m-d H:i:s')),
+                "update_date" => strtotime(date('Y-m-d H:i:s'))
+            );
+            $industry = $this->get_industry->addSpace($industryData);
+
+            foreach ($worksheet->getColumnIterator() as $column) {
+                $columnIndex = $column->getColumnIndex();
+
+                $cellIterator = $column->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(false); // Loop all cells, even if it is not set
+                $i = 1;
+                foreach ($cellIterator as $cell) {
+                    if (!is_null($cell) && !empty(trim($cell->getCalculatedValue()))) {
+                        if($cell->getCoordinate() == $columnIndex.'2'){
+                            $establishmentName = $cell->getCalculatedValue();
+                            $EstablishmentData = array(
+                                "name" => $establishmentName,
+                                "createdDate" => strtotime(date('Y-m-d H:i:s')),
+                                "updatedDate" => strtotime(date('Y-m-d H:i:s')),
+                                "industry_ID" => $industry
+                            );
+                            $establishment = $this->faq_category->addEstablishment($EstablishmentData);
+                        }
+                        if($i >= 3){
+                            $amenityName = $cell->getCalculatedValue();
+                            
+                            $amenities = array(
+                                "amenities_name"   => $amenityName,
+                                "industry_id"      => $industry,
+                                "establishment_id" => $establishment,
+                                "amenitiesType"    => '2',
+                                "create_date"      => strtotime(date('Y-m-d H:i:s')),
+                                "update_date"      => strtotime(date('Y-m-d H:i:s'))
+                            );
+                            $this->get_amenities->addAmenities($amenities);
+                        }
+                        //echo '        Cell - ', $cell->getCoordinate(), ' - ', $cell->getCalculatedValue(), EOL;
+                    }
+                    $i++;
+                }
+            }
+        }
+    }*/
+
 }

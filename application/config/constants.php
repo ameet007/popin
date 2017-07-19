@@ -130,6 +130,8 @@ define('SUBSCRIBER','newsletter_subscriber');
 define('HOST','hosts');
 define('GUEST','guests');
 
+define('EOL','<br />');
+
 /*Front End Modules*/
 define('HOME','home');
 define('MONTH_DIG',serialize(array(

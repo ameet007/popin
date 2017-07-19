@@ -109,7 +109,7 @@ class AdminEstablishment extends CI_Model {
 	public function addEstablishment($data){
         //Insert Query Goes here...
 		$this->db->insert($this->table,$data);
-		return $this->db->affected_rows();
+		return $this->db->insert_id();
 	}
 	public function deleteEstablishmentType($establishmentID)
 	{
