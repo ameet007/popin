@@ -7,6 +7,7 @@ class Home extends CI_Controller {
         $this->load->model(FRONT_DIR . '/FrontSpace', 'space');
         $this->load->helper('popin');
         $this->load->library('paypal_lib');
+         
     }
 
     public function index() {
@@ -270,19 +271,31 @@ class Home extends CI_Controller {
         exit('hello');
     }
  # Customer USer profile
- public function viewProfile($userID='1') {
+ public function viewProfile($userID = '') {
      if ($this->session->userdata('user_id') != '') {
          $data['userProfileInfo'] = $this->user->userProfileInfo();
+         $loginID = $this->session->userdata('user_id');
+         $data['checkStatus']    = $this->user->checkContactList($userID,$loginID);
+         $data['customerID']     = $userID;
+         $data['module_heading'] = 'My Profile';
+         $data['checkProfile']    = " ";
+         $data['spaceList']      = $this->user->getSpaceList($loginID);
+         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
+         $this->load->view(FRONT_DIR . '/user/userProfile', $data);
+         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
      } else {
-         $data['userProfileInfo'] = array();
-     }
-       $data['customerID']     = $userID;
-       $data['module_heading'] = 'My Profile';
-       $data['checkStatus']    = $this->user->checkContactList($userID,$this->session->userdata('user_id'));
-       $data['spaceList']      = $this->user->getSpaceList($this->session->userdata('user_id')); 
-       $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
-       $this->load->view(FRONT_DIR . '/user/userProfile', $data);
-       $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
+         $header['step_info'] = "";
+         $data['userProfileInfo'] = getSingleRecord('user','id',$userID);
+         $header['checkProfile']    = "profile";
+         $loginID = $userID;
+         $data['customerID']     = $userID;
+         $data['module_heading'] = 'My Profile';
+         $data['spaceList']      = $this->user->getSpaceList($loginID);
+         // $this->load->view(FRONT_DIR . '/include-partner/header', $header);
+         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
+         $this->load->view(FRONT_DIR . '/user/userProfile', $data);
+         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
+     }  
  }
  # add customer data from the databse
  public function addContact(){

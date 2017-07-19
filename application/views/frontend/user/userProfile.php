@@ -65,7 +65,9 @@
                                             <img src="<?php echo base_url('theme/front/profile'); ?>/right-singh.png" alt="" />
                                         </div>
                                     </li>
-                                    <li><a href="#">Learn more >></a></li>
+                                    <?php if (!empty($checkProfile)) {?>
+                                    <li><a href="<?= base_url()?>user/profile">Learn more >></a></li>
+                                    <?php } ?>
                                 </ul>
                             </div>
                         </div>
@@ -98,40 +100,31 @@
                             </div>
                         </div>
                     </div>
+                    <?php if (!empty($spaceList)) { ?>
                     <div class="listin-g">
-                      <?php //print_r(count($spaceList)) ?>
                         <h3>Listings <span>(<?= count($spaceList);?>)</span></h3>
-                        <?php 
+                        <?php
                          $count = 0;
-                          foreach ($spaceList as $key => $value) {
+                          foreach ($spaceList as $key => $space) {
                                 if ($count == 3) {
                                     break;
                                 }
+                                $image = getSingleRecord('space_gallery','space',$space->id);
                             echo '<div class="box">
-                                 <img src="'.base_url('theme/front/profile').'/image8.jpg" alt="" />
-                                    <div class="text">I stte coni - Trullo Lavanda <span>Ostuni</spna></div>
+                                 <img src="'.base_url('uploads/user/gallery').'/'.(!empty($image->image)?$image->image:'').'" alt="" />
+                                    <div class="text"><b>'.$space->spaceTitle.'<span>'.$space->establishmentName.'/'.$space->spaceName.'</spna></b></div>
                                  </div>';     
                                 $count++;
                           }
+                          if (!empty($checkProfile)) {
                         ?>
-                   <!--      <div class="box">
-                            <img src="<?php echo base_url('theme/front/profile'); ?>/image8.jpg" alt="" />
-                            <div class="text">I stte coni - Trullo Lavanda <span>Ostuni</spna></div>
-                        </div>
-                        <div class="box">
-                            <img src="<?php echo base_url('theme/front/profile'); ?>/image8.jpg" alt="" />
-                            <div class="text">I stte coni - Trullo Lavanda <span>Ostuni</spna></div>
-                        </div>
-                        <div class="box">
-                            <img src="<?php echo base_url('theme/front/profile'); ?>/image8.jpg" alt="" />
-                            <div class="text">I stte coni - Trullo Lavanda <span>Ostuni</spna></div>
-                        </div> -->
-                    </div>
+                        <a href="<?= base_url()?>listing" class="view_all">View all listings&nbsp;»</a>
+                    </div><?php } } ?>
                 </aside>
                 <article class="col-lg-9 main-right">
                     <div class="pro-con">
                         <h2>Hey, I’m <?= $userProfileInfo->firstName.' '.$userProfileInfo->lastName; ?>!</h2>
-                        <p><strong>Us . Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
+                        <p><strong><?= ucfirst((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:'Us'));?> . Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
                         <div class="report">
                             <span><img src="<?php echo base_url('theme/front/profile'); ?>/popin-flag.png" alt="" /> Report this user</span>
                         </div>
