@@ -56,6 +56,9 @@ class Home extends CI_Controller {
             }
             $data['hostProfileInfo'] = $this->space->hostProfileInfo($data['preview']['host']);
             $data['wishlistMaster'] = $this->user->getWishLists($currentUser);
+            $industry = $data['preview']['industryTypeId'];
+            $establishment = $data['preview']['establishmentTypeId'];
+            $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
             //print_array($data['wishlistMaster']);
         }
         $data['search_nav'] = 1;

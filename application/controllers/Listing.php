@@ -132,8 +132,11 @@ class Listing extends CI_Controller {
                 redirect('listing');
             }
             $data['hostProfileInfo'] = $this->space_model->hostProfileInfo($data['preview']['host']);
+            $industry = $data['preview']['industryTypeId'];
+            $establishment = $data['preview']['establishmentTypeId'];
+            $data['amenities'] = $this->space_model->collectAmenities($industry, $establishment);
         }
-        //echo "<pre>"; print_r($data); echo "</pre>";exit;
+        //print_array($data);
         $data['establishment_types'] = $this->space_model->getDropdownData('establishment_types');
         $data['space_types'] = $this->space_model->getDropdownData('space_types');
         $header['search_nav'] = 1;

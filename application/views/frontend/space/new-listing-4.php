@@ -1,10 +1,11 @@
+<link href="<?php echo base_url('theme/front/assests/css/btnswitch.css')?>" rel="stylesheet" type="text/css" />
 <?php $stepData = $this->session->userdata('stepData'); ?>
 <div class="progress">
     <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
         60% Complete
     </div>
 </div>
-<section class="middle-container new-partner6 new-partner7 new-partner8">
+<section class="middle-container new-partner6 new-partner7 new-partner8 new-partner25">
     <div class="container">
         <div class="row clearfix">
             <div class="col-md-8">
@@ -19,10 +20,12 @@
                             </div>
                         </div>
                         <div class="feild">
-                            <label>Is your bathroom ADA Compliant? <i class="fa fa-question-circle" aria-hidden="true"></i></label>
-                            <!-- <a href="#" class="btn btn-default">Yes</a>
-                            <a href="#" class="btn2">No</a> -->
-                            <input id="toggle-demo" type="checkbox" name="bathroomADACompliant" value="1"  <?php echo (isset($stepData['step1']['page3']['bathroomADACompliant']) && $stepData['step1']['page3']['bathroomADACompliant'] == 'Yes')? 'checked' : ''?>>
+                            <label>Is your bathroom ADA Compliant? <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="bathroom" data-html="true"></i></label>
+                            <div class="pull-left">
+                                <div class="demo1" id="a"></div>
+                                <input type="hidden" id="bathroomADACompliant" name="bathroomADACompliant" value="<?= isset($stepData['step1']['page3']['bathroomADACompliant'])?$stepData['step1']['page3']['bathroomADACompliant']:'Yes';?>" />
+                            </div>
+<!--                            <input id="toggle-demo" type="checkbox" name="bathroomADACompliant" value="1"  <?php echo (isset($stepData['step1']['page3']['bathroomADACompliant']) && $stepData['step1']['page3']['bathroomADACompliant'] == 'Yes')? 'checked' : ''?>>-->
                         </div>
                         <div class="next-prevs clearfix">
                             <div class="pull-left">
@@ -43,32 +46,23 @@
         </div>
     </div>    
 </section>
-<style type="text/css">
-    .new-partner6 .toggle-group label{
-        margin-bottom: 0 !important;
-    }
-    .new-partner6 .toggle-group label.toggle-on{
-        color: #fff;
-    }
-    .toggle-handle{
-        height: 100% !important;
-    }
-    .new-partner8 .toggle-group .btn {
-        padding-top: 12px;
-        padding-bottom: 12px;
-    }
-</style>
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="<?php echo base_url('theme/front/assests/js/jquery-3.1.1.slim.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/front/assests/js/btnswitch.js')?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(function() {
-        $('#toggle-demo').bootstrapToggle({
-          on: 'Yes',
-          off: 'No',
-          size: 'mini',
-          onstyle: 'success'
+        $('#a').btnSwitch({
+            OnValue: "Yes",
+            OffValue: "No",
+            ToggleState: $("#bathroomADACompliant").val(),
+            HiddenInputId: "bathroomADACompliant",
+            OnCallback: function(val) {
+                
+            },
+            OffCallback: function (val) {
+                
+            }
         });
-    })
+    });
     // This button will increment the value
     $('.qtyplus').click(function(e){
         // Stop acting like a button
@@ -116,13 +110,6 @@
             errorMsg.insertAfter($("input[name='bathrooms']").parent());
             return false;
         }
-    });
-    
-    $(document).on('change', ':file', function() {
-        var input = $(this),
-            numFiles = input.get(0).files ? input.get(0).files.length : 1,
-            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-        input.trigger('fileselect', [numFiles, label]);
     });
 </script>
 </body>

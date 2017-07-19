@@ -121,6 +121,9 @@ class Space extends CI_Controller {
                 redirect('listing');
             }
             $data['hostProfileInfo'] = $this->space->hostProfileInfo($data['preview']['host']);
+            $industry = $data['preview']['industryTypeId'];
+            $establishment = $data['preview']['establishmentTypeId'];
+            $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
         }
         //echo "<pre>"; print_r($data); echo "</pre>";exit;
         $data['establishment_types'] = $this->space->getDropdownData('establishment_types');
@@ -348,7 +351,7 @@ class Space extends CI_Controller {
 
         if (!empty($_POST)) {
             $stepData['step1']['page3']['bathrooms'] = (int) $this->input->post('bathrooms');
-            $stepData['step1']['page3']['bathroomADACompliant'] = isset($_POST['bathroomADACompliant']) ? 'Yes' : 'No';
+            $stepData['step1']['page3']['bathroomADACompliant'] = $this->input->post('bathroomADACompliant');
         }
 
         if (isset($stepData['id'])) {
@@ -434,21 +437,27 @@ class Space extends CI_Controller {
     public function amenities() {
         $this->restrict_direct_access_steps('step1', 'page4');
         $header['step_info'] = $this->head_step_1;
-        //$stepData = $this->session->userdata('stepData');
+        $stepData = $this->session->userdata('stepData');
+        $industry = $stepData['step1']['page1']['industryType'];
+        $establishment = $stepData['step1']['page1']['establishmentType'];
         //echo "<pre>";print_r($stepData);echo "</pre>";
+        $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
+        //echo $this->db->last_query();
+        //print_array($data['amenities']);
         $this->load->view(FRONT_DIR . '/include-partner/header', $header);
-        $this->load->view(FRONT_DIR . '/space/new-listing-6');
+        $this->load->view(FRONT_DIR . '/space/new-listing-6', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/footer');
     }
 
     public function amenities_submit() {
         $stepData = $this->session->userdata('stepData');
-
+        //print_array($_POST,true);
         if (!empty($_POST['amenities'])) {
             $stepData['step1']['page5']['amenities'] = $this->input->post('amenities');
 
             if (isset($stepData['id'])) {
-                $updateData = implode(' | ', $stepData['step1']['page5']['amenities']);
+                //$updateData = implode(' | ', $stepData['step1']['page5']['amenities']);
+                $updateData = json_encode($stepData['step1']['page5']['amenities']);
 
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));

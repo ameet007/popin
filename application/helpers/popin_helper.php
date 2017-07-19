@@ -1,5 +1,5 @@
 <?php
-function print_array($array, $exit=TRUE){
+function print_array($array, $exit=FALSE){
     echo "<pre>";
     print_r($array);
     echo "</pre>";
