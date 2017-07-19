@@ -39,8 +39,8 @@
                                         <p><span id="amount"></span></p>
                                         <p>The average hourly price is $1,000.</p>
                                         <div id="slider-range"></div>
-                                        <input type="hidden" id="amount1" name="minPrice" value="<?= isset($_POST['minPrice'])?$_POST['minPrice']:'1';?>" />
-                                        <input type="hidden" id="amount2" name="maxPrice" value="<?= isset($_POST['maxPrice'])?$_POST['maxPrice']:'5000';?>" />
+                                        <input type="hidden" id="amount1" name="minPrice" value="<?= isset($_POST['minPrice'])?$_POST['minPrice']:'';?>" />
+                                        <input type="hidden" id="amount2" name="maxPrice" value="<?= isset($_POST['maxPrice'])?$_POST['maxPrice']:'';?>" />
                                     </div>
                                 </li>
                             </ul>
@@ -323,11 +323,16 @@ $(document).ready(function(){
             $( "#amount2" ).val(ui.values[ 1 ]);
         },
         create: function(event, ui){
-            $(this).slider( 'values', [ $( "#amount1" ).val(), $( "#amount2" ).val() ] );
+            if($( "#amount1" ).val() !=="" && $( "#amount2" ).val() !== ""){
+                $(this).slider( 'values', [ $( "#amount1" ).val(), $( "#amount2" ).val() ] );
+            }
         }
     });
-    
-    $( "#amount" ).html( "$" + $( "#amount1" ).val() + " - $" + $( "#amount2" ).val() );
+    if($( "#amount1" ).val() !=="" && $( "#amount2" ).val() !== ""){
+        $( "#amount" ).html( "$" + $( "#amount1" ).val() + " - $" + $( "#amount2" ).val() );
+    }else{
+        $( "#amount" ).html( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+    }
 });
 </script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI&libraries=places"></script>
