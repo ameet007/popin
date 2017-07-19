@@ -238,13 +238,7 @@ class User extends CI_Controller {
 
     public function profile() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
-
-        /* echo '<pre>';
-          print_r($userProfileInfo);
-          exit; */
-
         $data['module_heading'] = 'My Profile';
-
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/profile', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
