@@ -12,7 +12,9 @@ if (isset($module_heading) && $module_heading != '') {
 }
 ?>
 <?php
-$userProfileInfo = $this->host->userProfileInfo();
+if (empty($checkProfile)) {
+    $userProfileInfo = $this->host->userProfileInfo();
+}
 ?>
 <!DOCTYPE html>
 <html>

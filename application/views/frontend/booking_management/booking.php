@@ -202,8 +202,8 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                 <div class="tab-content">
                     <div id="home" class="tab-pane fade in active">
                         <div class="media">
-                            <div class="media-left">                                
-                                <img src="<?php echo $profile_photo; ?>" width="90px" class="media-object" alt="avatar"/>
+                            <div class="media-left">                             
+                                <a href="<?php echo base_url('home/viewProfile/'.$hostProfileInfo->id)?>" target="_balank" ><img src="<?php echo $profile_photo; ?>" width="90px" class="media-object" alt="avatar"/></a>
                                 <p><?= $hostProfileInfo->firstName;?></p>
                             </div>
                             <div class="media-body">
