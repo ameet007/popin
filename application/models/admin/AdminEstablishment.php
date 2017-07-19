@@ -45,6 +45,10 @@ class AdminEstablishment extends CI_Model {
 				//$this->db->where('fname="'.($_POST['fname']).'"');
 				$this->db->like('name',$_POST['name']);
 			}
+			if(isset($_POST['industry']) and $_POST['industry']!='')
+			{
+				$this->db->like('industry_ID',$_POST['industry']);
+			}
 			if((!empty($_POST['order_date_from']) and !empty($_POST['order_date_to'])))
 			{
 				$from_date = explode('/', $_POST['order_date_from']);

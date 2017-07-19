@@ -99,8 +99,22 @@
                         </div>
                     </div>
                     <div class="listin-g">
-                        <h3>Listings <span>(3)</span></h3>
-                        <div class="box">
+                      <?php //print_r(count($spaceList)) ?>
+                        <h3>Listings <span>(<?= count($spaceList);?>)</span></h3>
+                        <?php 
+                         $count = 0;
+                          foreach ($spaceList as $key => $value) {
+                                if ($count == 3) {
+                                    break;
+                                }
+                            echo '<div class="box">
+                                 <img src="'.base_url('theme/front/profile').'/image8.jpg" alt="" />
+                                    <div class="text">I stte coni - Trullo Lavanda <span>Ostuni</spna></div>
+                                 </div>';     
+                                $count++;
+                          }
+                        ?>
+                   <!--      <div class="box">
                             <img src="<?php echo base_url('theme/front/profile'); ?>/image8.jpg" alt="" />
                             <div class="text">I stte coni - Trullo Lavanda <span>Ostuni</spna></div>
                         </div>
@@ -111,7 +125,7 @@
                         <div class="box">
                             <img src="<?php echo base_url('theme/front/profile'); ?>/image8.jpg" alt="" />
                             <div class="text">I stte coni - Trullo Lavanda <span>Ostuni</spna></div>
-                        </div>
+                        </div> -->
                     </div>
                 </aside>
                 <article class="col-lg-9 main-right">
