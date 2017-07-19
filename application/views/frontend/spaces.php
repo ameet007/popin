@@ -3,70 +3,78 @@
 <section class="spaces-home">
     <div class="container-fluid">
         <div class="col-md-8 spaces-left search-main">
-            <ul>
-                <li class="space-type">
-                    <a herf="#" id="space-type">Space Type <span class="badge hidden"></span> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
-                    <div id="space-type_open" class="bz_guest_box clearfix" style="display: none;">
-                        <ul>
-                            <?php foreach($space_types as $key => $space_type){ ?>
-                            <li>
-                                <div class="feild">
-                                    <label for="user_preference<?= $key; ?>">
-                                        <input id="user_preference<?= $key; ?>" type="checkbox" name="" value="<?= $space_type['id']; ?>"> <?= $space_type['name']; ?> <br>
-                                        <p><?php //echo $space_type['description']; ?></p>
-                                    </label>
-                                </div>
-                            </li>
-                            <?php }?>
-                        </ul>
-                        <div class="pull-left"><a href="#" id="space-type-cancel">Cancel</a></div>
-                        <div class="pull-right"><a href="#" id="space-type-apply">Apply</a></div>
-                    </div>
-                </li>
-                <li class="space-type price-range">
-                    <a herf="#" id="price-range">Price Range <i class="fa fa-caret-down" aria-hidden="true"></i></a>
-                    <div id="price-range_open" class="bz_guest_box clearfix" style="display: none;">
-                        <ul>
-                            <li>
-                                <div class="feild">
-                                    <p><span id="amount"></span></p>
-                                    <p>The average nightly price is $5,409.</p>
-                                    <div id="slider-range"></div>
-                                    <input type="hidden" id="amount1" />
-                                    <input type="hidden" id="amount2" />
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="pull-left"><a href="#" id="price-range-cancel">Cancel</a></div>
-                        <div class="pull-right"><a href="#" id="price-range-apply">Apply</a></div>
-                    </div>
-                </li>
-                <li class="space-type rent-instantly">
-                    <a herf="#" id="rent-instantly">Rent Instantly <i class="fa fa-caret-down" aria-hidden="true"></i></a>
-                    <div id="rent-instantly_open" class="bz_guest_box clearfix" style="display: none;">
-                        <ul>
-                            <li>
-                                <div class="feild clearfix">
-                                    <div class="pull-left">
-                                        <h4>Rent Instantly</h4>
-                                        <p>Listings you can book without waiting for host approval</p>
-                                    </div>
-                                    <div class="pull-right">
-                                        <label class="switch">
-                                            <input type="checkbox">
-                                            <div class="slider round"></div>
+            <form class="space-search-form" name="space_filter_form" method="post" action="<?= site_url('spaces'); ?>">
+                <ul>
+                    <li class="space-type">
+                        <a herf="#" id="space-type">Space Type <span class="badge <?= isset($_POST['spaceType']) && !empty($_POST['spaceType'])?'':'hidden';?>"><?= isset($_POST['spaceType']) && !empty($_POST['spaceType'])?count($_POST['spaceType']):'';?></span> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                        <div id="space-type_open" class="bz_guest_box clearfix" style="display: none;">
+                            <ul>
+                                <?php foreach($space_types as $key => $space_type){ ?>
+                                <li>
+                                    <div class="feild">
+                                        <label for="user_preference<?= $key; ?>">
+                                            <input id="user_preference<?= $key; ?>" type="checkbox" name="spaceType[]" value="<?= $space_type['id']; ?>" <?= isset($_POST['spaceType']) && in_array($space_type['id'], $_POST['spaceType'])?'checked':'';?>> <?= $space_type['name']; ?> <br>
+                                            <p><?php //echo $space_type['description']; ?></p>
                                         </label>
                                     </div>
-                                </div>
-                                
-                            </li>
-                        </ul>
-                        <div class="pull-left"><a href="#" id="rent-instantly-cancel">Cancel</a></div>
-                        <div class="pull-right"><a href="#" id="rent-instantly-apply">Apply</a></div>
-                    </div>
-                </li>
-<!--                <li class=""><a herf="#">More <i class="fa fa-caret-down" aria-hidden="true"></i></a></li>-->
-            </ul>
+                                </li>
+                                <?php }?>
+                            </ul>
+                            <div class="pull-left"><a href="#" id="space-type-cancel">Cancel</a></div>
+                            <div class="pull-right"><a href="#" id="space-type-apply">Apply</a></div>
+                        </div>
+                    </li>
+                    <li class="space-type price-range">
+                        <?php 
+                            $priceRange = "Price Range";
+                            if(isset($_POST['minPrice']) && !empty($_POST['minPrice']) && isset($_POST['maxPrice']) && !empty($_POST['maxPrice'])){
+                                $priceRange = '$'. $_POST['minPrice'] . ' - $' . $_POST['maxPrice'];
+                            }
+                        ?>
+                        <a herf="#" id="price-range"><?= $priceRange; ?> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                        <div id="price-range_open" class="bz_guest_box clearfix" style="display: none;">
+                            <ul>
+                                <li>
+                                    <div class="feild">
+                                        <p><span id="amount"></span></p>
+                                        <p>The average hourly price is $1,000.</p>
+                                        <div id="slider-range"></div>
+                                        <input type="hidden" id="amount1" name="minPrice" value="<?= isset($_POST['minPrice'])?$_POST['minPrice']:'1';?>" />
+                                        <input type="hidden" id="amount2" name="maxPrice" value="<?= isset($_POST['maxPrice'])?$_POST['maxPrice']:'5000';?>" />
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="pull-left"><a href="#" id="price-range-cancel">Cancel</a></div>
+                            <div class="pull-right"><a href="#" id="price-range-apply">Apply</a></div>
+                        </div>
+                    </li>
+                    <li class="space-type rent-instantly">
+                        <a herf="#" id="rent-instantly">Rent Instantly <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                        <div id="rent-instantly_open" class="bz_guest_box clearfix" style="display: none;">
+                            <ul>
+                                <li>
+                                    <div class="feild clearfix">
+                                        <div class="pull-left">
+                                            <h4>Rent Instantly</h4>
+                                            <p>Listings you can book without waiting for host approval</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <label class="switch">
+                                                <input type="checkbox" name="rentInstantly" value="No"  <?= isset($_POST['rentInstantly'])?'checked':'';?>>
+                                                <div class="slider round"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </li>
+                            </ul>
+                            <div class="pull-left"><a href="#" id="rent-instantly-cancel">Cancel</a></div>
+                            <div class="pull-right"><a href="#" id="rent-instantly-apply">Apply</a></div>
+                        </div>
+                    </li>
+    <!--                <li class=""><a herf="#">More <i class="fa fa-caret-down" aria-hidden="true"></i></a></li>-->
+                </ul>
+            </form>
             <div class="row">
                 <?php 
                    if(!empty($listings)):?>
@@ -121,7 +129,7 @@
             </div>
             <div class="of-ren">
                 <span>1 – 18 of 142 Rentals</span>
-                <p>Average 4.77 out of 5 stars from 249 guest reviews</p>
+<!--                <p>Average 4.77 out of 5 stars from 249 guest reviews</p>-->
                 <h5>Additional fees apply. Taxes may be added.</h5>
             </div>
             <?php endif;?>
@@ -169,13 +177,20 @@ $(document).ready(function(){
     $('#demo-range').daterangepicker({
         autoUpdateInput: false,
         minDate: moment(),
-        //showDropdowns: true
+        //showDropdowns: true,
+        //timePicker: true,
+        //timePickerIncrement: 30,
+        locale: {
+            format: 'DD MMM' //MM/DD/YYYY h:mm A
+        }
     }, 
     function(start, end, label) {
         //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        $("#checkIn").val(start.format('YYYY-MM-DD'));$("#checkOut").val(end.format('YYYY-MM-DD'));
     });
     $('#demo-range').on('apply.daterangepicker', function(ev, picker) {
         $(this).val(picker.startDate.format('DD MMM') + ' - ' + picker.endDate.format('DD MMM'));
+        $("#space-search-form").submit();
     });
     $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
@@ -218,6 +233,7 @@ $(document).ready(function(){
     $('#space-type-apply').on("click", function(e) {
         e.preventDefault(); 
         $('#space-type_open').slideToggle();
+        mergeForms("space_search_form", "space_filter_form");
         e.stopPropagation(); 
     });
     $(document).on("click", function(e) {	
@@ -232,7 +248,7 @@ $(document).ready(function(){
     });
     $('#price-range-cancel').on("click", function(e) {
         e.preventDefault(); 
-        $( "#price-range" ).html( 'Price range <i class="fa fa-caret-down" aria-hidden="true"></i>' );
+        $( "#price-range" ).html( 'Price Range <i class="fa fa-caret-down" aria-hidden="true"></i>' );
         
         var options = $("#slider-range").slider( 'option' );
         $("#slider-range").slider( 'values', [ options.min, options.max ] );
@@ -247,6 +263,7 @@ $(document).ready(function(){
     $('#price-range-apply').on("click", function(e) {
         e.preventDefault(); 
         $('#price-range_open').slideToggle();
+        mergeForms("space_search_form", "space_filter_form");
         e.stopPropagation(); 
     });
     $(document).on("click", function(e) {	
@@ -266,6 +283,7 @@ $(document).ready(function(){
     });
     $('#rent-instantly-apply').on("click", function(e) {
         e.preventDefault(); 
+        mergeForms("space_search_form", "space_filter_form");
         $('#rent-instantly_open').slideToggle();
         e.stopPropagation(); 
     });
@@ -276,36 +294,40 @@ $(document).ready(function(){
     });
     
     $('.owl-carousel').owlCarousel({
-    loop:true,
-    margin:10,
-    nav:true,
-    responsive:{
-            0:{
-                items:1
-            },
-            600:{
-                items:1
-            },
-            1000:{
-                items:1
-            }
+        loop:true,
+        margin:10,
+        nav:true,
+        responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:1
+                },
+                1000:{
+                    items:1
+                }
         }
     });
     
     $( "#slider-range" ).slider({
         range: true,
-        min: 650,
-        max: 50000,
-        values: [ 650, 50000 ],
+        min: 1,
+        max: 5000,
+        //step: 50,
+        values: [ 1, 5000 ],
         slide: function( event, ui ) {          
             $( "#price-range" ).html( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] + ' <i class="fa fa-caret-down" aria-hidden="true"></i>' );
             $( "#amount" ).html( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
             $( "#amount1" ).val(ui.values[ 0 ]);
             $( "#amount2" ).val(ui.values[ 1 ]);
+        },
+        create: function(event, ui){
+            $(this).slider( 'values', [ $( "#amount1" ).val(), $( "#amount2" ).val() ] );
         }
     });
     
-    $( "#amount" ).html( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+    $( "#amount" ).html( "$" + $( "#amount1" ).val() + " - $" + $( "#amount2" ).val() );
 });
 </script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI&libraries=places"></script>
@@ -320,9 +342,9 @@ $(document).ready(function(){
             var mesg = "Address: " + address;
             mesg += "\nLatitude: " + latitude;
             mesg += "\nLongitude: " + longitude;
-            console.log(mesg);
+            //console.log(mesg);
             $("#latitude").val(latitude);$("#longitude").val(longitude);
-            $("#space-search-form").submit();
+            mergeForms("space_search_form", "space_filter_form");
         });
     });
 </script>
@@ -393,7 +415,7 @@ function initialize() {
         getValue.push(get);
         get = [];
   });
-     console.log(getJson)
+     //console.log(getJson)
         // passing array value
         var locations = getValue; 
         var marker, i;

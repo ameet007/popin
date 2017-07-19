@@ -144,11 +144,26 @@ $(function () {
     });
     $('#guest-apply').on("click", function(e) {
         e.preventDefault(); 
-        $("#space-search-form").submit();
+        mergeForms("space_search_form", "space_filter_form");
         $('#guest_open').slideToggle();
         e.stopPropagation(); 
     });
 });
+function mergeForms(form1, form2) {
+    var forms = [];
+    $.each($.makeArray(arguments), function(index, value) {
+        forms[index] = document.forms[value];
+    });
+    var targetForm = forms[0];
+    $.each(forms, function(i, f) {
+        if (i != 0) {
+            $(f).find('input, select, textarea')
+                .hide()
+                .appendTo($(targetForm));
+        }
+    });
+    $(targetForm).submit();
+}
 </script>
 
 <script src="<?= base_url('theme/front/assests/js/ac.js'); ?>" type="text/javascript"></script>

@@ -30,6 +30,8 @@ class Home extends CI_Controller {
             $data = array();
         }
         $filters = $this->input->post();
+        //$this->session->set_userdata('space_filters', $filters);
+        //print_array($filters);
         $data['space_types'] = $this->space->getDropdownData('space_types');
         $data['listings'] = $this->space->getActiveListings($currentUser, $filters);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);

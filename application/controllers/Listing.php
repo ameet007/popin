@@ -110,7 +110,7 @@ class Listing extends CI_Controller {
                                     <a href="'. site_url('preview-listing/'.$spaceData['id']).'"><button class="btn">Preview</button></a>
                                 </div>
                             </div>
-                        </div>';
+                        </div><hr>';
             }
             $HTML.="<input type='hidden' class='nextpage' value='".$page."'>";
         }

@@ -75,7 +75,7 @@ $siteDetails = $CI->common->getSiteDetails();
                                 <?php else: ?>
                                 <div class="media-body">
                                     <div class="anywhere-main clearfix">
-                                        <form id="space-search-form" method="post" action="<?= site_url('spaces'); ?>">
+                                        <form class="space-search-form" name="space_search_form" method="post" action="<?= site_url('spaces'); ?>">
                                             <ul class="clearfix">
                                                 <li class="anywhere">
                                                     <input class="icon1" type="text" id="destination" name="destination" value="<?= isset($_POST['destination'])?$_POST['destination']:'';?>" placeholder="Anywhere" />
@@ -83,8 +83,14 @@ $siteDetails = $CI->common->getSiteDetails();
                                                     <input type="hidden" id="longitude" name="longitude" value="<?= isset($_POST['longitude'])?$_POST['longitude']:'';?>" />
                                                 </li>
                                                 <li class="anytime">
-                                                    <input class="icon1 icon2" type="text" id="demo-range" placeholder="Anytime" />
-                                                    <input type="hidden" id="checkIn" name="checkIn" /><input type="hidden" id="checkOut" name="checkOut" />
+                                                    <?php 
+                                                        $checkInRange = "";
+                                                        if(isset($_POST['checkIn']) && !empty($_POST['checkIn']) && isset($_POST['checkOut']) && !empty($_POST['checkOut'])){
+                                                            $checkInRange = date("d M", strtotime($_POST['checkIn'])) . ' - ' . date("d M", strtotime($_POST['checkOut']));
+                                                        }
+                                                    ?>
+                                                    <input class="icon1 icon2" type="text" id="demo-range" placeholder="Anytime" value="<?= $checkInRange; ?>" />
+                                                    <input type="hidden" id="checkIn" name="checkIn" value="<?= isset($_POST['checkIn'])?$_POST['checkIn']:'';?>" /><input type="hidden" id="checkOut" name="checkOut" value="<?= isset($_POST['checkOut'])?$_POST['checkOut']:'';?>" />
                                                 </li>
                                                 <li class="guest">
                                                     <button id="guest_button" type="button">

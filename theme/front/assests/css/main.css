@@ -165,7 +165,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .spaces-home .spaces-left ul li.space-type .bz_guest_box {background-color: #ffffff;border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; box-shadow: 0 14px 36px 2px rgba(0, 0, 0, 0.15); -moz-box-shadow: 0 14px 36px 2px rgba(0, 0, 0, 0.15); -webkit-box-shadow: 0 14px 36px 2px rgba(0, 0, 0, 0.15); display: none; padding: 15px; position: absolute; left: 0; top: 80%; width: 420px; z-index: 1000;}
 .spaces-home .spaces-left ul li.space-type .bz_guest_box ul li {display: block; margin-bottom: 10px; padding: 0;}
 .spaces-home .spaces-left ul li.space-type .bz_guest_box ul li label {font-size: 18px; font-weight: 300; color: #484848; line-height: 18px;}
-.spaces-home .spaces-left ul li.space-type .bz_guest_box ul li p {font-size: 13px; margin-left: 18px; margin-top: 5px;}
+.spaces-home .spaces-left ul li.space-type .bz_guest_box ul li p {font-size: 13px; margin-left: 0; margin-top: 5px;}
 .spaces-home .spaces-left ul li.space-type .bz_guest_box ul li input {display: inline-block;}
  /* The switch - the box around the slider */
 .spaces-home .spaces-left ul li.space-type .switch {position: relative; display: inline-block; width: 60px; height: 34px;}

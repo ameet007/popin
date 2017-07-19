@@ -47,14 +47,30 @@ class FrontSpace extends CI_Model {
         if(!empty($filters)){
             # Destination
             if($filters['latitude'] !="" && $filters['longitude'] !=""){
-                $this->db->where("ABS(latitude - {$filters['latitude']}) <= 0.1");
-                $this->db->where("ABS(longitude - {$filters['longitude']}) <= 0.1");
+                $this->db->where("ABS(latitude - {$filters['latitude']}) <= 0.5");
+                $this->db->where("ABS(longitude - {$filters['longitude']}) <= 0.5");
+            }
+            # Check In and Check Out
+            if($filters['checkIn'] !="" && $filters['checkOut'] !=""){
+                $checkIn = $filters['checkIn'];
+                $checkOut = $filters['checkOut'];
             }
             # Professional capacity
             if($filters['professionals'] !=""){
                 $this->db->where('professionalCapacity >=', $filters['professionals']);
-            }
-            
+            }   
+            # Space type
+            if(isset($filters['spaceType']) && !empty($filters['spaceType'])){
+                $this->db->where_in('spaceType', $filters['spaceType']);
+            }  
+            # Price Range
+            if(isset($filters['minPrice']) && $filters['minPrice'] !="" && isset($filters['maxPrice']) && $filters['maxPrice'] !=""){
+                $this->db->where("base_price BETWEEN {$filters['minPrice']} AND {$filters['maxPrice']}");
+            }            
+            # Rent instantly
+            if(isset($filters['rentInstantly'])){
+                $this->db->where('rentalRequests', $filters['rentInstantly']);
+            }  
         }
         $spaceData = $this->db->get_where('spaces', array('status' => 'Active'))->result_array();
         //echo $this->db->last_query();
@@ -72,14 +88,32 @@ class FrontSpace extends CI_Model {
             if(!empty($spaceType)){
                 $listing['spaceType'] = $spaceType['name'];
             }
-            $response[$i] = $listing;
-            $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->get_where('space_gallery', array('space' => $listing['id']))->result_array();
-            if (!empty($spaceGallery)) {
-                foreach ($spaceGallery as $image) {
-                    $response[$i]['gallery'][] = $image['image'];
+            
+            if(isset($checkIn) && isset($checkOut)){
+                $spaceAvailableDates = $this->db->select('spaceDate')->get_where('space_available_slots', array('space' => $listing['id']))->row_array();
+                if(!empty($spaceAvailableDates)){
+                    $listing['available_dates'] = json_decode($spaceAvailableDates['spaceDate'], TRUE);
+                    if(in_array($checkIn, $listing['available_dates'])){
+                        $response[$i] = $listing;
+                        $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->get_where('space_gallery', array('space' => $listing['id']))->result_array();
+                        if (!empty($spaceGallery)) {
+                            foreach ($spaceGallery as $image) {
+                                $response[$i]['gallery'][] = $image['image'];
+                            }
+                        }
+                        $i++;
+                    }
                 }
+            }else{
+                $response[$i] = $listing;
+                $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->get_where('space_gallery', array('space' => $listing['id']))->result_array();
+                if (!empty($spaceGallery)) {
+                    foreach ($spaceGallery as $image) {
+                        $response[$i]['gallery'][] = $image['image'];
+                    }
+                }
+                $i++;
             }
-            $i++;
         }
         //echo "<pre>";print_r($response);exit;
         return $response;
