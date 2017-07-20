@@ -534,7 +534,7 @@ input.form-control.number {
                 success: function(response) {
                      if (response == 1) {
                         $('#verifyAccount').modal('hide');
-                        $('#showBox').html('<input class="textbox" type="text" placeholder="(+1)123-456-789" name="phone" id="phone" value="'+number+'" readonly /><p>Verifyed<span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png')?>" alt=""></span></p>');
+                        $('#showBox').html('<input class="textbox" type="text" placeholder="(+1)123-456-789" name="phone" id="phone" value="'+number+'" readonly /><p>Verified<span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png')?>" alt=""></span></p>');
                   }else{
                       $('#errmsg').html('<p style="color:red;" >Worng Verification code</p>');
                   }
