@@ -74,9 +74,12 @@ $authUrl = $gClient->createAuthUrl();
                                 <div class="panel-body">
                                     <h4>Email address</h4>
                                     <p>You have confirmed your email: <b><?= $userProfileInfo->email; ?></b>. A confirmed email is important to allow us to securely communicate with you.</p>
+                                    <?php 
+                                    if ($userProfileInfo->phone_verify == 'yes'){                                  
+                                    ?>
                                     <h4>Phone number</h4>
                                     <p>Your number is only shared with another <?= SITE_DISPNAME; ?> member once you have a confirmed booking.</p>
-                                    <?php if ($userProfileInfo->googleVerified == 'Yes') { ?>
+                                    <?php } if ($userProfileInfo->googleVerified == 'Yes') { ?>
                                         <h4>Google</h4>
                                         <p>Your <?= SITE_DISPNAME; ?> account is Connected with Goole account.</p>
                                     <?php } ?>
@@ -129,9 +132,6 @@ $authUrl = $gClient->createAuthUrl();
                                             <input type="file" name="liabilityInsurance" id="liabilityInsurance">
                                         </div>
                                     </div>
-                                    <!-- <h4>Phone number</h4> -->
-                                    <!-- p>Make it easier to communicate with a verified phone number. We’ll send you a code by SMS or read it to you over the phone. Enter the code below to confirm that you’re the person on the other end.</p>
-                                    <p>Your number is only shared with another <?php // SITE_DISPNAME;  ?> member once you have a confirmed booking.</p> -->
 <!--                                    <div class="col-sm-6"><input type="hidden" name="phone" id="phone" value="4521" class="textbox"></div>-->
                                     <input type="hidden" name="OldLicenceCopy" id="OldLicenceCopy" value="<?= $userProfileInfo->licenceCopy; ?>">
                                     <input type="hidden" name="OldEstablishmentLicence" id="OldEstablishmentLicence" value="<?= $userProfileInfo->establishmentLicence; ?>">
@@ -139,23 +139,33 @@ $authUrl = $gClient->createAuthUrl();
                                     <input type="submit" name="submit" id="submit" class="btn btn-red pull-right" value="Upload">
                                 </div>
                             </div>
-<?php if ($userProfileInfo->googleVerified != 'Yes') { ?>
+                        <?php if ($userProfileInfo->googleVerified != 'Yes' || $userProfileInfo->phone_verify != 'yes') { ?>
                                 <div class="panel panel-default profile-photo verified-info">
-                                    <div class="panel-heading">Not Verified Google</div>
+                                    <div class="panel-heading">Not Verified</div>
                                     <div class="panel-body">
                                         <div class="row mr15">
-                                            <div class="col-md-8"><br>
+                                          <div class="col-md-8"><br>
                                                 <h4>Google</h4>
                                                 Connect your <?= SITE_DISPNAME; ?> account to your Goole account for simplicity and ease.
                                             </div>
+
                                             <div class="col-md-4 align-center">
-    <?php if ($userProfileInfo->googleVerified == 'Yes') { ?><a href="javascript:void(0);" class="btn btn-default">Verified</a><?php } else { ?><a class="btn btn-default btn-file" href="<?php echo $authUrl; ?>"> Connect with Google </a> <?php } ?>
+                                              <?php if ($userProfileInfo->googleVerified == 'Yes') { ?><a href="javascript:void(0);" class="btn btn-default">Verified</a><?php } else { ?><a class="btn btn-default btn-file" href="<?php echo $authUrl; ?>"> Connect with Google </a> <?php } ?>
                                             </div>
+                                            <?php  
+                                               if ($userProfileInfo->phone_verify != 'yes') { ?>
+                                           <div class="col-md-12">
+                                              <br>
+                                              <h4>Phone number</h4>
+                                                <p>Your number is only shared with another <?php SITE_DISPNAME;  ?> member once you have a confirmed booking.</p>
+                                             </div>
+                                             <?php   }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
-<?php }
-?>
+                            <?php }
+                            ?>
                         </div>
                     </article>
                 </form>

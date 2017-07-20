@@ -102,6 +102,8 @@ define('INC','include');
 
 /*Other Constant Message Section Start*/
 define('DATE_FORMAT','d M Y h:i:s a');
+define('SID','AC0817b7d4c25d802daa93564ee4d2ce3d');
+define('TOKEN','0f8c82ba197a1c247a413966a77c1e6a');
 
 /*Admin Section Page Title, Descrption, Author, Keywords Section Start*/
 define('ADMIN_PAGE_TITLE',SITE_DISPNAME.' Admin');

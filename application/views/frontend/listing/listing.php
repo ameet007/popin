@@ -12,7 +12,7 @@
                         <div class="panel panel-default your-listings">
                             <div class="panel-body">
                                 <h3>You don’t have any listings!</h3>
-                                <p>Make money by renting out your extra space on Popln. You’ll also get to meet interesting professionals from around the world!</p>
+                                <p>Make money by renting out your extra space on Popln. You’ll also get to network with more professionals.</p>
                                 <a class="green-btn" href="<?php echo site_url()?>Space">Post a new listing</a>
                             </div>
                         </div>
