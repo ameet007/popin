@@ -37,4 +37,7 @@ function getMultiRecord($table,$column,$condication,$orderBy='',$orderType=''){
      }
     return $tableRecord->db->get_where($table,array($column=>$condication))->result_array();
 }
+ function generate_unique_code(){
+        return substr(str_shuffle("1234567890"),'0','4');   
+    }
 ?>

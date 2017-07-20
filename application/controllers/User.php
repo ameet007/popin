@@ -192,7 +192,7 @@ class User extends CI_Controller {
                 );
                 $id = $this->user->editUser($userUpdateData, $response->id);
                 if ($id > 0) {
-                    $this->session->set_flashdata('message_notification', 'Your Email Successfully Verified And You Can Login Now');
+                    $this->session->set_flashdata('message_notification', 'You have successfullu verified your email address.Sign in below');
                     $this->session->set_flashdata('class', A_SUC);
                     redirect(base_url());
                 } else {
@@ -1333,5 +1333,48 @@ class User extends CI_Controller {
           $this->session->set_flashdata('class', A_SUC);
           redirect(base_url());
       }
+    }
+    public function ajax_verify_phoneNumber(){
+            if (!empty($this->session->userdata('user_id'))) {
+                    $phone = $this->input->post('phone');
+                    $code  = $this->input->post('code');
+                    $number = $code.''.$phone;
+                    $this->db->where('id',$this->session->userdata('user_id'));
+                    $this->db->update('user',array('phone'=>$code.'-'.$phone));
+                    $code  = generate_unique_code();
+                    $client = new Twilio\Rest\Client(SID,TOKEN);
+                    $client->messages->create(
+                    $number,
+                    array(
+                    'from' => '+13237161344',
+                    'body' => "Verification code is ".$code,
+                    // 'statusCallback' => "http://requestb.in/1234abcd"
+                    )
+                   );
+                $this->session->set_userdata('code',$code);
+                echo 1;
+        }
+    }
+    public function ajax_verifyCode(){
+        if (!empty($this->session->userdata('user_id'))) {
+             $enterValue = $this->input->post('enterCode');
+             if ($this->session->userdata('code') == $enterValue) {
+                   $this->db->where('id',$this->session->userdata('user_id'));
+                   $this->db->update('user',array('phone_verify'=>'yes'));
+                   $this->session->unset_userdata('code');
+                   echo '1';
+             }else{
+                   echo '2';
+             }
+             
+       }
+    }
+    public function checkSessionVerifyCode(){
+        $enterValue = $this->input->post('enterValue');
+        if ($enterValue == $this->session->userdata('code')) {
+            echo 'true';
+        }else{
+            echo 'false';
+        }
     }
 }

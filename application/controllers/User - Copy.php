@@ -190,7 +190,7 @@ class User extends CI_Controller {
                 );
                 $id = $this->user->editUser($userUpdateData, $response->id);
                 if ($id > 0) {
-                    $this->session->set_flashdata('message_notification', 'Your Email Successfully Verified And You Can Login Now');
+                    $this->session->set_flashdata('message_notification', 'You have successfullu verified your email address.Sign in below');
                     $this->session->set_flashdata('class', A_SUC);
                     redirect(base_url());
                 } else {

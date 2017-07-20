@@ -555,6 +555,7 @@ class FrontUser extends CI_Model {
         $joinUser['join_date']            = time();
         $this->db->insert('join_account_master',$joinUser);
     }
+    # Send verify code
 }
 
 ?>

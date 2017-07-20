@@ -1,12 +1,15 @@
 <?php
 	$this->load->view('frontend/include/user-header');
 ?>
-<?php if(empty($userRentals['upcoming']) && empty($userRentals['past'])):?>
+<?php if(empty($userRentals['upcoming']) && empty($userRentals['past'])): 
+  $amount = getSingleRecord('settings','id','1');
+?>
 <div class="rentals-banner">
     <div class="container">
-        <div class="pull-left">
+        <div class="pull-left"> 
+        <!-- currency -->
             <h2>Choose your next office</h2>
-            <p>Give your Colleagues ₹1,200 to try Popln and you will also<br /> get ₹600 in rental credit when they complete their first rental.</p>
+            <p>Give your Colleagues <?= getCurrency_symbol($userProfileInfo->currency).' '.number_format($amount->join_amount); ?>to try Popln and you will also<br /> get <?= getCurrency_symbol($userProfileInfo->currency).' '.number_format($amount->referral_credit_amount); ?> in rental credit when they complete their first rental.</p>
             <a class="green-btn" href="<?= site_url('invite');?>">Invite Colleagues</a>
         </div>
         <div class="pull-right">

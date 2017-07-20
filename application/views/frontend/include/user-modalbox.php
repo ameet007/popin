@@ -95,7 +95,7 @@ include_once APPPATH."libraries/google-api-php-client/user_register.php";
                 <div class="check-right">
                     <label>
                         <input id="newsLetter" name="newsLetter" value="Yes" type="checkbox">
-                        <span for="newsLetter">I need updates via email about Popln</span>
+                        <span for="newsLetter">I would like to receive updates from Popin</span>
                     </label>
                 </div>
                 <button class="btn-red btn-block" type="submit">Sign up with Email</button>

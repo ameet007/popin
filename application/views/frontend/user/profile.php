@@ -102,8 +102,25 @@
                                     <div class="row">
                                         <label class="align-right col-sm-3">Phone Number <i class="fa fa-lock" aria-hidden="true"></i></label>
                                         <div class="col-sm-9 number-add">
+                                         <span id="showBox">
+                                          <?php 
+                                           if (empty($userProfileInfo->phone)) { ?>
                                             <u><p style="cursor:pointer;" data-toggle="modal" data-target="#myModal" >Click here Add Phone Number</p></u>
-                                            <!-- <input class="textbox" type="text" placeholder="(+1)123-456-789" name="phone" id="phone" onchange="autoSave(this.id,this.value)" value="<?= $userProfileInfo->phone; ?>" /> -->
+                                            <?php  }else { 
+                                                 $number = explode("-",$userProfileInfo->phone);
+                                              ?>
+                                            <input class="textbox" type="text" placeholder="(+1)123-456-789" name="phone" id="phone" value="<?= $number[0].''.$number[1]; ?>" readonly />
+                                             <?php  }
+                                              if ($userProfileInfo->phone_verify != 'yes' && !empty($userProfileInfo->phone)) { ?>
+                                              <input type="hidden" name="numberCode" value="<?= (!empty($number[0])?$number[0]:''); ?>" >
+                                              <input type="hidden" name="number" value="<?= (!empty($number[1])?$number[1]:''); ?>" >
+                                             <u id="ErrorMessage"><p style="cursor:pointer;" data-toggle="modal" data-target="#myModal" >Not verify Click here to verify Phone Number</p></u>
+                                            <?php  }
+                                            if ($userProfileInfo->phone_verify == 'yes'){
+                                                echo '<u><p>Verified<span class="pull-right"><img src="'.base_url('theme/front/assests/img/right-singh.png').'" alt=""></span></p></u>';
+                                            }
+                                            ?>
+                                            </span>
                                             <p>This is only shared once you have a confirmed booking with another <?= SITE_DISPNAME; ?> user. This is how we can all get in touch.</p>
                                         </div>
                                     </div>
@@ -218,15 +235,13 @@
                                         <div class="col-sm-9 number-add">
                                         <select data-placeholder="Please Select Languages" name="languages[]" id="languages" onChange="getSelectedOptions(this)"  multiple class="selectbox chosen-select" tabindex="8">
 										  <?php
-												 $language_arr = explode(',',$userProfileInfo->languages);
+												$language_arr = explode(',',$userProfileInfo->languages);
 											   foreach($all_languages as $k=>$v)
 											   { ?>
 												   <option value="<?= $k; ?>" <?= (in_array($k,$language_arr)==true and $language_arr[0]!='')?'selected':''; ?>><?= $v; ?></option>
 											  <?php }
 											   ?>
 										</select>
-
-
                                             <p>Add any languages that others can use to speak with you on <?= SITE_DISPNAME; ?></p>
                                         </div>
                                     </div>
@@ -391,29 +406,30 @@ input.form-control.number {
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" id="closeBtn" class="close" data-dismiss="modal">&times;</button>
           <h3 class="modal-title">Add Phone Number</h3>
         </div>
         <div class="modal-body">
         <form id="numberVerify" class="form-inline">
            <div class="form-group" style="margin-left: 10px;margin-bottom:10px;">
                <center> <label for="email">Change country:</label>
-                <select class="form-control" name="country" onchange="onchangeCountry()" >
+                <select class="form-control" name="countryName" onchange="onchangeCountry()" >
                      <?php $all_countries = unserialize(MOBILECODES); 
+                      $setCountry = (!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:'US');
                         foreach($all_countries as $k=>$v){ ?>
-                        <option value="<?= $v['code']; ?>" myTag="<?= $k; ?>" ><?= ucfirst(strtolower($v['name'])); ?></option>
+                        <option value="<?= $v['code']; ?>" <?= ($setCountry == $k?'selected':''); ?> ><?= ucfirst(strtolower($v['name'])); ?></option>
                    <?php } ?>
                 </select>
               </div> 
               <div class="form-group">
                 <label for="email">Phone Number:</label>
                 <input type="text" class="form-control addCountry" name="code" readonly="">
-                <input type="text"  class="form-control number" id="phone" name="phone"> 
+                <input type="text"  class="form-control number numeric" id="phone" name="phoneNumber"> 
               </div>
               </center>
         </div>
         <div class="modal-footer">
-          <button style="font-size: 21px;" type="button" class="btn btn-danger">Verify</button>
+          <button style="font-size: 21px;" onclick="verifyAccount()" type="button" class="btn btn-danger">Verify</button>
           </form>
         </div>
       </div>
@@ -421,19 +437,113 @@ input.form-control.number {
     </div>
   </div>
   <script type="text/javascript">
+  $(document).ready(function(){
+    onchangeCountry();
+  });
   function onchangeCountry(){
-    var countryCode = '+'+$('select[name="country"]').val();
-    //var element = $(this);
-    // var myTag = $('option:selected','select[name="country"]').attr('mytag');
-    // console.log(myTag);
-   $('input[name="code"]').val(countryCode);
+    var countryCode = '+'+$('select[name="countryName"]').val();
+    $('input[name="code"]').val(countryCode);
   }
-  // $('#numberVerify').validate({
-  //   rules: {
-  //       phone :{ required:true,numbre:true}
-  //   }
-  //   messages : {
-  //          phone :{ required:"Phone number cannot be empty"}
-  //    }
-  // });
+  var numberCode = $('input[name="numberCode"]').val();
+  var number     = $('input[name="number"]').val();
+  $('input[name="code"]').val(numberCode);
+  $('input[name="phoneNumber"]').val(number);
+  var code = numberCode.slice(1);
+  $('select[name="countryName"]').val(code);
+  function verifyAccount(){
+    var numberCode = $('input[name="code"]').val();
+    var number     = $('input[name="phoneNumber"]').val();
+    var fullphone = numberCode+''+number;
+    $.ajax({
+            url: '<?= base_url('user/ajax_verify_phoneNumber'); ?>',
+            type: 'POST',
+            dataType: "json",
+            data: {phone:number,code:numberCode},
+            beforeSend: function(){
+                $(".loader").show();
+            },
+            complete: function(){
+                $('.loader').hide();
+            },
+            success: function(response) {
+                $('#myModal').modal('hide');
+                $("#verifyBtn").trigger("click");
+                $('input[name="verifuMobileNumberr"]').val(fullphone);
+            }          
+        });
+  }
   </script>
+  <button type="button" style="display: none;" id="verifyBtn" data-toggle="modal" data-target="#verifyAccount" ></button>
+  <div class="modal fade" id="verifyAccount" role="dialog" style="margin-top: 200px;">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="modal-title">Verification</h3>
+        </div>
+        <div class="modal-body">
+        <form id="numberVerify" class="form-inline">
+              <div class="form-group">
+                <label for="email">Verification Code:</label>
+                <input type="text"  class="form-control number numeric" id="verifyCode" name="verifyCodeNumber" placeholder="Enter verify code"> 
+                <input type="hidden" name="verifuMobileNumberr">
+                <span id="errmsg"></span>
+              </div>
+              </center>
+        </div>
+        <div class="modal-footer">
+          <button disabled="true" id="submitVerifyBtn" style="font-size: 21px;" onclick="submitVerifyCode()"  type="button" class="btn btn-danger">Verify</button>
+          </form>
+        </div>
+      </div>
+    </div>
+ </div>
+ <script type="text/javascript">
+ $('input[name="verifyCodeNumber"]').keyup(function(){
+   var enterValue = this.value;
+    $.ajax({
+            url: '<?= base_url('user/checkSessionVerifyCode'); ?>',
+            type: 'POST',
+            dataType: "json",
+            data: {enterValue:enterValue},
+            success: function(response) {
+               if (response == true) {
+                console.log(response);
+                 $("#submitVerifyBtn").prop( "disabled", false );    
+               }else{
+                $("#submitVerifyBtn").prop( "disabled", true);
+               }
+            }          
+    });
+ })
+     function submitVerifyCode(){
+        var enterCode  = $('input[name="verifyCodeNumber"]').val();
+        var number     = $('input[name="verifuMobileNumberr"]').val();
+            $.ajax({
+                url: '<?= base_url('user/ajax_verifyCode'); ?>',
+                type: 'POST',
+                dataType: "json",
+                data: {enterCode:enterCode},
+                beforeSend: function(){
+                    $(".loader").show();
+                },
+                complete: function(){
+                    $('.loader').hide();
+                },
+                success: function(response) {
+                     if (response == 1) {
+                        $('#verifyAccount').modal('hide');
+                        $('#showBox').html('<input class="textbox" type="text" placeholder="(+1)123-456-789" name="phone" id="phone" value="'+number+'" readonly /><p>Verifyed<span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png')?>" alt=""></span></p>');
+                  }else{
+                      $('#errmsg').html('<p style="color:red;" >Worng Verification code</p>');
+                  }
+                }          
+          });
+     }
+$(".numeric").keypress(function (e) {
+        if (e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+});
+ </script>

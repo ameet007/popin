@@ -41,7 +41,7 @@
                                             <p title="Verified info" >Government ID</p>
                                         </div>
                                         <div class="pull-right">
-                                            <img title="Verified info" src="<?php echo base_url('theme/front/profile'); ?>/right-singh.png" alt="" />
+                                            <img title="Verified info" src="<?php echo base_url('theme/front/img'); ?>/right-singh.png" alt="" />
                                         </div>
                                     </li>
                                     <li class="clearfix">
@@ -49,7 +49,7 @@
                                             <p title="Verified info" >Email address</p>
                                         </div>
                                         <div class="pull-right">
-                                            <img title="Verified info" src="<?php echo base_url('theme/front/profile'); ?>/right-singh.png" alt="" />
+                                            <img title="Verified info" src="<?php echo base_url('theme/front/img'); ?>/right-singh.png" alt="" />
                                             <!-- <span class="screen-reader-only">Verified</span> -->
                                         </div>
                                     </li>
@@ -58,7 +58,7 @@
                                             <p>Phone number</p>
                                         </div>
                                         <div class="pull-right">
-                                            <img src="<?php echo base_url('theme/front/profile'); ?>/right-singh.png" alt="" />
+                                            <img src="<?php echo base_url('theme/front/img'); ?>/right-singh.png" alt="" />
                                         </div>
                                     </li>
                                     <?php if (!empty($checkProfile)) {?>
@@ -122,14 +122,14 @@
                         <h2>Hey, I’m <?= $userProfileInfo->firstName.' '.$userProfileInfo->lastName; ?>!</h2>
                         <p><strong><?= ucfirst((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:'Us'));?> . Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
                         <div class="report">
-                            <span><img src="<?php echo base_url('theme/front/profile'); ?>/popin-flag.png" alt="" /> Report this user</span>
+                            <span><img src="<?php echo base_url('theme/front/img'); ?>/popin-flag.png" alt="" /> Report this user</span>
                         </div>
                         <p><?= $userProfileInfo->aboutYou; ?>.</p>
                         <ul class="superhost">
                             <!-- <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/superhost.png" alt="" /></span> Superhost</li> -->
                             <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15">132</span></div></span> Reviews</li>
                             <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?php echo count(getMultiRecord('join_account_master','provide_link_userID',$userProfileInfo->id)) ?></span></div></span> References</li>
-                            <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/ver.png" alt="" /></span> Verified</li>
+                            <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Verified</li>
                         </ul>
                         <div class="review-sec">
                             <h3>Reviews <span>(132)</span></h3>
@@ -137,7 +137,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -213,7 +213,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -252,7 +252,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -268,7 +268,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -284,7 +284,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -300,7 +300,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -320,7 +320,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
@@ -337,7 +337,7 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/profile'); ?>/avatar-pic.png" class="media-object img-circle" />
+                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
                                         <p>Nishi</p>
                                     </div>
                                 </div>
