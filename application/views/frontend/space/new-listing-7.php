@@ -1,7 +1,7 @@
 <?php $stepData = $this->session->userdata('stepData'); ?>
 <div class="progress">
-    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-        100% Complete
+    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+        90% Complete
     </div>
 </div>
 <section class="middle-container new-partner6 new-partner11">
@@ -9,7 +9,7 @@
         <div class="row clearfix">
             <div class="col-md-8">
                 <div class="space-are">
-                    <h3>What spaces can professionals use?</h3>
+                    <h3>What facilities can professionals use?</h3>
                     <form id="spaces-form" action="<?php echo site_url('Space/spaces_submit'); ?>" method="post">
                         <?php $spaces = unserialize(SPACES); 
                         foreach($spaces as $k=>$v){ ?>

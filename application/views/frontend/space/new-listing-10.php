@@ -1,7 +1,9 @@
 <?php $stepData = $this->session->userdata('stepData'); ?>
+<?php if(isset($stepData['step2']['fileuploader'])){ $percentage = 40; $percentageText = $percentage."% Complete"; ?>
+<?php }else{ $percentage = 0; $percentageText = ""; }?>
 <div class="progress">
-    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-        40% Complete
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<?= $percentage; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $percentage; ?>%">
+        <?= $percentageText; ?>
     </div>
 </div>
 <section class="middle-container new-partner6 new-partner16">

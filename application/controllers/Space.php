@@ -930,7 +930,7 @@ class Space extends CI_Controller {
                     $this->db->update('spaces', $updateData);
                 }
             }
-
+            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',45);
             $this->session->set_userdata('stepData', $stepData);
             redirect('Space/hosting-terms');
         }
@@ -983,7 +983,7 @@ class Space extends CI_Controller {
                     $this->db->update('spaces', $updateData);
                 }
             }
-
+            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',60);
             $this->session->set_userdata('stepData', $stepData);
             die();
         }

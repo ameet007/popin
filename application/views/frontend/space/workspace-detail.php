@@ -21,8 +21,8 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
 .bz_guest_box input.qtyminus {background-image: url("<?= base_url('theme/front/assests/')?>img/circle-minus.png");}
 </style>
 <div class="progress">
-    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-        40% Complete
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%">
+        30% Complete
     </div>
 </div>
 <section class="middle-container new-partner6 new-partner7">
@@ -112,19 +112,16 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
         var inputString = $("input[name='"+fieldName+"']").val();
         var currentVal = parseInt(inputString);
         inputString = inputString.replace(/[0-9]/g, '');
-
+        // Increment
+        currentVal++;
         // If is not undefined
         if (!isNaN(currentVal)) {
-            // Increment
-            currentVal++;
             $("input[name='"+fieldName+"']").val(currentVal + inputString);
+            create_workspace_boxes(currentVal);
         } else {
             // Otherwise put a 0 there
-            $("input[name='"+fieldName+"']").val(0 + inputString);
+            //$("input[name='"+fieldName+"']").val(0 + inputString);
         }
-        
-        //update_workspace_count(fieldName);
-        create_workspace_boxes(currentVal);
     });
     // This button will decrement the value till 0
     $(".qtyminus").click(function(e) {
@@ -136,18 +133,16 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
         var inputString = $("input[name='"+fieldName+"']").val();
         var currentVal = parseInt(inputString);
         inputString = inputString.replace(/[0-9]/g, '');
+        // Decrement
+        currentVal--;
         // If it isn't undefined or its greater than 0
         if (!isNaN(currentVal) && currentVal > 0) {
-            // Decrement one
-            currentVal--;
             $("input[name='"+fieldName+"']").val(currentVal + inputString);
+            create_workspace_boxes(currentVal);
         } else {
             // Otherwise put a 0 there
-            $("input[name='"+fieldName+"']").val(0 + inputString);
+            //$("input[name='"+fieldName+"']").val(0 + inputString);
         }
-        
-        //update_workspace_count(fieldName);
-        create_workspace_boxes(currentVal);
     });
     
     $(document).on("change", ".works-details select", function(){
@@ -183,27 +178,7 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
         }
         
         $(this).text(button_text);
-        
-        activate_deactivate_submit();
     });
-    activate_deactivate_submit();
-    function activate_deactivate_submit(){
-        var fullTotal = false;
-        $(".ws-box").each(function(){
-            var boxValue = $(this).find('p.workspace_type').text();
-            if(boxValue !== ""){
-                fullTotal = true;
-            }else{
-                fullTotal = false;
-            }
-        });
-        //console.log(fullTotal);
-        if(fullTotal){
-            $("form button[type='submit']").prop("disabled", false);
-        }else{
-            $("form button[type='submit']").prop("disabled", true);
-        }
-    }
     
     function create_workspace_boxes(workspaces){
         $(".works-details ul").block({ 
@@ -219,7 +194,6 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
             success: function(response) {
                 $(".works-details ul").html(response);
                 $(".works-details ul").unblock();
-                activate_deactivate_submit();
             },
             error: function(response){
                 $(".works-details ul").unblock();
@@ -233,6 +207,23 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
         if(isNaN(workSpaceCount) || workSpaceCount < 1){
             var errorMsg = $('<label for="workSpaceCount" class="error workSpaceCount">Please select a valid value.</label>');            
             errorMsg.insertAfter($("input[name='workSpaceCount']").parent());
+            return false;
+        }
+        
+        var fullTotal = false;
+        $(".ws-box").each(function(){
+            var boxValue = $(this).find('p.workspace_type').text();
+            if(boxValue !== ""){
+                fullTotal = true;
+            }else{
+                fullTotal = false;
+            }
+        });
+        //console.log(fullTotal);
+        if(!fullTotal){
+            $(".workSpaceDetails").remove();
+            var errorMsg = $('<label for="workSpaceDetails" class="error workSpaceDetails">Please enter all workspace details.</label>');            
+            errorMsg.insertAfter($(".works-details > h4"));
             return false;
         }
         

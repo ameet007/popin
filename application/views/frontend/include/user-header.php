@@ -35,7 +35,7 @@ if ($module_heading != '') {
         <script src="<?php echo base_url('theme/front/assests/js/nav.js') ?>" type="text/javascript"></script>
         <script src="<?php echo base_url('theme/front/assests/js/bootstrap.min.js') ?>" type="text/javascript"></script>
         <script src="<?php echo base_url('theme/front/assests/js/chosen.js'); ?>"  type="text/javascript"></script>
-
+        <script src="<?php echo base_url('theme/front/assests/js/jquery.blockUI.js') ?>" type="text/javascript"></script>
         <!--Initialize Jquery Validation with Additional Methods-->
         <script src="<?= base_url('theme/admin/assets/js/jquery.validate.js'); ?>"></script>
         <script src="<?= base_url('theme/admin/assets/js/additional-methods.js'); ?>"></script>
@@ -88,8 +88,9 @@ if ($module_heading != '') {
                                     <div class="dropdown">
                                         <a href="javascript:void(0);" class="dropdown-toggle" type="button" data-toggle="dropdown"><img height="32" width="32" src="<?= base_url('uploads/user/thumb/' . $avatar); ?>" alt="<?= $userProfileInfo->firstName . '&nbsp;' . $userProfileInfo->lastName; ?>"></a>
                                         <ul class="dropdown-menu">
+                                            <li><a href="<?= base_url('wishlists'); ?>">My Wish Lists</a></li>
                                             <li><a href="<?= base_url('user/profile'); ?>">Edit Profile</a></li>
-                                            <li><a href="<?= base_url('account'); ?>">Account Settings</a></li>
+                                            <li><a href="<?= base_url('account'); ?>">Account Settings</a></li>                                            
                                             <li><a href="<?= base_url('user/logout'); ?>">Logout</a></li>
                                         </ul>
                                     </div> 
