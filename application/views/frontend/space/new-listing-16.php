@@ -66,7 +66,7 @@
             $(".loader").hide();
             $('form.listing-form button').text('Next');
             window.location.href = "<?= site_url('Space/rules'); ?>";
-        })
+        });
     });
 </script>
 </body>

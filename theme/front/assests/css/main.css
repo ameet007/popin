@@ -629,6 +629,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .new-partner25 {}
 .new-partner25 .space-are ul li {display: block; margin-bottom: 20px;}
 .new-partner25 .space-are #bsh- {border-radius: 20px; border:solid 2px #bbb;}
+#bsh-a,#bsh-b,#bsh-c,#bsh-d {border-radius: 20px; border:solid 2px #bbb;}
 .new-partner25 .button-default {background-color: transparent;}
 .new-partner25 .button-off {background-color: #767676; -webkit-border-top-left-radius: 20px; -webkit-border-bottom-left-radius: 20px; -moz-border-radius-topleft: 20px; -moz-border-radius-bottomleft: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;}
 .new-partner25 .button-on {background-color: #00838b; -webkit-border-top-right-radius: 20px; -webkit-border-bottom-right-radius: 20px; -moz-border-radius-topright: 20px; -moz-border-radius-bottomright: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;}
@@ -636,6 +637,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .new-partner25 .space-are ul li .pull-left {padding-top: 7px;}
 .new-partner25 .space-are ul li p {color: #484848; font-weight: 700;}
 .new-partner25 .space-are ul li .pull-left input {margin-top: 15px; border:solid 2px #bbb; padding: 12px 10px; width: 80px; text-align: center; font-size: 16px; font-weight: 600;}
+ .new-partner25.pro-requr .space-are .pull-right input {margin-right: 15px; padding: 10px; width: 80px; text-align: center; font-size: 16px;}
 /*22.06.2017*/
 .new-partner25 .add-rules h4 {font-size: 20px; line-height: 20px; color: #767676; font-weight: 600; margin-bottom: 15px;}
 .new-partner25 .add-rules .pull-left {font-size: 16px; line-height: 16px; color: #767676; font-weight: 600;}
@@ -1065,12 +1067,12 @@ a button.btn{color: #333 !important;}
 .listing-sett .space-r ul {margin-bottom: 40px;}
 .listing-sett .space-r ul li .pull-right {padding-top: 0;}
 .listing-sett .space-r ul li:last-child {border-bottom: solid 1px #dbdbdb;}
-.listing-sett .space-r .feild .textarea {height: 120px; resize: none;}
+.listing-sett .space-r .feild .textarea {height: 50px;}
 .listing-sett .policie-s {}
 .listing-sett .policie-s ul {margin-bottom: 0;}
 .listing-sett .policie-s ul li .pull-right {padding-top: 0;}
 .listing-sett .increase-profit {padding: 30px 20px; border: solid 1px #e4e4e4;}
-.listing-sett .increase-profit h3 {font-size: 18px; line-height: 25px; font-weight: 700; color: #ff9955; margin-bottom: 15px;}
+.listing-sett .increase-profit h3 {font-size: 18px; line-height: 25px; font-weight: 700; color: #008489; margin-bottom: 15px;}
 .listing-sett .increase-profit p {line-height: 20px; color: #626262; margin-bottom: 20px;}
 .listing-sett .pric .pro-requr ul li {padding: 25px 0;}
 .listing-sett .pric .pro-requr ul li .pull-right {padding-top: 0;}

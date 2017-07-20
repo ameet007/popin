@@ -14,12 +14,12 @@
                     <form class="listing-form" action="<?php echo site_url('Space/additional-pricing'); ?>" method="post">
                         <div class="feild">
                             <label>Daily discount</label>
-                            <input type="text" class="textbox" name="page8[daily_discount]" placeholder="0% off" value="<?php echo isset($stepData['step3']['page8']['daily_discount'])?  $stepData['step3']['page8']['daily_discount'] : ''?>" />
+                            <input type="text" class="textbox" name="page8[daily_discount]" maxlength="3" placeholder="0% off" value="<?php echo isset($stepData['step3']['page8']['daily_discount'])?  $stepData['step3']['page8']['daily_discount'] : ''?>" />
                             <a href="#" data-target="page8[daily_discount]" data-amount="33"><p><span class="green"><strong>Tip: 33% Set</strong> <i class="fa fa-question-circle" aria-hidden="true"></i></span></p></a>
                         </div>
                         <div class="feild">
                             <label>Weekly discount</label>
-                            <input type="text" class="textbox" name="page8[weekly_discount]" placeholder="0% off" value="<?php echo isset($stepData['step3']['page8']['weekly_discount'])?  $stepData['step3']['page8']['weekly_discount'] : ''?>" />
+                            <input type="text" class="textbox" name="page8[weekly_discount]" maxlength="3" placeholder="0% off" value="<?php echo isset($stepData['step3']['page8']['weekly_discount'])?  $stepData['step3']['page8']['weekly_discount'] : ''?>" />
                             <a href="#" data-target="page8[weekly_discount]" data-amount="65"><p><span><strong>Tip: 65% Set</strong> <i class="fa fa-question-circle" aria-hidden="true"></i></span></p></a>
                             
                         </div>
@@ -57,8 +57,8 @@
     });
     $('form.listing-form').validate({
         rules: {
-            'page8[daily_discount]' :{ required:true},
-            'page8[weekly_discount]' :{ required:true}
+            'page8[daily_discount]' :{ required:true,min: 0,max: 100},
+            'page8[weekly_discount]' :{ required:true,min: 0,max: 100}
         },
         submitHandler: function(form) {            
             $(".loader").show();

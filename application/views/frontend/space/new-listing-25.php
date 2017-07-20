@@ -50,6 +50,18 @@
 </section>
 <script type="text/javascript">
     $(".loader").hide();
+    $("input[name='page7[base_price]']").keypress(function (e) {
+        
+        if (e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57)) {
+            //display error message
+            var errorMsg = $('<label for="page7[base_price]" class="error">Please enter digits only.</label>');
+            $("label.error").remove();
+            errorMsg.insertAfter($(this));
+            return false;
+        }else{
+            $("label.error").remove();
+        }
+    });
     $('form.listing-form').validate({
         rules: {
             'page7[base_price]' :{ required:true},

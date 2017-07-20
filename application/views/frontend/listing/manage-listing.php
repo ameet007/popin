@@ -8,6 +8,7 @@ ul.chosen-results{ margin: 0 4px 4px 0 !important; }
 ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-top: none  !important; }
 .new-partner25 .add-rules .pull-left .textbox{width: 300px;}
 </style>
+<link href="<?php echo base_url('theme/front/assests/css/btnswitch.css')?>" rel="stylesheet" type="text/css" />
 <div class="loader" style="display:none;"></div>
 <section class="middle-container listing-sett">
     <div class="container">
@@ -404,22 +405,41 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                 <p>Partners easily get more rentals when they allow professionals to rent without requesting approval. <br/><a href="#">learn more</a></p>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="optradio">Professionals who meet all your requirements can rent without requesting approval
+                                        <input type="radio" name="optradio" value="No" onchange="autoSave('rentalRequests',this.value)" <?= ($listing['rentalRequests']=='No')?'checked':''?>>Professionals who meet all your requirements can rent without requesting approval
                                         <span>RECOMMENDED</span>
                                         <P>Everyone must submit a rental request</P>
                                     </label>
                                 </div>
                                  <div class="radio border-none pd0">
-                                     <label><input type="radio" name="optradio" value="Yes" <?= ($listing['rentalRequests']=='Yes')?'checked':''?>>All professionals must send rental requests</label>
+                                     <label><input type="radio" name="optradio" value="Yes" onchange="autoSave('rentalRequests',this.value)" <?= ($listing['rentalRequests']=='Yes')?'checked':''?>>All professionals must send rental requests</label>
                                 </div>
                                 <div class="pro-requr">
                                     <h3>Professional requirements</h3>
-                                    <button class="gost-btn">Edit</button>
+                                    <button class="gost-btn edit-btn">Edit</button>
                                     <strong>PopIn standard requirements</strong>
                                     <p>Profile photo, confirmed email and phone number, payment information, agreement to Space Rules.</p>
-                                    <ul>
-                                        <?php $spaces = unserialize(REQUIREMENTS); 
-                                        foreach($spaces as $k=>$v){ ?>
+                                    <form id="professional-rules" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;">
+                                        <?php $spacesRules = unserialize(REQUIREMENTS); 
+                                        foreach($spacesRules as $k=>$v){ ?>
+                                        <div class="feild">
+                                            <label for="requirement_<?= $k; ?>">
+                                                <input id="requirement_<?= $k; ?>" type="checkbox" name="professionalRequirements[]" value="<?= $k; ?>" <?php echo (!empty($listing['professionalRequirements']) && in_array($k, $listing['professionalRequirements']))? 'checked' : ''?>> <?= $v; ?>
+                                            </label>
+                                        </div>
+                                        <?php } ?>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="pull-right">
+                                                        <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                        <button class="btn-red update-btn" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <ul class="listing-info">
+                                        <?php foreach($spacesRules as $k=>$v){ ?>
                                         <li class="clearfix">
                                             <div class="pull-left">
                                                 <?= $v; ?> <span>Instant Rent Only</span>
@@ -435,43 +455,69 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                         <?php }?>
                                     </ul>
                                 </div>
-                                <div class="pro-requr space-r">
+                                <div class="pro-requr space-r new-partner25">
                                     <h3>Space Rules</h3>
-                                    <button class="gost-btn">Edit</button>
-                                    <ul>
-                                        <li class="clearfix">
-                                            <div class="pull-left">Age requirement</div>
-                                            <div class="pull-right"><?= $listing['ageRequirements']=='Yes'?$listing['ageLimit']:$listing['ageRequirements'];?></div>
-                                        </li>
-                                        <li class="clearfix">
-                                            <div class="pull-left">Display License or Certificate in workspace</div>
-                                            <div class="pull-right"><?=$listing['displayLicence']?></div>
-                                        </li>
-                                        <li class="clearfix">
-                                            <div class="pull-left">Events or parties are allowed</div>
-                                            <div class="pull-right"><?=$listing['eventPartiesAllowed']?></div>
-                                        </li>
-                                        <li class="clearfix">
-                                            <div class="pull-left">Pets allowed</div>
-                                            <div class="pull-right"><?=$listing['suitablePets']?></div>
-                                        </li>
-                                    </ul>
-                                    <h4>Additional rules</h4>
-                                    <?php if(isset($listing['additionalRules']) && !empty($listing['additionalRules'])){ ?>                                    
-                                    <ul>
-                                    <?php  foreach($listing['additionalRules'] as $additionalRules){ ?>
-                                        <li><?php echo $additionalRules; ?><a class="clos cancel-rule pull-right" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a></li>
-                                    <?php } ?>
-                                    </ul>
-                                    <?php } ?>
-                                    <div class="feild">
-                                        <textarea class="textarea" placeholder="Add your own here"></textarea>
-                                    </div>
+<!--                                    <button class="gost-btn">Edit</button>-->
+                                    <form id="space-rules" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off">
+                                        <ul class="space-are">
+                                            <li class="clearfix">
+                                                <div class="pull-left">Age requirement</div>
+                                                
+                                                <div class="pull-right">
+                                                    <?php //echo $listing['ageRequirements']=='Yes'?$listing['ageLimit']:$listing['ageRequirements'];?>
+                                                    <div class="demo1" id="a" style="margin-top: 5px;"></div>
+                                                    <input type="hidden" id="ageRequirements" name="ageRequirements" value="<?= $listing['ageRequirements'];?>" />
+                                                </div>
+                                                <div class="pull-right age-req" <?= $listing['ageRequirements']=='No'?'style="display: none;"':'';?>>
+                                                    <input type="number" placeholder="Age" min="1" name="ageLimit" value="<?= $listing['ageLimit'];?>" <?= (strtolower($listing['ageRequirements']) == 'no')?"disabled":'';?> />                                                
+                                                </div>
+                                            </li>
+                                            <li class="clearfix">
+                                                <div class="pull-left">Display License or Certificate in workspace</div>
+                                                <div class="pull-right">
+                                                    <div class="demo1" id="b"></div>
+                                                    <input type="hidden" id="displayLicence" name="displayLicence" value="<?= $listing['displayLicence'];?>" />
+                                                </div>
+                                            </li>
+                                            <li class="clearfix">
+                                                <div class="pull-left">Events or parties are allowed</div>
+                                                <div class="pull-right">
+                                                    <div class="demo1" id="d"></div>
+                                                    <input type="hidden" id="eventPartiesAllowed" name="eventPartiesAllowed" value="<?= $listing['eventPartiesAllowed'];?>" />
+                                                </div>
+                                            </li>
+                                            <li class="clearfix">
+                                                <div class="pull-left">Pets allowed</div>
+                                                <div class="pull-right">
+                                                    <div class="demo1" id="c"></div>
+                                                    <input type="hidden" id="suitablePets" name="suitablePets" value="<?= $listing['suitablePets'];?>" />
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="add-rules">
+                                            <h4>Additional rules</h4>
+                                            <div class="additional-rules">
+                                                <?php if(isset($listing['additionalRules']) && !empty($listing['additionalRules'])){ ?>                                    
+<!--                                                <ul class="listing-info">-->
+                                                <?php  foreach($listing['additionalRules'] as $additionalRules){ ?>
+                                                    <div class="append-div">
+                                                        <input class="textbox" name="additionalRules[]" value="<?= $additionalRules; ?>" type="text" readonly />
+                                                        <a class="clos delete-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a>
+                                                    </div>
+                                                <?php } ?>
+<!--                                                </ul>-->
+                                                <?php } ?>                                                
+                                            </div>
+                                            <div class="feild">
+                                                <input type="text" id="rule-textbox" class="textarea" placeholder="Add your own here" />
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="pro-requr space-r policie-s">
                                     <h3>Policies</h3>
                                     <button class="gost-btn">Edit</button>
-                                    <ul>
+                                    <ul class="listing-info">
                                         <li class="clearfix">
                                             <div class="pull-left">
                                                 PopIn window
@@ -517,9 +563,9 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                             </div>
                             <div class="col-md-4">
                                 <div class="increase-profit">
-                                    <h3>Increase your profit with Instant Rent</h3>
-                                    <p>Instant Rent can give your listing an advantage.<br/>Professionals enjoy the ease of renting instantly</p>
-                                    <button class="btn-red">Turn on Instant Book</button>
+                                    <h3>Increase your profit with Instant Rental</h3>
+                                    <p>Instant Rental can give your listing an advantage.<br/>Professionals enjoy the ease of renting instantly</p>
+                                    <button class="btn2">Turn on Instant Book</button>
                                 </div>
                             </div>
                         </div>
@@ -527,8 +573,33 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                             <div class="col-md-8 pric">
                                 <div class="pro-requr space-r">
                                     <h3>Currency</h3>
-                                    <button class="gost-btn">Edit</button>
-                                    <ul>
+                                    <button class="gost-btn edit-btn">Edit</button>
+                                    <form id="currency" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;" novalidate>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <label class="align-right col-sm-3">Currency:</label>
+                                                <div class="col-sm-6">
+                                                    <select class="textbox" name="currency" required>
+                                                        <?php $all_currency = unserialize(CURRENCIES); 
+                                                         foreach($all_currency as $k=>$v) { ?>
+                                                         <option value="<?= $k; ?>" <?php echo $listing['currency'] == $k? 'selected' : ''?>><?= $v; ?></option>
+                                                         <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="pull-right">
+                                                        <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                        <button class="btn-red update-btn" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <ul class="listing-info">
                                         <li class="clearfix">
                                             <div class="pull-left">Currency</div>
                                             <div class="pull-right"><?= $listing['currency']?></div>
@@ -537,8 +608,28 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                 </div>
                                 <div class="pro-requr space-r">
                                     <h3>Hourly Price</h3>
-                                    <button class="gost-btn">Edit</button> 
-                                    <ul>
+                                    <button class="gost-btn edit-btn">Edit</button> 
+                                    <form id="base-price" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;" novalidate>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <label class="align-right col-sm-3">Base Price (per hour):</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="textbox" name="base_price" placeholder="per hour" value="<?php echo $listing['base_price'];?>" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="pull-right">
+                                                        <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                        <button class="btn-red update-btn" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <ul class="listing-info">
                                         <li class="clearfix">
                                             <div class="pull-left">Base price</div>
                                             <div class="pull-right"><?= getCurrency_symbol($listing['currency']).$listing['base_price'];?>/hour</div>
@@ -550,29 +641,85 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                 </div>
                                 <div class="pro-requr space-r">
                                     <h3>Discounts</h3>
-                                    <button class="gost-btn">Edit</button>
-                                    <ul>
+                                    <button class="gost-btn edit-btn">Edit</button>
+                                    <form id="discounts" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;" novalidate>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <label class="align-right col-sm-3">Daily discount:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="textbox" name="daily_discount" min="0" max="100" maxlength="3" placeholder="0% off" value="<?php echo $listing['daily_discount'];?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <label class="align-right col-sm-3">Weekly discount:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="textbox" name="weekly_discount" min="0" max="100" maxlength="3" placeholder="0% off" value="<?php echo $listing['weekly_discount'];?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="pull-right">
+                                                        <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                        <button class="btn-red update-btn" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <ul class="listing-info">
                                         <li class="clearfix">
                                             <div class="pull-left">Daily</div>
-                                            <div class="pull-right"><?= $listing['daily_discount']?>%</div>
+                                            <div class="pull-right"><?= $listing['daily_discount']?$listing['daily_discount'].'%':'None'; ?></div>
                                         </li>
                                         <li class="clearfix">
                                             <div class="pull-left">Weekly</div>
-                                            <div class="pull-right"><?= $listing['weekly_discount']?>%</div>
+                                            <div class="pull-right"><?= $listing['weekly_discount']?$listing['weekly_discount'].'%':'None'; ?></div>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="pro-requr space-r">
                                     <h3>Additional Costs</h3>
-                                    <button class="gost-btn">Edit</button>
-                                    <ul>
+                                    <button class="gost-btn edit-btn">Edit</button>
+                                    <form id="additional-costs" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;" novalidate>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <label class="align-right col-sm-3">Cleaning Fee:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="textbox" name="cleaningFee" maxlength="5" placeholder="Cleaning Fee" value="<?php echo $listing['cleaningFee'];?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <label class="align-right col-sm-3">Security Deposit:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="textbox" name="securityDeposit" maxlength="5" placeholder="Security Deposit" value="<?php echo $listing['securityDeposit'];?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="pull-right">
+                                                        <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                        <button class="btn-red update-btn" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <ul class="listing-info">
                                         <li class="clearfix">
-                                            <div class="pull-left">Cleaning fee</div>
-                                            <div class="pull-right">None</div>
+                                            <div class="pull-left">Cleaning Fee</div>
+                                            <div class="pull-right"><?= $listing['cleaningFee']?$listing['cleaningFee']:'None'; ?></div>
                                         </li>
                                         <li class="clearfix">
                                             <div class="pull-left">Security Deposit</div>
-                                            <div class="pull-right">None</div>
+                                            <div class="pull-right"><?= $listing['securityDeposit']?$listing['securityDeposit']:'None'; ?></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -591,10 +738,7 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
         </div>
     </div>
 </section>
-<?php
-$stepData['step1']['page2']['workSpaceDetail'] = $listing['workSpaceDetail'];
-$this->session->set_userdata('stepData', $stepData);
-?>
+
 <script>
 function  onchange_industry(getID) {
     var establishment	 = '<?php echo json_encode($establishment_types);?>';
@@ -612,15 +756,17 @@ $(document).ready(function(){
     $('.chosen-select').chosen();
     
     $(".edit-btn").on("click", function(){
+        $("form:not(#space-rules)").hide();
+        $("ul.listing-info").show();
+        
         $(this).parent().find("form").toggle();
         $(this).parent().find("ul.listing-info").toggle();
-        
     });
     $(".cancel-btn").on("click", function(e){
-        e.preventDefault();
+        e.preventDefault();        
         $(this).parents("form").toggle();
         $(this).parents(".pro-requr").find("ul.listing-info").toggle();
-        
+        $(this).parents("form").trigger("reset");
     });
     
     // This button will increment the value
@@ -741,8 +887,39 @@ $(document).ready(function(){
             document.getElementById('add-rule').click();
         }
     });
+    $(document).on("keypress", "input#rule-textbox", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            var text = $(this).val();
+            if(text.trim() !== ""){
+                $(this).parent().prev().append('<div class="append-div"><input class="textbox" name="additionalRules[]" value="'+text+'" type="text" readonly /><a class="clos delete-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a></div>');
+                $(this).val('');
+                submit_rule_form();
+            }
+        }
+    });
+    $(document).on('click','.delete-rule',function(event){
+        event.preventDefault();
+        $(this).parent('div').remove();
+        submit_rule_form();
+    });
+    
+    $("input[name='base_price'],input[name='daily_discount'],input[name='weekly_discount'],input[name='cleaningFee'],input[name='securityDeposit']").keypress(function (e) {
+        
+        if (e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57)) {
+            //display error message
+            //var errorMsg = $('<label for="page6[mobileNumber]" class="error">Please enter digits only.</label>');
+            //$("label.error").remove();
+            //errorMsg.insertAfter($(this).parent());
+            //$("#errmsg").html("Digits Only").show().fadeOut("slow");
+            return false;
+        }else{
+            //$("label.error").remove();
+            //$("a.verify-button").css('display', 'inline-block');
+        }
+    });
 
-    $('form').each(function() {   // <- selects every <form> on page
+    $('form:not(#space-rules)').each(function() {   // <- selects every <form> on page
         $(this).validate({
             /*ignore: ":not(:visible),:disabled",
             rules: {
@@ -805,7 +982,14 @@ $(document).ready(function(){
         });
     });
 });
+<?php
+$this->session->unset_userdata('stepData');
+?>
 function create_workspace_boxes(workspaces){
+    <?php
+    $stepData['step1']['page2']['workSpaceDetail'] = $listing['workSpaceDetail'];
+    $this->session->set_userdata('stepData', $stepData);
+    ?>
     $(".works-details ul").block({ 
         overlayCSS: { backgroundColor: '#E5E5E5' }, 
         message: '<img src="<?= base_url(); ?>assets/images/loading-spinner-grey.gif" alt="please wait...">',
@@ -843,5 +1027,106 @@ function activate_deactivate_submit(){
         $("form#workspaces-form button[type='submit']").prop("disabled", true);
     }
 }
+function submit_rule_form(){
+    //$("form#space-rules").trigger('submit');
+    $.ajax({
+        url: $("form#space-rules").attr('action'),
+        type: $("form#space-rules").attr('method'),
+        data: "space_id=<?= $space_id; ?>&" + $("form#space-rules").serialize(),
+        dataType: 'json',
+        beforeSend: function(){
+            $(".loader").show();
+        },
+        complete: function(){
+            $('.loader').hide();
+        },
+        success: function(response) {
+
+        }            
+    });
+}
+function autoSave(fieldName,fieldvalue)
+{
+    $.ajax({
+        url: '<?= site_url('listing/update_listing_details'); ?>',
+        type: 'POST',
+        dataType: "json",
+        data: "space_id=<?= $space_id; ?>&" + fieldName + "=" + fieldvalue,
+        beforeSend: function(){
+            $(".loader").show();
+        },
+        complete: function(){
+            $('.loader').hide();
+        },
+        success: function(response) {
+                
+        }          
+    });
+}
+</script>
+<script src="<?php echo base_url('theme/front/assests/js/jquery-3.1.1.slim.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo base_url('theme/front/assests/js/btnswitch.js')?>" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery.noConflict();
+    (function( $ ) {
+      $(function() {
+        // More code using $ as alias to jQuery
+        $('#a').btnSwitch({
+            OnValue: "Yes",
+            OffValue: "No",
+            ToggleState: $("#ageRequirements").val(),
+            HiddenInputId: "ageRequirements",
+            OnCallback: function(val) {
+                //alert('system is now on');
+                $(".age-req").toggle();
+                $("input[name='ageLimit']").prop("disabled", false);
+                submit_rule_form();
+            },
+            OffCallback: function (val) {
+                //alert('system is now off');
+                $(".age-req").toggle();
+                //$("input[name='ageLimit']").val("");
+                $("input[name='ageLimit']").prop("disabled", true);
+                submit_rule_form();
+            }
+        });
+        $('#b').btnSwitch({
+            OnValue: "Yes",
+            OffValue: "No",
+            ToggleState: $("#displayLicence").val(),
+            HiddenInputId: "displayLicence",
+            OnCallback: function(val) {
+                submit_rule_form();
+            },
+            OffCallback: function (val) {
+                submit_rule_form();
+            }
+        });
+        $('#c').btnSwitch({
+            OnValue: "Yes",
+            OffValue: "No",
+            ToggleState: $("#suitablePets").val(),
+            HiddenInputId: "suitablePets",
+            OnCallback: function(val) {
+                submit_rule_form();
+            },
+            OffCallback: function (val) {
+                submit_rule_form();
+            }
+        });
+        $('#d').btnSwitch({
+            OnValue: "Yes",
+            OffValue: "No",
+            ToggleState: $("#eventPartiesAllowed").val(),
+            HiddenInputId: "eventPartiesAllowed",
+            OnCallback: function(val) {
+                submit_rule_form();
+            },
+            OffCallback: function (val) {
+                submit_rule_form();
+            }
+        });
+      });
+    })(jQuery);
 </script>
 <?php $this->load->view('frontend/include/user-footer'); ?>

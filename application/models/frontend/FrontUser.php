@@ -372,7 +372,7 @@ class FrontUser extends CI_Model {
         $upcoming = $this->db->where(array('user' => $user,'checkIn >' => $today))->order_by('updatedDate', 'desc')->get('space_booking')->result_array();
         $result['upcoming'] = $this->createRentalRecord($upcoming);
         
-        $past = $this->db->where(array('user' => $user,'checkIn <' => $today))->order_by('updatedDate', 'desc')->get('space_booking')->result_array();
+        $past = $this->db->where(array('user' => $user,'checkIn <' => $today,'checkOut <' => $today))->order_by('updatedDate', 'desc')->get('space_booking')->result_array();
         $result['past'] = $this->createRentalRecord($past);
 //        echo "<pre>";
 //        print_r($result);

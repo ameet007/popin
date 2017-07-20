@@ -133,7 +133,7 @@
     ?>
     $("input[name='page6[mobileNumber]']").keypress(function (e) {
         
-        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        if (e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57)) {
             //display error message
             var errorMsg = $('<label for="page6[mobileNumber]" class="error">Please enter digits only.</label>');
             $("label.error").remove();

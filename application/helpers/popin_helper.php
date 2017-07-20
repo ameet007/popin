@@ -98,10 +98,8 @@ function get_location_from_ip($ip_address) {
     return $response_location;
 }
 
-function getCurrency_symbol($countryCode = 'USD') {
-    //If user enter country code in Lower case convert it Upper case 
-    $countryCode = strtoupper($countryCode);
-    $currency = array(
+function getCurrency_symbol($currencyCode = 'USD') {
+    $currencyArray = array(
         "AUD" => "&#36;", //Australian Dollar
         "BRL" => "R&#36;", // OR add &#8354; Brazilian Real
         "BDT" => "&#2547;", //Bangladeshi Taka
@@ -136,11 +134,12 @@ function getCurrency_symbol($countryCode = 'USD') {
         "USD" => "&#36;", //U.S. Dollar
         "VND" => "&#8363;" //Vietnamese Dong
     );
-
+    
+    $currency = strtoupper($currencyCode);
     //check country code exit in array or not
-    if (array_key_exists($countryCode, $currency)) {
-        return $currency[$countryCode];
+    if (array_key_exists($currency, $currencyArray)) {
+        return $currencyArray[$currency];
     } else {
-        return $countryCode;
+        return $currency;
     }
 }

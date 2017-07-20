@@ -186,6 +186,12 @@ class Listing extends CI_Controller {
         if(isset($rawData['amenities'])){
             $rawData['amenities'] = json_encode($rawData['amenities']);
         }
+        if(isset($rawData['professionalRequirements'])){
+            $rawData['professionalRequirements'] = implode(",",$rawData['professionalRequirements']);
+        }
+        if(isset($rawData['additionalRules'])){
+            $rawData['additionalRules'] = implode(" | ",$rawData['additionalRules']);
+        }
         $this->space_model->updateData($rawData, $space_id, $user_id);
         
         $response['success'] = true;

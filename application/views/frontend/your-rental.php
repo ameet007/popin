@@ -57,11 +57,10 @@
                         <p><?php echo date("M d", strtotime($rental['booking']['checkIn'])); ?>: 8:00a-12p <br/><?php echo $rental['space']['city'].' '.$rental['space']['state'].', '.$rental['space']['country']; ?></p>
                         <ul>
                             <li>
-                                <img src="<?php echo base_url('theme/front/assests/img/reting-star.png')?>" alt="" />
-                                <p>Read Your Review</p>
+                                <img src="<?php echo base_url('theme/front/assests/img/reting-star.png')?>" alt="" />                                
                             </li>
-                            <li><p>View Receipt</p></li>
-                            <li><p>Send or request money</p></li>
+                            <li><a href="<?= site_url('rentals/receipt/'.$rental['booking']['id']);?>">View Receipt</a></li>
+                            <li><a href="#">Submit Your Review</a></li>
                         </ul>
                     </div>
                 </div>
