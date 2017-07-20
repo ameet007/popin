@@ -1,4 +1,13 @@
 <?php $this->load->view('frontend/include/user-header'); ?>
+<style>
+.guest_open .feild {margin-bottom: 20px;width: 100%;}
+.guest_open{display: none;}
+ul.chosen-choices{margin: 0 !important;padding: 5px !important;}
+ul.chosen-choices li {padding: 0 !important;border-top: none  !important;}
+ul.chosen-results{ margin: 0 4px 4px 0 !important; }
+ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-top: none  !important; }
+.new-partner25 .add-rules .pull-left .textbox{width: 300px;}
+</style>
 <div class="loader" style="display:none;"></div>
 <section class="middle-container listing-sett">
     <div class="container">
@@ -98,7 +107,7 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <ul>
+                                    <ul class="listing-info">
                                         <li class="clearfix">
                                             <div class="pull-left">Title</div>
                                             <div class="pull-right"><?= $listing['spaceTitle'];?></div>
@@ -174,7 +183,7 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <ul>
+                                    <ul class="listing-info">
                                         <li class="clearfix">
                                             <div class="pull-left">
                                                 Industry
@@ -209,16 +218,62 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="pro-requr">
-                                    <h3>The space</h3>
-                                    <button class="gost-btn">Edit</button>
-                                    <ul>
+                                <div class="pro-requr new-partner6 new-partner7">
+                                    <h3>About Space</h3>
+                                    <button class="gost-btn edit-btn">Edit</button>
+                                    <div class="space-are">                                        
+                                        <form id="workspaces-form" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;">
+                                            <h3>How many professionals can your space accommodate?</h3>
+                                            <div class="feild">
+                                                <div class="main">
+                                                    <input type='text' class="textbox" name='professionalCapacity' value='<?php echo $listing['professionalCapacity']; ?> professionals' class='qty' />
+                                                    <input type='button' value='' class='qtyminus' field='professionalCapacity' />
+                                                    <input type='button' value='' class='qtyplus' field='professionalCapacity' />
+                                                </div>
+                                            </div>
+                                            
+                                            <h3>How many workspaces does your space have?</h3>
+                                            <div class="feild">
+                                                <div class="main">
+                                                    <input type='text' class="textbox" name='workSpaceCount' value='<?php echo $listing['workSpaceCount'];?> workspaces' class='qty' />
+                                                    <input type='button' value='' class='qtyminus' field='workSpaceCount' />
+                                                    <input type='button' value='' class='qtyplus' field='workSpaceCount' />
+                                                </div>
+                                            </div>
+                                            
+                                            <h3>What kind of workspaces does your space have?</h3>
+                                            <div class="feild works-details">
+                                                <h4 style="font-weight: normal">Workspace Details</h4>
+                                                <ul></ul>
+                                            </div>
+                                            
+                                            <div class="main-input">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="pull-right">
+                                                            <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                            <button class="btn-red update-btn" type="submit">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <ul class="listing-info">
                                         <li class="clearfix">
                                             <div class="pull-left">
                                                 Accommodates
                                             </div>
                                             <div class="pull-right">
                                                 <?= $listing['professionalCapacity'];?> Professional(s)
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="pull-left">
+                                                Workspaces
+                                            </div>
+                                            <div class="pull-right">
+                                                <?= $listing['workSpaceCount'];?> Workspaces(s)
                                             </div>
                                         </li>
                                         <li class="clearfix">
@@ -253,6 +308,90 @@
                                                     <?php }}?>
                                                     </ul>
                                                 </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="pro-requr new-partner6 new-partner25">
+                                    <h3>Amenities</h3>
+                                    <button class="gost-btn edit-btn">Edit</button>
+                                    <div class="space-are">                                        
+                                        <form id="amenities-form" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;">
+                                            <h3>What amenities do you offer?</h3>
+                                            <?php foreach($amenities['Important'] as $k => $amtyI){ ?>
+                                            <div class="feild">
+                                                <label for="<?= $k; ?>">
+                                                    <input id="<?= $k; ?>" type="checkbox" name="amenities[main][]" value="<?= $amtyI['id']; ?>" <?php echo (isset($listing['amenities']['main']) && !empty($listing['amenities']['main']) && in_array($amtyI['id'], $listing['amenities']['main']))? 'checked' : ''?>> <?= $amtyI['name']; ?>
+                                                </label>
+                                            </div>
+                                            <?php } ?> 
+                                            <div class="feild amenity <?php if(!isset($listing['amenities']['main']) && empty($listing['amenities']['main'])){ echo "hidden";}?>">
+                                                <label>More amenities</label>
+                                                <select class="selectbox  chosen-select" name="amenities[main][]" data-placeholder="Select Amenities" multiple>
+                                                    <?php foreach($amenities['General'] as $amtyG){ ?>
+                                                    <option value="<?= $amtyG['id']; ?>" <?php echo (isset($listing['amenities']['main']) && !empty($listing['amenities']['main']) && in_array($amtyG['id'], $listing['amenities']['main']))? 'selected' : ''?>><?= $amtyG['name']; ?></option>
+                                                    <?php }?>
+                                                </select>
+                                            </div>
+                                            <div class="feild"><a href="#" class="show-more" data-target-key="amenity"><?php echo (isset($listing['amenities']['main']) && !empty($listing['amenities']['main']))? '- Less' : '+ Expand More'?></a></div>
+
+                                            <div class="feild add-rules">
+                                                <div class="additional-rules">
+                                                    <?php 
+                                                    if(isset($listing['amenities']['other']) && !empty($listing['amenities']['other'])){
+                                                        foreach($listing['amenities']['other'] as $amenity){
+                                                    ?>
+                                                    <div class="append-div">
+                                                        <input class="textbox" name="amenities[other][]" value="<?= $amenity; ?>" type="text" readonly />
+                                                        <a class="clos cancel-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a>
+                                                    </div>
+                                                    <?php }} ?>
+                                                </div>
+                                                <div class="clearfix">
+                                                    <span class="pull-left"><input id="rule-text" class="textbox" type="text" placeholder="Add your own amenities" ></span>
+                                                    <span class="pull-left"><button class="red-btn" id="add-rule" type="button">Add</button></span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="main-input">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="pull-right">
+                                                            <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                            <button class="btn-red update-btn" type="submit">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <ul class="listing-info">
+                                        <li class="clearfix">
+                                            <div class="pull-left col-sm-3">
+                                                Amenities
+                                            </div>
+                                            <div class="pull-right col-sm-9">
+                                                <?php 
+                                                $aminity_value = "";
+                                                if(!empty($listing['amenities']['main'])){
+                                                foreach($amenities['Important'] as $aminity){ 
+                                                    if(!empty($listing['amenities']['main']) && in_array($aminity['id'], $listing['amenities']['main'])){ 
+                                                        $aminity_value .= "<strong>".$aminity['name']."</strong>, ";
+                                                    }
+                                                }
+                                                foreach($amenities['General'] as $aminity){ 
+                                                    if(!empty($listing['amenities']['main']) && in_array($aminity['id'], $listing['amenities']['main'])){ 
+                                                        $aminity_value .= $aminity['name'].", ";
+                                                    }
+                                                }?>
+                                                <p><?= rtrim($aminity_value, ", "); ?></p>
+                                                <?php }?>
+                                                <?php
+                                                if(!empty($listing['amenities']['other'])){
+                                                    $aminity_value = implode(", ", $listing['amenities']['other']);
+                                                ?>
+                                                <p><?= $aminity_value; ?></p>
+                                                <?php }?>
                                             </div>
                                         </li>
                                     </ul>
@@ -386,7 +525,17 @@
                         </div>
                         <div id="menu2" class="tab-pane fade">
                             <div class="col-md-8 pric">
-                                <div class="pro-requr">
+                                <div class="pro-requr space-r">
+                                    <h3>Currency</h3>
+                                    <button class="gost-btn">Edit</button>
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="pull-left">Currency</div>
+                                            <div class="pull-right"><?= $listing['currency']?></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="pro-requr space-r">
                                     <h3>Hourly Price</h3>
                                     <button class="gost-btn">Edit</button> 
                                     <ul>
@@ -427,16 +576,6 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="pro-requr space-r policie-s">
-                                    <h3>Currency</h3>
-                                    <button class="gost-btn">Edit</button>
-                                    <ul>
-                                        <li class="clearfix">
-                                            <div class="pull-left">Currency</div>
-                                            <div class="pull-right"><?= $listing['currency']?></div>
-                                        </li>
-                                    </ul>
-                                </div>
                             </div>
                         </div>
                         <div id="menu3" class="tab-pane fade">
@@ -452,6 +591,10 @@
         </div>
     </div>
 </section>
+<?php
+$stepData['step1']['page2']['workSpaceDetail'] = $listing['workSpaceDetail'];
+$this->session->set_userdata('stepData', $stepData);
+?>
 <script>
 function  onchange_industry(getID) {
     var establishment	 = '<?php echo json_encode($establishment_types);?>';
@@ -466,16 +609,137 @@ function  onchange_industry(getID) {
     $("select[name='establishmentType']").html(html);
 }
 $(document).ready(function(){
+    $('.chosen-select').chosen();
+    
     $(".edit-btn").on("click", function(){
         $(this).parent().find("form").toggle();
-        $(this).parent().find("ul").toggle();
+        $(this).parent().find("ul.listing-info").toggle();
         
     });
     $(".cancel-btn").on("click", function(e){
         e.preventDefault();
         $(this).parents("form").toggle();
-        $(this).parents(".pro-requr").find("ul").toggle();
+        $(this).parents(".pro-requr").find("ul.listing-info").toggle();
         
+    });
+    
+    // This button will increment the value
+    $('.qtyplus').click(function(e){
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        var fieldName = $(this).attr('field');
+        // Get its current value
+        var inputString = $('input[name='+fieldName+']').val();
+        var currentVal = parseInt(inputString);
+        inputString = inputString.replace(/[0-9]/g, '');
+        // Increment
+        currentVal++;
+        // If is not undefined
+        if (!isNaN(currentVal)) {            
+            $('input[name='+fieldName+']').val(currentVal + inputString);
+            if(fieldName === 'workSpaceCount'){
+                create_workspace_boxes(currentVal);
+            }
+        }
+    });
+    // This button will decrement the value till 0
+    $(".qtyminus").click(function(e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        var fieldName = $(this).attr('field');
+        // Get its current value
+        var inputString = $('input[name='+fieldName+']').val();
+        var currentVal = parseInt(inputString);
+        inputString = inputString.replace(/[0-9]/g, '');
+        // Decrement one
+        currentVal--;
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(currentVal) && currentVal > 0) {            
+            $('input[name='+fieldName+']').val(currentVal + inputString);
+            if(fieldName === 'workSpaceCount'){
+                create_workspace_boxes(currentVal);
+            }
+        }
+    });
+    
+    var workSpacesCount = parseInt($("input[name='workSpaceCount']").val());
+    create_workspace_boxes(workSpacesCount);
+    activate_deactivate_submit();    
+    
+    $(document).on("change", ".works-details select", function(){
+        var type = $(this).find("option:selected").text();
+        var $parent = $(this).parents('li');
+        
+        $parent.find("p.workspace_type").text(type);
+    });
+    $(document).on("click", ".works-details input[type='checkbox']", function(){
+        var $parent = $(this).parents('li');
+        if($(this).is(":checked")){
+            $parent.find("p.workspace_info").text("In Common Space");
+        }else{
+            $parent.find("p.workspace_info").text("");
+        }
+        
+    });
+    
+    $(document).on('click', 'a.add_spaces', function() {      
+        var button_text = $(this).text();
+        
+        $(this).parents('li').find(".guest_open, .workspace_type, .workspace_info").toggle();
+        
+        if($(this).parents('li').find(".guest_open").is(':visible')){
+            button_text = "Done";
+        }else{
+            var action = $(this).parents('li').find("p.workspace_type").text();
+            if(action !== ""){
+                button_text = "Edit spaces";
+            }else{
+                button_text = "Add spaces";
+            }
+        }
+        
+        $(this).text(button_text);
+        
+        activate_deactivate_submit();
+    });
+    
+    $(document).on('click', 'a.show-more', function(e){
+        e.preventDefault();
+        var $this = $(this), target = $(this).attr("data-target-key");
+
+        //$("."+target).toggle();
+        $( "."+target ).toggleClass(function() {
+            if ( $( this ).is( ".hidden" ) ) {
+                console.log('shown');
+                $this.html('- Less');
+                return "hidden";
+            } else {
+                console.log('hidden');
+                $this.html('+ Expand More');
+                return "hidden";
+            }
+
+        });
+    });
+    
+    $('#add-rule').click(function(){
+        var text = $('#rule-text').val();
+        if(text.trim() !== ""){
+            $('.additional-rules').append('<div class="append-div"><input class="textbox" name="amenities[other][]" value="'+text+'" type="text" readonly /><a class="clos cancel-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a></div>');
+            $('#rule-text').val('');
+        }
+    });
+    $(document).on('click','.cancel-rule',function(event){
+        event.preventDefault();
+        $(this).parent('div').remove();
+    });
+    $(document).on("keypress", "input#rule-text", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById('add-rule').click();
+        }
     });
 
     $('form').each(function() {   // <- selects every <form> on page
@@ -541,5 +805,43 @@ $(document).ready(function(){
         });
     });
 });
+function create_workspace_boxes(workspaces){
+    $(".works-details ul").block({ 
+        overlayCSS: { backgroundColor: '#E5E5E5' }, 
+        message: '<img src="<?= base_url(); ?>assets/images/loading-spinner-grey.gif" alt="please wait...">',
+        css: { border: 'none', backgroundColor: 'transparent' }  
+    });
+
+    $.ajax({
+        url: "<?= site_url('Space/create_workspace_boxes'); ?>",
+        type: "POST",
+        data: "workspaces="+workspaces,
+        success: function(response) {
+            $(".works-details ul").html(response);
+            $(".works-details ul").unblock();
+            activate_deactivate_submit();
+        },
+        error: function(response){
+            $(".works-details ul").unblock();
+        }
+    });
+}
+function activate_deactivate_submit(){
+    var fullTotal = false;
+    $(".ws-box").each(function(){
+        var boxValue = $(this).find('p.workspace_type').text();
+        if(boxValue !== ""){
+            fullTotal = true;
+        }else{
+            fullTotal = false;
+        }
+    });
+    //console.log(fullTotal);
+    if(fullTotal){
+        $("form#workspaces-form button[type='submit']").prop("disabled", false);
+    }else{
+        $("form#workspaces-form button[type='submit']").prop("disabled", true);
+    }
+}
 </script>
 <?php $this->load->view('frontend/include/user-footer'); ?>

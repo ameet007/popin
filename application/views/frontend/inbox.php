@@ -28,7 +28,7 @@
                         <?php if(empty($messages)): ?>
                         <div class="col-sm-10 col-sm-offset-1 col-md-4 col-md-offset-4 text-center">
                             <h3>No messages yet.</h3><br/>
-                            <p>When professionals contact you or send you rent requests, you’ll see their messages here.</p>
+                            <p>When professionals contact you or send you rental requests, you’ll see their messages here.</p>
                             <input type='hidden' class='nextpage' value='0'>
                         </div>
                         <?php else:?>

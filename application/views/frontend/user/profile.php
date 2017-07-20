@@ -58,7 +58,7 @@
                                                 <option value="Male" <?= ($userProfileInfo->gender=='Male')?'selected':''; ?>>Male</option>
                                                 <option value="Female" <?= ($userProfileInfo->gender=='Female')?'selected':''; ?>>Female</option>
                                             </select>
-											<p class="genderError"></p>
+                                            <p class="genderError"></p>
                                         </div>
                                     </div>
                                 </div>

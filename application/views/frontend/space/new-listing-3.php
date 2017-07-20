@@ -1,7 +1,7 @@
 <?php $stepData = $this->session->userdata('stepData');// echo "<pre>"; print_r($stepData); echo "</pre>"; ?>
 <div class="progress">
-    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-        30% Complete
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%">
+        20% Complete
     </div>
 </div>
 <section class="middle-container new-partner6 new-partner7">
@@ -50,15 +50,14 @@
         var inputString = $('input[name='+fieldName+']').val();
         var currentVal = parseInt(inputString);
         inputString = inputString.replace(/[0-9]/g, '');
-
+        // Increment
+        currentVal++;
         // If is not undefined
         if (!isNaN(currentVal)) {
-            // Increment
-            currentVal++;
             $('input[name='+fieldName+']').val(currentVal + inputString);
         } else {
             // Otherwise put a 0 there
-            $('input[name='+fieldName+']').val(0 + inputString);
+            //$('input[name='+fieldName+']').val(0 + inputString);
         }
     });
     // This button will decrement the value till 0
@@ -71,14 +70,14 @@
         var inputString = $('input[name='+fieldName+']').val();
         var currentVal = parseInt(inputString);
         inputString = inputString.replace(/[0-9]/g, '');
+        // Decrement
+        currentVal--;
         // If it isn't undefined or its greater than 0
-        if (!isNaN(currentVal) && currentVal > 0) {
-            // Decrement one
-            currentVal--;
+        if (!isNaN(currentVal) && currentVal > 0) {            
             $('input[name='+fieldName+']').val(currentVal + inputString);
         } else {
             // Otherwise put a 0 there
-            $('input[name='+fieldName+']').val(0 + inputString);
+            //$('input[name='+fieldName+']').val(0 + inputString);
         }
     });
     

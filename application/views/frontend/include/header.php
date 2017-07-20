@@ -87,6 +87,7 @@ else{
                         <div class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle" type="button" data-toggle="dropdown"><img height="32" width="32" src="<?= base_url('uploads/user/thumb/'.$avatar); ?>" alt="<?= $userProfileInfo->firstName.'&nbsp;'.$userProfileInfo->lastName; ?>"></a>
                             <ul class="dropdown-menu">
+                                <li><a href="<?= base_url('wishlists'); ?>">My Wish Lists</a></li>
                                 <li><a href="<?= base_url('user/profile'); ?>">Edit Profile</a></li>
                                 <li><a href="<?= base_url('account'); ?>">Account Settings</a></li>
                                 <li><a href="<?= base_url('user/logout'); ?>">Logout</a></li>

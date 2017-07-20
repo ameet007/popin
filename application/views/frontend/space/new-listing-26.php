@@ -1,7 +1,7 @@
 <?php $stepData = $this->session->userdata('stepData');//print_r($stepData); ?>
 <div class="progress">
-    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-        100% Complete
+    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+        90% Complete
     </div>
 </div>
 <section class="middle-container new-partner6 new-partner16 new-partner39 new-partner40">

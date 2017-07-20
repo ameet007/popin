@@ -11,7 +11,7 @@
                 <div class="space-are">
                     <h3>Base price</h3>
                     <p>Your base price is your default hourly rate.</p>
-                    <form class="listing-form" action="<?php echo site_url('Space/price_settings'); ?>" method="post">
+                    <form class="listing-form" action="<?php echo site_url('Space/price_settings'); ?>" method="post" autocomplete="off">
                         <div class="feild">
                             <label>Base price</label>
                             <input type="text" class="textbox" name="page7[base_price]" placeholder="per hour" value="<?php echo isset($stepData['step3']['page7']['base_price'])?  $stepData['step3']['page7']['base_price'] : ''?>" />

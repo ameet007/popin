@@ -162,8 +162,11 @@ class Listing extends CI_Controller {
             $data['industries'] = $this->space_model->getDropdownData('industry');
             $data['establishment_types'] = $this->space_model->getDropdownData('establishment_types');
             $data['space_types'] = $this->space_model->getDropdownData('space_types');
+            $industry = $data['listing']['industryTypeId'];
+            $establishment = $data['listing']['establishmentTypeId'];
+            $data['amenities'] = $this->space_model->collectAmenities($industry, $establishment);
         }
-        //print_array($data['listing']);
+        //print_array($data['amenities']);
         $data['space_id'] = $space_id;
         $data['module_heading'] = "Manage Listing";
         $this->load->view(FRONT_DIR . '/listing/manage-listing', $data);
@@ -174,6 +177,15 @@ class Listing extends CI_Controller {
         $space_id = $this->input->post('space_id');
         $rawData = $this->input->post();
         unset($rawData['space_id']);
+        //print_array($rawData, TRUE);
+        if(isset($rawData['professionalCapacity'])){
+            $rawData['professionalCapacity']    = (int) $rawData['professionalCapacity'];
+            $rawData['workSpaceCount']          = (int) $rawData['workSpaceCount'];
+            $rawData['workSpaceDetail']         = json_encode($rawData['workSpaceDetail']);
+        }
+        if(isset($rawData['amenities'])){
+            $rawData['amenities'] = json_encode($rawData['amenities']);
+        }
         $this->space_model->updateData($rawData, $space_id, $user_id);
         
         $response['success'] = true;
