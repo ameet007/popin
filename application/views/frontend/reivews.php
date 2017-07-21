@@ -31,7 +31,7 @@ if (!empty($reivewsList)) {
                 </div>';
             }
        }
-       //if (count($reivewsList) >  10) { ?>
+       if (count($reivewsList) > 0) { ?>
     <div class="read-all clearfix">
         <div class="pull-left">
             <h4><a href="#">Read all <?= count($reivewsList); ?> reviews</a></h4>
@@ -53,7 +53,11 @@ if (!empty($reivewsList)) {
             </fieldset>
         </div>
     </div>
-   <?php  //}
+   <?php  }else{
+    echo  '<div class="read-all clearfix"><div class="pull-left">
+            <h4>No Reviews</h4>
+        </div></div>';
+   }
    if (empty($checkStatus)) { ?>
    <span id="blockPost" >
     <div class="group-size">
@@ -82,7 +86,7 @@ if (!empty($reivewsList)) {
             <h4>Review</h4>
         </div>
         <div class="grup-contant">
-            <textarea class="textarea control-form" name="reviews" id="reviews"></textarea><span id="error"></span>
+            <textarea class="textarea control-form" rows="5" name="reviews" id="reviews"></textarea><span id="error"></span>
         </div>
     </div>
       <div class="group-size">
