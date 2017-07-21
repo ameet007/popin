@@ -40,4 +40,10 @@ function getMultiRecord($table,$column,$condication,$orderBy='',$orderType=''){
  function generate_unique_code(){
         return substr(str_shuffle("1234567890"),'0','4');   
     }
+ function returnColumnValue($table,$column,$condication,$columnValue){
+    $tableRecord =& get_instance();
+    $tableRecord->load->database();
+    $query = $tableRecord->db->get_where($table,array($column=>$condication))->row_array();   
+    return $query[$columnValue];
+ }
 ?>

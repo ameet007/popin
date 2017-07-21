@@ -46,7 +46,7 @@ function get_end_date_by_currentdate($availableArray,$unavailableArray) {
     
     return $endDate;
 }
-//Converting timestamp to time ago e.g 1 day ago, 2 days ago…
+//Converting date to time ago e.g 1 day ago, 2 days ago…
 function time_elapsed_string($datetime, $full = false) {
     $now = new DateTime;
     $ago = new DateTime($datetime);

@@ -67,6 +67,7 @@ $route['inbox'] = 'Dashboard/inbox';
 $route['compose'] = 'Dashboard/compose';
 $route['compose/(:num)'] = 'Dashboard/compose/$1';
 $route['rentals'] = 'Dashboard/rentals';
+$route['reivews/(:num)/(:num)'] = 'Dashboard/reivews/$1/$2';
 $route['rentals/receipt'] = 'Dashboard/rentals';
 $route['rentals/receipt/(:num)'] = 'Dashboard/rental_receipt/$1';
 $route['wishlists'] = 'Dashboard/wishlists';

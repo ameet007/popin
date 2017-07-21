@@ -425,4 +425,27 @@ class Dashboard extends CI_Controller
             $this->session->set_flashdata('class', A_SUC);
        redirect(base_url('invite'));
     }
+    # Create reivews
+    public function reivews($bookingID,$spaceID){
+        $data['module_heading']  = 'Reivews';
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        $userID = $this->session->userdata('user_id'); 
+         $data['bookingID']       = $bookingID;
+         $data['spaceID']         = $spaceID;
+         $data['checkStatus']     = $this->space->userReivewsStatus($userID,$bookingID,$spaceID);
+         $data['reivewsList']     = $this->space->ratingList($spaceID);
+         $data['totalRating']     = $this->space->totalReviewsRating($spaceID);
+        $this->load->view('frontend/reivews',$data);
+    }
+    public function RatingReviews(){
+        $data   = $this->input->post();
+        $userID = $this->session->userdata('user_id');
+        $check  = $this->space->reviewsPost($userID,$data);
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        if ($check > 0) {
+            echo $this->space->preApendUserReviews($data['userProfileInfo'],$data);   
+        }else{
+           echo '2';
+        }
+    }
 }

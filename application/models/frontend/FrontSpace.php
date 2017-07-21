@@ -495,4 +495,53 @@ class FrontSpace extends CI_Model {
         $this->db->insert('space_booking', $insertData);
         return $this->db->insert_id();
     }
+   function reviewsPost($userID,$dataResponse){
+    $response = array();
+    $hostID   = returnColumnValue('spaces','id',$dataResponse['spaceID'],'host');
+    $response['space']       = $dataResponse['spaceID'];
+    $response['booking']     = $dataResponse['bookingID'];
+    $response['reviewerId']  = $userID;
+    $response['reviewOnId']  = $hostID;
+    $response['ratings']     = $dataResponse['rating'];
+    $response['review']      = $dataResponse['reviews'];
+    $response['createdDate'] = time();
+    $response['updatedDate'] = time();
+    $response['ipAddress']   = $this->input->ip_address();
+    $this->db->insert('space_ratings',$response);
+    return $this->db->affected_rows();
+   }
+   function totalReviewsRating($spaceID){
+    $this->db->select('AVG(ratings) as ratings');
+    $this->db->where('space',$spaceID);
+    $this->db->where('status','Approved');
+    return $query = $this->db->get('space_ratings')->row_array();
+   }  
+   // Create user rating
+   function preApendUserReviews($userID,$dataResponse){
+    $getReviews = $this->db->get_where('space_ratings',array('space'=>$dataResponse['spaceID'],'booking'=>$dataResponse['bookingID'],'reviewerId'=>$userID->id))->row_array();
+     $html = '';
+     $html  = '<div class="reviews" ><div class="reviews-head"><div class="img"><div class="inner">
+                      <img src="'.base_url('uploads/user/thumb/'.(!empty($userID->avatar)?$userID->avatar:'user_pic-225x225.png')).'" alt="" />
+                    </div>
+                </div>
+               <div class="content">
+                  <h4>'.$userID->firstName.' '.$userID->lastName.'</h4>
+                    <div class="date">
+                    '.time_elapsed_string(date('d-m-Y h:i:s a',$getReviews['createdDate'])).'
+                </div>
+            </div>
+        </div>
+        <div class="main-conte">
+             <span class="more">'.$getReviews['review'].'.</span>
+        </div>
+    </div>';
+    return $html;
+   }
+   function ratingList($space){
+    $sql = 'SELECT rating.createdDate as ratingsDate,rating.*,user.* FROM space_ratings as rating INNER JOIN user ON rating.reviewerId = user.id WHERE rating.status = "Approved" and rating.space ='.$space;
+    return $this->db->query($sql)->result_array();
+   }
+   function userReivewsStatus($userID,$bookingID,$spaceID){
+    return $this->db->get_where('space_ratings',array('space'=>$spaceID,'booking'=>$bookingID,'reviewerId'=>$userID))->row_array();
+   }
 }
