@@ -305,7 +305,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                             <ul class="accomm clearfix">
                                 <li>Availability</li>
                                 <li>
-                                    <p><strong><?= $preview['minStay']; ?> night(s)</strong> minimum stay</p>
+                                    <p><strong><?= $preview['minStay']; ?> <?= $preview['minStayType']; ?></strong> minimum stay</p>
                                 </li>
                                 <li>
                                     <a href="javascript:;" onclick="scrollToDiv('.right-side');">View calendar</a>
@@ -346,7 +346,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
             <div class="col-md-4 right-side">
                 <div class="per-night clearfix">
                     <div class="pull-left">
-                        <h3><?= $preview['currency'].$preview['base_price']; ?></h3>  
+                        <h3><?= getCurrency_symbol($preview['currency']).$preview['base_price']; ?></h3>  
                     </div>
                     <div class="pull-right">
                         <p>Per hour</p>
@@ -631,8 +631,8 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
         <?php if(!empty($preview['minStay']) && !empty($preview['maxStay'])){?>
         var minNumberOfDaysToAdd = <?= $preview['minStay']; ?>, maxNumberOfDaysToAdd = <?= $preview['maxStay']; ?>;
         
-        startDate.setDate(startDate.getDate() + minNumberOfDaysToAdd); 
-        endDate.setDate(endDate.getDate() + maxNumberOfDaysToAdd); 
+        <?php if($preview['minStayType'] == "days"){ ?> startDate.setDate(startDate.getDate() + minNumberOfDaysToAdd); <?php }?>
+        <?php if($preview['maxStayType'] == "days"){ ?> endDate.setDate(endDate.getDate() + maxNumberOfDaysToAdd);  <?php }?>
         <?php }?>
         var minDate = [ startDate.getDate().padLeft(), 
                     (startDate.getMonth()+1).padLeft(), 
@@ -644,7 +644,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                   ].join('-');
 
         $( "#endDate,#endDate2" ).datepicker({
-            title: "Min stay: <?= $preview['minStay']; ?> nights, Max stay: <?= $preview['maxStay']; ?> nights",
+            title: "Min stay: <?= $preview['minStay']; ?> <?= $preview['minStayType']; ?>, Max stay: <?= $preview['maxStay']; ?> <?= $preview['maxStayType']; ?>",
             format: "dd-mm-yyyy",
             startDate: minDate,
             endDate: maxDate,

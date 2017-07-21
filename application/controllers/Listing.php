@@ -191,6 +191,8 @@ class Listing extends CI_Controller {
         }
         if(isset($rawData['additionalRules'])){
             $rawData['additionalRules'] = implode(" | ",$rawData['additionalRules']);
+        }elseif(isset($rawData['ageRequirements']) && !isset($rawData['additionalRules'])){
+            $rawData['additionalRules'] = "";
         }
         $this->space_model->updateData($rawData, $space_id, $user_id);
         

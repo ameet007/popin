@@ -322,11 +322,11 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                             <?php foreach($amenities['Important'] as $k => $amtyI){ ?>
                                             <div class="feild">
                                                 <label for="<?= $k; ?>">
-                                                    <input id="<?= $k; ?>" type="checkbox" name="amenities[main][]" value="<?= $amtyI['id']; ?>" <?php echo (isset($listing['amenities']['main']) && !empty($listing['amenities']['main']) && in_array($amtyI['id'], $listing['amenities']['main']))? 'checked' : ''?>> <?= $amtyI['name']; ?>
+                                                    <input id="<?= $k; ?>" type="checkbox" name="amenities[main][]" value="<?= $amtyI['id']; ?>" <?php echo (isset($listing['amenities']['main']) && !empty($listing['amenities']['main']) && in_array($amtyI['id'], $listing['amenities']['main']))? 'checked' : ''?> required> <?= $amtyI['name']; ?>
                                                 </label>
                                             </div>
                                             <?php } ?> 
-                                            <div class="feild amenity <?php if(!isset($listing['amenities']['main']) && empty($listing['amenities']['main'])){ echo "hidden";}?>">
+                                            <div class="feild amenity hidden">
                                                 <label>More amenities</label>
                                                 <select class="selectbox  chosen-select" name="amenities[main][]" data-placeholder="Select Amenities" multiple>
                                                     <?php foreach($amenities['General'] as $amtyG){ ?>
@@ -334,7 +334,7 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                                     <?php }?>
                                                 </select>
                                             </div>
-                                            <div class="feild"><a href="#" class="show-more" data-target-key="amenity"><?php echo (isset($listing['amenities']['main']) && !empty($listing['amenities']['main']))? '- Less' : '+ Expand More'?></a></div>
+                                            <div class="feild"><a href="#" class="show-more" data-target-key="amenity">+ Expand More</a></div>
 
                                             <div class="feild add-rules">
                                                 <div class="additional-rules">
