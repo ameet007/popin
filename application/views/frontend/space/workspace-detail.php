@@ -192,10 +192,12 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
             type: "POST",
             data: "workspaces="+workspaces,
             success: function(response) {
+                $("label.workSpaceCount").remove();
                 $(".works-details ul").html(response);
                 $(".works-details ul").unblock();
             },
             error: function(response){
+                $("label.workSpaceCount").remove();
                 $(".works-details ul").unblock();
             }
         });
@@ -205,6 +207,7 @@ if(isset($stepData['step1']['page2']['workSpaceDetail']) && !empty($stepData['st
         
         var workSpaceCount = parseInt($("input[name='workSpaceCount']").val());
         if(isNaN(workSpaceCount) || workSpaceCount < 1){
+            $("label.workSpaceCount").remove();
             var errorMsg = $('<label for="workSpaceCount" class="error workSpaceCount">Please select a valid value.</label>');            
             errorMsg.insertAfter($("input[name='workSpaceCount']").parent());
             return false;

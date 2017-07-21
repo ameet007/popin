@@ -649,21 +649,6 @@ define('ALL_COUNTRY',serialize(array(
 
 define('SPACE',serialize(array('Single station','Personal station','Stocked station','Booth')));*/
 
-define('AMENITIES',serialize(array(
-		'Essentials'            =>	array('desc' => 'Towels, bed sheets, soap and toilet paper', 'icon' => ''),
-		'Wifi'			=>	array('desc' => '', 'icon' => ''),
-		'Shampoo'		=>	array('desc' => '', 'icon' => ''),
-		'Closet/drawers'        =>	array('desc' => '', 'icon' => ''),
-		'TV'			=>	array('desc' => '', 'icon' => ''),
-		'Heat'			=>	array('desc' => '', 'icon' => ''),
-		'Air conditioning'      =>      array('desc' => '', 'icon' => ''),
-		'Breakfast, coffee, tea'=>	array('desc' => '', 'icon' => ''),
-		'Desk/workspace'        =>	array('desc' => '', 'icon' => ''),
-		'Fireplace'		=>	array('desc' => '', 'icon' => ''),
-		'Iron'			=>	array('desc' => '', 'icon' => ''),
-		'Hair dryer'            =>	array('desc' => '', 'icon' => '')
-)));
-
 define('SPACES',serialize(array(
 		'Pool'                  =>	array('desc' => '', 'icon' => ''),
 		'Kitchen'               =>	array('desc' => '', 'icon' => ''),
@@ -914,6 +899,14 @@ define('REQUIREMENTS',serialize(array(
 		'2'	=>	'Government-issued License or Certificate submitted to Popln',
 		'3'	=>	'Reviews from other business owners and no negative reviews',
 		'4'	=>	'Provide how many customers or patients are being served'
+)));
+
+define('NOTICES',serialize(array(
+    '1'	=>	'1 hour',
+    '12'	=>	'12 hours',
+    '24'	=>	'1 day',
+    '48'	=>	'2 days',
+    '168'   => '7 days'
 )));
 
 define('TIMES',serialize(array(

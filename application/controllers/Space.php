@@ -89,7 +89,9 @@ class Space extends CI_Controller {
         }
         
         //echo "<pre>"; print_r($stepData); echo "</pre>";
-
+        if(strtolower($stepData['status']) == 'active'){
+            redirect("manage-listing/".$stepData['id']);
+        }
         
         if ($record['step_1_percentage'] == 100 && $record['step_2_percentage'] < 100){
             $view_file = 'become-a-partner-1';
@@ -1056,12 +1058,14 @@ class Space extends CI_Controller {
         $this->load->helper('html');
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $stepData = $this->session->userdata('stepData');
-
+            //print_array($_POST,true);
             if (isset($_POST['page6']) && !empty($_POST)) {
                 $updateData = $this->input->post('page6');
             } else {
                 $updateData['minStay'] = (int) $this->input->post('minStay');
                 $updateData['maxStay'] = (int) $this->input->post('maxStay');
+                $updateData['minStayType'] = $this->input->post('minStayType');
+                $updateData['maxStayType'] = $this->input->post('maxStayType');
             }
             if (isset($stepData['id'])) {
                 $host_id = $this->session->userdata('user_id');
@@ -1182,6 +1186,10 @@ class Space extends CI_Controller {
     }
 
     public function publish_listing() {
+        $stepData = $this->session->userdata('stepData');
+        if(strtolower($stepData['status']) == 'active'){
+            redirect("listing");
+        }
         $this->validate_before_publish();
         $this->load->helper('popin');
         if ($this->input->server('REQUEST_METHOD') == 'POST') {

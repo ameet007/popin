@@ -22,7 +22,7 @@
                             </label>
                         </div>
                         <?php } ?> 
-                        <div class="feild amenity <?php if(!isset($stepData['step1']['page5']['amenities']['main']) && empty($stepData['step1']['page5']['amenities']['main'])){ echo "hidden";}?>">
+                        <div class="feild amenity hidden">
                             <label>More amenities</label>
                             <select class="selectbox  chosen-select" name="amenities[main][]" data-placeholder="Select Amenities" multiple>
                                 <?php foreach($amenities['General'] as $amtyG){ ?>
@@ -30,7 +30,7 @@
                                 <?php }?>
                             </select>
                         </div>
-                        <div class="feild"><a href="#" class="show-more" data-target-key="amenity"><?php echo (isset($stepData['step1']['page5']['amenities']['main']) && !empty($stepData['step1']['page5']['amenities']['main']))? '- Less' : '+ Expand More'?></a></div>
+                        <div class="feild"><a href="#" class="show-more" data-target-key="amenity">+ Expand More</a></div>
                         
                         <div class="add-rules">
                             <div class="additional-rules">

@@ -229,22 +229,24 @@
                 <div class="space-are">
                     <h3>How long can professionals stay?</h3>
                     <div class="alert alert-danger" style="display: none;">
-                        <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i></strong> Minimum hours can’t be higher than maximum hours.
+                        <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i></strong> Minimum stay can’t be higher than maximum stay.
                     </div>
                     <form class="night-stay-form" action="<?php echo site_url('Space/availability_settings'); ?>" method="post">
                         <div class="feild">
                             <div class="main">
-                                <input type='text' class="textbox" name='minStay' value='<?php echo isset($stepData['step3']['page6']['minStay'])&&!empty($stepData['step3']['page6']['minStay'])? $stepData['step3']['page6']['minStay'] : '0'?> hours min' class='qty' />
+                                <input type='text' class="textbox" name='minStay' value='<?php echo isset($stepData['step3']['page6']['minStay'])&&!empty($stepData['step3']['page6']['minStay'])? $stepData['step3']['page6']['minStay'] : 1?> <?php echo isset($stepData['step3']['page6']['minStayType'])? $stepData['step3']['page6']['minStayType'] : 'hours'?> min' class='qty' />
                                 <input type='button' value='' class='qtyminus' field='minStay' />
                                 <input type='button' value='' class='qtyplus' field='minStay' />
                             </div>
+                            <input type='hidden' value='<?php echo isset($stepData['step3']['page6']['minStayType'])? $stepData['step3']['page6']['minStayType'] : 'hours'?>' name='minStayType' />
                         </div>
                         <div class="feild">
                             <div class="main">
-                                <input type='text' class="textbox" name='maxStay' value='<?php echo isset($stepData['step3']['page6']['maxStay'])&&!empty($stepData['step3']['page6']['maxStay'])? $stepData['step3']['page6']['maxStay'] : '0'?> hours max' class='qty2' />
+                                <input type='text' class="textbox" name='maxStay' value='<?php echo isset($stepData['step3']['page6']['maxStay'])&&!empty($stepData['step3']['page6']['maxStay'])? $stepData['step3']['page6']['maxStay'] : 0?> <?php echo isset($stepData['step3']['page6']['maxStayType'])? $stepData['step3']['page6']['maxStayType'] : 'hours'?> max' class='qty2' />
                                 <input type='button' value='' class='qtyminus' field='maxStay' />
                                 <input type='button' value='' class='qtyplus' field='maxStay' />
                             </div>
+                            <input type='hidden' value='<?php echo isset($stepData['step3']['page6']['maxStayType'])? $stepData['step3']['page6']['maxStayType'] : 'hours'?>' name='maxStayType' />
                         </div>
                         <p><strong>Tip:</strong> Shorter rentals can mean more profit, but you might have to turn over your space more often.</p>
                         <div class="next-prevs clearfix">
@@ -319,7 +321,11 @@
         e.preventDefault();
         var minStay = parseInt($("input[name='minStay']").val());
         var maxStay = parseInt($("input[name='maxStay']").val());
+        var minStayType = $("input[name='minStayType']").val();
+        var maxStayType = $("input[name='maxStayType']").val();
+        
         $("label.minStay").remove();$("label.maxStay").remove();
+        
         if(isNaN(minStay) || minStay < 1){
             var errorMsg = $('<label for="minStay" class="error minStay">Please enter valid value.</label>');            
             errorMsg.insertAfter($("input[name='minStay']").parent());
@@ -334,7 +340,9 @@
             $('form.night-stay-form button').text('Next');
             return false;
         }
-        if(minStay > maxStay && maxStay !== 0){
+        if(minStay > maxStay && maxStay !== 0 && minStayType === maxStayType){
+            return false;
+        }else if(maxStay !== 0 && minStayType === "days" && maxStayType === "hours"){
             return false;
         }
         $(".loader").show();
@@ -368,50 +376,55 @@
         var inputString = $('input[name='+fieldName+']').val();
         var currentVal = parseInt(inputString);
         inputString = inputString.replace(/[0-9]/g, '');
-
+        // Increment
+        currentVal++;
+        var variable = get_stay_var(currentVal, inputString, 'Plus');
         // If is not undefined
-        if (!isNaN(currentVal)) {
-            // Increment
-            currentVal++;
-            $('input[name='+fieldName+']').val(currentVal + inputString);
+        if (!isNaN(variable[0])) {            
+            $('input[name='+fieldName+']').val(variable[0] + variable[1]);
+            $('input[name='+fieldName+'Type]').val(variable[2]);
         } else {
             // Otherwise put a 0 there
-            $('input[name='+fieldName+']').val(0 + inputString);
+            //$('input[name='+fieldName+']').val(0 + inputString);
         }
 
         var minStay = parseInt($("input[name='minStay']").val());
         var maxStay = parseInt($("input[name='maxStay']").val());
-        validate_inputs(minStay, maxStay);
+        validate_inputs(minStay, maxStay, variable[2]);
     });
     // This button will decrement the value till 0
     $(".qtyminus").click(function(e) {
         // Stop acting like a button
         e.preventDefault();
         // Get the field name
-        fieldName = $(this).attr('field');
+        var fieldName = $(this).attr('field');
         // Get its current value
         var inputString = $('input[name='+fieldName+']').val();
         var currentVal = parseInt(inputString);
         inputString = inputString.replace(/[0-9]/g, '');
+        // Decrement
+        currentVal--;
+        var variable = get_stay_var(currentVal, inputString, 'Minus');
         // If it isn't undefined or its greater than 0
-        if (!isNaN(currentVal) && currentVal > 0) {
-            // Decrement one
-            currentVal--;
-            $('input[name='+fieldName+']').val(currentVal + inputString);
+        if (!isNaN(variable[0]) && variable[0] > 0) {            
+            $('input[name='+fieldName+']').val(variable[0] + variable[1]);
+            $('input[name='+fieldName+'Type]').val(variable[2]);
         } else {
             // Otherwise put a 0 there
-            $('input[name='+fieldName+']').val(0 + inputString);
+            //$('input[name='+fieldName+']').val(0 + variable[1]);
         }
 
         var minStay = parseInt($("input[name='minStay']").val());
         var maxStay = parseInt($("input[name='maxStay']").val());
-        validate_inputs(minStay, maxStay);
+        validate_inputs(minStay, maxStay, variable[2]);
     });
     var minStayVar = parseInt($("input[name='minStay']").val());
     var maxStayVar = parseInt($("input[name='maxStay']").val());
     validate_inputs(minStayVar, maxStayVar);
     function validate_inputs(minStay, maxStay) {
         //console.log("Min: " + minStay + ", Max: " + maxStay);
+        var minStayType = $("input[name='minStayType']").val();
+        var maxStayType = $("input[name='maxStayType']").val();
         // Remove error label
         if(minStay > 0){
             $("label.minStay").remove();
@@ -420,7 +433,9 @@
             $("label.maxStay").remove();
         }
         // Check for valid inputs
-        if(minStay > maxStay && maxStay !== 0){
+        if(minStay > maxStay && maxStay !== 0 && minStayType === maxStayType){
+            $(".alert").show();
+        }else if(maxStay !== 0 && minStayType === "days" && maxStayType === "hours"){
             $(".alert").show();
         }else{
             $(".alert").hide();
@@ -429,17 +444,17 @@
         var minText, maxText;
         
         if(minStay < 2){
-            minText = minStay+" hour";
+            minText = minStay+" "+minStayType;
         }else{
-            minText = minStay+" hours";
+            minText = minStay+" "+minStayType;
         }
         
-        if(maxStay == 0){
+        if(maxStay === 0){
             maxText = "No max";
         }else if(maxStay < 2){
-            maxText = maxStay+" hour";
+            maxText = maxStay+" "+maxStayType;
         }else{
-            maxText = maxStay+" hours";
+            maxText = maxStay+" "+maxStayType;
         }
         
         var night_1 = '<pre><?= nbs(18);?>'+minText+'              '+maxText+'</pre><img src="<?php echo base_url('theme/front/assests/img/nights-1.png')?>" alt="" />';
@@ -456,6 +471,25 @@
         }else if(minStay >= 0 && maxStay >= 1){
             $("#settings-3 div.to-day").html(night_3);
         }
+    }
+    
+    function get_stay_var(value, type, action){
+        var myArray = new Array(2);
+        myArray[0] = value;
+        myArray[1] = type;
+        myArray[2] = (type === " hours min" || type === " hours max")?"hours":"days";
+        
+        if(value > 12 && (type === " hours min" || type === " hours max")){
+            myArray[0] = 1;
+            myArray[1] = (type === " hours min")?" days min":" days max";
+            myArray[2] = "days";
+        }else if(action === "Minus" && value == 0 && (type === " days min" || type === " days max")){
+            myArray[0] = 12;
+            myArray[1] = (type === " days min")?" hours min":" hours max";
+            myArray[2] = "hours";
+        }
+        //console.log(myArray);
+        return myArray;
     }
 </script>
 </body>

@@ -725,21 +725,21 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                 </div>
                             </div>
                         </div>
+                        <?php $noticesArray = unserialize(NOTICES); ?>
                         <div id="menu3" class="tab-pane fade">
                             <div class="col-md-8 new-partner6 new-partner7 new-partner34">
                                 <div class="pro-requr space-r">
                                     <h3>Availability Settings</h3>
-<!--                                    <button class="gost-btn edit-btn">Edit</button>-->
+                                    <button class="gost-btn edit-btn">Edit</button>
                                     <div class="space-are">
-                                        <form id="availability" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="" novalidate>
+                                        <form id="availability" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;" novalidate>
                                             <h3>How much notice do you need before a professional arrives?</h3>
                                             <div class="main-input feild">
                                                 <select class="selectbox" name="noticeTime">
-                                                    <option value="1" <?php echo ($listing['noticeTime'] == '1')? 'selected' : ''?>>1 hour</option>
-                                                    <option value="12" <?php echo ($listing['noticeTime'] == '12')? 'selected' : ''?>>12 hours</option>
-                                                    <option value="24" <?php echo ($listing['noticeTime'] == '24')? 'selected' : ''?>>1 day</option>
-                                                    <option value="48" <?php echo ($listing['noticeTime'] == '48')? 'selected' : ''?>>2 days</option>
-                                                    <option value="168" <?php echo ($listing['noticeTime'] == '168')? 'selected' : ''?>>7 days</option>
+                                                    <?php
+                                                    foreach($noticesArray as $k => $v){ ?>
+                                                    <option value="<?= $k; ?>" <?php echo ($listing['noticeTime'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                             <div class="rental-hours">
@@ -883,19 +883,24 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                                 </select>
                                             </div>
                                             <h3>How long can professionals stay?</h3>
-                                            <div class="main-input feild">
-                                                <div class="main">
-                                                    <input type='text' class="textbox" name='minStay' value='<?php echo $listing['minStay']; ?> hours min' class='qty' />
-                                                    <input type='button' value='' class='qtyminus' field='minStay' />
-                                                    <input type='button' value='' class='qtyplus' field='minStay' />
-                                                </div>
+                                            <div class="alert alert-danger" style="display: none;">
+                                                <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i></strong> Minimum stay can’t be higher than maximum stay.
                                             </div>
                                             <div class="main-input feild">
                                                 <div class="main">
-                                                    <input type='text' class="textbox" name='maxStay' value='<?php echo $listing['maxStay']; ?> hours max' class='qty2' />
-                                                    <input type='button' value='' class='qtyminus' field='maxStay' />
-                                                    <input type='button' value='' class='qtyplus' field='maxStay' />
+                                                    <input type='text' class="textbox" name='minStay' value='<?php echo !empty($listing['minStay'])? $listing['minStay'] : 1?> <?php echo $listing['minStayType']?> min' class='qty' />
+                                                    <input type='button' value='' class='qtyminus2' field='minStay' />
+                                                    <input type='button' value='' class='qtyplus2' field='minStay' />
                                                 </div>
+                                                <input type='hidden' value='<?php echo $listing['minStayType']?>' name='minStayType' />
+                                            </div>
+                                            <div class="main-input feild">
+                                                <div class="main">
+                                                    <input type='text' class="textbox" name='maxStay' value='<?php echo !empty($listing['maxStay'])? $listing['maxStay'] : 1?> <?php echo $listing['maxStayType']?> max' class='qty2' />
+                                                    <input type='button' value='' class='qtyminus2' field='maxStay' />
+                                                    <input type='button' value='' class='qtyplus2' field='maxStay' />
+                                                </div>
+                                                <input type='hidden' value='<?php echo $listing['maxStayType']?>' name='maxStayType' />
                                             </div>
                                             <div class="main-input">
                                                 <div class="row">
@@ -907,8 +912,24 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </form>                                        
                                     </div>
+                                    <ul class="listing-info">
+                                        <li class="clearfix">
+                                            <div class="pull-left">How much notice do you need before a professional arrives?</div>
+                                            <div class="pull-right"><?= $noticesArray[$listing['noticeTime']]; ?></div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="pull-left">How far in advance can professionals book?</div>
+                                            <div class="pull-right"><?= $listing['advanceBook']; ?> month(s)</div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="pull-left">How long can professionals stay?</div>
+                                            <div class="pull-right">
+                                                <strong><?php echo !empty($listing['minStay'])? $listing['minStay'] : 1?> <?php echo $listing['minStayType']?></strong> Min Stay, <strong><?php echo !empty($listing['maxStay'])? $listing['maxStay'] : 1?> <?php echo $listing['maxStayType']?></strong> Max Stay
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -1101,6 +1122,58 @@ $(document).ready(function(){
             //$("a.verify-button").css('display', 'inline-block');
         }
     });
+    // This button will increment the value
+    $('.qtyplus2').click(function(e){
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        var fieldName = $(this).attr('field');
+        // Get its current value
+        var inputString = $('input[name='+fieldName+']').val();
+        var currentVal = parseInt(inputString);
+        inputString = inputString.replace(/[0-9]/g, '');
+        // Increment
+        currentVal++;
+        var variable = get_stay_var(currentVal, inputString, 'Plus');
+        // If is not undefined
+        if (!isNaN(variable[0])) {            
+            $('input[name='+fieldName+']').val(variable[0] + variable[1]);
+            $('input[name='+fieldName+'Type]').val(variable[2]);
+        } else {
+            // Otherwise put a 0 there
+            //$('input[name='+fieldName+']').val(0 + inputString);
+        }
+
+        var minStay = parseInt($("input[name='minStay']").val());
+        var maxStay = parseInt($("input[name='maxStay']").val());
+        validate_inputs(minStay, maxStay, variable[2]);
+    });
+    // This button will decrement the value till 0
+    $(".qtyminus2").click(function(e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        var fieldName = $(this).attr('field');
+        // Get its current value
+        var inputString = $('input[name='+fieldName+']').val();
+        var currentVal = parseInt(inputString);
+        inputString = inputString.replace(/[0-9]/g, '');
+        // Decrement
+        currentVal--;
+        var variable = get_stay_var(currentVal, inputString, 'Minus');
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(variable[0]) && variable[0] > 0) {            
+            $('input[name='+fieldName+']').val(variable[0] + variable[1]);
+            $('input[name='+fieldName+'Type]').val(variable[2]);
+        } else {
+            // Otherwise put a 0 there
+            //$('input[name='+fieldName+']').val(0 + variable[1]);
+        }
+
+        var minStay = parseInt($("input[name='minStay']").val());
+        var maxStay = parseInt($("input[name='maxStay']").val());
+        validate_inputs(minStay, maxStay, variable[2]);
+    });
     $('form#availability').validate({
         rules: {
             monFrom :{ required:function(element){ return $("select[name='monTo']").val().length > 0;}},
@@ -1119,6 +1192,16 @@ $(document).ready(function(){
             sunTo :{ required:function(element){ return $("select[name='sunFrom']").val().length > 0;}}
         },
         submitHandler: function(form) {
+            var minStay = parseInt($("input[name='minStay']").val());
+            var maxStay = parseInt($("input[name='maxStay']").val());
+            var minStayType = $("input[name='minStayType']").val();
+            var maxStayType = $("input[name='maxStayType']").val();
+            
+            if(minStay > maxStay && maxStay !== 0 && minStayType === maxStayType){
+                return false;
+            }else if(maxStay !== 0 && minStayType === "days" && maxStayType === "hours"){
+                return false;
+            }
             $.ajax({
                 url: form.action,
                 type: form.method,
@@ -1267,6 +1350,48 @@ function autoSave(fieldName,fieldvalue)
                 
         }          
     });
+}
+var minStayVar = parseInt($("input[name='minStay']").val());
+var maxStayVar = parseInt($("input[name='maxStay']").val());
+validate_inputs(minStayVar, maxStayVar);
+function validate_inputs(minStay, maxStay) {
+    //console.log("Min: " + minStay + ", Max: " + maxStay);
+    var minStayType = $("input[name='minStayType']").val();
+    var maxStayType = $("input[name='maxStayType']").val();
+    // Remove error label
+    if(minStay > 0){
+        $("label.minStay").remove();
+    }
+    if(maxStay > 0){
+        $("label.maxStay").remove();
+    }
+    // Check for valid inputs
+    if(minStay > maxStay && maxStay !== 0 && minStayType === maxStayType){
+        $(".alert").show();
+    }else if(maxStay !== 0 && minStayType === "days" && maxStayType === "hours"){
+        $(".alert").show();
+    }else{
+        $(".alert").hide();
+    }
+}
+
+function get_stay_var(value, type, action){
+    var myArray = new Array(2);
+    myArray[0] = value;
+    myArray[1] = type;
+    myArray[2] = (type === " hours min" || type === " hours max")?"hours":"days";
+
+    if(value > 12 && (type === " hours min" || type === " hours max")){
+        myArray[0] = 1;
+        myArray[1] = (type === " hours min")?" days min":" days max";
+        myArray[2] = "days";
+    }else if(action === "Minus" && value == 0 && (type === " days min" || type === " days max")){
+        myArray[0] = 12;
+        myArray[1] = (type === " days min")?" hours min":" hours max";
+        myArray[2] = "hours";
+    }
+    //console.log(myArray);
+    return myArray;
 }
 </script>
 <script src="<?php echo base_url('theme/front/assests/js/jquery-3.1.1.slim.min.js')?>" type="text/javascript"></script>

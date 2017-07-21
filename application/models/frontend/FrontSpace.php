@@ -279,7 +279,9 @@ class FrontSpace extends CI_Model {
             'sunTo' => $spaceData['sunTo'],
             'advanceBook' => $spaceData['advanceBook'],
             'minStay' => $spaceData['minStay'],
-            'maxStay' => $spaceData['maxStay']
+            'maxStay' => $spaceData['maxStay'],
+            'minStayType' => $spaceData['minStayType'],
+            'maxStayType' => $spaceData['maxStayType']
         );
         
         $spaceAvailableDates = $this->db->select('spaceDate')->get_where('space_available_slots', array('space' => $space_id))->row_array();
@@ -317,7 +319,7 @@ class FrontSpace extends CI_Model {
     }
 
     public function getSpaceSettings($space_id, $host_id) {
-        return $this->db->select('noticeTime,monFrom,monTo,tueFrom,tueTo, wedFrom,wedTo,thuFrom,thuTo,friFrom,friTo,satFrom,satTo,sunFrom,sunTo,advanceBook,minStay,maxStay')->get_where('spaces', array('id' => $space_id, 'host' => $host_id))->row_array();
+        return $this->db->select('noticeTime,monFrom,monTo,tueFrom,tueTo, wedFrom,wedTo,thuFrom,thuTo,friFrom,friTo,satFrom,satTo,sunFrom,sunTo,advanceBook,minStay,maxStay,minStayType,maxStayType')->get_where('spaces', array('id' => $space_id, 'host' => $host_id))->row_array();
     }
     
     public function insertData($rawData) {
