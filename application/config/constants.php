@@ -912,12 +912,14 @@ define('MOBILECODES', serialize(array(
 define('REQUIREMENTS',serialize(array(
 		'1'	=>	'Government-issued ID submitted to PopIn',
 		'2'	=>	'Government-issued License or Certificate submitted to Popln',
-		'3'	=>	'Reviews from other business owners and no nagative reviews',
+		'3'	=>	'Reviews from other business owners and no negative reviews',
 		'4'	=>	'Provide how many customers or patients are being served'
 )));
 
 define('TIMES',serialize(array(
 		''		=>	'Select a time',
+                '6'		=>	'6AM',
+		'7'		=>	'7AM',
 		'8'		=>	'8AM',
 		'9'		=>	'9AM',
 		'10'	=>	'10AM',

@@ -29,17 +29,17 @@
                     </div>
                     <div class="pro-find">
                         <img src="<?php echo base_url('theme/front/img/40img2.png')?>" alt="" />
-                        <p><strong>guests who meet PopIn requirements can instantly rent.</strong></p>
-                        <p>In addition to meeting guest requirements, Finley agrees to your Space Rules.</p>
+                        <p><strong>Professionals who meet PopIn requirements can instantly rent.</strong></p>
+                        <p>In addition to meeting professional requirements, Finley agrees to your Space Rules.</p>
                     </div>
                     <div class="pro-find">
                         <img src="<?php echo base_url('theme/front/img/40img3.png')?>" alt="" />
-                        <p><strong>guests send a message with their rental confirmation.</strong></p>
+                        <p><strong>Professionals send a message with their rental confirmation.</strong></p>
                         <p>Finley says she’ll be working for 4 hours and would love to rent your workspace.</p>
                     </div>
                     <div class="pro-find">
                         <img src="<?php echo base_url('theme/front/img/40img4.png')?>" alt="" />
-                        <p><strong>Welcome guests to your space!.</strong></p>
+                        <p><strong>Welcome professionals to your space!.</strong></p>
                         <p>Before Finley arrives coordinate details like check-in time and clean up procedures.</p>
                     </div>
                     <div class="next-prevs clearfix">

@@ -16,11 +16,11 @@
                         <img src="<?php echo base_url('theme/front/assests/img/30img1.png')?>" alt="" />
                     </div>
                     <div class="pro-find">
-                        <p>2. Professionals who meet your requirement can book available time without requirement approval.</p>
+                        <p>2. Professionals who meet your requirements can book available time without requirement approval.</p>
                         <img src="<?php echo base_url('theme/front/assests/img/30img2.png')?>" alt="" />
                     </div>
                     <div class="pro-find">
-                        <p>3. You’ll get a message form your frofessional about their rental, along with the reservation confirmation, how many clients theys are meeting, and check-in time.</p>
+                        <p>3. You’ll get a message from your professional about their rental, along with the reservation confirmation, how many clients they are meeting, and check-in time.</p>
                         <img src="<?php echo base_url('theme/front/assests/img/30img3.png')?>" alt="" />
                     </div>
                     <form class="listing-form" action="<?php echo site_url('Space/review_how_professional_book'); ?>" method="post">

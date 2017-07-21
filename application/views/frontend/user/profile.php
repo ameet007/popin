@@ -105,7 +105,7 @@
                                          <span id="showBox">
                                           <?php 
                                            if (empty($userProfileInfo->phone)) { ?>
-                                            <u><p style="cursor:pointer;" data-toggle="modal" data-target="#myModal" >Click here Add Phone Number</p></u>
+                                            <u><p style="cursor:pointer;" data-toggle="modal" data-target="#myModal" >+ Add Phone Number</p></u>
                                             <?php  }else { 
                                                  $number = explode("-",$userProfileInfo->phone);
                                               ?>

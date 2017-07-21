@@ -75,8 +75,9 @@
         width: 337px;
     }
     ul.chosen-choices{margin: 0 !important;}
+    ul.chosen-choices li {font-size: 16px; font-weight: 600;}
     ul.chosen-results{ margin: 0 4px 4px 0 !important; }
-    ul.chosen-results li{ margin: 0 !important; }
+    ul.chosen-results li{ margin: 0 !important; font-size: 16px; font-weight: 600; }
     
 </style>
 <script src="<?= base_url('theme/front/assests/js/chosen.js'); ?>"  type="text/javascript"></script>

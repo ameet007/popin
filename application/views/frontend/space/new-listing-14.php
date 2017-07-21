@@ -1,12 +1,24 @@
-<?php $stepData = $this->session->userdata('stepData'); ?>
-<?php if(isset($stepData['step2']['fileuploader'])){ $percentage = 90; $percentageText = $percentage."% Complete"; ?>
-<?php }else{ $percentage = 50; $percentageText = $percentage."% Complete"; }?>
+<?php $stepData = $this->session->userdata('stepData');?>
+<?php if(isset($stepData['step2']['fileuploader'])){ $percentage = 90; $percentageText = $percentage."% Complete"; $barClass="success"; ?>
+<?php }else{ $percentage = 50; $percentageText = $percentage."% Complete"; $barClass="warning"; }?>
 <div class="progress">
-    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<?= $percentage; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $percentage; ?>%">
+    <div class="progress-bar progress-bar-<?= $barClass; ?> progress-bar-striped" role="progressbar" aria-valuenow="<?= $percentage; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $percentage; ?>%">
         <?= $percentageText; ?>
     </div>
 </div>
-<section class="middle-container new-partner6 new-partner16 new-partner21 <?php echo (isset($stepData['step2']['page6']['numberVerified']) && strtolower($stepData['step2']['page6']['numberVerified']) == 'yes')?'new-partner22':''; ?>">
+<?php
+//if((isset($stepData['step2']['page6']['numberVerified']) && strtolower($stepData['step2']['page6']['numberVerified']) == 'yes')||($hostProfileInfo->phone_verify=='yes'))
+$numberVerified = FALSE;
+if(isset($stepData['step2']['page6']['numberVerified'])){
+    if(strtolower($stepData['step2']['page6']['numberVerified']) == 'yes'){
+        $numberVerified = TRUE;
+    }
+}elseif (trim($hostProfileInfo->phone) != "" && strtolower($hostProfileInfo->phone_verify)=='yes') {
+    $numberVerified = TRUE;
+}
+?>
+
+<section class="middle-container new-partner6 new-partner16 new-partner21 <?php echo ($numberVerified)?'new-partner22':''; ?>">
     <div class="container">
         <div class="row clearfix">
             <div class="col-md-8">
@@ -42,13 +54,13 @@
                             <div class="media-body media-middle">
                                 <div class="mobile-number">
                                     <span class="country-code"><?= isset($country_code)?$country_code:'+1';?></span>
-                                    <input type="text" name="page6[mobileNumber]" maxlength="10" value="<?= $mobile_number; ?>" <?php echo (isset($stepData['step2']['page6']['numberVerified']) && strtolower($stepData['step2']['page6']['numberVerified']) == 'yes')?'readonly':''; ?> />
-                                    <?php if(!isset($stepData['step2']['page6']['numberVerified'])): ?>
-                                    <a class="verify-button" href="#">Verify</a>
+                                    <input <?php echo ($numberVerified)?'class="verified"':''; ?> type="text" name="page6[mobileNumber]" maxlength="10" value="<?= $mobile_number; ?>" <?php echo ($numberVerified)?'readonly':''; ?> />
+                                    <?php if(!$numberVerified): ?>
+                                    <a class="verify-button" href="javascript:;" onclick="verifyPhone()">Verify</a>
                                     <?php endif;?>
                                 </div>
-                                <?php if(!isset($stepData['step2']['page6']['numberVerified']) || strtolower($stepData['step2']['page6']['numberVerified']) == 'no'){ ?>
-                                <p>Not in <span id="country-name">United States</span>? <a href="#" id="change-country">Change country</a>
+                                <?php if(!$numberVerified){ ?>
+                                <p class="phone-country">Not in <span id="country-name">United States</span>? <a href="#" id="change-country">Change country</a>
                                 <select id="country" style="position: relative;bottom: 0;left: 0;right: 0;top: 0; display: none;" name="country-code">
                                     <?php $all_countries = unserialize(MOBILECODES); 
                                     foreach($all_countries as $k=>$v){ ?>
@@ -58,6 +70,13 @@
                                 </p>
                                 <?php }else{ ?>
                                 <input type="hidden" name="country-code" value="<?= isset($country_code)?ltrim($country_code,"+"):'1';?>">
+                                <?php }?>
+                                
+                                <?php if(!$numberVerified){ ?>
+                                <div class="varification">
+                                    <p>Enter 4 digits code below:</p>
+                                    <input class="verify selectbox" type="text" name="verifyCodeNumber" maxlength="4">
+                                </div>
                                 <?php }?>
                             </div>
                         </div>
@@ -90,25 +109,7 @@
         </div>
     </div>    
 </section>
-<?php if(!isset($stepData['step2']['page6']['numberVerified'])||strtolower($stepData['step2']['page6']['numberVerified']) == 'no'): ?>
-<style type="text/css">
-    .new-partner21 .mobile-number {
-        width: 333px;
-    }
-    a.verify-button{
-        width: auto;
-        border-right: none;
-        border-left: 1px solid #dce0e1;
-        background-color: #00a699;
-        color: #fff;
-        font-weight: 700;
-        display: none;
-        height: 60px;
-        line-height: 60px;
-        padding: 0 15px;
-    }
-</style>
-<?php endif;?>
+
 <script type="text/javascript">
     $(".loader").hide();
     $("a#change-country").on('click', function(e){
@@ -133,25 +134,28 @@
     ?>
     $("input[name='page6[mobileNumber]']").keypress(function (e) {
         
-        if (e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57)) {
+        if (e.which !== 8 && e.which !== 0 && e.which !== 13 && (e.which < 48 || e.which > 57)) {
             //display error message
             var errorMsg = $('<label for="page6[mobileNumber]" class="error">Please enter digits only.</label>');
             $("label.error").remove();
             errorMsg.insertAfter($(this).parent());
             //$("#errmsg").html("Digits Only").show().fadeOut("slow");
             return false;
+        }else if(e.which === 13){
+            verifyPhone();
         }else{
             $("label.error").remove();
             $("a.verify-button").css('display', 'inline-block');
         }
     });
     $("input[name='page6[mobileNumber]']").on('keyup', function () {
-        if($(this).val() != ""){
+        if($(this).val() !== ""){
             $("a.verify-button").css('display', 'inline-block');
         }else{
             $("a.verify-button").css('display', 'none');
         }
     });
+    
     $('form').validate({
         rules: {
             'page6[mobileNumber]' :{ required:true}
@@ -159,16 +163,78 @@
         errorPlacement: function (error, element) {
             error.insertAfter(element.parent());
         },
-        submitHandler: function(form) {            
-            $(".loader").show();
-            $('form button').text('Please wait...');
-            $.post(form.action, $(form).serialize(), function(){
-                $(".loader").hide();
-                $('form button').text('Next');
+        submitHandler: function(form) {
+            submitVerifyCode();
+        }
+    });
+    function verifyPhone(){
+        var numberCode  = $('select[name="country-code"]').val();
+        var number      = $('input[name="page6[mobileNumber]"]').val();
+        
+        var fullphone   = '+' + numberCode + '' + number;
+        
+        $.ajax({
+            url: '<?= base_url('Space/ajax_verify_phoneNumber'); ?>',
+            type: 'POST',
+            dataType: "json",
+            data: {phone:fullphone},
+            beforeSend: function(){
+                $(".new-partner21 .media-body").block({ 
+                    overlayCSS: { backgroundColor: '#E5E5E5' }, 
+                    message: '<img src="<?= base_url(); ?>assets/images/loading-spinner-grey.gif" alt="please wait...">',
+                    css: { border: 'none', backgroundColor: 'transparent' }  
+                });
+            },
+            complete: function(){
+                $(".new-partner21 .media-body").unblock();
+            },
+            success: function(response) {
+                if(response){
+                    $("section.new-partner21").addClass("new-partner22");
+                    $("a.verify-button").hide();
+                    $('input[name="page6[mobileNumber]"]').prop('readonly', true);
+                }
+            }          
+        });
+    }
+    function submitVerifyCode(){
+        var enterCode  = $('input[name="verifyCodeNumber"]').val();
+        if (typeof enterCode !== "undefined") {
+            $.ajax({
+                url: '<?= base_url('Space/ajax_verifyCode'); ?>',
+                type: 'POST',
+                dataType: "json",
+                data: {enterCode:enterCode},
+                beforeSend: function(){
+                    $(".loader").show();
+                    $("p.error").remove();
+                    $('form button').text('Please wait...');
+                },
+                complete: function(){
+                    $('.loader').hide();
+                    $('form button').text('Finish');
+                },
+                success: function(response) {
+                    if (response === 1 || response === 2) {
+                        $.post($('form').attr('action'), $('form').serialize(), function(){
+                            $('input[name="page6[mobileNumber]"]').addClass('verified');
+                            window.location.href = "<?= site_url('Space/become-a-partner'); ?>";
+                        });
+                    }else if (response === 0){
+                        var errorMsg = $('<p class="error">Wrong verification code.</p>');
+                        errorMsg.insertAfter($('input[name="verifyCodeNumber"]'));
+                        return false;
+                    }
+                }          
+            });
+        }else{
+            $(".loader").show();$('form button').text('Please wait...');
+            $.post($('form').attr('action'), $('form').serialize(), function(){
+                $('.loader').hide();$('form button').text('Finish');
                 window.location.href = "<?= site_url('Space/become-a-partner'); ?>";
             });
         }
-    });
+    }
 </script>
 </body>
 </html>

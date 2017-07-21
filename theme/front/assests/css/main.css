@@ -604,14 +604,18 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .new-partner20 .media-body p, .new-partner20 .media-body a {line-height: 20px; font-size: 16px; font-weight: 400;}
 /*New partner21 page css start*/
 .new-partner21 .media-left a img {width: auto;}
-.new-partner21 .mobile-number {border: solid 1px #dce0e1; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; width: 260px; margin-bottom: 10px;}
+.new-partner21 .mobile-number {border: solid 1px #dce0e1; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; width: 333px; margin-bottom: 10px;}
 .new-partner21 .country-code {background-color: #edefec; width: 55px; height: 60px; color: #484848; padding: 0 15px; line-height: 60px; display: inline-block; border-right: solid 1px #dce0e1;}
 .new-partner21 .mobile-number input {background-color: transparent; border: 0 none; height: 60px; width: 198px;}
-.new-partner21 .media-body p {color: #8c8c8c; font-size: 12px;}
+.new-partner21 .media-body p.phone-country {color: #8c8c8c; font-size: 12px;}
+.new-partner21 .varification {display: none;}
+a.verify-button{width: auto;border-right: none;border-left: 1px solid #dce0e1;background-color: #00a699;color: #fff;font-weight: 700;display: none;height: 60px;line-height: 60px;padding: 0 15px; }
 /*New partner22 page css start*/
-.new-partner22 .media-body p {color: red; font-size: 14px; }
-.new-partner22 .mobile-number {background-color: #edefec; margin-bottom: 10px;}
-.new-partner22 .media-body .mobile-number input {background-image: url(../img/circle-right-small.png); background-repeat: no-repeat; background-position: 90% center;}
+.new-partner22 .phone-country {display: none;}
+.new-partner22 .varification {display: block;}
+.new-partner22 .media-body p {color: #333; font-size: 16px; margin: 5px 0; }
+.new-partner22 .mobile-number {background-color: #edefec; width: 260px;}
+.new-partner22 .media-body .mobile-number input.verified {background-image: url(../img/circle-right-small.png); background-repeat: no-repeat; background-position: 90% center;}
 .new-partner22 .media-body input.verify {background-color: #fff; width: 260px; padding: 15px 10px; margin-bottom: 10px;}
 /*New partner23 page css start*/
 .new-partner23 {background-image: url(../img/image6.png); background-position: right 70%;}
@@ -1042,7 +1046,7 @@ ul.wishlists li > span {font-size: 16px;}
 a button.btn{color: #333 !important;}
 #wishListModal .list-progress .main-right .media-left .inner {width: 200px !important;}
 #wishListModal .modal-footer{text-align: left;}
-
+.error {color: #ff5a60 !important;}
 /*13.07.2017*/
 /*Listing Setting page css start*/
 .listing-sett {}

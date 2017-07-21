@@ -62,7 +62,7 @@ $(document).ready(function(){
     </div>    
 </section>
 <div class="container">
-<h3 style="text-align: center;" >You'v got <span><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format((!empty($userProfileInfo->referalAmount)?$userProfileInfo->referalAmount:'000')); ?></span> in travel to credit to spend !</h3><br>
+<h3 style="text-align: center;" >You'v got <span><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format((!empty($userProfileInfo->referalAmount)?$userProfileInfo->referalAmount:'000')); ?></span> in rental credit to spend !</h3><br>
 <?php 
    $getResult = getMultiRecord('join_account_master','provide_link_userID',$userProfileInfo->id);
    

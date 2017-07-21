@@ -175,16 +175,16 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                             <ul class="accomm clearfix">
                                 <li>The space</li>
                                 <li>
-                                    <p>Accommodates:<strong><?= $preview['professionalCapacity']; ?></strong></p>
-                                    <p>Workspaces:<strong><?= $preview['workSpaceCount']; ?></strong></p>
-                                    <p>Bathrooms:<strong><?= $preview['bathrooms']; ?></strong></p>
-                                    <p>Bathroom type:<strong><?= (strtolower($preview['bathroomADACompliant']) == "yes")?"ADA Compliant":"Not ADA Compliant"; ?></strong></p>
+                                    <p>Accommodates: <strong><?= $preview['professionalCapacity']; ?></strong></p>
+                                    <p>Workspaces: <strong><?= $preview['workSpaceCount']; ?></strong></p>
+                                    <p>Bathrooms: <strong><?= $preview['bathrooms']; ?></strong></p>
+                                    <p>Bathroom type: <strong><?= (strtolower($preview['bathroomADACompliant']) == "yes")?"ADA Compliant":"Not ADA Compliant"; ?></strong></p>
                                     <a href="javascript:;" onclick="scrollToDiv('#house-rules');">House Rules</a>
                                 </li>
                                 <li>
-                                    <p>Check In:<strong><?php $day = strtolower(date("D")); $checkIn[$preview["{$day}From"]] . ' - ' . $checkIn[$preview["{$day}To"]]; ?></strong></p>
-                                    <p>Establishment type:<strong><?= $preview['establishmentType']; ?></strong></p>
-                                    <p>Space type:<strong><?= $preview['spaceType']; ?></strong></p>
+                                    <p>Check In: <strong><?php $day = strtolower(date("D")); $checkIn[$preview["{$day}From"]] . ' - ' . $checkIn[$preview["{$day}To"]]; ?></strong></p>
+                                    <p>Establishment type: <strong><?= $preview['establishmentType']; ?></strong></p>
+                                    <p>Space type: <strong><?= $preview['spaceType']; ?></strong></p>
                                 </li>
                             </ul>
                         </div>

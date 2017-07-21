@@ -726,8 +726,191 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                             </div>
                         </div>
                         <div id="menu3" class="tab-pane fade">
-                            <h3>Menu 1</h3>
-                            <p>Some content in menu 1.</p>
+                            <div class="col-md-8 new-partner6 new-partner7 new-partner34">
+                                <div class="pro-requr space-r">
+                                    <h3>Availability Settings</h3>
+<!--                                    <button class="gost-btn edit-btn">Edit</button>-->
+                                    <div class="space-are">
+                                        <form id="availability" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="" novalidate>
+                                            <h3>How much notice do you need before a professional arrives?</h3>
+                                            <div class="main-input feild">
+                                                <select class="selectbox" name="noticeTime">
+                                                    <option value="1" <?php echo ($listing['noticeTime'] == '1')? 'selected' : ''?>>1 hour</option>
+                                                    <option value="12" <?php echo ($listing['noticeTime'] == '12')? 'selected' : ''?>>12 hours</option>
+                                                    <option value="24" <?php echo ($listing['noticeTime'] == '24')? 'selected' : ''?>>1 day</option>
+                                                    <option value="48" <?php echo ($listing['noticeTime'] == '48')? 'selected' : ''?>>2 days</option>
+                                                    <option value="168" <?php echo ($listing['noticeTime'] == '168')? 'selected' : ''?>>7 days</option>
+                                                </select>
+                                            </div>
+                                            <div class="rental-hours">
+                                                <h4>When can professionals rent your workspace?</h4>
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">&nbsp;</th>
+                                                            <td>From:</td>
+                                                            <td>To:</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Monday</th>
+                                                            <td>
+                                                                <select class="selectbox" name="monFrom">
+                                                                    <?php $times = unserialize(TIMES); 
+                                                                    foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['monFrom'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="selectbox" name="monTo">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['monTo'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                         <tr>
+                                                            <th scope="row">Tuesday</th>
+                                                            <td>
+                                                                <select class="selectbox" name="tueFrom">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['tueFrom'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="selectbox" name="tueTo">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['tueTo'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Wednesday</th>
+                                                            <td>
+                                                                <select class="selectbox" name="wedFrom">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['wedFrom'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="selectbox" name="wedTo">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['wedTo'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Thursday</th>
+                                                            <td>
+                                                                <select class="selectbox" name="thuFrom">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['thuFrom'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="selectbox" name="thuTo">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['thuTo'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Friday</th>
+                                                            <td>
+                                                                <select class="selectbox" name="friFrom">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['friFrom'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="selectbox" name="friTo">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['friTo'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Saturday</th>
+                                                            <td>
+                                                                <select class="selectbox" name="satFrom">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['satFrom'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="selectbox" name="satTo">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['satTo'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Sunday</th>
+                                                            <td>
+                                                                <select class="selectbox" name="sunFrom">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['sunFrom'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="selectbox" name="sunTo">
+                                                                    <?php foreach($times as $k=>$v){ ?>
+                                                                    <option value="<?= $k; ?>" <?php echo ($listing['sunTo'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                                    <?php } ?> 
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                  </table>
+                                            </div>
+                                            <h3>How far in advance can professionals book?</h3>
+                                            <div class="main-input feild">
+                                                <select class="selectbox" name="advanceBook">
+                                                    <option value="3" <?php echo ($listing['advanceBook'] == '3')? 'selected' : ''?>>3 months</option>
+                                                    <option value="2" <?php echo ($listing['advanceBook'] == '2')? 'selected' : ''?>>2 months</option>
+                                                    <option value="1" <?php echo ($listing['advanceBook'] == '1')? 'selected' : ''?>>1 month</option>
+                                                </select>
+                                            </div>
+                                            <h3>How long can professionals stay?</h3>
+                                            <div class="main-input feild">
+                                                <div class="main">
+                                                    <input type='text' class="textbox" name='minStay' value='<?php echo $listing['minStay']; ?> hours min' class='qty' />
+                                                    <input type='button' value='' class='qtyminus' field='minStay' />
+                                                    <input type='button' value='' class='qtyplus' field='minStay' />
+                                                </div>
+                                            </div>
+                                            <div class="main-input feild">
+                                                <div class="main">
+                                                    <input type='text' class="textbox" name='maxStay' value='<?php echo $listing['maxStay']; ?> hours max' class='qty2' />
+                                                    <input type='button' value='' class='qtyminus' field='maxStay' />
+                                                    <input type='button' value='' class='qtyplus' field='maxStay' />
+                                                </div>
+                                            </div>
+                                            <div class="main-input">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="pull-right">
+                                                            <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                            <button class="btn-red update-btn" type="submit">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div id="menu4" class="tab-pane fade">
                             <h3>Menu 2</h3>
@@ -918,26 +1101,48 @@ $(document).ready(function(){
             //$("a.verify-button").css('display', 'inline-block');
         }
     });
+    $('form#availability').validate({
+        rules: {
+            monFrom :{ required:function(element){ return $("select[name='monTo']").val().length > 0;}},
+            monTo :{ required:function(element){ return $("select[name='monFrom']").val().length > 0;}},
+            tueFrom :{ required:function(element){ return $("select[name='tueTo']").val().length > 0;}},
+            tueTo :{ required:function(element){ return $("select[name='tueFrom']").val().length > 0;}},
+            wedFrom :{ required:function(element){ return $("select[name='wedTo']").val().length > 0;}},
+            wedTo :{ required:function(element){ return $("select[name='wedFrom']").val().length > 0;}},
+            thuFrom :{ required:function(element){ return $("select[name='thuTo']").val().length > 0;}},
+            thuTo :{ required:function(element){ return $("select[name='thuFrom']").val().length > 0;}},
+            friFrom :{ required:function(element){ return $("select[name='friTo']").val().length > 0;}},
+            friTo :{ required:function(element){ return $("select[name='friFrom']").val().length > 0;}},
+            satFrom :{ required:function(element){ return $("select[name='satTo']").val().length > 0;}},
+            satTo :{ required:function(element){ return $("select[name='satFrom']").val().length > 0;}},
+            sunFrom :{ required:function(element){ return $("select[name='sunTo']").val().length > 0;}},
+            sunTo :{ required:function(element){ return $("select[name='sunFrom']").val().length > 0;}}
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                data: "space_id=<?= $space_id; ?>&" + $(form).serialize(),
+                dataType: 'json',
+                beforeSend: function(){
+                    $(".loader").show();
+                },
+                complete: function(){
+                    $('.loader').hide();
+                },
+                success: function(response) {
+                    if(response.success){
+                        window.location.reload();
+                    }
 
-    $('form:not(#space-rules)').each(function() {   // <- selects every <form> on page
+                }            
+            });
+        }
+    });
+    $('form:not(#space-rules,#availability)').each(function() {   // <- selects every <form> on page
         $(this).validate({
-            /*ignore: ":not(:visible),:disabled",
-            rules: {
-                spaceTitle : { required:true},
-                spaceDescription : { required:true},
-                country : { required:true},
-                streetAddress : { required:true},
-                city : { required:  true },
-                state : {required:true},
-                zipCode : {required:true}
-            },
-            messages : {
-                country :{ required:"Please select a country."},
-                streetAddress : { required:"Please enter street address."},
-                city : { required:"Please enter city."},
-                state : { required:"Please enter state." },
-                zipCode : {required:"Please enter zip code."}
-            },*/
+            ignore: ":not(:visible),:disabled",
+            
             submitHandler: function(form) {
                 $.ajax({
                     url: form.action,

@@ -778,13 +778,64 @@ class Space extends CI_Controller {
     public function verify_phone() {
         $header['step_info'] = $this->head_step_2;
         $data['hostProfileInfo'] = $this->host->userProfileInfo();
-//        $stepData = $this->session->userdata('stepData');
-//        if (!empty($data['hostProfileInfo']->phone) && isset($stepData['step2']['page6']['numberVerified']) && $stepData['step2']['page6']['numberVerified'] == 'Yes'){
-//            redirect('Space/become-a-partner/' . $stepData['id']);
-//        }
+        /*$stepData = $this->session->userdata('stepData');
+
+        $numberVerified = FALSE;
+        if(isset($stepData['step2']['page6']['numberVerified'])){
+            if(strtolower($stepData['step2']['page6']['numberVerified']) == 'yes'){
+                $numberVerified = TRUE;
+            }
+        }elseif (trim($data['hostProfileInfo']->phone) != "" && strtolower($data['hostProfileInfo']->phone_verify)=='yes') {
+            $numberVerified = TRUE;
+        }
+        
+        if ($numberVerified){
+            redirect('Space/become-a-partner/');
+        }*/
         $this->load->view(FRONT_DIR . '/include-partner/header', $header);
         $this->load->view(FRONT_DIR . '/space/new-listing-14', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/footer');
+    }
+    
+    public function ajax_verify_phoneNumber(){
+        if (!empty($this->session->userdata('user_id'))) {
+            //print_array($_POST,TRUE);
+            $number = $this->input->post('phone');            
+            $code  = generate_unique_code();
+                    
+            $client = new Twilio\Rest\Client(SID,TOKEN);
+            $client->messages->create(
+                $number,
+                array(
+                'from' => '+13237161344',
+                'body' => "Verification code is ".$code
+                )
+            );
+            $this->session->set_userdata('verification_code',$code);
+            echo 1;
+        }else{
+            echo 0;
+        }
+        die();
+    }
+    public function ajax_verifyCode(){
+        if(!isset($_POST['enterCode'])){
+            echo 3;
+            die();
+        }
+        $enterValue = $this->input->post('enterCode');
+        
+        if (!empty($enterValue)) {             
+            if ($this->session->userdata('verification_code') == $enterValue) {
+               $this->session->unset_userdata('code');
+               echo 1;
+            }else{
+               echo 0;
+            }
+        }else{
+            echo 2;
+        }
+        die();
     }
 
     public function phone_submit() {
@@ -807,6 +858,12 @@ class Space extends CI_Controller {
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
                 $this->db->update('spaces', $updateData);
+                
+                $data['phone'] = $stepData['step2']['page6']['mobileNumber'];
+                $data['phone_verify'] = 'yes';
+                $data['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
+                $data['ipAddress'] = $this->input->ip_address();
+                $this->space->editHost($data,$host_id);
             }
         }
         $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',100);

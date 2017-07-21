@@ -194,7 +194,7 @@
                                 <option value="1" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '1')? 'selected' : ''?>>1 month</option>
                             </select>
                         </div>
-                        <p><strong>Tip:</strong> Most owners can keep their calendars updated up to 3 months out.</h5></p>
+                        <p><strong>Tip:</strong> Most partners can keep their calendars updated up to 3 months out.</h5></p>
                         <div class="next-prevs clearfix">
                             <div class="pull-left">
                                 <a class="gost-btn" id="back-1" href="#"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
@@ -229,19 +229,19 @@
                 <div class="space-are">
                     <h3>How long can professionals stay?</h3>
                     <div class="alert alert-danger" style="display: none;">
-                        <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i></strong> Minimum nights can’t be higher than maximum nights.
+                        <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i></strong> Minimum hours can’t be higher than maximum hours.
                     </div>
                     <form class="night-stay-form" action="<?php echo site_url('Space/availability_settings'); ?>" method="post">
                         <div class="feild">
                             <div class="main">
-                                <input type='text' class="textbox" name='minStay' value='<?php echo isset($stepData['step3']['page6']['minStay'])&&!empty($stepData['step3']['page6']['minStay'])? $stepData['step3']['page6']['minStay'] : '0'?> nights min' class='qty' />
+                                <input type='text' class="textbox" name='minStay' value='<?php echo isset($stepData['step3']['page6']['minStay'])&&!empty($stepData['step3']['page6']['minStay'])? $stepData['step3']['page6']['minStay'] : '0'?> hours min' class='qty' />
                                 <input type='button' value='' class='qtyminus' field='minStay' />
                                 <input type='button' value='' class='qtyplus' field='minStay' />
                             </div>
                         </div>
                         <div class="feild">
                             <div class="main">
-                                <input type='text' class="textbox" name='maxStay' value='<?php echo isset($stepData['step3']['page6']['maxStay'])&&!empty($stepData['step3']['page6']['maxStay'])? $stepData['step3']['page6']['maxStay'] : '0'?> nights max' class='qty2' />
+                                <input type='text' class="textbox" name='maxStay' value='<?php echo isset($stepData['step3']['page6']['maxStay'])&&!empty($stepData['step3']['page6']['maxStay'])? $stepData['step3']['page6']['maxStay'] : '0'?> hours max' class='qty2' />
                                 <input type='button' value='' class='qtyminus' field='maxStay' />
                                 <input type='button' value='' class='qtyplus' field='maxStay' />
                             </div>
@@ -261,7 +261,7 @@
             </div>
             <div class="col-md-4 entire-palce">
                 <div class="to-day">
-                    <pre><?= nbs(18);?>1 night              No max</pre><img src="<?php echo base_url('theme/front/assests/img/nights-1.png')?>" alt="" />
+                    <pre><?= nbs(18);?>1 hour              No max</pre><img src="<?php echo base_url('theme/front/assests/img/nights-1.png')?>" alt="" />
                 </div>
             </div>
         </div>
@@ -317,9 +317,6 @@
     });
     $("form.night-stay-form").submit(function(e){
         e.preventDefault();
-        $(".loader").show();
-        $(this).find('button').text('Please wait...');
-        
         var minStay = parseInt($("input[name='minStay']").val());
         var maxStay = parseInt($("input[name='maxStay']").val());
         $("label.minStay").remove();$("label.maxStay").remove();
@@ -337,6 +334,11 @@
             $('form.night-stay-form button').text('Next');
             return false;
         }
+        if(minStay > maxStay && maxStay !== 0){
+            return false;
+        }
+        $(".loader").show();
+        $(this).find('button').text('Please wait...');
         $.post($(this).attr('action'), $(this).serialize(), function(){
             $(".loader").hide();
             $('form.night-stay-form button').text('Next');
@@ -418,7 +420,7 @@
             $("label.maxStay").remove();
         }
         // Check for valid inputs
-        if(minStay > maxStay && maxStay != 0){
+        if(minStay > maxStay && maxStay !== 0){
             $(".alert").show();
         }else{
             $(".alert").hide();
@@ -427,17 +429,17 @@
         var minText, maxText;
         
         if(minStay < 2){
-            minText = minStay+" night";
+            minText = minStay+" hour";
         }else{
-            minText = minStay+" nights";
+            minText = minStay+" hours";
         }
         
         if(maxStay == 0){
             maxText = "No max";
         }else if(maxStay < 2){
-            maxText = maxStay+" night";
+            maxText = maxStay+" hour";
         }else{
-            maxText = maxStay+" nights";
+            maxText = maxStay+" hours";
         }
         
         var night_1 = '<pre><?= nbs(18);?>'+minText+'              '+maxText+'</pre><img src="<?php echo base_url('theme/front/assests/img/nights-1.png')?>" alt="" />';
