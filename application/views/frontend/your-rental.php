@@ -63,7 +63,7 @@
                                 <img src="<?php echo base_url('theme/front/assests/img/reting-star.png')?>" alt="" />                                
                             </li>
                             <li><a href="<?= site_url('rentals/receipt/'.$rental['booking']['id']);?>">View Receipt</a></li>
-                            <li><a href="#">Submit Your Review</a></li>
+                            <li><a href="reivews/<?= $rental['booking']['id'].'/'.$rental['booking']['space'];?>">Submit Your Review</a></li>
                         </ul>
                     </div>
                 </div>

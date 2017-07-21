@@ -40,6 +40,7 @@ if ($module_heading != '') {
         <script src="<?= base_url('theme/admin/assets/js/jquery.validate.js'); ?>"></script>
         <script src="<?= base_url('theme/admin/assets/js/additional-methods.js'); ?>"></script>
         <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI" type="text/javascript"></script>
+        <link href="<?php echo base_url('theme/front/css/rating.css') ?>" rel="stylesheet" type="text/css" />
         <style>
             .error {
                 color:red !important;
