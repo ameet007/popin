@@ -1,4 +1,3 @@
-
 <style type="text/css">
 .badgePill_186vx4j {
     border-radius: 6px !important;
@@ -121,201 +120,61 @@
                     <div class="pro-con">
                         <h2>Hey, I’m <?= $userProfileInfo->firstName.' '.$userProfileInfo->lastName; ?>!</h2>
                         <p><strong><?= ucfirst((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:'Us'));?> . Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
-                        <div class="report">
-                            <span><img src="<?php echo base_url('theme/front/img'); ?>/popin-flag.png" alt="" /> Report this user</span>
-                        </div>
-                        <p><?= $userProfileInfo->aboutYou; ?>.</p>
+                        <p><?= $userProfileInfo->aboutYou; ?></p>
+                        <?php $reviewsList = getMultiRecord('space_ratings','reviewOnId',$userProfileInfo->id);?>
                         <ul class="superhost">
-                            <!-- <li><span><img src="<?php echo base_url('theme/front/profile'); ?>/superhost.png" alt="" /></span> Superhost</li> -->
-                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15">132</span></div></span> Reviews</li>
+                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?= count($reviewsList)?></span></div></span> Reviews</li>
                             <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?php echo count(getMultiRecord('join_account_master','provide_link_userID',$userProfileInfo->id)) ?></span></div></span> References</li>
                             <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Verified</li>
                         </ul>
+                    <?php if (!empty($reviewsList)) {
+                        foreach ($reviewsList as $key => $value) {
+                            $userList = getSingleRecord('user','id',$value['reviewerId']);
+                         ?>
+                         <?php if ($value['reviewBy'] == 'Professional') { ?>
                         <div class="review-sec">
-                            <h3>Reviews <span>(132)</span></h3>
-                            <h4>Reviews From Guests</h4>
+                            <h3>Reviews <span>(<?= count($reviewsList)?>)</span></h3>
+                            <h4>Reviews From Professional</h4>
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
+                                        <img style="width:58%;" src="<?php echo base_url('uploads/user/thumb/').(!empty($userList->avatar)?$userList->avatar:'user_pic-225x225.png');?>" class="media-object img-circle" />
+                                        <p><?= $userList->firstName.' '.$userList->lastName;?></p>
                                     </div>
                                 </div>
                                 <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                    <p><?= $value['review'];?></p>
                                     <footer class="clearfix">
                                         <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                        <div class="pull-right">
-                                            <span><i class="fa fa-home" aria-hidden="true"></i> <a href="#">I Sette Coni - Trullo Edera</a></span>
+                                            <span>Review date • <?= date('M,Y',$value['createdDate']);?></span>
                                         </div>
                                     </footer>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                        <div class="pull-right">
-                                            <span><i class="fa fa-home" aria-hidden="true"></i> <a href="#">I Sette Coni - Trullo Edera</a></span>
-                                        </div>
-                                    </footer>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                        <div class="pull-right">
-                                            <span><i class="fa fa-home" aria-hidden="true"></i> <a href="#">I Sette Coni - Trullo Edera</a></span>
-                                        </div>
-                                    </footer>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                        <div class="pull-right">
-                                            <span><i class="fa fa-home" aria-hidden="true"></i> <a href="#">I Sette Coni - Trullo Edera</a></span>
-                                        </div>
-                                    </footer>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                        <div class="pull-right">
-                                            <span><i class="fa fa-home" aria-hidden="true"></i> <a href="#">I Sette Coni - Trullo Edera</a></span>
-                                        </div>
-                                    </footer>
-                                    <a class="see-more" href="#">See more</a>
                                 </div>
                             </div>
                         </div>
+                        <?php } if ($value['reviewBy'] == 'Partner') { ?>
                         <div class="review-sec">
-                            <h4>Reviews Form Hosts</h4>
+                            <h4>Reviews Form Partner</h4>
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
+                                        <img style="width:58%;" src="<?php echo base_url('uploads/user/thumb/').(!empty($userList->avatar)?$userList->avatar:'user_pic-225x225.png');?>" class="media-object img-circle" />
+                                       <p><?= $userList->firstName.' '.$userList->lastName;?></p>
                                     </div>
                                 </div>
                                 <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                    <p><?= $value['review'];?></p>
                                     <footer class="clearfix">
                                         <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
+                                            <span>Review date • <?= date('M,Y',$value['createdDate']);?></span>
                                         </div>
                                     </footer>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                    </footer>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                    </footer>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                    </footer>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <div class="pull-left">
-                                            <span>From Mumbai, India • June 2016 • <i class="fa fa-flag-o" aria-hidden="true"></i></span>
-                                        </div>
-                                    </footer>
-                                    <a class="see-more" href="#">See more</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="review-sec">
+                    <?php } } } 
+                          ?>
+                       <!--  <div class="review-sec">
                             <h3>References <span>(2)</span></h3>
                             <div class="media">
                                 <div class="media-left">
@@ -334,24 +193,7 @@
                                     </footer>
                                 </div>
                             </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="inner">
-                                        <img src="<?php echo base_url('theme/front/img'); ?>/avatar-pic.png" class="media-object img-circle" />
-                                        <p>Nishi</p>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <footer class="clearfix">
-                                        <p>June 2012</p>
-                                        <div class="align-right">
-                                            <p>Anna is a Friend</p>
-                                        </div>
-                                    </footer>
-                                </div>
-                            </div>
-                        </div>
+                        </div> -->
                     </div>
                 </article>
             </div>

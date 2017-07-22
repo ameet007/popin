@@ -97,10 +97,8 @@
                                         <p><strong><?= $basePrice; ?> · <?= $spaceTitle; ?> </strong></p>
                                         <p><span><?= $rentType; ?> · </span> <?= $workspaces; ?></p>
                                         <div class="review">
-                                            <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                            <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                            <span><img src="<?php echo base_url('theme/front/assests/img/reting-star-home.png')?>" alt="" /></span>
-                                            <span>1 review</span>
+                                            <?= createHTMLRating($listing['id']);?>
+                                            <span><?=  totalReivewsGet($listing['id']);?> review</span>
                                         </div>
                                     </div>
                                 </a>
@@ -148,11 +146,8 @@
 
         foreach($listing['gallery'] as $image):
             if ($count == 1) {
-               $newHTMl  =  '<span><img style="height:120px;width:100%;" src="'.base_url('uploads/user/gallery/'.$image).'"></span><div class="content mapContent"><p><strong>'.$basePrice.' · '.$spaceTitle.'</strong></p><p><span style="font-family: \'Roboto\', sans-serif;" >'.$rentType.' · </span>'.$workspaces.'</p><div class="review">
-                <span><img src="'.base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
-                <span><img src="'.base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
-                <span><img src="'.base_url('theme/front/assests/img/reting-star-home.png').'" alt="" /></span>
-                <span>1 review</span>
+               $newHTMl  =  '<span><img style="height:120px;width:100%;" src="'.base_url('uploads/user/gallery/'.$image).'"></span><div class="content mapContent"><p><strong>'.$basePrice.' · '.$spaceTitle.'</strong></p><p><span style="font-family: \'Roboto\', sans-serif;" >'.$rentType.' · </span>'.$workspaces.'</p><div class="review">'.createHTMLRating($listing['id']).'
+                <span>'.totalReivewsGet($listing['id']).' review</span>
             </div></div>';    
             $count++;
             }

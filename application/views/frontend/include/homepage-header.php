@@ -46,6 +46,7 @@ $siteDetails = $CI->common->getSiteDetails();
         <!--Initialize Jquery Validation with Additional Methods-->
         <script src="<?= base_url('theme/admin/assets/js/jquery.validate.js'); ?>"></script>
         <script src="<?= base_url('theme/admin/assets/js/additional-methods.js'); ?>"></script>
+        <link href="<?php echo base_url('theme/front/css/rating.css') ?>" rel="stylesheet" type="text/css" />
 
         <style>
             .error {

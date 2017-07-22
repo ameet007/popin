@@ -46,4 +46,40 @@ function getMultiRecord($table,$column,$condication,$orderBy='',$orderType=''){
     $query = $tableRecord->db->get_where($table,array($column=>$condication))->row_array();   
     return $query[$columnValue];
  }
+ function ratingValueConvert($rating){
+     if (strlen($rating) < 3) {
+          return $rating;
+      }else{
+         $getRating = explode(".",$rating);
+         if ($getRating[1] < 5 ) {
+          return $getRating[0];  
+         }else if ($getRating[1] >= 5 ) {
+          return $getRating[0].'.5';
+         }
+      }
+ }
+ function createHTMLRating($spaceID){
+    $rating  = returnColumnValue('spaces','id',$spaceID,'totalRating');
+    $html = '';
+    $html ='<fieldset class="rating1">
+                <input type="radio"  value="5" '.($rating == '5'?'checked':'').' />
+                <label class = "full"  title="Awesome - 5 stars">    
+                </label>
+                <input type="radio"  value="4.5" '.($rating == '4.5'?'checked':'').' /><label class="half"  title="4.5 stars"></label>
+                <input type="radio"  value="4" '.($rating == '4'?'checked':'').' /><label class = "full" title="4 stars"></label>
+                <input type="radio"   value="3.5" '.($rating == '3.5'?'checked':'').'  /><label class="half" title="3.5 stars"></label>
+                <input type="radio"  value="3" '.($rating == '3'?'checked':'').' /><label class = "full"  title="3 stars"></label>
+                <input type="radio"   value="2.5" '.($rating == '2.5'?'checked':'').'  /><label class="half"  title="2.5 stars"></label>
+                <input type="radio"   value="2" '.($rating == '2'?'checked':'').'  /><label class = "full" title="2 stars"></label>
+                <input type="radio"   value="1.5" '.($rating == '1.5'?'checked':'').' /><label class="half"  title="1.5 stars"></label>
+                <input type="radio"   value="1" '.($rating == '1'?'checked':'').' /><label class = "full" title="1 star"></label>
+                <input type="radio"  value="0.5" '.($rating == '0.5'?'checked':'').' /><label class="half" title="0.5 stars"></label>
+            </fieldset>';
+    return $html;
+ }
+ function totalReivewsGet($spaceID){
+      $tableRecord =& get_instance();
+      $tableRecord->load->database();
+    return count($tableRecord->db->get_where('space_ratings',array('space'=>$spaceID,'status'=>'Approved'))->result_array());
+ }
 ?>

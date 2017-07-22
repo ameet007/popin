@@ -60,7 +60,8 @@
                         <p><?php echo date("M d", strtotime($rental['booking']['checkIn'])); ?>: 8:00a-12p <br/><?php echo $rental['space']['city'].' '.$rental['space']['state'].', '.$rental['space']['country']; ?></p>
                         <ul>
                             <li>
-                                <img src="<?php echo base_url('theme/front/assests/img/reting-star.png')?>" alt="" />                                
+                            <div class="text-center col-md-9 col-md-offset-2"><?= createHTMLRating($rental['booking']['space']); ?></div>                          
+                            <br>
                             </li>
                             <li><a href="<?= site_url('rentals/receipt/'.$rental['booking']['id']);?>">View Receipt</a></li>
                             <li><a href="reivews/<?= $rental['booking']['id'].'/'.$rental['booking']['space'];?>">Submit Your Review</a></li>
