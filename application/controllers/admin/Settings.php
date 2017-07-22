@@ -10,6 +10,7 @@ class Settings extends CI_Controller {
         $this->load->model(ADMIN_DIR . '/AdminEstablishment', 'faq_category');
         $this->load->model(ADMIN_DIR . '/AdminIndustry', 'get_industry');
         $this->load->model(ADMIN_DIR . '/AdminAmenities', 'get_amenities');
+        $this->load->model(ADMIN_DIR . '/AdminFashletics', 'fashletics');
         $this->load->library('form_validation');
     }
     function image_upload($filename, $path = 'site/', $oldImage = '') {
@@ -1190,5 +1191,199 @@ class Settings extends CI_Controller {
             }
         }
     }*/
+    public function facilities() {
+        $data = array();
+        $data['module_heading']   = 'Facilities List';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/facilities/facilities_list', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+    public function get_all_facilities_list() {
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+            $response = $this->fashletics->updateStatus($_POST['id'], $_REQUEST['customActionName']);
+            $status = $response['status'];
+            $message = $response['message'];
+        }
+        $list = $this->fashletics->get_datatables();
+        // print_r($list);
+        $data = array();
+        $no = $_POST['start'];
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $fc) {
+            $no++;
+            $possible_status_changes = '';
+            $row = array();
+            $row[] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $fc->id . '"/><span></span></label>';
+            $row[] = ucfirst($fc->name);
+            $row[] = date(DATE_FORMAT, $fc->createdDate);
+            $row[] = date(DATE_FORMAT, $fc->updatedDate);
+            if ($fc->status == 'active') {
+                $row[] = '<button class="btn btn-success">active</button>';
+            } else if ($fc->status == 'inactive') {
+                $row[] = '<button class="btn btn-warning">inactive</button>';
+            } else {
+                $row[] = '<button class="btn btn-danger">' . $fc->status . '</button>';
+            }
+            //add html for action
+            $row[] = '<div class="btn-group btn-info">
+                        <a data-toggle="dropdown" href="javascript:;" class="btn purple" aria-expanded="true">
+                        <i class="fa fa-user"></i> Settings
+                        <i class="fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                            <a  href="' . base_url(ADMIN_DIR . '/Settings/updateFacilities/' . $fc->id) . '"><i class="fa fa-pencil"></i> Edit</a>
+                            </li>
+                          <li>
+                           <a  href="' . base_url(ADMIN_DIR . '/Settings/deleteFacilities/' . $fc->id) . '"><i class="fa fa-trash"></i> Delete</a>
+                          </li>
+                        </ul>
+                    </div>';
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->fashletics->count_all(),
+            "recordsFiltered" => $this->fashletics->count_filtered(),
+            "data" => $data,
+        );
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
 
+            $output["customActionStatus"] = $status; // OK for success and NOt OK for fail. pass custom message(useful for getting status of group actions)
+            $output["customActionMessage"] = $message; // pass custom message(useful for getting status of group actions)
+        }
+        //output to json format
+        echo json_encode($output);
+    }
+     public function add_facilities() {
+        $data = array();
+        $data['module_heading']   = 'Add New Facilities';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/facilities/add', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+    public function add_facilitiesPost(){
+        $config = array(
+            array(
+                'field' => 'name',
+                'label' => 'Fashletices Name',
+                'rules' => 'required|min_length[3]|max_length[255]',
+                'errors' => array(
+                    'required' => 'Please Enter The fashletices Name',
+                    'min_length' => 'Minimum 3 Characters Long fashletices Name Is Required',
+                    'max_length' => 'Maximum 255 Characters Long fashletices Name Is Required'
+                ),
+            ),
+            array(
+                'field' => 'status',
+                'label' => 'Status',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter The fashletices type Status'
+                ),
+            )
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', 'danger');
+            redirect(ADMIN_DIR . '/settings/add_fashletices');
+        } else {
+            $fashletices = array(
+                "name" => $this->input->post('name'),
+                "status" => $this->input->post('status'),
+                "createdDate" => strtotime(date('Y-m-d H:i:s')),
+                "updatedDate" => strtotime(date('Y-m-d H:i:s')),
+                "description" => $this->input->post('description')
+            );
+            $response = $this->fashletics->addfacilities($fashletices);
+            if ($response > 0) {
+                $this->session->set_flashdata('message_notification', 'Facilities has ben Added Successfully');
+                $this->session->set_flashdata('class', A_SUC);
+                redirect(ADMIN_DIR . '/settings/add_facilities');
+            } else {
+                $this->session->set_flashdata('message_notification', 'Facilities Type Not Added Successfully');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(ADMIN_DIR . '/settings/add_facilities');
+            }
+        }
+    }
+     # Update space 
+    public function updateFacilities() {
+        $data = array();
+        $data['module_heading'] = 'Update Facilities';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $facilitiesID = $this->uri->segment('4');
+        $data['facilities'] = $this->fashletics->viewFacilities($facilitiesID);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/facilities/edit', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+     public function update_facilities() {
+       $config = array(
+            array(
+                'field' => 'name',
+                'label' => 'Facilities Name',
+                'rules' => 'required|min_length[3]|max_length[255]',
+                'errors' => array(
+                    'required' => 'Please Enter The Facilities Name',
+                    'min_length' => 'Minimum 3 Characters Long Facilities Name Is Required',
+                    'max_length' => 'Maximum 255 Characters Long Facilities Name Is Required'
+                ),
+            ),
+            array(
+                'field' => 'status',
+                'label' => 'Status',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Enter The Facilities type Status'
+                ),
+            )
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/Settings/facilities/' . $this->input->post('id'));
+        } else {
+
+            $facilities = array(
+                "name" => $this->input->post('name'),
+                "status" => $this->input->post('status'),
+                "updatedDate" => strtotime(date('Y-m-d H:i:s')),
+                "description" => $this->input->post('description'),
+                "id" => $this->input->post('id')
+            );
+            $response = $this->fashletics->editfacilities($facilities);
+            if ($response > 0) {
+                $this->session->set_flashdata('message_notification', 'Facilities Updated Successfully');
+                $this->session->set_flashdata('class', A_SUC);
+                redirect(ADMIN_DIR . '/Settings/facilities');
+            } else {
+                $this->session->set_flashdata('message_notification', 'Facilities Not Updated Successfully');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(ADMIN_DIR . '/Settings/facilities/'.$this->input->post('id'));
+            }
+        }
+    }
+         // Delete establishment type 
+    public function deleteFacilities() {
+        $array      = $this->uri->uri_to_assoc();
+        $facilities = $array['deleteFacilities'];
+        $response = $this->fashletics->deletefacilitiesValue($facilities);
+        if ($response > 0) {
+            $this->session->set_flashdata('message_notification', 'Facilities has ben Deleted Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+            redirect(ADMIN_DIR . '/Settings/facilities');
+        } else {
+            $this->session->set_flashdata('message_notification', 'Facilities Not Deleted Successfully');
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/Settings/facilities');
+        }
+    }
 }
