@@ -17,7 +17,7 @@ $(document).ready(function(){
             <div class="col-md-offset-2 col-md-8 text-center">
                 <img class="profile-photo image-round" src="<?php echo $user_profile_photo; ?>" alt="avatar" />
                 <h2>Join the 2 million people who have earned referral credit on Popln</h2>
-                <p>When a colleague rents on Popln, you get ₹ <?= number_format($getAmount->join_amount);?> in rental credit. When they welcome their first professional, you get ₹ <?= number_format($getAmount->referral_credit_amount);?> in rental credit.</p>
+                <p>When a colleague rents on Popln, you get <?= getCurrency_symbol($userProfileInfo->currency); ?><?= number_format($getAmount->join_amount);?> in rental credit. When they welcome their first professional, you get <?= getCurrency_symbol($userProfileInfo->currency); ?><?= number_format($getAmount->referral_credit_amount);?> in rental credit.</p>
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@ $(document).ready(function(){
     </div>    
 </section>
 <div class="container">
-<h3 style="text-align: center;" >You'v got <span><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format((!empty($userProfileInfo->referalAmount)?$userProfileInfo->referalAmount:'000')); ?></span> in rental credit to spend !</h3><br>
+<h3 style="text-align: center;" >You'v got <span><?php echo getCurrency_symbol($userProfileInfo->currency).number_format((!empty($userProfileInfo->referalAmount)?$userProfileInfo->referalAmount:'000')); ?></span> in rental credit to spend !</h3><br>
 <?php 
    $getResult = getMultiRecord('join_account_master','provide_link_userID',$userProfileInfo->id);
    
@@ -76,7 +76,7 @@ $(document).ready(function(){
               <tr>
                 <td align="left" style="width:10%;"><img style="width: 55px;" class="profile-photo image-round" src="<?php echo base_url().'uploads/user/'.(!empty($user->avatar)?$user->avatar:'user_pic-225x225.png'); ?>" alt="avatar" /></td>
                 <td align="left" style="width:70%;" ><?php echo $user->firstName.' '.$user->lastName;?></td>
-                <td align="right" style="width:20%;" ><i class="fa fa-inr" aria-hidden="true"></i> <?= number_format($user->referalAmount).'  '.$user->status; ?></td>
+                <td align="right" style="width:20%;" ><?= getCurrency_symbol($userProfileInfo->currency).number_format($user->referalAmount).'  '.$user->status; ?></td>
               </tr>
             </tbody>
         </table>

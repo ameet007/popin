@@ -934,8 +934,8 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                             </div>
                         </div>
                         <div id="menu4" class="tab-pane fade">
-                            <h3>Menu 2</h3>
-                            <p>Some content in menu 2.</p>
+                            <h3>Business Partners</h3>
+<!--                            <p>Some content in menu 2.</p>-->
                         </div>
                     </div>
             </div>

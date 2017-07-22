@@ -134,6 +134,7 @@ function getCurrency_symbol($currencyCode = 'USD') {
         "USD" => "&#36;", //U.S. Dollar
         "VND" => "&#8363;" //Vietnamese Dong
     );
+    //print_array($currencyArray,true);
     
     $currency = strtoupper($currencyCode);
     //check country code exit in array or not

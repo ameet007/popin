@@ -13,12 +13,11 @@
                                 <div class="align-center">
                                     <p><img src="<?= base_url('theme/front/assests/'); ?>img/icon1.png" alt="" /></p>
                                     <p><strong>To get paid, you need to set up a payout method</strong></p>
-                                    <p>Popln releases payouts about 24 hours after a guest’s scheduled check-in time. <br/>The time it takes for the funds to appear in your account depends on your payout method. <a href="#">Learn more</a></p>
+                                    <p>Popln releases payouts about 24 hours after a professional’s scheduled check-in time. <br/>The time it takes for the funds to appear in your account depends on your payout method. <a href="#">Learn more</a></p>
                                     <button class="btn-red">Add Payout Method</button>
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                 </article>
             </div>

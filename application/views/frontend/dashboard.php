@@ -7,13 +7,12 @@
             <a href="#" class="close" data-dismiss="alert" aria-label="close"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt=""></a>
             <div class="media">
                 <div class="media-left">
-                    <a href="#">
-                        <img class="media-object" src="<?= base_url('theme/front/assests/img/doller-icon.png'); ?>" alt="">
-                    </a>
+                    <i class="fa fa-<?= strtolower($userProfileInfo->currency); ?> fa-alert-icon" aria-hidden="true"></i>
+<!--                    <img class="media-object" src="<?= base_url('theme/front/assests/img/doller-icon.png'); ?>" alt="">-->
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading">Earn $5 rental credit</h4>
-                    <p>Give your colleagues $5 off their first rental on Popln and you’ll get up to $20 rental credit.</p>
+                    <h4 class="media-heading">Earn <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->referral_credit_amount); ?> rental credit</h4>
+                    <p>Give your colleagues <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->join_amount); ?> off their first rental on Popln and you’ll get up to <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->referral_credit_amount);?> rental credit.</p>
                     <a href="<?= site_url('invite'); ?>"><button class="btn2">Invite Colleagues</button></a>
                     <button class="btn btn-default" data-dismiss="alert" aria-label="close">Later</button>
                 </div>
@@ -76,8 +75,8 @@
                             <div class="panel-body">
                                 <ul>
                                     <li class="clearfix"><a href="<?= site_url('spaces'); ?>"><?= ucfirst($userProfileInfo->firstName); ?>, new spaces have arrived! Book now before they run out.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
-                                    <li class="clearfix"><a href="<?= site_url('spaces'); ?>">Book workspaces. led by experienced business owners. Now over, 51 to choose form.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
-                                    <li class="clearfix"><a href="<?= site_url('invite'); ?>">Invite your friend to join Popln and you’ll get $10 after their first rental.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
+                                    <li class="clearfix"><a href="<?= site_url('spaces'); ?>">Book workspaces led by experienced business owners. Now over 51 to choose form.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
+                                    <li class="clearfix"><a href="<?= site_url('invite'); ?>">Invite your colleague to join Popln and you’ll get <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->referral_credit_amount); ?> after their first rental.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -108,12 +107,12 @@
                                 <?php if(!empty($userMessages['messages'])): ?>
                                 <a class="link" href="<?= site_url('inbox'); ?>">All messages</a>
                                 <?php else: ?>
-                                <a class="link" href="<?= site_url('inbox'); ?>">No messages</a>
+                                <a class="link" href="<?= site_url('inbox'); ?>">No new message</a>
                                 <?php endif;?>
                             </div>
                         </div>
-												<!-- Display upload docuemnt file -->
-                       <div class="panel panel-default profile-photo verified-info">
+                        <!-- Display upload docuemnt file -->
+                        <div class="panel panel-default profile-photo verified-info">
                             <div class="panel-heading">Documents</div>
                             <div class="panel-body">
                                 <div class="row mr15">

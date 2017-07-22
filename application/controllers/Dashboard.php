@@ -9,16 +9,17 @@ class Dashboard extends CI_Controller
         parent::__construct();
         $this->load->model(FRONT_DIR . '/FrontUser', 'user');
         $this->load->model(FRONT_DIR . '/FrontSpace', 'space');
+        $this->load->helper('text');
     }
 
     public function index()
     {
-        $this->load->helper('text');
     	$data['module_heading'] = 'Dashboard';
     	$data['userProfileInfo'] = $this->user->userProfileInfo();
         $rawdata['limit']   = 5;
         $rawdata['start']   = 0;
         $data['userMessages'] = $this->user->getUserMessages($data['userProfileInfo']->id, "new", $rawdata);
+        $data['settings'] = getSingleRecord('settings','id','1');
     	$this->load->view('frontend/dashboard',$data);
     }
 
@@ -28,6 +29,7 @@ class Dashboard extends CI_Controller
         $data['userProfileInfo'] = $this->user->userProfileInfo();
 
         $user_id = $this->session->userdata('user_id');
+        $this->user->updateMessageStatus($user_id,'read');
         $status = $this->input->post('status');
         $rawdata['page']        = 1;
         $rawdata['limit']       = 10;
@@ -376,6 +378,7 @@ class Dashboard extends CI_Controller
         }
     }   
     public function invite(){
+        getCurrency_symbol();
         $data['search_nav'] = 1;
     	$data['module_heading'] = 'Wishlists';
     	$data['userProfileInfo'] = $this->user->userProfileInfo();

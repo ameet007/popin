@@ -254,8 +254,20 @@ class FrontUser extends CI_Model {
         $query = $this->db->select($select)->from('space_booking')->where($where)->get();
         return $query->row_array();
     }
+    
+    function updateMessageStatus($userId, $status){
+        $this->db->where(array('receiver' => $userId));
+        $this->db->update('conversation',array('status' => $status));
+    }
+    
+    function getNewUserMessages($userId) {
+        $this->db->select("msg.id,msg.subject,msg.message,msg.createdDate,user.firstName as fname,user.lastName as lname,user.avatar as picture");
+        $this->db->join('user','msg.sender = user.id');
+        $this->db->where(array('msg.receiver' => $userId, 'msg.status' => 'new'));
+        return $this->db->order_by('msg.createdDate', 'desc')->get('conversation as msg')->result_array();
+    }
 
-    function getUserMessages($userId, $status = "", $requestData) {
+    function getUserMessages($userId, $status = "", $requestData="") {
         $response = array();
 
         //$this->db->where("(sender = {$userId} OR receiver = {$userId}) AND parent = 0");
@@ -263,7 +275,7 @@ class FrontUser extends CI_Model {
         if ($status != "") {
             $this->db->where("status", $status);
         }
-        $this->db->limit($requestData['limit'], $requestData['start']);
+        if(!empty($requestData)){ $this->db->limit($requestData['limit'], $requestData['start']); }
         $conversations = $this->db->order_by('updatedDate', 'desc')->get('conversation')->result_array();
         //echo $this->db->last_query();
         if (!empty($conversations)) {
