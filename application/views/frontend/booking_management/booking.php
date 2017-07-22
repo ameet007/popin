@@ -401,7 +401,8 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                     </div>
                     <div id="menu1" class="tab-pane fade"> 
                         <h3>This place would love your review</h3>
-                        <p>When you book this place, here’s where your review will show up!</p>
+                        <p>When you book this place, here’s where your review will show up!</p><br>
+                        <p><?= createHTMLRating($space_id).'  '.totalReivewsGet($space_id);?> Reviews </p>
                     </div>
                     <div id="menu2" class="tab-pane fade">
                         <h3>Your Host</h3>

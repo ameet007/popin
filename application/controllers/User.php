@@ -245,13 +245,7 @@ class User extends CI_Controller {
     }
     public function reviews() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
-
-        /* echo '<pre>';
-          print_r($userProfileInfo);
-          exit; */
-
-        $data['module_heading'] = 'Reviews';
-
+        $data['module_heading']  = 'Reviews';
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/reviews', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
@@ -265,7 +259,6 @@ class User extends CI_Controller {
           exit; */
 
         $data['module_heading'] = 'References';
-
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/references', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');

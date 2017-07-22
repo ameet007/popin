@@ -516,7 +516,11 @@ class FrontSpace extends CI_Model {
     $this->db->select('AVG(ratings) as ratings');
     $this->db->where('space',$spaceID);
     $this->db->where('status','Approved');
-    return $query = $this->db->get('space_ratings')->row_array();
+    $query = $this->db->get('space_ratings')->row_array();
+    $ratings  = ratingValueConvert(round($query['ratings'],1)); 
+    $this->db->where('id',$spaceID);
+    $this->db->update('spaces',array('totalRating'=>$ratings));
+    return $this->db->affected_rows();
    }  
    // Create user rating
    function preApendUserReviews($userID,$dataResponse){
@@ -545,5 +549,29 @@ class FrontSpace extends CI_Model {
    }
    function userReivewsStatus($userID,$bookingID,$spaceID){
     return $this->db->get_where('space_ratings',array('space'=>$spaceID,'booking'=>$bookingID,'reviewerId'=>$userID))->row_array();
+   }
+   function lsitViewReviews($reivewsList){
+    $html = '';
+    foreach ($reivewsList as $key => $value) { 
+            $html .= '<div class="reviews" >';
+            $html .='<div class="reviews-head">
+                     <div class="img">
+                      <div class="inner">
+                           <img src="'.base_url('uploads/user/thumb/'.(!empty($value['avatar'])?$value['avatar']:'user_pic-225x225.png')).'" alt="" />
+                        </div>
+                  </div>';
+            $html .= '<div class="content">
+                      <h4>'.$value['firstName'].' '.$value['lastName'].'</h4>
+                            <div class="date">
+                               '.time_elapsed_string(date('d-m-Y h:i:s a',$value['ratingsDate'])).'
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-conte">
+                       <span class="more">'.$value['review'].'</span>
+                    </div>
+            </div>';
+            }
+        return $html;
    }
 }

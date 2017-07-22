@@ -9,7 +9,6 @@
     <!-- Message Notification End -->
 <?php } ?>
 <div id="message_notification">
-
 </div>
 <div class="loader" style="display:none;"></div>
 <section class="middle-container account-section profile-section">
@@ -26,7 +25,7 @@
                             <li><a href="<?php echo base_url('user/references')?>">References</a></li>
                         </ul>
                     </div>
-                    <a class="btn btn-default btn-block" href="<?php echo base_url('home/viewProfile')?>">View Profile</a>
+                    <a class="btn btn-default btn-block" href="<?php echo base_url('home/viewProfile/'.$userProfileInfo->id)?>">View Profile</a>
                 </aside>
 				<form name="editBasicProfile" id="editBasicProfile" method="post" action="<?= base_url('user/submit_basic'); ?>">
                 <article class="col-lg-9 main-right">

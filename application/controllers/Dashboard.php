@@ -437,7 +437,6 @@ class Dashboard extends CI_Controller
          $data['spaceID']         = $spaceID;
          $data['checkStatus']     = $this->space->userReivewsStatus($userID,$bookingID,$spaceID);
          $data['reivewsList']     = $this->space->ratingList($spaceID);
-         $data['totalRating']     = $this->space->totalReviewsRating($spaceID);
         $this->load->view('frontend/reivews',$data);
     }
     public function RatingReviews(){
@@ -446,9 +445,15 @@ class Dashboard extends CI_Controller
         $check  = $this->space->reviewsPost($userID,$data);
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         if ($check > 0) {
+                 $this->space->totalReviewsRating($data['spaceID']);
             echo $this->space->preApendUserReviews($data['userProfileInfo'],$data);   
         }else{
            echo '2';
         }
+    }
+    public function viewAllListReviews(){
+        $spaceID     = $this->input->post('spaceID');
+        $reivewsList = $this->space->ratingList($spaceID);
+        echo $this->space->lsitViewReviews($reivewsList);
     }
 }

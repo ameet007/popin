@@ -7,10 +7,12 @@
             <div class="panel-heading"><h3>Reviews</h3></div>
               <div class="panel-body">
 <div class="reviews-popin" id="ReviewsView" >
+<span id="AllListView" >
 <?php 
-// print_r(round($totalRating['ratings'],1));
 if (!empty($reivewsList)) {
-            foreach ($reivewsList as $key => $value) {
+     $count = 0;
+            foreach ($reivewsList as $key => $value) { 
+            if ($count <= 10) {
                 echo '<div class="reviews" >';
                 echo '<div class="reviews-head">
                          <div class="img">
@@ -29,36 +31,29 @@ if (!empty($reivewsList)) {
                            <span class="more">'.$value['review'].'</span>
                         </div>
                 </div>';
+                 break;
+                }
+                $count++;
             }
        }
-       if (count($reivewsList) > 0) { ?>
-    <div class="read-all clearfix">
-        <div class="pull-left">
-            <h4><a href="#">Read all <?= count($reivewsList); ?> reviews</a></h4>
-        </div>
-        <div class="pull-right">
-            <fieldset class="rating1">
-                <input type="radio"  value="5"/>
-                <label class = "full"  title="Awesome - 5 stars">    
-                </label>
-                <input type="radio"  value="4.5" checked="" /><label class="half"  title="4.5 stars"></label>
-                <input type="radio"  value="4" /><label class = "full" title="4 stars"></label>
-                <input type="radio"   value="3.5"  /><label class="half" title="3.5 stars"></label>
-                <input type="radio"  value="3" /><label class = "full"  title="3 stars"></label>
-                <input type="radio"   value="2 and a half"  /><label class="half"  title="2.5 stars"></label>
-                <input type="radio"   value="2"  /><label class = "full" title="2 stars"></label>
-                <input type="radio"   value="1 and a half" /><label class="half"  title="1.5 stars"></label>
-                <input type="radio"   value="1" /><label class = "full" title="1 star"></label>
-                <input type="radio"  value="half" /><label class="half" title="0.5 stars"></label>
-            </fieldset>
-        </div>
-    </div>
+       echo '</span>';
+       if (count($reivewsList) > 0) {  
+        ?>
+            <div class="read-all clearfix">
+                <div class="pull-left">
+                    <h4><a href="javascript:viewAllReviews();">Read all <?= count($reivewsList); ?> reviews</a></h4>
+                </div>
+                <div class="pull-right">
+                    <?= createHTMLRating($spaceID);?>
+                </div>
+            </div>
    <?php  }else{
     echo  '<div class="read-all clearfix"><div class="pull-left">
             <h4>No Reviews</h4>
         </div></div>';
    }
    if (empty($checkStatus)) { ?>
+
    <span id="blockPost" >
     <div class="group-size">
         <div class="reting">
@@ -168,6 +163,25 @@ if (!empty($reivewsList)) {
  $('textarea[name=reviews]').keyup(function(){
       $('#error').html(' ');    
  });
+ // all list  of views
+ function viewAllReviews(){
+    var spaceID   =  '<?= $spaceID;?>';
+     $.ajax({
+            url: '<?= base_url('Dashboard/viewAllListReviews'); ?>',
+            type: 'POST',
+            data: {spaceID:spaceID},
+            beforeSend: function(){
+                $(".loader").show();
+            },
+            complete: function(){
+                $('.loader').hide();
+            },
+            success: function(response) {
+             //    console.log(response);
+             $('#AllListView').html(response);   
+            }          
+        });
+ }
 </script>
 <?php
 	$this->load->view('frontend/include/user-footer');
