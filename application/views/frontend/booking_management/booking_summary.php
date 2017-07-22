@@ -132,10 +132,11 @@ $siteDetails = $CI->common->getSiteDetails();
                     <input type="hidden" name="space" value="<?= $booking['space']; ?>">
                     <input type="hidden" name="checkIn" value="<?= $booking['checkIn']; ?>">
                     <input type="hidden" name="checkOut" value="<?= $booking['checkOut']; ?>">
-                    <input type="hidden" name="amount" value="<?= $booking['amount']; ?>">
+                    <input type="hidden" name="amount" value="<?= $booking['basePrice']; ?>">
                     <input type="hidden" name="currency" value="<?= $booking['currency']; ?>">
                     <input type="hidden" name="addtionalCosts" value="<?= $booking['addtionalCosts']; ?>">
                     <input type="hidden" name="totalAmount" value="<?= $booking['totalAmount']; ?>">
+                    <input type="hidden" name="bookingType" value="<?= $booking['bookingType']; ?>">
                     <input type="hidden" name="numberBooking" value="<?= $booking['numberBooking']; ?>">
                     <h2 id="booking-pay" class="stp2">2. Payment</h2>
                     <div id="step2" style="display: none;">                        
@@ -167,7 +168,7 @@ $siteDetails = $CI->common->getSiteDetails();
                             <p>You will be redirected to PayPal to complete your payment. <strong>you must complete the process or the transaction will not occur.</strong></p>
                             <p>I agree to the <a href="#">House Rules</a>, <a href="#">Strict cancellation policy</a>, and to the <a href="#">Guest Refund Policy.</a> I also agree to pay the total amount shown, which includes Service Fees.</p>
                         </div>
-                        <button class="btn-red" type="submit">Confim &amp; pay</button>
+                        <button class="btn-red" type="submit">Confirm &amp; pay</button>
                     </div>
                     </form>
                 </div>
@@ -203,12 +204,12 @@ $siteDetails = $CI->common->getSiteDetails();
                             <?php $bookingCurrency = getCurrency_symbol($booking['currency']); ?>
                             <li class="clearfix">
                                 <div class="pull-left">
-                                    <p><?= $bookingCurrency.$booking['amount']; ?> x <?= $booking['numberBooking'].' hour(s)'; ?></p>
-                                    <p>Service fee &nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="This help us run our platform and offer services like 24/7 support on your trip."></i></p>
+                                    <p><?= $bookingCurrency.$booking['basePrice']; ?> x <?= $booking['numberBooking'].' '.$booking['bookingType']; ?></p>
+                                    <p>Additional Charges &nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Cleaning Fee, Service Fee etc."></i></p>
                                     <a href="#"><strong>Coupon</strong></a>
                                 </div>
                                 <div class="pull-right">
-                                    <p><?= $bookingCurrency.($booking['amount'] * $booking['numberBooking']); ?></p>
+                                    <p><?= $bookingCurrency.$booking['totalBasePrice']; ?></p>
                                     <p><?= $bookingCurrency.$booking['addtionalCosts']; ?></p>
                                 </div>
                             </li>

@@ -7,7 +7,7 @@
             <a href="#" class="close" data-dismiss="alert" aria-label="close"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt=""></a>
             <div class="media">
                 <div class="media-left">
-                    <i class="fa fa-<?= strtolower($userProfileInfo->currency); ?> fa-alert-icon" aria-hidden="true"></i>
+                    <i class="fa fa-<?= empty($userProfileInfo->currency)?'usd':strtolower($userProfileInfo->currency); ?> fa-alert-icon" aria-hidden="true"></i>
 <!--                    <img class="media-object" src="<?= base_url('theme/front/assests/img/doller-icon.png'); ?>" alt="">-->
                 </div>
                 <div class="media-body">
@@ -30,6 +30,7 @@
                         </div>
                         <div class="pro-content">
                             <h3><?= ucfirst($userProfileInfo->firstName); ?></h3>
+                            <a href="<?= base_url('home/viewProfile'); ?>">View Profile</a>
                             <a href="<?= base_url('user/profile'); ?>">Edit Profile</a>
                         </div>
                     </div>
@@ -40,8 +41,7 @@
                                 <ul>
                                     <li class="clearfix"><span class="pull-left">Personal info</span> <span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png'); ?>" alt=""></span></li>
                                     <li class="clearfix"><span class="pull-left">Email address</span> <span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png'); ?>" alt=""></span></li>
-                                    <li class="clearfix"><span class="pull-left">Phone number</span> <span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png'); ?>" alt=""></span></li>
-                                    <li class="clearfix"><span class="pull-left">Work email</span> <span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png'); ?>" alt=""></span></li>
+                                    <li class="clearfix"><span class="pull-left">Phone number</span> <?php if(strtolower($userProfileInfo->phone_verify) == 'yes'){ ?><span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png'); ?>" alt=""></span><?php }?></li>
                                     <li class="clearfix"><a href="<?= site_url('user/trust'); ?>">Verify more info</a></li>
                                 </ul>
                             </div>
@@ -50,7 +50,7 @@
                             <div class="panel-heading">Connected accounts</div>
                             <div class="panel-body">
                                 <ul>
-                                    <li class="clearfix"><span class="pull-left">Google</span> <span class="pull-right"><img src="" alt=""></span></li>
+                                    <li class="clearfix"><span class="pull-left">Google</span> <?php if(strtolower($userProfileInfo->googleVerified) == 'yes'){ ?><span class="pull-right"><img src="<?= base_url('theme/front/assests/img/right-singh.png'); ?>" alt=""></span><?php }?></li>
                                     <li class="clearfix"><a href="<?= site_url('user/trust'); ?>">Verify more info</a></li>
                                 </ul>
                             </div>
@@ -59,9 +59,9 @@
                             <div class="panel-heading">Quick Links</div>
                             <div class="panel-body">
                                 <ul>
-                                    <li><a href="#">Upcoming Rentals</a></li>
-                                    <li><a href="<?= site_url('listing'); ?>">Listing on Popln</a></li>
-                                    <li><a href="#">Renting on Popln</a></li>
+                                    <li><a href="<?= site_url('rentals'); ?>">Upcoming Rentals</a></li>
+                                    <li><a href="#">Listing on PopIn</a></li>
+                                    <li><a href="#">Renting on PopIn</a></li>
                                     <li><a href="#">Help Center</a></li>
                                 </ul>
                             </div>
@@ -82,7 +82,7 @@
                         </div>
 
                         <div class="panel panel-default notification messages">
-                            <div class="panel-heading">Messages <?php if($userMessages['newCount']){ echo "({$userMessages['newCount']} New)"; }?></div>
+                            <div class="panel-heading">Messages (<?php echo $userMessages['newCount']; ?> New)</div>
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <table class="table table-condensed message-table">
@@ -107,7 +107,7 @@
                                 <?php if(!empty($userMessages['messages'])): ?>
                                 <a class="link" href="<?= site_url('inbox'); ?>">All messages</a>
                                 <?php else: ?>
-                                <a class="link" href="<?= site_url('inbox'); ?>">No new message</a>
+                                <p class="link">When you message partners or send rental requests, you’ll see their responses here.</p>
                                 <?php endif;?>
                             </div>
                         </div>

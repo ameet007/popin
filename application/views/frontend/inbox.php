@@ -97,7 +97,7 @@ $('#myModal').on('show.bs.modal', function (event) {
     var recipientId = button.attr('data-receiverId');
     var parentId = button.attr('data-parentId');
     var modal = $(this);
-    modal.find('.modal-title').text('New message to ' + recipient);
+    modal.find('.modal-title').text('Send reply to ' + recipient);
     modal.find('.modal-body input[name="receiver"]').val(recipientId);
     modal.find('.modal-body input[name="parent"]').val(parentId);
     modal.find(".modal-body .alert strong").text("Please enter your message below");

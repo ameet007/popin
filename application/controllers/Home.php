@@ -107,7 +107,7 @@ class Home extends CI_Controller {
     }
     function get_booking_info() {
         $rawData = $this->input->post();
-        $spaceData = $this->db->select('base_price,currency')->get_where('spaces', array('id'=>$rawData['space']))->row_array();
+        $spaceData = $this->db->select('minStay,minStayType,maxStay,maxStayType,base_price,currency,cleaningFee,daily_discount,weekly_discount')->get_where('spaces', array('id'=>$rawData['space']))->row_array();
 
         // Start date
 	$checkIn = strtotime($rawData['checkIn']);
@@ -117,46 +117,88 @@ class Home extends CI_Controller {
         $date1=date_create(date("Y-m-d", $checkIn));
         $date2=date_create(date("Y-m-d", $checkOut));
         $diff=date_diff($date1,$date2);
-        $nights = $diff->format("%a");
+        $days = $diff->format("%a");
 
         $currentySymbol = getCurrency_symbol($spaceData['currency']);
         $basePrice = $spaceData['base_price'];
         $totalBasePrice = 0;
+        
+        if($days > 0){
+            $tooltip = '<table class="table" style="margin-bottom: 0px;">
+                                <thead><th colspan="2">Base Price Breakdown</th></thead>
+                                <tbody>';
+                                while ($checkIn < $checkOut) {
+                                    $dayPrice = $basePrice * 12;
+                                    if($days>0 && $days<7 && $spaceData['daily_discount']>0){
+                                        $dayPrice = $dayPrice - round($dayPrice * $spaceData['daily_discount'] / 100);
+                                    }
+                                    $totalBasePrice += $dayPrice;
+                                    $tooltip .= '<tr><td>'.date("d-m-Y", $checkIn).'</td><td>'.$currentySymbol.$dayPrice.'</td></tr>';
+                                    $checkIn = strtotime("+1 day", $checkIn);
+                                }
 
-        $tooltip = '<table class="table" style="margin-bottom: 0px;">
-                            <thead><th colspan="2">Base Price Breakdown</th></thead>
-                            <tbody>';
-                            while ($checkIn < $checkOut) {
-                                $totalBasePrice += $basePrice;
-                                $tooltip .= '<tr><td>'.date("d-m-Y", $checkIn).'</td><td>'.$currentySymbol.number_format($basePrice).'</td></tr>';
-                                $checkIn = strtotime("+1 day", $checkIn);
-                            }
-
-                                $tooltip .= '<tr><th>Total Base Price</th><th>'.$currentySymbol.number_format($totalBasePrice).'</th></tr>';
-                    $tooltip .= '</tbody>
-                    </table>';
-        //$tooltip="";
-        $serviceCharges = round($totalBasePrice * 12 / 100);
-        $finalAmount = $totalBasePrice + $serviceCharges;
+                                    $tooltip .= '<tr><th>Total Base Price</th><th>'.$currentySymbol.$totalBasePrice.'</th></tr>';
+                        $tooltip .= '</tbody>
+                        </table>';
+            $priceBreakDown = $currentySymbol.$basePrice.' x '.$days.' '.$spaceData['maxStayType'];
+            $numberBooking = $days;
+            $bookingType = "days";
+//            if($days>=7 && $spaceData['weekly_discount']>0){
+//                $loopCount = $days/7;
+//                $dayPrice = $dayPrice - round($dayPrice * $spaceData['daily_discount'] / 100);
+//            }
+        }else{
+            $tooltip="";
+            $numberBooking = $spaceData['minStay'];
+            $bookingType = "hours";
+            $totalBasePrice = $basePrice * $spaceData['minStay'];
+            $priceBreakDown = $currentySymbol.$basePrice.' x '.$spaceData['minStay'].' '.$spaceData['minStayType'];
+        }
+        
+        $settings = getSingleRecord('settings','id','1');
+        $serviceCharges = round($totalBasePrice * $settings->serviceFee / 100);
+        
+        // Additional costs
+        $additionalCosts = $serviceCharges;
+        if($spaceData['cleaningFee']>0){ $additionalCosts += $spaceData['cleaningFee']; }
+        
+        // Calculate Final price
+        $finalAmount = $totalBasePrice + $additionalCosts;
+        
         $this->session->set_userdata('checkout_amount', $finalAmount);
         $this->session->set_userdata('checkout_currency', $spaceData['currency']);
-        $reponse = '<tr>
-                        <td>'.$currentySymbol.number_format($basePrice).' x '.$nights.' nights
-                            <i class="fa fa-question-circle" data-toggle="tooltip" title=\''.$tooltip.'\' data-html="true"></i></td>
-                        <td>'.$currentySymbol.number_format($totalBasePrice).'</td>
-                    </tr>
-                    <tr>
+        
+        $response = '<tr>
+                        <td>'.$priceBreakDown.
+                            ' <i class="fa fa-question-circle" data-toggle="tooltip" title=\''.$tooltip.'\' data-html="true"></i></td>
+                        <td align="right">'.$currentySymbol.$totalBasePrice.'</td>
+                    </tr>';
+        if($days>0 && $days<7 && $spaceData['daily_discount']>0){
+            $response .= '<tr>
+                        <td>Daily discount of '.$spaceData['daily_discount'].'% is applied.</td>
+                        <td></td>
+                    </tr>';
+        }
+        if($spaceData['cleaningFee']>0){
+            $response .= '<tr>
+                        <td>Cleaning fee <i class="fa fa-question-circle" data-toggle="tooltip" title=""></i></td>
+                        <td align="right">'.$currentySymbol.$spaceData['cleaningFee'].'</td>
+                    </tr>';
+        }
+        $response .= '<tr>
                         <td>Service fee <i class="fa fa-question-circle" data-toggle="tooltip" title="This help us run our platform and offer services like 24/7 support on your trip."></i></td>
-                        <td>'.$currentySymbol.number_format($serviceCharges).'</td>
+                        <td align="right">'.$currentySymbol.$serviceCharges.'</td>
                     </tr>
                     <tr>
                         <th>Total</th>
-                        <th>'.$currentySymbol.number_format($finalAmount).'</th>
+                        <td align="right"><strong>'.$currentySymbol.$finalAmount.'</strong></td>
                     </tr>
-                    <input type="hidden" name="amount" value="'.$basePrice.'"><input type="hidden" name="currency" value="'.$spaceData['currency'].'">'
-                . '<input type="hidden" name="addtionalCosts" value="'.$serviceCharges.'"><input type="hidden" name="totalAmount" value="'.$finalAmount.'">'
-                . '<input type="hidden" name="numberBooking" value="'.$nights.'">';
-        echo $reponse;die();
+                    <input type="hidden" name="currency" value="'.$spaceData['currency'].'"><input type="hidden" name="basePrice" value="'.$basePrice.'">'
+                . '<input type="hidden" name="totalBasePrice" value="'.$totalBasePrice.'">'
+                . '<input type="hidden" name="addtionalCosts" value="'.$additionalCosts.'"><input type="hidden" name="totalAmount" value="'.$finalAmount.'">'
+                . '<input type="hidden" name="bookingType" value="'.$bookingType.'"><input type="hidden" name="numberBooking" value="'.$numberBooking.'">';
+        echo $response;
+        die();
     }
     
     public function request_to_book() {
@@ -164,7 +206,7 @@ class Home extends CI_Controller {
         if(empty($rawData)){
             redirect('spaces');
         }
-        //print_array($rawData, FALSE);
+        //print_array($rawData, TRUE);
         $userID = $this->session->userdata('user_id'); //current user id
         $data['booking'] = $rawData;
         $data['spaceInfo'] = $this->user->spaceInfo($rawData['space']);
@@ -180,12 +222,12 @@ class Home extends CI_Controller {
         $rawData['user'] = $userID;
         $rawData['checkIn'] = date("Y-m-d", strtotime($this->input->post('checkIn')));
         $rawData['checkOut'] = date("Y-m-d", strtotime($this->input->post('checkOut')));
-        $rawData['bookingType'] = 'Day';
         $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
         $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
         $rawData['ipAddress'] = $this->input->ip_address();
         $bookingId = $this->space->insertBooking($rawData);
         if(!empty($bookingId)){
+            $this->session->set_userdata("bookingId", $bookingId);
             //Set variables for paypal form
             $returnURL = site_url().'home/payment_success'; //payment success url
             $cancelURL = base_url().'home/payment_cancel'; //payment cancel url
@@ -232,7 +274,9 @@ class Home extends CI_Controller {
      function payment_cancel(){
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = "";
-
+        $bookingId = $this->session->userdata("bookingId");
+        $this->db->where('id',$bookingId)->update('space_booking', array('paymentStatus' => 'Cancelled'));
+        $this->session->unset_userdata("bookingId");
         $data['title'] = "Payment Cancelled";
         $data['message'] = "Your payment is cancelled successfully.";
         //pass the transaction data to view

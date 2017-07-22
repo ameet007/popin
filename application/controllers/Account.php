@@ -31,7 +31,7 @@ class Account extends CI_Controller {
 
     public function payout_preferences() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
-        $data['module_heading'] = 'Payout Methods';
+        $data['module_heading'] = 'Payout Preferences';
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/payout_preferences', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');

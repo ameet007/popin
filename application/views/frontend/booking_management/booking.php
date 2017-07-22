@@ -46,11 +46,11 @@ if(!empty($userProfileInfo->avatar)){
                                 <ul class="clearfix">
                                     <li>
                                         <label>Check In</label>
-                                        <input id="startDate2" class="textbox" type="text" name="checkIn" placeholder="Check In" />
+                                        <input id="startDate2" class="textbox" type="text" name="checkIn" placeholder="Check In" readonly="" />
                                     </li>
                                     <li>
                                         <label>Check Out</label>
-                                        <input id="endDate2" class="textbox" type="text" name="checkOut" placeholder="Check Out" disabled="" />
+                                        <input id="endDate2" class="textbox" type="text" name="checkOut" placeholder="Check Out" readonly="" disabled="" />
                                     </li>
                                 </ul>
                             </div>
@@ -440,11 +440,11 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                         <div class="feild clearfix">
                             <div class="col-sm-6">
                                 <label for="startDate">Check In</label>
-                                <input id="startDate" class="textbox" name="checkIn" type="text" placeholder="dd-mm-yyyy" />
+                                <input id="startDate" class="textbox" name="checkIn" type="text" placeholder="dd-mm-yyyy" readonly="" />
                             </div>
                             <div class="col-sm-6">
                                 <label for="endDate">Check Out</label>
-                                <input id="endDate" class="textbox" name="checkOut" type="text" placeholder="dd-mm-yyyy" disabled="" />
+                                <input id="endDate" class="textbox" name="checkOut" type="text" placeholder="dd-mm-yyyy" readonly="" disabled="" />
                             </div>
                         </div>
                         <div class="feild clearfix">

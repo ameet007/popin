@@ -99,6 +99,8 @@ function get_location_from_ip($ip_address) {
 }
 
 function getCurrency_symbol($currencyCode = 'USD') {
+    $currencyCode = empty($currencyCode)?'USD':$currencyCode;
+    
     $currencyArray = array(
         "AUD" => "&#36;", //Australian Dollar
         "BRL" => "R&#36;", // OR add &#8354; Brazilian Real
