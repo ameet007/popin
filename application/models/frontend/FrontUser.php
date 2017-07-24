@@ -612,7 +612,7 @@ class FrontUser extends CI_Model {
            return $html;
     }
     public function getListPaypal($userId){
-       return $this->db->get_where('payout_Preferences',array('userId'=>$userId))->result();      
+       return $this->db->get_where('payout_preferences',array('userId'=>$userId))->result();      
     }
     public function banakDetailsAdd($userId,$requestData){
       $bank = array();

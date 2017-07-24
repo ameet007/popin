@@ -34,6 +34,7 @@ class Account extends CI_Controller {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading']  = 'Payout Preferences';
         $data['result']          = $this->user->createPaypalPreferenceList($this->session->userdata('user_id'));
+        $data['check']          = $this->user->getListPaypal($this->session->userdata('user_id'));
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/payout_preferences', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');

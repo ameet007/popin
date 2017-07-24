@@ -13,7 +13,7 @@
                             <span id="showMessage"></span>
                             <span id="lsitShow">
                              <?php 
-                                if (!empty($result)) {
+                                if (!empty($check)) {
                                     echo $result;
                                 }else{ ?>
                                 <div class="align-center">

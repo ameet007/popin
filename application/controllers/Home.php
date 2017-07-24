@@ -347,6 +347,9 @@ class Home extends CI_Controller {
     }
  # Customer USer profile
  public function viewProfile($userID = '') {
+      if (empty($userID)) {
+         redirect(base_url());
+      }
      if ($this->session->userdata('user_id') != '') {
          $loginID = $this->session->userdata('user_id');
          $data['checkStatus']    = $this->user->checkContactList($userID,$loginID);
@@ -364,7 +367,7 @@ class Home extends CI_Controller {
          $data['module_heading'] = 'My Profile';
          $data['spaceList']      = $this->user->getSpaceList($loginID);
          // $this->load->view(FRONT_DIR . '/include-partner/header', $header);
-     } 
+     }
      if ($userID == $this->session->userdata('user_id')) {
          $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
          $this->load->view(FRONT_DIR . '/user/userProfile', $data);
@@ -374,7 +377,7 @@ class Home extends CI_Controller {
          $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
          $this->load->view(FRONT_DIR . '/user/userProfile', $data);
          $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
-     }
+     } 
  }
  # add customer data from the databse
  public function addContact(){
