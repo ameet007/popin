@@ -370,6 +370,7 @@ class Home extends CI_Controller {
          $this->load->view(FRONT_DIR . '/user/userProfile', $data);
          $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
      }else{
+        $data['search_nav'] = 1;
          $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
          $this->load->view(FRONT_DIR . '/user/userProfile', $data);
          $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
