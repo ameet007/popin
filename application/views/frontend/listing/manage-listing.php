@@ -321,8 +321,8 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                             <h3>What amenities do you offer?</h3>
                                             <?php foreach($amenities['Important'] as $k => $amtyI){ ?>
                                             <div class="feild">
-                                                <label for="<?= $k; ?>">
-                                                    <input id="<?= $k; ?>" type="checkbox" name="amenities[main][]" value="<?= $amtyI['id']; ?>" <?php echo (isset($listing['amenities']['main']) && !empty($listing['amenities']['main']) && in_array($amtyI['id'], $listing['amenities']['main']))? 'checked' : ''?> required> <?= $amtyI['name']; ?>
+                                                <label for="aminity<?= $k; ?>">
+                                                    <input id="aminity<?= $k; ?>" type="checkbox" name="amenities[main][]" value="<?= $amtyI['id']; ?>" <?php echo (isset($listing['amenities']['main']) && !empty($listing['amenities']['main']) && in_array($amtyI['id'], $listing['amenities']['main']))? 'checked' : ''?> required> <?= $amtyI['name']; ?>
                                                 </label>
                                             </div>
                                             <?php } ?> 
@@ -353,6 +353,19 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                                     <span class="pull-left"><button class="red-btn" id="add-rule" type="button">Add</button></span>
                                                 </div>
                                             </div>
+                                            <?php if(!empty($facilities)): ?>
+                                            <h3>What facilities can professionals use?</h3>
+                                            <?php foreach($facilities as $k => $facility){ ?>
+                                            <div class="feild">
+                                                <label for="facility<?= $k; ?>">
+                                                    <input id="facility<?= $k; ?>" type="checkbox" name="facilities[]" value="<?= $facility['id']; ?>" <?php echo (!empty($listing['facilities']) && in_array($k, $listing['facilities']))? 'checked' : ''?>> <?= $facility['name']; ?>
+                                                    <?php if(!empty($facility['description'])): ?>
+                                                    <span></span>
+                                                    <?php endif;?>
+                                                </label>
+                                            </div>
+                                            <?php } ?>
+                                            <?php endif;?>
                                             
                                             <div class="main-input">
                                                 <div class="row">
@@ -393,6 +406,22 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                                 ?>
                                                 <p><?= $aminity_value; ?></p>
                                                 <?php }?>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="pull-left col-sm-3">
+                                                Facilities
+                                            </div>
+                                            <div class="pull-right col-sm-9">
+                                                <?php 
+                                                $facility_value = "";
+                                                if(!empty($listing['facilities'])){
+                                                foreach($facilities as $facility){ 
+                                                    if(in_array($facility['id'], $listing['facilities'])){ 
+                                                        $facility_value .= "<strong>".$facility['name']."</strong>, ";
+                                                    }
+                                                }}?>
+                                                <p><?= rtrim($facility_value, ", "); ?></p>
                                             </div>
                                         </li>
                                     </ul>

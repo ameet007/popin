@@ -214,7 +214,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                     <?php 
                                     $count = 0;
                                     foreach($facilities as $facility){ 
-                                        if(!empty($preview['facility']) && in_array($facility['id'], $preview['facility'])){ 
+                                        if(!empty($preview['facilities']) && in_array($facility['id'], $preview['facilities'])){ 
                                             $facility_value = "<strong>".$facility['name']."</strong>";
                                         }else{
                                             $facility_value = "<strike>".$facility['name']."</strike>";

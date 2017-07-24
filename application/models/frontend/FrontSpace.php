@@ -189,9 +189,9 @@ class FrontSpace extends CI_Model {
                 'amenities' => json_decode($spaceData['amenities'], true)
             );
         }
-        if (!empty($spaceData['facility'])) {
+        if (!empty($spaceData['facilities'])) {
             $response['step1']['page6'] = array(
-                'facilities' => json_decode($spaceData['facility'], true)
+                'facilities' => json_decode($spaceData['facilities'], true)
             );
         }
 
@@ -386,7 +386,7 @@ class FrontSpace extends CI_Model {
     
     public function get_space_preview_data($space_id, $host_id='') {
         
-        $response['gallery'] = $response['cleanUpProcedure'] = $response['additionalRules'] = $response['professionalRequirements'] = $response['facility'] = $response['amenities'] = array();
+        $response['gallery'] = $response['cleanUpProcedure'] = $response['additionalRules'] = $response['professionalRequirements'] = $response['facilities'] = $response['amenities'] = array();
         if(!empty($host_id)){
             $this->db->where('host', $host_id);
         }
@@ -412,8 +412,8 @@ class FrontSpace extends CI_Model {
                 $response['amenities'] = json_decode($response['amenities'], true);
             }
 
-            if (!empty($response['facility'])) {
-                $response['facility'] = json_decode($response['facility'], true);
+            if (!empty($response['facilities'])) {
+                $response['facilities'] = json_decode($response['facilities'], true);
             }
 
             $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->get_where('space_gallery', array('space' => $space_id))->result_array();

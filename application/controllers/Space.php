@@ -494,7 +494,7 @@ class Space extends CI_Controller {
 
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
-                $this->db->update('spaces', array('facility' => $updateData, 'updatedDate' => strtotime(date('Y-m-d H:i:s')), 'ipAddress' => $this->input->ip_address()));
+                $this->db->update('spaces', array('facilities' => $updateData, 'updatedDate' => strtotime(date('Y-m-d H:i:s')), 'ipAddress' => $this->input->ip_address()));
             }
         }else{
             $stepData['step1']['page6']['facilities'] = array();
