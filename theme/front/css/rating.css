@@ -7,7 +7,7 @@ fieldset, label { margin: 0; padding: 0; }
 }
 .rating > input { display: none; } 
 .rating > label:before { 
-  margin: 5px;
+  margin: 2px;
   font-size: 1.0em;
   font-family: FontAwesome;
   display: inline-block;
@@ -35,7 +35,7 @@ fieldset, label { margin: 0; padding: 0; }
 }
 .rating1 > input { display: none; } 
 .rating1 > label:before { 
-  margin: 5px;
+  margin: 2px;
   font-size: 1.0em;
   font-family: FontAwesome;
   display: inline-block;

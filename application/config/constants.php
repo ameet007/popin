@@ -131,6 +131,10 @@ define('EMAIL_TEMPLATE','email_template');
 define('SUBSCRIBER','newsletter_subscriber');
 define('HOST','hosts');
 define('GUEST','guests');
+define('PAYPALSIGN','AFcWxV21C7fd0v3bYYYRCpSSRl31ACfcQDCYj.DtXfE7pooYeCR0xJmr');
+define('PAYPALAPPID','APP-80W284485P519543T');
+define('SENDBOXEMAIL','testmail0987654@gmail.com');
+define('PAYPALPASS','XJEW9BM4YQBHJGQG');
 
 define('EOL','<br />');
 

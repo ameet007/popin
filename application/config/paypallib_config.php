@@ -1,9 +1,7 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-
 // ------------------------------------------------------------------------
 // Paypal IPN Class
 // ------------------------------------------------------------------------
-
 // Use PayPal on Sandbox or Live
 $config['sandbox'] = TRUE; // FALSE for live environment
 
@@ -19,5 +17,4 @@ $config['paypal_lib_button_path'] = 'buttons';
 
 // What is the default currency?
 $config['paypal_lib_currency_code'] = 'USD';
-
 ?>

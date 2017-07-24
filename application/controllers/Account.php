@@ -7,6 +7,7 @@ class Account extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->library('PaypalVerification');
         $this->load->model(FRONT_DIR . '/FrontUser', 'user');
         $this->load->model(FRONT_DIR . '/FrontEmails', 'all_emails');
         $this->load->model(FRONT_DIR . '/FrontSubscriber', 'subscriber');
@@ -31,7 +32,8 @@ class Account extends CI_Controller {
 
     public function payout_preferences() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
-        $data['module_heading'] = 'Payout Preferences';
+        $data['module_heading']  = 'Payout Preferences';
+        $data['result']          = $this->user->createPaypalPreferenceList($this->session->userdata('user_id'));
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/payout_preferences', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
@@ -539,5 +541,27 @@ class Account extends CI_Controller {
             redirect(base_url('account/payment-methods'));
         }
 
+    }
+    public function checkPaypal_Preferences(){
+         $data = $this->input->post();
+         $user_id = $this->session->userdata('user_id');
+         $check   = $this->paypalverification->paypal($data['firstName'],$data['lastName'],$data['email']);
+         if ($check->responseEnvelope->ack == 'Failure') {
+            echo $check->error[0]->message.'||'.$check->responseEnvelope->ack;
+         }else{
+             $this->user->addPaypalPreferences($check,$user_id);
+             $list = $this->user->createPaypalPreferenceList($user_id);
+             echo $check->accountStatus.'||'.$check->responseEnvelope->ack.'||'.$list;
+         }
+    }
+    public function addBank_details(){
+        $data = $this->input->post();
+        $user_id = $this->session->userdata('user_id');
+        $check = $this->user->banakDetailsAdd($user_id,$data);
+        if ($check > 0) {
+            $list = $this->user->createPaypalPreferenceList($user_id);
+        }else{
+            echo '1';
+        }
     }
 }

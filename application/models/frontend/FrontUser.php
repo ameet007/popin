@@ -568,6 +568,69 @@ class FrontUser extends CI_Model {
         $this->db->insert('join_account_master',$joinUser);
     }
     # Send verify code
+    public function addPaypalPreferences($requestData,$user_id){
+      $paypal = array();
+      $paypal['userId']       = $user_id;
+      $paypal['method']       = "PayPal";
+      $paypal['firstName']    = $requestData->userInfo->name->firstName;
+      $paypal['lastName']     = $requestData->userInfo->name->lastName;
+      $paypal['email']        = $requestData->userInfo->emailAddress;
+      $paypal['accountId']    = $requestData->userInfo->accountId;
+      $paypal['status']       = $requestData->responseEnvelope->ack;
+      $paypal['build']        = $requestData->responseEnvelope->build;
+      $paypal['accountType']  = $requestData->userInfo->accountType;
+      $paypal['accountStatus']= $requestData->accountStatus;
+      $paypal['correlationId']= $requestData->responseEnvelope->correlationId;
+      $paypal['createDate']   = time();
+      $paypal['updateDate']   = time();
+      $this->db->insert('payout_Preferences',$paypal);
+      return $this->db->affected_rows();
+    }
+    public function createPaypalPreferenceList($userId){
+      $query = $this->getListPaypal($userId);
+      $html = '<table class="table">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Name</th>
+                    <th>Details</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                    <tbody>';
+      foreach ($query as $key => $getList) {
+            $html .= '<tr>
+                        <td>'.$getList->method.'</td>
+                        <td>'.($getList->method == 'Bank Tranfer'? $getList->bank_name :$getList->firstName.' '.$getList->lastName).'</td>
+                        <td>'.$getList->email.'</td>
+                        <td>'.$getList->accountStatus.'</td>
+                     </tr>';
+      }
+           $html .= '</tbody></table>';
+           $html .= '<hr><button style="float: right;" id="nextMessageBox" class="btn-red">Add Payout Method</button>';
+           return $html;
+    }
+    public function getListPaypal($userId){
+       return $this->db->get_where('payout_Preferences',array('userId'=>$userId))->result();      
+    }
+    public function banakDetailsAdd($userId,$requestData){
+      $bank = array();
+      $bank['userId']          = $userId;
+      $bank['method']          = "Bank Tranfer";
+      $bank['email  ']         = $requestData['accountNumber'];
+      $bank['bankAccountType'] = $requestData['BankaccountType'];
+      $bank['bank_country']    = $requestData['bankCountry'];
+      $bank['currency   ']     = '';
+      $bank['bank_name  ']     = $requestData['bankName'];
+      $bank['ifsc_code  ']     = $requestData['ifscCode'];
+      $bank['pan_number']      = $requestData['panNumber'];
+      $bank['accountType']     = $requestData['accountType'];
+      $bank['accountStatus']   = 'Pending';
+      $bank['createDate']      = time();
+      $bank['updateDate']      = time();
+      $this->db->insert('payout_Preferences',$bank); 
+      return $this->db->affected_rows();
+    }
 }
 
 ?>
