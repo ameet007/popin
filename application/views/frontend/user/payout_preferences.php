@@ -127,8 +127,12 @@
                                       <div class="col-sm-10">          
                                         <select class="form-control" name="bankCountry" >
                                              <option value="" >Select bank country</option>
-                                              <option value="1" >A</option>
-                                              <option value="2" >B</option>
+                                        <?php
+                                        $all_country = unserialize(ALL_COUNTRY);
+                                        foreach ($all_country as $k => $v) {
+                                            ?>
+                                            <option value="<?= $k; ?>"><?= $v; ?></option>
+                                        <?php } ?>
                                         </select>
                                       </div>
                                     </div>
