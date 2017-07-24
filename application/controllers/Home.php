@@ -316,22 +316,30 @@ class Home extends CI_Controller {
         //paypal return transaction details array
         $paypalInfo    = $this->input->post();
 
-        $data['user_id'] = $paypalInfo['custom'];
-        $data['booking_id']    = $paypalInfo["item_number"];
-        $data['txn_id']    = $paypalInfo["txn_id"];
-        $data['payment_gross'] = $paypalInfo["mc_gross"];
-        $data['currency_code'] = $paypalInfo["mc_currency"];
-        $data['payer_email'] = $paypalInfo["payer_email"];
-        $data['payment_status']    = $paypalInfo["payment_status"];
-        $data['payment_date']    = $paypalInfo["payment_date"];
-
         $paypalURL = $this->paypal_lib->paypal_url;
         $result    = $this->paypal_lib->curlPost($paypalURL,$paypalInfo);
 
         //check whether the payment is verified
         if(preg_match("/VERIFIED/i",$result)){
+            $data['user_id']        = $paypalInfo['custom'];
+            $data['booking_id']     = $paypalInfo["item_number"];
+            $data['txn_id']         = $paypalInfo["txn_id"];
+            $data['payment_gross']  = $paypalInfo["mc_gross"];
+            $data['currency_code']  = $paypalInfo["mc_currency"];
+            $data['payer_email']    = $paypalInfo["payer_email"];
+            $data['payment_status'] = $paypalInfo["payment_status"];
+            $data['payment_date']   = $paypalInfo["payment_date"];
             //insert the transaction data into the database
-            $this->insertTransaction($data);
+            $response = $this->insertTransaction($data);
+            if($response){
+                $updateData = array(
+                    'paymentStatus' => ucfirst($data['payment_status']),
+                    'transactionId' => $data['txn_id'],
+                    'paymentAccount' => $data['payer_email'],
+                    'updatedDate' => time()
+                );
+                $this->db->where('id', $data['booking_id'])->update('space_booking', $updateData);
+            }
         }
     }
     public function about() {
