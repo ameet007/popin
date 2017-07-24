@@ -109,7 +109,7 @@ $("#amenities-form").submit(function(e){
     $.post($(this).attr('action'), $(this).serialize(), function(){
         $(".loader").hide();
         $("#amenities-form button[type='submit']").text('Next');
-        window.location.href = "<?= site_url('Space/spaces'); ?>";
+        window.location.href = "<?= site_url('Space/facilities'); ?>";
     });
 });
 $('#add-rule').click(function(){

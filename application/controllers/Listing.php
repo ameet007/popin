@@ -139,6 +139,7 @@ class Listing extends CI_Controller {
         //print_array($data);
         $data['establishment_types'] = $this->space_model->getDropdownData('establishment_types');
         $data['space_types'] = $this->space_model->getDropdownData('space_types');
+        $data['facilities'] = $this->space_model->getDropdownData('facilities');
         $header['search_nav'] = 1;
         //$this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $header);
         $this->load->view(FRONT_DIR . '/include-partner/preview-header');

@@ -130,6 +130,7 @@ class Space extends CI_Controller {
         //echo "<pre>"; print_r($data); echo "</pre>";exit;
         $data['establishment_types'] = $this->space->getDropdownData('establishment_types');
         $data['space_types'] = $this->space->getDropdownData('space_types');
+        $data['facilities'] = $this->space->getDropdownData('facilities');
         $this->load->view(FRONT_DIR . '/include-partner/preview-header');
         $this->load->view(FRONT_DIR . '/space/preview-layout', $data);
     }
@@ -473,23 +474,23 @@ class Space extends CI_Controller {
         exit;
     }
 
-    public function spaces() {
+    public function facilities() {
         $this->restrict_direct_access_steps('step1', 'page5');
         $header['step_info'] = $this->head_step_1;
-
+        $data['facilities'] = $this->space->getDropdownData('facilities');
         $this->load->view(FRONT_DIR . '/include-partner/header', $header);
-        $this->load->view(FRONT_DIR . '/space/new-listing-7');
+        $this->load->view(FRONT_DIR . '/space/new-listing-7',$data);
         $this->load->view(FRONT_DIR . '/' . INC . '/footer');
     }
 
-    public function spaces_submit() {
+    public function facilities_submit() {
         $stepData = $this->session->userdata('stepData');
 
         if (!empty($_POST['facilities'])) {
             $stepData['step1']['page6']['facilities'] = $this->input->post('facilities');
 
             if (isset($stepData['id'])) {
-                $updateData = implode(' | ', $stepData['step1']['page6']['facilities']);
+                $updateData = json_encode($stepData['step1']['page6']['facilities']);
 
                 $host_id = $this->session->userdata('user_id');
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));

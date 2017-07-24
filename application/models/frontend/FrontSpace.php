@@ -191,7 +191,7 @@ class FrontSpace extends CI_Model {
         }
         if (!empty($spaceData['facility'])) {
             $response['step1']['page6'] = array(
-                'facilities' => explode(' | ', $spaceData['facility'])
+                'facilities' => json_decode($spaceData['facility'], true)
             );
         }
 
@@ -413,7 +413,7 @@ class FrontSpace extends CI_Model {
             }
 
             if (!empty($response['facility'])) {
-                $response['facility'] = explode(' | ', $response['facility']);
+                $response['facility'] = json_decode($response['facility'], true);
             }
 
             $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->get_where('space_gallery', array('space' => $space_id))->result_array();

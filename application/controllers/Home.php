@@ -61,6 +61,7 @@ class Home extends CI_Controller {
             $industry = $data['preview']['industryTypeId'];
             $establishment = $data['preview']['establishmentTypeId'];
             $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
+            $data['facilities'] = $this->space->getDropdownData('facilities');
             //print_array($data['wishlistMaster']);
         }
         $data['search_nav'] = 1;

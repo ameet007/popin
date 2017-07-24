@@ -639,26 +639,6 @@ define('ALL_COUNTRY',serialize(array(
 		'ZM'=>'Zambia',
 		'ZW'=>'Zimbabwe'
 )));
-/*define('ESTABLISHMENT',serialize(array(
-    array('Entire space',"Professionals will rent the entire space."),
-    array('Private workspace',"Professionals share some spaces but they'll have their own private room for clients or work"),
-    array('Shared workspace',"Professionals don't have a room to themselves."),
-    array('Private suite',"Professionals have their own suite within the establishment."),
-    array('Shared suite',"Professionals share a suite within the establishment.")
-)));
-
-define('SPACE',serialize(array('Single station','Personal station','Stocked station','Booth')));*/
-
-define('SPACES',serialize(array(
-		'Pool'                  =>	array('desc' => '', 'icon' => ''),
-		'Kitchen'               =>	array('desc' => '', 'icon' => ''),
-		'Laundy - washer'	=>	array('desc' => '', 'icon' => ''),
-		'Laundy - dryer'	=>	array('desc' => '', 'icon' => ''),
-		'Parking'		=>	array('desc' => '', 'icon' => ''),
-		'Elevator'		=>	array('desc' => '', 'icon' => ''),
-		'Hot tub'               =>      array('desc' => '', 'icon' => ''),
-		'Gym'                   =>	array('desc' => '', 'icon' => '')
-)));
 
 define('MOBILECODES', serialize(array(
 	''=>array('name'=>'Select Country','code'=>''),
