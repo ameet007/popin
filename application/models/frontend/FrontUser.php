@@ -584,7 +584,7 @@ class FrontUser extends CI_Model {
       $paypal['correlationId']= $requestData->responseEnvelope->correlationId;
       $paypal['createDate']   = time();
       $paypal['updateDate']   = time();
-      $this->db->insert('payout_Preferences',$paypal);
+      $this->db->insert('payout_preferences',$paypal);
       return $this->db->affected_rows();
     }
     public function createPaypalPreferenceList($userId){
@@ -629,7 +629,7 @@ class FrontUser extends CI_Model {
       $bank['accountStatus']   = 'Pending';
       $bank['createDate']      = time();
       $bank['updateDate']      = time();
-      $this->db->insert('payout_Preferences',$bank); 
+      $this->db->insert('payout_preferences',$bank); 
       return $this->db->affected_rows();
     }
 }
