@@ -74,7 +74,7 @@ $siteDetails = $CI->common->getSiteDetails();
                             ?>
                             <div class="media">
                                 <div class="media-left">
-                                    <img src="<?= base_url('uploads/user/thumb/'.$avatar); ?>" class="media-object img-circle">
+                                    <img src="<?= base_url('uploads/user/thumb/'.$avatar); ?>" class="media-object img-circle" width="100" height="100">
                                 </div>
                                 <div class="media-body media-middle">
                                     <p>Your host, <?= $hostInfo->firstName; ?></p>
@@ -150,10 +150,10 @@ $siteDetails = $CI->common->getSiteDetails();
                                 </li>
                             </ul>
                             <?php  if(!empty($spaceInfo['additionalRules'])){ $additionalRules = explode(" | ", $spaceInfo['additionalRules']); foreach($additionalRules as $additionalRule){ ?>
-                                <p><?php echo $additionalRule; ?></p>
+                                <p><?php echo trim($additionalRule); ?></p>
                             <?php }} ?>
                             <?php  if(!empty($spaceInfo['cleanUpProcedure'])){ $cleanUpProcedures = explode(" | ", $spaceInfo['cleanUpProcedure']); foreach($cleanUpProcedures as $cleanUpProcedure){ ?>
-                                <h4 class="space-rules hidden"><?php echo $cleanUpProcedure; ?></h4>
+                                <h4 class="space-rules hidden"><?php echo trim($cleanUpProcedure); ?></h4>
                             <?php }} ?>
                             <a href="#" class="show-more" data-target-key="space-rules"><strong>+ See all Space Rules</strong></a>
                         </div>
@@ -244,17 +244,31 @@ $siteDetails = $CI->common->getSiteDetails();
                                     <p><?= $bookingCurrency.$booking['addtionalCosts']; ?></p>
                                 </div>
                             </li>
+                            <?php 
+                            $exchangeRate = "";
+                            if(trim($booking['currency']) != "USD"){
+                                $finalExchangedAmount = $this->currencyconverter->convert($booking['currency'], 'USD', $booking['totalAmount'], true, 1);
+                                $exchangeRate = $this->currencyconverter->getRates();
+
+                                $this->session->set_userdata('checkout_amount', $finalExchangedAmount);
+                            }else{
+                                $this->session->set_userdata('checkout_amount', $booking['totalAmount']);
+                            }
+
+                            $this->session->set_userdata('checkout_currency', 'USD');
+                            ?>
+                            
                             <li class="clearfix">
                                 <div class="pull-left">
                                     <p><strong>Total</strong></p>
                                 </div>
                                 <div class="pull-right">
                                     <p><?= $bookingCurrency.$booking['totalAmount']; ?><sup><?= $booking['currency']; ?></sup></p>
-                                    <p>$<?php echo $this->session->userdata('checkout_amount'); ?><sup>USD</sup></p>
+                                    <?php if(!empty($exchangeRate)): ?><p>$<?php echo $finalExchangedAmount; ?><sup>USD</sup></p><?php endif;?>
                                 </div>
                             </li>
                         </ul>
-                        <p>The adjusted exchange rate for booking this listing is <?= $bookingCurrency; ?>1.00 <?= $booking['currency']; ?> to $<?= $this->session->userdata('exchange_rate'); ?> USD.</p>
+                        <?php if(!empty($exchangeRate)): ?><p>The adjusted exchange rate for booking this listing is <?= $bookingCurrency; ?>1.00 <?= $booking['currency']; ?> to $<?= $exchangeRate; ?> USD.</p><?php endif;?>
                     </div>
                 </div>
             </div>
@@ -288,6 +302,7 @@ $(document).ready(function(){
             $("html, body").animate({ scrollTop: 0 });
             return false;
         }
+        $(".alert.alert-danger").hide();
         $("#step2").show();
         $("h2#booking-pay").removeClass('stp2');
         $("#step1").slideUp("slow", function() {

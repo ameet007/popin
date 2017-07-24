@@ -143,7 +143,7 @@
 
         foreach($listing['gallery'] as $image):
             if ($count == 1) {
-               $newHTMl  =  '<span><img style="height:120px;width:100%;" src="'.base_url('uploads/user/gallery/'.$image).'"></span><div class="content mapContent"><p><strong>'.$basePrice.' · '.$spaceTitle.'</strong></p><p><span style="font-family: \'Roboto\', sans-serif;" >'.$rentType.' · </span>'.$workspaces.'</p><div class="review">'.createHTMLRating($listing['id']).'
+               $newHTMl  =  '<span><img style="height:120px;width:100%;" src="'.base_url('uploads/user/gallery/'.$image).'"></span><div class="content mapContent"><p><strong>'.$basePrice.' · '.$spaceTitle.'</strong></p><p><span style="font-family: \'Roboto\', sans-serif;" >'.$rentType.' · </span>'.$workspaces.'</p><div class="review">'.createHTMLRating($listing['id']).' · 
                 <span>'.totalReivewsGet($listing['id']).' review</span>
             </div></div>';    
             $count++;

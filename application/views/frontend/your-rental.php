@@ -31,7 +31,7 @@
                     </div>
                     <div class="content">
                         <h3><?php echo $rental['space']['title']; ?></h3>
-                        <p><?php echo date("M d", strtotime($rental['booking']['checkIn'])); ?>: 8:00a-12p <br/><?php echo $rental['space']['city'].' '.$rental['space']['state'].', '.$rental['space']['country']; ?></p>
+                        <p><?php echo date("M d, Y", strtotime($rental['booking']['checkIn'])); ?> <br/><?php echo $rental['space']['city'].' '.$rental['space']['state'].', '.$rental['space']['country']; ?></p>
                         <ul>
                             <li></li>
                             <li><a href="<?= site_url('rentals/receipt/'.$rental['booking']['id']);?>">View Receipt</a></li>

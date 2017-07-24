@@ -1,10 +1,10 @@
 <?php
-if(!empty($hostProfileInfo->avatar)){
+if(!empty($hostProfileInfo->avatar) && file_exists('uploads/user/thumb/' . $hostProfileInfo->avatar)){
     $profile_photo = base_url('uploads/user/'.$hostProfileInfo->avatar);
 }else{
     $profile_photo = base_url('uploads/user/user_pic-225x225.png');
 }
-if(!empty($userProfileInfo->avatar)){
+if(!empty($userProfileInfo->avatar) && file_exists('uploads/user/thumb/' . $userProfileInfo->avatar)){
     $user_profile_photo = base_url('uploads/user/'.$userProfileInfo->avatar);
 }else{
     $user_profile_photo = base_url('uploads/user/user_pic-225x225.png');
@@ -80,7 +80,7 @@ if(!empty($userProfileInfo->avatar)){
     </div>
 </div>
 <?php
-if(isset($preview['gallery']) && !empty($preview['gallery'])){
+if(isset($preview['gallery']) && !empty($preview['gallery']) && file_exists('uploads/user/gallery/' . $preview['gallery'][0])){
     $preview_photo = base_url('uploads/user/gallery/').$preview['gallery'][0];
 }else{
     $preview_photo = base_url('theme/front/assests/img/preview-no-photo.png');
@@ -143,10 +143,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                         <h4><?= $preview['spaceTitle']; ?></h4>
                         <p><?= $preview['spaceType']; ?> in <?= $preview['city'].', '.$preview['state'].', '.$all_countries[$preview['country']]; ?></p>
                         <div class="review">
-                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
-                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
-                            <span><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>" alt=""></span>
-                            <span>20 reviews</span>
+                            <?= createHTMLRating($preview['id']); ?> <span><?= totalReivewsGet($preview['id']); ?> reviews</span>
                         </div>
                     </div>
                 </div>

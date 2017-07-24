@@ -130,7 +130,7 @@ class Home extends CI_Controller {
                                 while ($checkIn < $checkOut) {
                                     $dayPrice = $basePrice * 12;
                                     if($days>0 && $days<7 && $spaceData['daily_discount']>0){
-                                        $dayPrice = $dayPrice - round($dayPrice * $spaceData['daily_discount'] / 100);
+                                        $dayPrice = $dayPrice - round($dayPrice * $spaceData['daily_discount'] / 100,1);
                                     }
                                     $totalBasePrice += $dayPrice;
                                     $tooltip .= '<tr><td>'.date("d-m-Y", $checkIn).'</td><td>'.$currencySymbol.$dayPrice.'</td></tr>';
@@ -156,21 +156,14 @@ class Home extends CI_Controller {
         }
         
         $settings = getSingleRecord('settings','id','1');
-        $serviceCharges = round($totalBasePrice * $settings->serviceFee / 100);
-        
+        $serviceCharges = 0;
+        if($settings->serviceFee > 0){$serviceCharges = round($totalBasePrice * $settings->serviceFee / 100);}
         // Additional costs
         $additionalCosts = $serviceCharges;
         if($spaceData['cleaningFee']>0){ $additionalCosts += $spaceData['cleaningFee']; }
         
         // Calculate Final price
         $finalAmount = $totalBasePrice + $additionalCosts;
-        
-        $finalExchangedAmount = $this->currencyconverter->convert($spaceData['currency'], 'USD', $finalAmount, true, 1);
-        $exchangeRate = $this->currencyconverter->getRates();
-        
-        $this->session->set_userdata('checkout_amount', $finalExchangedAmount);
-        $this->session->set_userdata('exchange_rate', $exchangeRate);
-        $this->session->set_userdata('checkout_currency', 'USD');
         
         $response = '<tr>
                         <td>'.$priceBreakDown.
@@ -232,14 +225,38 @@ class Home extends CI_Controller {
         $bookingId = $this->space->insertBooking($rawData);
         if(!empty($bookingId)){
             $this->session->set_userdata("bookingId", $bookingId);
+            $spaceId = $rawData['space'];
+            $spaceData = $this->db->select('host,spaceTitle')->get_where('spaces', array('id'=>$spaceId))->row_array();
+            
+            // Send message to the partner
+            $checkIn = $this->input->post('checkIn');
+            $checkOut = $this->input->post('checkOut');
+            $professionals = $this->input->post('professionals');
+            $message = $this->input->post('professionalNote');
+
+            $messageBody = "<b>Check In: </b>{$checkIn}<br/><b>Check Out: </b>{$checkOut}<br/><br/>";
+            $messageBody .= "<b>Number of professionals: </b>{$professionals}<br/><br/>";
+            $messageBody .= nl2br($message);
+
+            $rawData = array(
+                'space_id' => $spaceId,
+                'sender' => $userID,
+                'receiver' => $spaceData['host'],
+                'subject' => 'A new space rental request created.',
+                'message' => $messageBody
+            );
+            $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
+            $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
+            $rawData['ipAddress'] = $this->input->ip_address();
+
+            $this->user->create_conversation($rawData);
+            
             //Set variables for paypal form
             $returnURL = site_url().'home/payment_success'; //payment success url
             $cancelURL = base_url().'home/payment_cancel'; //payment cancel url
             $notifyURL = base_url().'home/payment_ipn'; //ipn url
 
             $logo = 'http://www.neurons-it.in/Popin/uploads/site/thumb/logo.png';
-            $spaceId = $rawData['space'];
-            $spaceData = $this->db->select('spaceTitle')->get_where('spaces', array('id'=>$spaceId))->row_array();
 
             $this->paypal_lib->add_field('return', $returnURL);
             $this->paypal_lib->add_field('cancel_return', $cancelURL);
