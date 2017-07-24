@@ -290,6 +290,7 @@ class Dashboard extends CI_Controller
         $data['module_heading'] = 'Rentals Receipt';
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['bookingInfo'] = $this->user->bookingInfo($id);
+        //print_array($data['bookingInfo']);
         if(empty($data['bookingInfo'])){
             redirect('rentals');
         }

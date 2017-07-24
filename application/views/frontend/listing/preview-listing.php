@@ -188,7 +188,6 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                 </li>
                             </ul>
                         </div>
-                        <?php $facilities = unserialize(SPACES); ?>
                         <div class="the-space">
                             <ul class="accomm amenities clearfix">
                                 <li>Amenities</li>
@@ -225,17 +224,16 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                                 </li>
                                 <li>
                                     <?php 
-                                    if(!empty($preview['facility'])){
-                                        $count = 0;
-                                    foreach($facilities as $facility => $values){ 
-                                        if(in_array($facility, $preview['facility'])){ 
-                                            $facility_value = "<strong>".$facility."</strong>";
+                                    $count = 0;
+                                    foreach($facilities as $facility){ 
+                                        if(!empty($preview['facilities']) && in_array($facility['id'], $preview['facilities'])){ 
+                                            $facility_value = "<strong>".$facility['name']."</strong>";
                                         }else{
-                                            $facility_value = "<strike>".$facility."</strike>";
+                                            $facility_value = "<strike>".$facility['name']."</strike>";
                                         }
                                     ?>
-                                    <p <?php if($count > 4){ echo "class='amenity hidden'";}?>><?php if(!empty($values['icon']) && in_array($facility, $preview['amenities'])){ ?><span><img src="<?php echo base_url('theme/front/assests/img/'.$values['icon'])?>" alt="" /></span><?php } ?><?= $facility_value; ?></p>
-                                    <?php $count++;}}?>
+                                    <p <?php if($count > 4){ echo "class='amenity hidden'";}?>><?= $facility_value; ?></p>
+                                    <?php $count++;}?>
                                 </li>
                             </ul>
                         </div>

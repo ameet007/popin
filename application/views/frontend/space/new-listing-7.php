@@ -10,18 +10,17 @@
             <div class="col-md-8">
                 <div class="space-are">
                     <h3>What facilities can professionals use?</h3>
-                    <form id="spaces-form" action="<?php echo site_url('Space/spaces_submit'); ?>" method="post">
-                        <?php $spaces = unserialize(SPACES); 
-                        foreach($spaces as $k=>$v){ ?>
+                    <form id="spaces-form" action="<?php echo site_url('Space/facilities_submit'); ?>" method="post">
+                        <?php foreach($facilities as $k => $facility){ ?>
                         <div class="feild">
                             <label for="<?= $k; ?>">
-                                <input id="<?= $k; ?>" type="checkbox" name="facilities[]" value="<?= $k; ?>" <?php echo (isset($stepData['step1']['page6']['facilities']) && !empty($stepData['step1']['page6']['facilities']) && in_array($k, $stepData['step1']['page6']['facilities']))? 'checked' : ''?>> <?= $k; ?>
-                                <?php if(!empty($v['desc'])): ?>
-                                <span><?= $v['desc']; ?></span>
+                                <input id="<?= $k; ?>" type="checkbox" name="facilities[]" value="<?= $facility['id']; ?>" <?php echo (isset($stepData['step1']['page6']['facilities']) && !empty($stepData['step1']['page6']['facilities']) && in_array($k, $stepData['step1']['page6']['facilities']))? 'checked' : ''?>> <?= $facility['name']; ?>
+                                <?php if(!empty($facility['description'])): ?>
+                                <span></span>
                                 <?php endif;?>
                             </label>
                         </div>
-                        <?php } ?> 
+                        <?php } ?>
                         <div class="next-prevs clearfix">
                             <div class="pull-left">
                                 <a class="gost-btn" href="<?php echo site_url('Space/amenities'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>

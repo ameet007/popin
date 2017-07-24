@@ -17,4 +17,9 @@ $config['paypal_lib_button_path'] = 'buttons';
 
 // What is the default currency?
 $config['paypal_lib_currency_code'] = 'USD';
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> fa23c72b741def96c891f9dd43d13b589c7d1836
 ?>

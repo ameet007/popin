@@ -9,7 +9,7 @@
         <div class="pull-left"> 
         <!-- currency -->
             <h2>Choose your next office</h2>
-            <p>Give your Colleagues <?= getCurrency_symbol($userProfileInfo->currency).' '.number_format($amount->join_amount); ?>to try Popln and you will also<br /> get <?= getCurrency_symbol($userProfileInfo->currency).' '.number_format($amount->referral_credit_amount); ?> in rental credit when they complete their first rental.</p>
+            <p>Give your Colleagues <?= getCurrency_symbol($userProfileInfo->currency).number_format($amount->join_amount); ?> to try Popln and you will also<br /> get <?= getCurrency_symbol($userProfileInfo->currency).number_format($amount->referral_credit_amount); ?> in rental credit when they complete their first rental.</p>
             <a class="green-btn" href="<?= site_url('invite');?>">Invite Colleagues</a>
         </div>
         <div class="pull-right">
@@ -31,7 +31,7 @@
                     </div>
                     <div class="content">
                         <h3><?php echo $rental['space']['title']; ?></h3>
-                        <p><?php echo date("M d", strtotime($rental['booking']['checkIn'])); ?>: 8:00a-12p <br/><?php echo $rental['space']['city'].' '.$rental['space']['state'].', '.$rental['space']['country']; ?></p>
+                        <p><?php echo date("M d, Y", strtotime($rental['booking']['checkIn'])); ?> <br/><?php echo $rental['space']['city'].' '.$rental['space']['state'].', '.$rental['space']['country']; ?></p>
                         <ul>
                             <li></li>
                             <li><a href="<?= site_url('rentals/receipt/'.$rental['booking']['id']);?>">View Receipt</a></li>

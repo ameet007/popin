@@ -30,7 +30,7 @@
                         </div>
                         <div class="pro-content">
                             <h3><?= ucfirst($userProfileInfo->firstName); ?></h3>
-                            <a href="<?= base_url('home/viewProfile'); ?>">View Profile</a>
+                            <a href="<?= base_url('home/viewProfile/'.$userProfileInfo->id); ?>">View Profile</a>
                             <a href="<?= base_url('user/profile'); ?>">Edit Profile</a>
                         </div>
                     </div>

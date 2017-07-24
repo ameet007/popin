@@ -20,12 +20,12 @@
     <div class="container">
         <div class="row">
             <div class="receipt-top clearfix">
-                <h2>Receipt: 4 hours in <?= $spaceInfo['city'].', '.$spaceInfo['state']; ?></h2>
+                <h2>Receipt: <?= $bookingInfo['numberBooking'].' '.$bookingInfo['bookingType']; ?> in <?= $spaceInfo['city'].', '.$spaceInfo['state']; ?></h2>
                 <div class="pull-left">
                     <p>Booked by <strong><?= $userInfo->firstName.' '.$userInfo->lastName; ?></strong> <br/><?= date("l, M d, Y", $bookingInfo['createdDate']); ?></p>
                 </div>
                 <div class="pull-right">
-                    <p><strong><?= $bookingInfo['partnerStatus']; ?></strong><br><?= $bookingInfo['transactionId']; ?></p>
+                    <p>Partner Approval: <strong><?= $bookingInfo['partnerStatus']; ?></strong></p>
                 </div>
             </div>
             <div class="row receipt-slip clearfix">
@@ -35,11 +35,11 @@
                             <li class="clearfix">
                                 <div class="pull-left">
                                     <span>Pop In</span>
-                                    <strong><?= date("M d, Y", strtotime($bookingInfo['checkIn'])); ?>: 8a</strong>
+                                    <strong><?= date("M d, Y", strtotime($bookingInfo['checkIn'])); ?></strong>
                                 </div>
                                 <div class="pull-right">
                                     <span>Pop Out</span>
-                                    <strong><?= date("M d, Y", strtotime($bookingInfo['checkOut'])); ?>: 12p</strong>
+                                    <strong><?= date("M d, Y", strtotime($bookingInfo['checkOut'])); ?></strong>
                                 </div>
                             </li>
                             <li>
@@ -67,34 +67,41 @@
                     </div>
                     <div class="receipt-left business-trip">
                         <h3>Business trip notes</h3>
-                        <span class="font12"><?= !empty(trim($bookingInfo['professionalNote']))?$bookingInfo['professionalNote']:'None added'; ?></span>
+                        <span class="font12"><?= !empty(trim($bookingInfo['professionalNote']))?nl2br($bookingInfo['professionalNote']):'None added'; ?></span>
                     </div>
                 </div>
-                <?php $bookingCurrency = getCurrency_symbol($bookingInfo['currency']); ?>
+                <?php 
+                $bookingCurrency = getCurrency_symbol($bookingInfo['currency']);
+                $bookingPrice = $bookingInfo['totalAmount'] - $bookingInfo['addtionalCosts'];
+                ?>
                 <div class="col-md-7">
                     <div class="receipt-right">
                         <h3>Charges</h3>
                         <ul>
                             <li class="clearfix">
-                                <div class="pull-left"><?= $bookingCurrency.$bookingInfo['amount']; ?> x <?= $bookingInfo['numberBooking'].' '.strtolower($bookingInfo['bookingType']).'(s)'; ?></div>
-                                <div class="pull-right"><?= $bookingCurrency.($bookingInfo['amount'] * $bookingInfo['numberBooking']); ?></div>
+                                <div class="pull-left"><?= $bookingCurrency.$bookingInfo['amount']; ?> x <?= $bookingInfo['numberBooking'].' '.$bookingInfo['bookingType']; ?></div>
+                                <div class="pull-right"><?= $bookingCurrency.$bookingPrice; ?></div>
                             </li>
+                            <?php if($bookingInfo['bookingType'] == "days" && $bookingInfo['numberBooking']<7  && $spaceInfo['daily_discount']>0){?>
                             <li class="clearfix">
-                                <div class="pull-left">Additional Charges</div>
-                                <div class="pull-right"><?= $bookingCurrency.$bookingInfo['addtionalCosts']; ?></div>
+                                <div class="pull-left">Daily discount (Applied)</div>
+                                <div class="pull-right"><?= $spaceInfo['daily_discount'].'%'; ?></div>
                             </li>
-<!--                            <li class="clearfix">
+                            <?php } if($spaceInfo['cleaningFee']>0){?>
+                            <li class="clearfix">
                                 <div class="pull-left">Cleaning fees</div>
-                                <div class="pull-right">$5</div>
+                                <div class="pull-right"><?= $bookingCurrency.$spaceInfo['cleaningFee']; ?></div>
                             </li>
+                            <?php }
+                            $settings = getSingleRecord('settings','id','1');
+                            if($settings->serviceFee > 0){
+                                $serviceCharges = round($bookingPrice * $settings->serviceFee / 100, 1);
+                            ?>
                             <li class="clearfix">
                                 <div class="pull-left">Service fee</div>
-                                <div class="pull-right">$5</div>
+                                <div class="pull-right"><?= $bookingCurrency.$serviceCharges; ?></div>
                             </li>
-                            <li class="clearfix">
-                                <div class="pull-left">Coupon discount</div>
-                                <div class="pull-right">$5</div>
-                            </li>-->
+                            <?php }?>                            
                         </ul>
                         <footer class="clearfix">
                             <div class="pull-left"><strong>Total</strong></div>
@@ -112,13 +119,13 @@
                             <?php else: ?>
                             <li class="clearfix">
                                 <div class="pull-left">Charged to <?= $bookingInfo['paymentAccount']; ?> <br/><?= date("M d, Y", $bookingInfo['updatedDate']); ?></div>
-                                <div class="pull-right"><?= $bookingCurrency.$bookingInfo['totalAmount']; ?></div>
+                                <div class="pull-right"><?= getCurrency_symbol($bookingInfo['currency_code']).$bookingInfo['payment_gross']; ?></div>
                             </li>
                             <?php endif;?>
                         </ul>
-                        <footer class="clearfix">
+<!--                        <footer class="clearfix">
                             <a href="#">Add billing details</a>
-                        </footer>
+                        </footer>-->
                     </div>
                     
                 </div>
@@ -126,8 +133,10 @@
             <div class="cost-per">
                 <strong>Cost per hour</strong>
                 <p>This rental was <strong><?= getCurrency_symbol($spaceInfo['currency']).$spaceInfo['base_price']; ?></strong> per hour, excluding <br/>taxes and other fees</p>
+                <?php if($spaceInfo['securityDeposit']>0){?>
                 <strong>Security Deposit</strong>
-                <p>A Partner requires a Security Deposit of $50 to book this <br />listing. The Renter is responsible for the amount of the <br/>Security Deposit, but it will not be charged unless the partner makes a claim</p>
+                <p>A Partner requires a Security Deposit of <?= getCurrency_symbol($spaceInfo['currency']).$spaceInfo['securityDeposit']; ?> to book this <br />listing. The Renter is responsible for the amount of the <br/>Security Deposit, but it will not be charged unless the partner makes a claim</p>
+                <?php } ?>
             </div>
             <div class="need-help clearfix">
                 <div class="pull-left">
@@ -135,7 +144,7 @@
                     <p>Visit the <a href="#">Help Center</a> for any questions.</p>
                 </div>
                 <div class="pull-right">
-                    <p><?= $bookingInfo['transactionId']; ?> <br/>Booked by <strong><?= $userInfo->firstName.' '.$userInfo->lastName; ?></strong> <br/><?= date("l, M d, Y", $bookingInfo['createdDate']); ?></p>
+                    <p>Booked by <strong><?= $userInfo->firstName.' '.$userInfo->lastName; ?></strong> <br/><?= date("l, M d, Y", $bookingInfo['createdDate']); ?></p>
                 </div>
             </div>
             <div class="policy">

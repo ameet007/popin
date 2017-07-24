@@ -139,6 +139,7 @@ class Listing extends CI_Controller {
         //print_array($data);
         $data['establishment_types'] = $this->space_model->getDropdownData('establishment_types');
         $data['space_types'] = $this->space_model->getDropdownData('space_types');
+        $data['facilities'] = $this->space_model->getDropdownData('facilities');
         $header['search_nav'] = 1;
         //$this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $header);
         $this->load->view(FRONT_DIR . '/include-partner/preview-header');
@@ -165,8 +166,9 @@ class Listing extends CI_Controller {
             $industry = $data['listing']['industryTypeId'];
             $establishment = $data['listing']['establishmentTypeId'];
             $data['amenities'] = $this->space_model->collectAmenities($industry, $establishment);
+            $data['facilities'] = $this->space_model->getDropdownData('facilities');
         }
-        //print_array($data['amenities']);
+        //print_array($data['listing']);
         $data['space_id'] = $space_id;
         $data['module_heading'] = "Manage Listing";
         $this->load->view(FRONT_DIR . '/listing/manage-listing', $data);
@@ -185,6 +187,9 @@ class Listing extends CI_Controller {
         }
         if(isset($rawData['amenities'])){
             $rawData['amenities'] = json_encode($rawData['amenities']);
+        }
+        if(isset($rawData['facilities'])){
+            $rawData['facilities'] = json_encode($rawData['facilities']);
         }
         if(isset($rawData['professionalRequirements'])){
             $rawData['professionalRequirements'] = implode(",",$rawData['professionalRequirements']);
