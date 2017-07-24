@@ -560,7 +560,7 @@ class Account extends CI_Controller {
         $user_id = $this->session->userdata('user_id');
         $check = $this->user->banakDetailsAdd($user_id,$data);
         if ($check > 0) {
-            $list = $this->user->createPaypalPreferenceList($user_id);
+            echo $list = $this->user->createPaypalPreferenceList($user_id);
         }else{
             echo '1';
         }
