@@ -16,18 +16,9 @@
         <div class="main-content">
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
-                    <div class="sidenav-list">
-                        <ul>
-                            <li class="active"><a href="<?php echo base_url('user/profile')?>">Edit Profile</a></li>
-                            <li><a href="<?php echo base_url('user/photo');?>">Photos</a></li>
-                            <li><a href="<?php echo base_url('user/trust')?>">Trust and Verification</a></li>
-                            <li><a href="<?php echo base_url('user/reviews')?>">Reviews</a></li>
-                            <li><a href="<?php echo base_url('user/references')?>">References</a></li>
-                        </ul>
-                    </div>
-                    <a class="btn btn-default btn-block" href="<?php echo base_url('home/viewProfile/'.$userProfileInfo->id)?>">View Profile</a>
+                    <?php $this->load->view('frontend/include/profile-sidebar'); ?>
                 </aside>
-				<form name="editBasicProfile" id="editBasicProfile" method="post" action="<?= base_url('user/submit_basic'); ?>">
+                <form name="editBasicProfile" id="editBasicProfile" method="post" action="<?= base_url('user/submit_basic'); ?>">
                 <article class="col-lg-9 main-right">
                     <div class="panel-group">
                         <div class="panel panel-default required">

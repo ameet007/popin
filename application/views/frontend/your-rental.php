@@ -9,7 +9,7 @@
         <div class="pull-left"> 
         <!-- currency -->
             <h2>Choose your next office</h2>
-            <p>Give your Colleagues <?= getCurrency_symbol($userProfileInfo->currency).' '.number_format($amount->join_amount); ?>to try Popln and you will also<br /> get <?= getCurrency_symbol($userProfileInfo->currency).' '.number_format($amount->referral_credit_amount); ?> in rental credit when they complete their first rental.</p>
+            <p>Give your Colleagues <?= getCurrency_symbol($userProfileInfo->currency).number_format($amount->join_amount); ?> to try Popln and you will also<br /> get <?= getCurrency_symbol($userProfileInfo->currency).number_format($amount->referral_credit_amount); ?> in rental credit when they complete their first rental.</p>
             <a class="green-btn" href="<?= site_url('invite');?>">Invite Colleagues</a>
         </div>
         <div class="pull-right">

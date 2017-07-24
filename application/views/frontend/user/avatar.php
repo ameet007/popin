@@ -15,16 +15,7 @@
         <div class="main-content">
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
-                    <div class="sidenav-list">
-                        <ul>
-                            <li ><a href="<?php echo base_url('user/profile/') ?>">Edit Profile</a></li>
-                            <li class="active"><a href="javascript:void(0);">Photos</a></li>
-                            <li><a href="<?php echo base_url('user/trust/') ?>">Trust and Verification</a></li>
-                            <li><a href="<?php echo base_url('user/reviews/') ?>">Reviews</a></li>
-                            <li><a href="<?php echo base_url('user/references/') ?>">References</a></li>
-                        </ul>
-                    </div>
-                    <a class="btn btn-default btn-block" href="<?= base_url('user/profile/'); ?>">View Profile</a>
+                    <?php $this->load->view('frontend/include/profile-sidebar'); ?>
                 </aside>
                 <article class="col-lg-9 main-right">
                     <div class="panel-group">
