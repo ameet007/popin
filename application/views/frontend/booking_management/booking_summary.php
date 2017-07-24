@@ -59,6 +59,9 @@ $siteDetails = $CI->common->getSiteDetails();
                             <img src="img/dimaned.png" alt="" />
                         </div>
                     </div>-->
+                    <div class="alert alert-danger" style="display: none;">
+                        <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i></strong> Please tell about your rental, this helps the partner to plan for your rental.
+                    </div>
                     <h2 id="booking-about">1. About Your Trip</h2>
 <!--                    <h2 class="stp1">1. About Your Trip <span class="pull-right"><a href="#">Edit</a></span></h2>-->
                     <div id="step1">
@@ -88,44 +91,71 @@ $siteDetails = $CI->common->getSiteDetails();
                                 </div>
                             </div>
                             <div class="feild">
-                                <label>Say hello to your host and tell them why you’re coming:</label>
-                                <textarea class="textarea" name="professionalNote" placeholder="Visiting family or friends? Seeing the sights? This helps your host plan for your trip."></textarea>
+                                <label>Say hello to the partner and tell him why you’re coming:</label>
+                                <textarea class="textarea" name="professionalNote" placeholder="This helps the partner to plan for your rental."></textarea>
                             </div>
                         </div>
                         <div class="house-rul">
                             <div class="align-center">
                                 <img src="<?= base_url('theme/front/assests/img/house-rule-img.png'); ?>" alt="" />    
-                                <h3><?= $hostInfo->firstName; ?>’s House Rules</h3>
+                                <h3><?= trim($hostInfo->firstName); ?>’s Space Rules</h3>
                             </div>
-                            <ul>
+                            <?php $checkInOut = unserialize(TIMES); ?>
+                            <ul>                                
                                 <li class="clearfix">
                                     <div class="pull-left">
-                                        No smoking
+                                        Check in time is <b><?php $day = strtolower(date("D")); echo $checkInOut[$spaceInfo["{$day}From"]] . ' - ' . $checkInOut[$spaceInfo["{$day}To"]]; ?></b>
                                     </div>
                                     <div class="pull-right">
                                         <img src="<?= base_url('theme/front/assests/img/blue-right.png'); ?>" alt="" />
                                     </div>
                                 </li>
+                                <?php if($spaceInfo['ageRequirements'] == 'Yes'){ ?>
                                 <li class="clearfix">
                                     <div class="pull-left">
-                                        Not suitable for pets
+                                        Minimum age requirement for professionals is <b><?= $spaceInfo['ageLimit']; ?></b>
                                     </div>
                                     <div class="pull-right">
                                         <img src="<?= base_url('theme/front/assests/img/blue-right.png'); ?>" alt="" />
                                     </div>
                                 </li>
+                                <?php } ?>
+                                <?php if($spaceInfo['displayLicence'] == 'Yes'){ ?>
                                 <li class="clearfix">
                                     <div class="pull-left">
-                                        Check in time is 2PM - 2AM (next day)
+                                        Display License or Certificate in workspace
+                                    </div>
+                                    <div class="pull-right">
+                                        <img src="<?= base_url('theme/front/assests/img/blue-right.png'); ?>" alt="" />
+                                    </div>
+                                </li>
+                                <?php } ?>
+                                
+                                <li class="clearfix">
+                                    <div class="pull-left">
+                                        <?= ($spaceInfo['suitablePets'] == 'Yes')?"Suitable for pets":"Not suitable for pets"; ?>
+                                    </div>
+                                    <div class="pull-right">
+                                        <img src="<?= base_url('theme/front/assests/img/blue-right.png'); ?>" alt="" />
+                                    </div>
+                                </li>
+                                
+                                <li class="clearfix">
+                                    <div class="pull-left">
+                                        <?=($spaceInfo['eventPartiesAllowed'] == 'Yes')?"Events or parties are allowed":"Events or parties are not allowed"; ?>
                                     </div>
                                     <div class="pull-right">
                                         <img src="<?= base_url('theme/front/assests/img/blue-right.png'); ?>" alt="" />
                                     </div>
                                 </li>
                             </ul>
-                            <p>Please DO NOT flush toilet paper, please use trash cans. <br />(lsla Mujeres has a very delicate drainage system)</p>
-                            <h4>Please turn off air conditioning when you depart the house for long</h4>
-                            <a href="#"><strong>+ See all House Rules</strong></a>
+                            <?php  if(!empty($spaceInfo['additionalRules'])){ $additionalRules = explode(" | ", $spaceInfo['additionalRules']); foreach($additionalRules as $additionalRule){ ?>
+                                <p><?php echo $additionalRule; ?></p>
+                            <?php }} ?>
+                            <?php  if(!empty($spaceInfo['cleanUpProcedure'])){ $cleanUpProcedures = explode(" | ", $spaceInfo['cleanUpProcedure']); foreach($cleanUpProcedures as $cleanUpProcedure){ ?>
+                                <h4 class="space-rules hidden"><?php echo $cleanUpProcedure; ?></h4>
+                            <?php }} ?>
+                            <a href="#" class="show-more" data-target-key="space-rules"><strong>+ See all Space Rules</strong></a>
                         </div>
                         <button class="btn-red" type="button">Next</button>
                     </div>
@@ -189,7 +219,8 @@ $siteDetails = $CI->common->getSiteDetails();
                         $establishmentType = $this->space->getDropdownDataRow('establishment_types', $spaceInfo['establishmentType']); 
                         $spaceType = $this->space->getDropdownDataRow('space_types', $spaceInfo['spaceType']);
                         ?>
-                        <h5><?= $spaceType['name']; ?> · <span class="star"><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>"></span><span class="star"><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>"></span><span class="star"><img src="<?= base_url('theme/front/assests/img/reting-star-home.png'); ?>"></span> 129 reviews <br><?= $spaceInfo['state']; ?>, <?= $all_countries[$spaceInfo['country']]; ?></h5>
+                        <h5 class="mr0"><?= $spaceType['name']; ?></h5>
+                        <h5><?= createHTMLRating($spaceInfo['id']); ?> · <?=  totalReivewsGet($spaceInfo['id']);?> review <br><?= $spaceInfo['state']; ?>, <?= $all_countries[$spaceInfo['country']]; ?></h5>
                         <ul>
                             <li class="clearfix">
                                 <div clas="row">
@@ -206,7 +237,7 @@ $siteDetails = $CI->common->getSiteDetails();
                                 <div class="pull-left">
                                     <p><?= $bookingCurrency.$booking['basePrice']; ?> x <?= $booking['numberBooking'].' '.$booking['bookingType']; ?></p>
                                     <p>Additional Charges &nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Cleaning Fee, Service Fee etc."></i></p>
-                                    <a href="#"><strong>Coupon</strong></a>
+<!--                                    <a href="#"><strong>Coupon</strong></a>-->
                                 </div>
                                 <div class="pull-right">
                                     <p><?= $bookingCurrency.$booking['totalBasePrice']; ?></p>
@@ -219,10 +250,11 @@ $siteDetails = $CI->common->getSiteDetails();
                                 </div>
                                 <div class="pull-right">
                                     <p><?= $bookingCurrency.$booking['totalAmount']; ?><sup><?= $booking['currency']; ?></sup></p>
+                                    <p>$<?php echo $this->session->userdata('checkout_amount'); ?><sup>USD</sup></p>
                                 </div>
                             </li>
                         </ul>
-                        <p>The adjusted exchange rate for booking this listing is $1.00 INR to $0.2722 MXN.</p>
+                        <p>The adjusted exchange rate for booking this listing is <?= $bookingCurrency; ?>1.00 <?= $booking['currency']; ?> to $<?= $this->session->userdata('exchange_rate'); ?> USD.</p>
                     </div>
                 </div>
             </div>
@@ -232,9 +264,30 @@ $siteDetails = $CI->common->getSiteDetails();
 <script type="text/javascript">
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
-    
+    $(document).on('click', 'a.show-more', function(e){
+        e.preventDefault();
+        var $this = $(this), target = $(this).attr("data-target-key");
+
+        //$("."+target).toggle();
+        $( "."+target ).toggleClass(function() {
+            if ( $( this ).is( ".hidden" ) ) {
+                $this.html('<b>- Less</b>');
+                return "hidden";
+            } else {
+                $this.html('<b>+ Sell all Space Rules</b>');
+                return "hidden";
+            }
+
+        });
+    });
     $("#step1 button").on("click", function(e){
         e.preventDefault();
+        var notes = $("textarea[name='professionalNote']").val();
+        if(notes.trim() === ""){
+            $(".alert.alert-danger").show();
+            $("html, body").animate({ scrollTop: 0 });
+            return false;
+        }
         $("#step2").show();
         $("h2#booking-pay").removeClass('stp2');
         $("#step1").slideUp("slow", function() {

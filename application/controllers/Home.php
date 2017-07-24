@@ -118,7 +118,7 @@ class Home extends CI_Controller {
         $diff=date_diff($date1,$date2);
         $days = $diff->format("%a");
 
-        $currentySymbol = getCurrency_symbol($spaceData['currency']);
+        $currencySymbol = getCurrency_symbol($spaceData['currency']);
         $basePrice = $spaceData['base_price'];
         $totalBasePrice = 0;
         
@@ -132,14 +132,14 @@ class Home extends CI_Controller {
                                         $dayPrice = $dayPrice - round($dayPrice * $spaceData['daily_discount'] / 100);
                                     }
                                     $totalBasePrice += $dayPrice;
-                                    $tooltip .= '<tr><td>'.date("d-m-Y", $checkIn).'</td><td>'.$currentySymbol.$dayPrice.'</td></tr>';
+                                    $tooltip .= '<tr><td>'.date("d-m-Y", $checkIn).'</td><td>'.$currencySymbol.$dayPrice.'</td></tr>';
                                     $checkIn = strtotime("+1 day", $checkIn);
                                 }
 
-                                    $tooltip .= '<tr><th>Total Base Price</th><th>'.$currentySymbol.$totalBasePrice.'</th></tr>';
+                                    $tooltip .= '<tr><th>Total Base Price</th><th>'.$currencySymbol.$totalBasePrice.'</th></tr>';
                         $tooltip .= '</tbody>
                         </table>';
-            $priceBreakDown = $currentySymbol.$basePrice.' x '.$days.' '.$spaceData['maxStayType'];
+            $priceBreakDown = $currencySymbol.$basePrice.' x '.$days.' '.$spaceData['maxStayType'];
             $numberBooking = $days;
             $bookingType = "days";
 //            if($days>=7 && $spaceData['weekly_discount']>0){
@@ -151,7 +151,7 @@ class Home extends CI_Controller {
             $numberBooking = $spaceData['minStay'];
             $bookingType = "hours";
             $totalBasePrice = $basePrice * $spaceData['minStay'];
-            $priceBreakDown = $currentySymbol.$basePrice.' x '.$spaceData['minStay'].' '.$spaceData['minStayType'];
+            $priceBreakDown = $currencySymbol.$basePrice.' x '.$spaceData['minStay'].' '.$spaceData['minStayType'];
         }
         
         $settings = getSingleRecord('settings','id','1');
@@ -164,13 +164,17 @@ class Home extends CI_Controller {
         // Calculate Final price
         $finalAmount = $totalBasePrice + $additionalCosts;
         
-        $this->session->set_userdata('checkout_amount', $finalAmount);
-        $this->session->set_userdata('checkout_currency', $spaceData['currency']);
+        $finalExchangedAmount = $this->currencyconverter->convert($spaceData['currency'], 'USD', $finalAmount, true, 1);
+        $exchangeRate = $this->currencyconverter->getRates();
+        
+        $this->session->set_userdata('checkout_amount', $finalExchangedAmount);
+        $this->session->set_userdata('exchange_rate', $exchangeRate);
+        $this->session->set_userdata('checkout_currency', 'USD');
         
         $response = '<tr>
                         <td>'.$priceBreakDown.
                             ' <i class="fa fa-question-circle" data-toggle="tooltip" title=\''.$tooltip.'\' data-html="true"></i></td>
-                        <td align="right">'.$currentySymbol.$totalBasePrice.'</td>
+                        <td align="right">'.$currencySymbol.$totalBasePrice.'</td>
                     </tr>';
         if($days>0 && $days<7 && $spaceData['daily_discount']>0){
             $response .= '<tr>
@@ -181,16 +185,16 @@ class Home extends CI_Controller {
         if($spaceData['cleaningFee']>0){
             $response .= '<tr>
                         <td>Cleaning fee <i class="fa fa-question-circle" data-toggle="tooltip" title=""></i></td>
-                        <td align="right">'.$currentySymbol.$spaceData['cleaningFee'].'</td>
+                        <td align="right">'.$currencySymbol.$spaceData['cleaningFee'].'</td>
                     </tr>';
         }
         $response .= '<tr>
                         <td>Service fee <i class="fa fa-question-circle" data-toggle="tooltip" title="This help us run our platform and offer services like 24/7 support on your trip."></i></td>
-                        <td align="right">'.$currentySymbol.$serviceCharges.'</td>
+                        <td align="right">'.$currencySymbol.$serviceCharges.'</td>
                     </tr>
                     <tr>
                         <th>Total</th>
-                        <td align="right"><strong>'.$currentySymbol.$finalAmount.'</strong></td>
+                        <td align="right"><strong>'.$currencySymbol.$finalAmount.'</strong></td>
                     </tr>
                     <input type="hidden" name="currency" value="'.$spaceData['currency'].'"><input type="hidden" name="basePrice" value="'.$basePrice.'">'
                 . '<input type="hidden" name="totalBasePrice" value="'.$totalBasePrice.'">'
@@ -205,13 +209,13 @@ class Home extends CI_Controller {
         if(empty($rawData)){
             redirect('spaces');
         }
-        //print_array($rawData, TRUE);
         $userID = $this->session->userdata('user_id'); //current user id
         $data['booking'] = $rawData;
         $data['spaceInfo'] = $this->user->spaceInfo($rawData['space']);
         $data['spaceGallery'] = $this->user->getSpaceGallery($rawData['space']);
         $data['userInfo'] = $this->user->userInfo($userID);
         $data['hostInfo'] = $this->user->userInfo($data['spaceInfo']['host']);
+        //print_array($data['spaceInfo'], TRUE);
         $this->load->view(FRONT_DIR . '/booking_management/booking_summary', $data);
     }
     public function book_space(){

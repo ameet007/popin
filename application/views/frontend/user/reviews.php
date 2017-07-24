@@ -66,9 +66,8 @@
                         <div class="tab-pane" id="2">
                             <div class="panel-group">
                                 <div class="panel panel-default reviews">
-                                    <div class="panel-heading">Past Reviews</div>
+                                    <div class="panel-heading">Past Reviews You’ve Written</div>
                                     <div class="panel-body">
-                                        <p>Reviews are written at the end of a reservation through <?= SITE_DISPNAME; ?>. Reviews you’ve received will be visible both here and on your public profile.</p>
                                         <div class="reviews-popin">
                                         <?php  
                                         $reviewsList = getMultiRecord('space_ratings','reviewerId',$userProfileInfo->id);
