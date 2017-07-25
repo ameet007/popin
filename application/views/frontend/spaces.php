@@ -96,7 +96,7 @@
                                     <div class="content">
                                         <p><strong><?= $basePrice; ?> · <?= $spaceTitle; ?> </strong></p>
                                         <p><span><?= $rentType; ?> · </span> <?= $workspaces; ?></p>
-                                        <div class="review"><?= createHTMLRating($listing['id']);?> · <?=  totalReivewsGet($listing['id']);?> reviews</div>
+                                        <div class="review"><?= createHTMLRating($listing['id']);?><span><?=  totalReivewsGet($listing['id']);?> reviews</span></div>
                                     </div>
                                 </a>
                             </div>

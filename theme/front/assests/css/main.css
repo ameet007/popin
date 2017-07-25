@@ -339,7 +339,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .profile-section .profile-photo .align-center {padding-top: 15px;}
 .profile-section .verified-info {margin-bottom: 20px;}
 .profile-section .verified-info h4 {margin-bottom: 15px; font-size: 18px; font-weight: 700; line-height: 18px; color: #484848; margin-bottom: 15px;}
-.profile-section .verified-info p {margin-bottom: 15px; line-height: 20px;}
+.profile-section .verified-info p {margin-bottom: 0px; line-height: 20px;}
 .profile-section .verified-info .btn-default {padding: 10px 40px; height: auto;}
 .profile-section .reviews {margin-bottom: 20px;}
 .profile-section .reviews p {margin-bottom: 15px; line-height: 20px;}
@@ -370,7 +370,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .wish-lists .wish-heading h2 {background-image: url(../img/heading_base.jpg); background-position: left bottom; background-repeat: no-repeat; font-size: 32px; line-height: 32px; color: #484848; font-weight: 700; padding-bottom: 30px;}
 .wish-lists .wishlist-list {margin-bottom: 30px;}
 .wish-lists .wishlist-list h3 {margin-bottom: 20px; color: #484848; font-size: 16px;}
-.wish-lists .wishlist-list ul li {width:370px; float: left; position: relative; background-color: #484848; background-position: center center; background-repeat: no-repeat; background-size: cover; height: 220px; margin-right: 30px; margin-bottom: 20px;}
+.wish-lists .wishlist-list ul li {width:370px; float: left; position: relative; background-color: #484848; background-position: center center; background-repeat: no-repeat; background-size: cover; height: 220px; margin-right: 30px; margin-bottom: 20px;border: 1px solid #e5e5e5;}
 .wish-lists .wishlist-list ul li:nth-child(3n) {margin-right: 0;}
 .wish-lists .wishlist-list ul li img {width: 100%;}
 .wish-lists .wishlist-list .content {background:linear-gradient(transparent 0%, rgba(0, 0, 0, 0.70) 100%) repeat scroll 0 0;
@@ -762,7 +762,7 @@ a.verify-button{width: auto;border-right: none;border-left: 1px solid #dce0e1;ba
 .new-partner43 #home a {font-weight: 600;}
 .new-partner43 #home .the-space {border-top: solid 1px #dce0e1; border-bottom: solid 1px #dce0e1; padding: 15px 0; margin-top: -1px;}
 .new-partner43 #home .the-space .accomm li {float: left; width: 33.33%; vertical-align:top;}
-.new-partner43 #home .the-space .accomm li p {margin-bottom: 0; color: #484848;}
+.new-partner43 #home .the-space .accomm li p {margin-bottom: 5px; color: #484848;}
 .new-partner43 #home .the-space .amenities li p {margin-bottom: 12px;}
 .new-partner43 #home .the-space .amenities li span {display: inline-block; width: 40px; text-align: center;}
 .new-partner43 #home .the-space .decription li {width: auto;}
@@ -1054,6 +1054,11 @@ a button.btn{color: #333 !important;}
     border-radius: 50%;
     color: #008489;
 }
+div.review > span {
+    padding: 5px;
+    top: 4px;
+    position: relative;
+}
 /*13.07.2017*/
 /*Listing Setting page css start*/
 .listing-sett {}
@@ -1156,7 +1161,7 @@ a button.btn{color: #333 !important;}
 .user-sh .pro-con span {margin-bottom: 40px;}
 .user-sh .pro-con p {line-height: 20px;}
 .user-sh ul.superhost li {display: inline-block; margin-right: 20px;}
-.user-sh ul.superhost li span {margin-right: 5px; display: inline-block;}
+.user-sh ul.superhost li span {margin-right: 0px; display: inline-block;}
 .user-sh .review-sec h3 {font-weight: 600; margin-bottom: 15px; color: #484848;}
 .user-sh .review-sec h3 span{font-size: 18px; color: #76768b; display: inline-block; font-weight: 400; margin-bottom: 0;}
 .user-sh .review-sec h4 {font-size: 16px; font-weight: 600; margin-bottom: 15px; color: #484848;}
@@ -1173,7 +1178,21 @@ a button.btn{color: #333 !important;}
 .wish-lists .rentals-banner {padding: 0 0 20px 0;}
 .wish-lists .rentals-banner .pull-left {padding-left: 8%; padding-top: 30px; width: 42%;}
 .wish-lists .rentals-banner .pull-right {padding-right: 10%;}
-
+.profile-wish-lists .wishlist-list{margin-top: 20px;}
+.profile-wish-lists .wishlist-list ul li {
+    background-color: #484848;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    float: left;
+    height: 200px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    position: relative;
+    width: 220px;
+}
+.profile-wish-lists .wishlist-list .content{text-align: center;}
+.profile-wish-lists .wishlist-list .content h4 {font-size: 22px; margin-bottom: 10px;}
 /*Rating*/
 fieldset, label { margin: 0; padding: 0; }
 /****** Style Star Rating Widget *****/
@@ -1230,3 +1249,26 @@ fieldset, label { margin: 0; padding: 0; }
 .rating1 > input:checked ~ label:hover,
 .rating1 > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating1 > input:checked ~ label:hover ~ label { color: #007a87; } 
+
+.badgePill_186vx4j {
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 18px !important;
+    display: inline-block !important;
+    padding: 6px 9px !important;
+    min-width: 28px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    vertical-align: middle !important;
+    background: -webkit-linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
+    background: -moz-linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
+    background: linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
+    line-height: 1.1 !important;
+    text-rendering: optimizelegibility !important;
+    text-align: center !important;
+}
+.user-sh .pro-con span {
+    margin-bottom: 2px;
+    margin-top: 2px;
+}

@@ -403,7 +403,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery']) && file_exists('upl
                         <h3>Your Host</h3>
                         <div class="media">
                             <div class="media-left">
-                                <img src="<?php echo $profile_photo; ?>" width="90px" class="media-object" />
+                                <a href="<?php echo base_url('home/viewProfile/'.$hostProfileInfo->id)?>" target="_blank"><img src="<?php echo $profile_photo; ?>" width="90px" class="media-object" /></a>
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading"><?= $hostProfileInfo->firstName.' '.$hostProfileInfo->lastName; ?></h4>

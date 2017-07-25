@@ -24,26 +24,26 @@ function sendMailAdmin($email,$subjectTitle,$smsmessage,$from)
     mail($to,$subject,'<pre style="font-size:14px;">'.$message.'</pre>',$headers);
     return 1;
 }
-function getSingleRecord($table,$column,$condication){
+function getSingleRecord($table,$column,$condition){
     $tableRecord =& get_instance();
     $tableRecord->load->database();
-    return $tableRecord->db->get_where($table,array($column=>$condication))->row();
+    return $tableRecord->db->get_where($table,array($column=>$condition))->row();
 }
-function getMultiRecord($table,$column,$condication,$orderBy='',$orderType=''){
+function getMultiRecord($table,$column,$condition,$orderBy='',$orderType=''){
     $tableRecord =& get_instance();
     $tableRecord->load->database();
      if (!empty($orderBy)) {
          $tableRecord->db->order_by($orderBy,$orderType);
      }
-    return $tableRecord->db->get_where($table,array($column=>$condication))->result_array();
+    return $tableRecord->db->get_where($table,array($column=>$condition))->result_array();
 }
  function generate_unique_code(){
         return substr(str_shuffle("1234567890"),'0','4');   
     }
- function returnColumnValue($table,$column,$condication,$columnValue){
+ function returnColumnValue($table,$column,$condition,$columnValue){
     $tableRecord =& get_instance();
     $tableRecord->load->database();
-    $query = $tableRecord->db->get_where($table,array($column=>$condication))->row_array();   
+    $query = $tableRecord->db->get_where($table,array($column=>$condition))->row_array();   
     return $query[$columnValue];
  }
  function ratingValueConvert($rating){
@@ -78,8 +78,8 @@ function getMultiRecord($table,$column,$condication,$orderBy='',$orderType=''){
     return $html;
  }
  function totalReivewsGet($spaceID){
-      $tableRecord =& get_instance();
-      $tableRecord->load->database();
+    $tableRecord =& get_instance();
+    $tableRecord->load->database();
     return count($tableRecord->db->get_where('space_ratings',array('space'=>$spaceID,'status'=>'Approved'))->result_array());
  }
 ?>

@@ -146,3 +146,21 @@ function getCurrency_symbol($currencyCode = 'USD') {
         return $currency;
     }
 }
+function createRatingStars($rating){
+    $html = '';
+    $html ='<fieldset class="rating1">
+                <input type="radio"  value="5" '.($rating == '5'?'checked':'').' />
+                <label class = "full"  title="Awesome - 5 stars">    
+                </label>
+                <input type="radio"  value="4.5" '.($rating == '4.5'?'checked':'').' /><label class="half"  title="4.5 stars"></label>
+                <input type="radio"  value="4" '.($rating == '4'?'checked':'').' /><label class = "full" title="4 stars"></label>
+                <input type="radio"   value="3.5" '.($rating == '3.5'?'checked':'').'  /><label class="half" title="3.5 stars"></label>
+                <input type="radio"  value="3" '.($rating == '3'?'checked':'').' /><label class = "full"  title="3 stars"></label>
+                <input type="radio"   value="2.5" '.($rating == '2.5'?'checked':'').'  /><label class="half"  title="2.5 stars"></label>
+                <input type="radio"   value="2" '.($rating == '2'?'checked':'').'  /><label class = "full" title="2 stars"></label>
+                <input type="radio"   value="1.5" '.($rating == '1.5'?'checked':'').' /><label class="half"  title="1.5 stars"></label>
+                <input type="radio"   value="1" '.($rating == '1'?'checked':'').' /><label class = "full" title="1 star"></label>
+                <input type="radio"  value="0.5" '.($rating == '0.5'?'checked':'').' /><label class="half" title="0.5 stars"></label>
+            </fieldset>';
+    return $html;
+ }

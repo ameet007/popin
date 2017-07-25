@@ -51,6 +51,7 @@
                     </div>
 <?php } ?>
             </div>
+            <?php $settings = getSingleRecord('settings', 'id', '1');?>
             <div class="foot_bottom clearfix">
                 <div class="copy-right">
                     <p>&copy Popln, Inc.</p>
@@ -60,9 +61,11 @@
                         <li><a href="#">Terms</a></li>
                         <li><a href="#">Privacy</a></li>
                         <li><a href="#">Site Map</a></li>
-                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                        <?php if(!empty($settings->facebookLink)){ ?><li><a href="<?= $settings->facebookLink; ?>"><i class="fa fa-facebook" aria-hidden="true"></i></a></li><?php }?>
+                        <?php if(!empty($settings->twitterLink)){ ?><li><a href="<?= $settings->twitterLink; ?>"><i class="fa fa-twitter" aria-hidden="true"></i></a></li><?php }?>
+                        <?php if(!empty($settings->instagramLink)){ ?><li><a href="<?= $settings->instagramLink; ?>"><i class="fa fa-instagram" aria-hidden="true"></i></a></li><?php }?>
+                        <?php if(!empty($settings->linkedInLink)){ ?><li><a href="<?= $settings->linkedInLink; ?>"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li><?php }?>
+                        <?php if(!empty($settings->googlePlusLink)){ ?><li><a href="<?= $settings->googlePlusLink; ?>"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li><?php }?>
                     </ul>
                 </div>
             </div>

@@ -1,26 +1,5 @@
 <style type="text/css">
-.badgePill_186vx4j {
-    border-radius: 6px !important;
-    color: #ffffff !important;
-    font-weight: bold !important;
-    font-size: 18px !important;
-    display: inline-block !important;
-    padding: 6px 9px !important;
-    min-width: 28px !important;
-    position: relative !important;
-    overflow: hidden !important;
-    vertical-align: middle !important;
-    background: -webkit-linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
-    background: -moz-linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
-    background: linear-gradient(140deg, #ffc333 55%, #FFB400 55%, #FFB400 100%) !important;
-    line-height: 1.1 !important;
-    text-rendering: optimizelegibility !important;
-    text-align: center !important;
-}
-.user-sh .pro-con span {
-    margin-bottom: 2px;
-    margin-top: 2px;
-}
+
 </style>
 <section class="middle-container account-section profile-section user-sh">
     <div class="container">
@@ -66,10 +45,43 @@
                                 </ul>
                             </div>
                         </div>
+                        <?php if(!empty($userProfileInfo->schoolInstitution)&&!empty($userProfileInfo->businessName)&&!empty($userProfileInfo->language)&&!empty($userProfileInfo->languages)): ?>
+                        <?php $languagesList = unserialize(LANGUAGES); ?>
                         <div class="panel panel-default verified-info">
                             <div class="panel-heading">About me</div>
                             <div class="panel-body clearfix">
                                 <ul>
+                                    <?php if(!empty($userProfileInfo->schoolInstitution)): ?>
+                                    <li class="clearfix">
+                                        <div class="pull-left">
+                                            <strong>School/Institution</strong>
+                                            <p><?= $userProfileInfo->schoolInstitution; ?></p>
+                                        </div>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if(!empty($userProfileInfo->businessName)): ?>
+                                    <li class="clearfix">
+                                        <div class="pull-left">
+                                            <strong>Business Name</strong>
+                                            <p><?= $userProfileInfo->businessName; ?></p>
+                                        </div>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if(!empty($userProfileInfo->language)): ?>
+                                    <li class="clearfix">
+                                        <div class="pull-left">
+                                            <strong>Preferred Language</strong>
+                                            <p><?php
+                                            foreach ($languagesList as $k => $v) {
+                                                if ($k == $userProfileInfo->language){
+                                                    echo $v;
+                                                }
+                                            }
+                                            ?></p>
+                                        </div>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if(!empty($userProfileInfo->languages)): ?>
                                     <li class="clearfix">
                                         <div class="pull-left">
                                             <strong>Languages</strong>
@@ -77,7 +89,7 @@
                                             <?php
                                             $language = explode(",",$userProfileInfo->languages);
                                             $count = 1;
-                                                $languagesList = unserialize(LANGUAGES);
+                                                
                                                 foreach ($languagesList as $k => $v) {
                                                     if (in_array($k, $language)){
                                                          echo $v;
@@ -91,13 +103,15 @@
                                            </p>
                                         </div>
                                     </li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
+                        <?php endif; ?>
                     </div>
                     <?php if (!empty($spaceList)) { ?>
                     <div class="listin-g">
-                        <h3>Listings <span>(<?= count($spaceList);?>)</span></h3>
+                        <h3>Listings <small>(<?= count($spaceList);?>)</small></h3>
                         <?php
                          $count = 0;
                           foreach ($spaceList as $key => $space) {
@@ -116,17 +130,31 @@
                         <a href="<?= base_url()?>listing" class="view_all">View all listings&nbsp;»</a>
                     </div><?php } } ?>
                 </aside>
-                <article class="col-lg-9 main-right">
+                <article class="col-lg-9 main-right wish-lists profile-wish-lists">
                     <div class="pro-con">
                         <h2>Hey, I’m <?= $userProfileInfo->firstName.' '.$userProfileInfo->lastName; ?>!</h2>
-                        <p><strong><?= ucfirst((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:'Us'));?> . Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
+                        <p><strong><?= strtoupper((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:'Us'));?> • Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
                         <p><?= $userProfileInfo->aboutYou; ?></p>
                         <?php $reviewsList = getMultiRecord('space_ratings','reviewOnId',$userProfileInfo->id);?>
                         <ul class="superhost">
-                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?= count($reviewsList)?></span></div></span> Reviews</li>
+                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?= count($reviewsList); ?></span></div></span> Reviews</li>
                             <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?php echo count(getMultiRecord('join_account_master','provide_link_userID',$userProfileInfo->id)) ?></span></div></span> References</li>
                             <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Verified</li>
                         </ul>
+                        <div class="wishlist-list">
+                            <h2>Wish Lists <small>(<?= count($userWishLists); ?>)</small><?php if (!empty($checkProfile)) {?><a href="<?= site_url('wishlists');?>" class="view_all pull-right font12">View all &nbsp;»</a><?php }?></h2>
+                            <ul class="clearfix">
+                                <?php $wishCount = 1; foreach($userWishLists as $wishlists): if (!empty($checkProfile) && $wishCount == 4) break; ?>
+                                <li<?php if(isset($wishlists['userLists'])){ ?> style="background-image: url(<?= $wishlists['userLists'][0]['image'];?>);"<?php }?>>
+                                    <div class="content">
+                                        <h4><?= $wishlists['name']; ?></h4>
+                                        <?php if(isset($wishlists['userLists'])){ ?><a href="<?= site_url('wishlists/'.$wishlists['id']); ?>" class="
+                                           btn2"><?= count($wishlists['userLists']);?> Listings</a><?php }?>
+                                    </div>
+                                </li>
+                                <?php $wishCount++; endforeach; ?>
+                            </ul>
+                        </div>
                     <?php if (!empty($reviewsList)) {
                         foreach ($reviewsList as $key => $value) {
                             $userList = getSingleRecord('user','id',$value['reviewerId']);
@@ -138,8 +166,10 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img style="width:58%;" src="<?php echo base_url('uploads/user/thumb/').(!empty($userList->avatar)?$userList->avatar:'user_pic-225x225.png');?>" class="media-object img-circle" />
-                                        <p><?= $userList->firstName.' '.$userList->lastName;?></p>
+                                        <a href="<?= site_url('home/viewProfile/'.$userList->id); ?>">
+                                            <img style="width:58%;" src="<?php echo base_url('uploads/user/thumb/').(!empty($userList->avatar)?$userList->avatar:'user_pic-225x225.png');?>" class="media-object img-circle" />
+                                            <p><?= $userList->firstName?></p>
+                                        </a>                                        
                                     </div>
                                 </div>
                                 <div class="media-body">
@@ -158,8 +188,10 @@
                             <div class="media">
                                 <div class="media-left">
                                     <div class="inner">
-                                        <img style="width:58%;" src="<?php echo base_url('uploads/user/thumb/').(!empty($userList->avatar)?$userList->avatar:'user_pic-225x225.png');?>" class="media-object img-circle" />
-                                       <p><?= $userList->firstName.' '.$userList->lastName;?></p>
+                                        <a href="<?= site_url('home/viewProfile/'.$userList->id); ?>">
+                                            <img style="width:58%;" src="<?php echo base_url('uploads/user/thumb/').(!empty($userList->avatar)?$userList->avatar:'user_pic-225x225.png');?>" class="media-object img-circle" />
+                                            <p><?= $userList->firstName;?></p>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="media-body">
