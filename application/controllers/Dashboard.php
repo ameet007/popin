@@ -275,6 +275,21 @@ class Dashboard extends CI_Controller
         }
         echo json_encode($result);die();
     }
+    
+    public function edit_wishlists($wishlistId)
+    {
+        $data['search_nav'] = 1;
+    	$data['module_heading'] = 'Wishlists';
+        if ($this->session->userdata('user_id') != '') {
+            $data['userProfileInfo'] = $this->user->userProfileInfo();
+        }
+        $data['WishListMaster'] = $this->user->getWishListMaster($wishlistId);
+        $data['WishListDetails'] = $this->user->getWishListDetails($wishlistId);
+        //print_array($data['WishListDetails']);
+        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
+    	$this->load->view('frontend/edit-wishlists',$data);
+        //$this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
+    }
 
     public function rentals()
     {

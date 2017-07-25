@@ -29,7 +29,7 @@
                                     <div class="slide-main clearfix">
                                         <div class="slide-contant">
                                             <div class="img">
-                                                <img src="<?php echo base_url('theme/front/assests/img/image5.jpg') ?>" alt="" />
+                                                <img src="<?php echo base_url('uploads/industries/'.$industry['slide_image']) ?>" alt="" />
                                             </div>
                                             <div class="content">
                                                 <h4 class="text-center"><?= $industry['industry_name']; ?></h4>

@@ -14,7 +14,7 @@
                 <h3>Your lists</h3>
                 <ul class="clearfix">
                     <?php foreach($userWishLists as $wishlists): ?>
-                    <li<?php if(isset($wishlists['userLists'])){ ?> style="background-image: url(<?= $wishlists['userLists'][0]['image'];?>);"<?php }?>>
+                    <li  style="cursor: pointer;<?php if(isset($wishlists['userLists'])){ ?>background-image: url(<?= $wishlists['userLists'][0]['image'];?>);<?php }?>" onclick="window.location.href = '<?= site_url('wishlists/'.$wishlists['id']); ?>';">
                         <div class="content">
                             <h4><?= $wishlists['name']; ?></h4>
                             <?php if(isset($wishlists['userLists'])){ ?><p><?= count($wishlists['userLists']);?> Listings</p><?php }?>

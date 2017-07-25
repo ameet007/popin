@@ -439,6 +439,21 @@ class FrontUser extends CI_Model {
         return $this->db->select('space_id')->where(array('wishlist_id' => $wishlist, 'status' => 1))->order_by('id','desc')->get('wishlists')->result_array();
 
     }
+    
+    function getWishListMaster($wishlistID) {
+        return $this->db->where(array('wishlist_master.id' => $wishlistID))->get('wishlist_master')->row_array();
+
+    }
+    
+    function getWishListDetails($wishlistID) {
+        $this->db->select('wishlist_master.id as wishlist_master_id, wishlist_master.name, wishlists.space_id, spaces.currency, spaces.base_price, spaces.spaceTitle, estb.name as establishment_type, space.name as space_type, spaces.workSpaceCount, spaces.totalRating as ratings');
+        $this->db->join('wishlists', 'wishlist_master.id = wishlists.wishlist_id');
+        $this->db->join('spaces', 'wishlists.space_id = spaces.id');
+        $this->db->join('establishment_types as estb', 'spaces.establishmentType = estb.id');
+        $this->db->join('space_types as space', 'spaces.spaceType = space.id');
+        return $this->db->where(array('wishlist_master.id' => $wishlistID, 'wishlists.status' => 1))->order_by('wishlists.updatedDate','desc')->get('wishlist_master')->result_array();
+
+    }
 
     function create_wishlist($data) {
         $this->db->insert('wishlist_master', $data);

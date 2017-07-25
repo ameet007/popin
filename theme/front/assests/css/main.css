@@ -1272,3 +1272,41 @@ fieldset, label { margin: 0; padding: 0; }
     margin-bottom: 2px;
     margin-top: 2px;
 }
+
+/*24.07.2017*/
+.wishlist2 {}
+.wishlist2 .spaces-left {height: 595px; overflow-y: scroll;}
+.wishlist2 .a-list {position: relative; padding-top: 20px; border-bottom: solid 1px #dbdbdb; margin-bottom: 30px; padding-left: 30px; margin-left: -15px;} 
+.wishlist2 .a-list .posi {position: absolute; right: 0; top: 20px; margin-bottom: 0; font-size: 24px; color: #484848; height: 40px; width: 40px; border: solid 1px #484848; text-align: center; border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%; padding-top: 6px;}
+.wishlist2 .a-list a {margin-bottom: 40px; display: inline-block;}
+.wishlist2 .a-list h3, .wishlist2 .setting-s h3 {font-weight: 700; font-size: 26px; line-height: 26px; color: #484848; margin-bottom: 15px;}
+.wishlist2 .a-list p {margin-bottom: 20px;}
+.wishlist2 .a-list a.gost-btn {margin-bottom: 25px;}
+.wishlist2 .spaces-map {position: relative; margin-left: -15px;}
+.wishlist2 .only-map {position: absolute; width: 100%; height: 595px;}
+.wishlist2 .spaces-map iframe { height: 100%;}
+.wishlist2 .check-p-a {padding: 15px 0;}
+.wishlist2 .check-p-a .gost-btn {padding: 6px 12px; border-width: 2px;}
+.wishlist2 .check-p-a .pull-left {border: solid 1px #dbdbdb; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; font-size: 14px; padding: 6px 0;}
+.wishlist2 .check-p-a .pull-left a {font-size: 18px; padding: 0 10px; color: #767676;}
+.wishlist2 .check-p-a .pull-left a:first-child {border-right: 1px solid #dbdbdb;}
+.wishlist2 .item .slide-main {border-bottom: solid 1px #ececec;}
+.wishlist2 h4.wishlist-homes {font-size: 16px; font-weight: 700; margin: 0 15px 15px 15px;}
+.wishlist2 .spaces-left .owl-nav {top: 33%;}
+.wishlist2 .after-click {padding-top: 20px;display: none;}
+.wishlist2 .after-click .setting-s {padding-right: 15px; border-bottom: solid 1px #dbdbdb; margin-bottom: 20px;}
+.wishlist2 .after-click .setting-s h3 {margin-bottom: 50px;}
+.wishlist2 .after-click .setting-s .tow-btn {margin-bottom: 20px;}
+.wishlist2 .after-click .feild {margin-bottom: 20px;}
+.wishlist2 .after-click h4 {font-size: 16px; line-height: 16px; color: #484848; margin-bottom: 10px; font-weight: 600;}
+.wishlist2 .after-click .dat-e, .wishlist2 .after-click .invite-f {border-bottom: solid 1px #dbdbdb; margin-bottom: 20px;}
+.wishlist2 .after-click .guest-s {border-bottom: solid 1px #dbdbdb; margin-bottom: 20px; padding: 20px 0;}
+.wishlist2 .after-click .guest-s input.qtyplus, .wishlist2 .after-click .guest-s input.qtyminus {background-color: transparent; background-image: url("../img/minus-sing2.png"); background-position: center center; background-repeat: no-repeat; height: 32px; border:none 0; width: 32px;}
+.wishlist2 .after-click .guest-s input.qtyplus {background-image: url("../img/puls-sing2.png");}
+.wishlist2 .after-click .guest-s input[type="text"] {background-color: #fff; height: 27px; text-align: center; width: 40px; border: none 0; font-weight: 600; font-size: 18px;}
+.wishlist2 .after-click .invite-f {padding-bottom: 20px;}
+.wishlist2 .after-click .invite-f a {margin-bottom: 15px; display: block;}
+.wishlist2 .after-click .invite-f .media {border-top: solid 1px #dbdbdb; padding-top: 15px; margin-right: -15px;}
+.wishlist2 .after-click .invite-f .media .inner {width: 50px;}
+.wishlist2 .spaces-map .map-overlay {background-color: rgba(0,0,0,0.7); position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 3;}
+#myModal2 .modal-sm p {margin-bottom: 15px;}

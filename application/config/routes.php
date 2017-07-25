@@ -74,6 +74,7 @@ $route['reivews/(:num)/(:num)'] = 'Dashboard/reivews/$1/$2';
 $route['rentals/receipt'] = 'Dashboard/rentals';
 $route['rentals/receipt/(:num)'] = 'Dashboard/rental_receipt/$1';
 $route['wishlists'] = 'Dashboard/wishlists';
+$route['wishlists/(:num)'] = 'Dashboard/edit_wishlists/$1';
 $route['invite']    = 'Dashboard/invite';
 $route['referral/(:any)']  = 'Dashboard/referral/$1';
 $route['contactList'] = 'Dashboard/contactList';
