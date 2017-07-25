@@ -877,7 +877,7 @@ a.verify-button{width: auto;border-right: none;border-left: 1px solid #dce0e1;ba
 .cms-content table th{font-family: "Roboto",sans-serif; font-weight:400; text-align:center; color:#fff;}
 .cms-content table thead th{background:#1354A8;}
 .cms-content table tbody th{background:#002e66;}
-.cms-content img {max-width:100%; display:inline-block; /*-webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3); -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3); border:solid 2px #f1f1f1; box-sizing:border-box;*/}
+.cms-content img {max-width:100%; display:inline-block;height: auto; /*-webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3); -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3); border:solid 2px #f1f1f1; box-sizing:border-box;*/}
 /*about page css start*/
 .about-us {width: 800px; margin: 0 auto;}
 .about-us .total-guests {border:solid 1px #dce0e0; padding: 20px; margin-bottom: 20px;}

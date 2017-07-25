@@ -10,11 +10,13 @@ var App = function() {
     var isIE10 = false;
 
     var resizeHandlers = [];
-
-    var assetsPath = '../theme/admin/assets/';
+    
+    var base_url = window.location.protocol + '//' + window.location.hostname + (window.location.hostname === 'localhost')?'/neurons-it/':'/';
+    
+    var assetsPath = base_url + 'Popin/theme/admin/assets/';
 
     var globalImgPath = 'images/';
-	var globalPluginsPath = 'global/plugins/';
+    var globalPluginsPath = 'global/plugins/';
 
     var globalCssPath = 'global/css/';
 

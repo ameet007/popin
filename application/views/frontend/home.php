@@ -14,7 +14,7 @@
             <div class="feat-indus">
                 <div class="row">
                     <div class="pull-left">
-                        <h3>Featured industries</h3>
+                        <h3>Industries</h3>
                     </div>
                     <div class="pull-right">
                         <a href="#">See all</a>
@@ -24,6 +24,7 @@
                     <div id="jc1" class="jcarousel-wrapper">
                         <div class="jcarousel">
                             <ul class="clearfix">
+                                <?php foreach($industries as $industry): ?>
                                 <li>
                                     <div class="slide-main clearfix">
                                         <div class="slide-contant">
@@ -31,71 +32,12 @@
                                                 <img src="<?php echo base_url('theme/front/assests/img/image5.jpg') ?>" alt="" />
                                             </div>
                                             <div class="content">
-                                                <h4>Beautiful</h4>
+                                                <h4 class="text-center"><?= $industry['industry_name']; ?></h4>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="slide-main clearfix">
-                                        <div class="slide-contant">
-                                            <div class="img">
-                                                <img src="<?php echo base_url('theme/front/assests/img/image5.jpg') ?>" alt="" />
-                                            </div>
-                                            <div class="content">
-                                                <h4>Beautiful</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="slide-main clearfix">
-                                        <div class="slide-contant">
-                                            <div class="img">
-                                                <img src="<?php echo base_url('theme/front/assests/img/image5.jpg') ?>" alt="" />
-                                            </div>
-                                            <div class="content">
-                                                <h4>Beautiful</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="slide-main clearfix">
-                                        <div class="slide-contant">
-                                            <div class="img">
-                                                <img src="<?php echo base_url('theme/front/assests/img/image5.jpg') ?>" alt="" />
-                                            </div>
-                                            <div class="content">
-                                                <h4>Beautiful</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="slide-main clearfix">
-                                        <div class="slide-contant">
-                                            <div class="img">
-                                                <img src="<?php echo base_url('theme/front/assests/img/image5.jpg') ?>" alt="" />
-                                            </div>
-                                            <div class="content">
-                                                <h4>Beautiful</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="slide-main clearfix">
-                                        <div class="slide-contant">
-                                            <div class="img">
-                                                <img src="<?php echo base_url('theme/front/assests/img/image5.jpg') ?>" alt="" />
-                                            </div>
-                                            <div class="content">
-                                                <h4>Beautiful</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
                         <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
@@ -110,7 +52,7 @@
                         <h3>Workshops</h3>
                     </div>
                     <div class="pull-right">
-                        <a href="#">See all</a>
+                        <a href="<?= site_url('workshops'); ?>">See all</a>
                     </div>
                 </div>
                 <div class="row">

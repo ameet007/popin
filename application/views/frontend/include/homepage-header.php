@@ -56,7 +56,7 @@ $siteDetails = $CI->common->getSiteDetails();
 
     </head>
     <body>
-        <header class="head home-head">
+        <header class="head home-head" <?php if(isset($search_nav) && $search_nav == 1){ ?>style="box-shadow: none;"<?php }?>>
             <div class="header_top">
                 <div class="container-fluid">
                     <div class="row">
@@ -201,9 +201,9 @@ $siteDetails = $CI->common->getSiteDetails();
                     <div class="container-fluid">
                         <div class="col-xs-12">
                             <ul>
-                                <li><a href="<?= site_url(); ?>">Industry</a></li>
-                                <li><a href="<?= site_url(); ?>spaces">Spaces</a></li>
-                                <li><a href="#">Workshops</a></li>
+                                <li><a href="<?= site_url(); ?>">Industries</a></li>
+                                <li><a href="<?= site_url('spaces'); ?>">Spaces</a></li>
+                                <li><a href="<?= site_url('workshops'); ?>">Workshops</a></li>
                             </ul>
                         </div>
                     </div>

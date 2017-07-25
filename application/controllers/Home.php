@@ -18,11 +18,23 @@ class Home extends CI_Controller {
         } else {
             $data = array();
         }
+        $data['industries'] = $this->space->getDropdownData('industry');
         $data['featuredSpaces'] = $this->space->getFeaturedSpaces();
 //        echo $this->db->last_query();
 //        print_array($data['featuredSpaces']);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
         $this->load->view(FRONT_DIR . '/home', $data);
+        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
+    }
+    
+    public function workshops() {
+        if ($this->session->userdata('user_id') != '') {
+            $data['userProfileInfo'] = $this->user->userProfileInfo();
+        } else {
+            $data = array();
+        }
+        $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
+        $this->load->view(FRONT_DIR . '/workshops', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
 
@@ -352,10 +364,6 @@ class Home extends CI_Controller {
                 $this->db->where('id', $data['booking_id'])->update('space_booking', $updateData);
             }
         }
-    }
-
-    public function about() {
-        exit('hello');
     }
 
     # Customer USer profile
