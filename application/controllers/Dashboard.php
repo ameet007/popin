@@ -290,6 +290,44 @@ class Dashboard extends CI_Controller
     	$this->load->view('frontend/edit-wishlists',$data);
         //$this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
+    
+    function update_wishlist() {
+
+        $rawData = array(
+            'name'  => $this->input->post('wishlist_name'),
+            'privacy'  => $this->input->post('privacy'),
+            'updatedDate'   => time(),
+            'ipAddress'   => $this->input->ip_address()
+        );
+        
+        $conditions = array(
+            'id'    => $this->input->post('wishlist_master_id'),
+            'user'    => $this->session->userdata('user_id'),
+        );
+
+        $wishlistID = $this->user->update_wishlist_master($rawData,$conditions);
+        if($wishlistID){
+            $result['success'] = TRUE;
+            $result['message'] = 'Wish List updated successfully.';
+        }else{
+            $result['success'] = FALSE;
+            $result['message'] = 'No changes made.';
+        }
+        echo json_encode($result);die();
+    }
+    
+    public function deleteWishList(){
+        if($this->session->has_userdata('user_id')){
+            $wishlistID = $this->input->post('wishlistId');
+            $this->db->delete('wishlist_master', array('id' => $wishlistID));
+            if($this->db->affected_rows()){
+                $this->db->delete('wishlists', array('wishlist_id' => $wishlistID));
+            }
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
 
     public function rentals()
     {

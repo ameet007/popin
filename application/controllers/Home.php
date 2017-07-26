@@ -77,7 +77,18 @@ class Home extends CI_Controller {
             $establishment = $data['preview']['establishmentTypeId'];
             $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
             $data['facilities'] = $this->space->getDropdownData('facilities');
-            //print_array($data['wishlistMaster']);
+            
+            $host_id = $this->session->userdata('user_id');
+            $filters = array(
+                'spaces.id !=' => $space_id,
+                'spaces.host !=' => $host_id,
+                'spaces.industryType' => $industry,
+                'spaces.establishmentType' => $establishment,
+                'spaces.status' => 'Active'
+            );
+            
+            $data['similarListings'] = $this->space->getSimilarListings($filters);
+            //print_array($data['similarListings']);
         }
         $data['search_nav'] = 1;
         $data['space_id'] = $space_id;
@@ -372,7 +383,7 @@ class Home extends CI_Controller {
         if (empty($userID)) {
             redirect(base_url());
         }
-        if ($this->session->userdata('user_id') != '') {
+        if ($this->session->userdata('user_id') != '' && $this->session->userdata('user_id') == $userID) {
             $loginID = $this->session->userdata('user_id');
             $data['checkStatus'] = $this->user->checkContactList($userID, $loginID);
             $data['userProfileInfo'] = getSingleRecord('user', 'id', $userID);
@@ -383,14 +394,20 @@ class Home extends CI_Controller {
         } else {
             $header['step_info'] = "";
             $data['userProfileInfo'] = getSingleRecord('user', 'id', $userID);
+            if ($this->session->has_userdata('user_id')){
+                $userAddressBook = getMultiRecord('address_book', 'userID', $this->session->userdata('user_id'));
+                foreach ($userAddressBook as $address) {
+                    $data['addressBook'][] = $address['addUserID']; 
+                }
+                //print_array($data['addressBook']);
+            }
             $header['checkProfile'] = "profile";
             $loginID = $userID;
             $data['customerID'] = $userID;
             $data['module_heading'] = 'My Profile';
             $data['spaceList'] = $this->user->getSpaceList($loginID);
-            // $this->load->view(FRONT_DIR . '/include-partner/header', $header);
         }
-        $data['userWishLists'] = $this->user->getWishLists($userID);
+        $data['userWishLists'] = $this->user->getWishLists($userID, 'everyone');
         if ($userID == $this->session->userdata('user_id')) {
             $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
             $this->load->view(FRONT_DIR . '/user/userProfile', $data);
@@ -409,7 +426,7 @@ class Home extends CI_Controller {
         $data = $this->input->post();
         $userID = $this->session->userdata('user_id');
         $contact = array();
-        $contact['userIID'] = $userID;
+        $contact['userID'] = $userID;
         $contact['addUserID '] = $data['contactUserID'];
         $contact['status'] = 'Active';
         $contact['createdDate'] = time();
@@ -417,9 +434,9 @@ class Home extends CI_Controller {
         $contact['ipAddress '] = $this->input->ip_address();
         $check = $this->user->addContactList($contact);
         if ($check > 0) {
-            echo '1';
+            echo 1;
         } else {
-            echo '2';
+            echo 2;
         }
     }
 

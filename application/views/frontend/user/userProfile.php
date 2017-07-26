@@ -137,9 +137,18 @@
                         <p><?= $userProfileInfo->aboutYou; ?></p>
                         <?php $reviewsList = getMultiRecord('space_ratings','reviewOnId',$userProfileInfo->id);?>
                         <ul class="superhost">
-                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?= count($reviewsList); ?></span></div></span> Reviews</li>
-                            <li><span><div id="undefined_count" class="badgePill_186vx4j" data-reactid="14"><span class="badgePillCount_e296pg" data-reactid="15"><?php echo count(getMultiRecord('join_account_master','provide_link_userID',$userProfileInfo->id)) ?></span></div></span> References</li>
+                            <li><span><div class="badgePill_186vx4j"><span><?= count($reviewsList); ?></span></div></span> Reviews</li>
+                            <li><span><div class="badgePill_186vx4j"><span><?php echo 0 ?></span></div></span> References</li>
                             <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Verified</li>
+                            <?php if (empty($checkProfile) && $this->session->has_userdata('user_id')) { ?>
+                                <li class="address-book">
+                                    <?php if (isset($addressBook) && in_array($customerID, $addressBook)) { ?>
+                                    <span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Added in address book
+                                    <?php }else{ ?>
+                                    <a href="javascript:;" onclick="add_to_address_book(<?= $customerID; ?>);"> + Add to my address book</a>
+                                    <?php }?>
+                                </li>
+                            <?php }?>
                         </ul>
                         <div class="wishlist-list">
                             <h2>Wish Lists <small>(<?= count($userWishLists); ?>)</small><?php if (!empty($checkProfile)) {?><a href="<?= site_url('wishlists');?>" class="view_all pull-right font12">View all &nbsp;»</a><?php }?></h2>
@@ -232,3 +241,20 @@
         </div>
     </div>
 </section>
+<script>
+function add_to_address_book(contactUserID){
+    $.ajax({
+        url: "<?php echo base_url('home/addContact'); ?>",
+        type: "post",
+        data: 'contactUserID='+contactUserID ,
+        success: function (response) {
+            if (response == 1) {
+                $("body").find('li.address-book').html('<span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Added in address book');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+           console.log(textStatus, errorThrown);
+        }
+    });
+}
+</script>

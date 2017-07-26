@@ -129,6 +129,14 @@ class FrontSpace extends CI_Model {
         //$this->db->limit($requestData['limit'], $requestData['start']);
         return $this->db->get_where("spaces", $arr)->result_array();
     }
+    
+    function getSimilarListings($requestFilters) {
+        $this->db->select('spaces.id, spaces.currency, spaces.base_price, spaces.spaceTitle, estb.name as establishment_type, space.name as space_type, spaces.workSpaceCount, spaces.totalRating as ratings');
+        $this->db->join('establishment_types as estb', 'spaces.establishmentType = estb.id');
+        $this->db->join('space_types as space', 'spaces.spaceType = space.id');
+        $this->db->where($requestFilters);
+        return $this->db->get('spaces')->result_array();
+    }
 
     public function get_space_data($space_id, $host_id) {
         $response = array();

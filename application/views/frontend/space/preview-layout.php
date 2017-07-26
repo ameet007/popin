@@ -384,118 +384,55 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                     <h3>Similar Listings</h3>
                 </div>
                 <div class="col-md-4 owl-carousel">
+                    <?php for($i=0; $i<3; $i++): ?>
                     <div class="item">
                         <div class="slide-main clearfix">
                             <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/')?>img/image1.jpg);">
+                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg') ?>);">
                                 </div>
                                 <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p>Private room - 1 bed 2guests</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
+                                    <p><strong>$4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
+                                    <p><span>Entire home/apt ·</span> 2 workspaces</p>
+                                    <div class="review"><?= createRatingStars(rand(0, 5)); ?><span><?= rand(50, 500); ?> reviews</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/')?>img/image1.jpg);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p>Private room - 1 bed 2guests</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endfor;?>
                 </div>
                 <div class="col-md-4 owl-carousel">
+                    <?php for($i=0; $i<3; $i++): ?>
                     <div class="item">
                         <div class="slide-main clearfix">
                             <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/')?>img/image1.jpg);">
+                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg') ?>);">
                                 </div>
                                 <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p>Private room - 1 bed 2guests</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
+                                    <p><strong>$4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
+                                    <p><span>Entire home/apt ·</span> 2 workspaces</p>
+                                    <div class="review"><?= createRatingStars(rand(0, 5)); ?><span><?= rand(50, 500); ?> reviews</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/')?>img/image1.jpg);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p>Private room - 1 bed 2guests</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endfor;?>
                 </div>
                 <div class="col-md-4 owl-carousel">
+                    <?php for($i=0; $i<3; $i++): ?>
                     <div class="item">
                         <div class="slide-main clearfix">
                             <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/')?>img/image1.jpg);">
+                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/img/image1.jpg') ?>);">
                                 </div>
                                 <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p>Private room - 1 bed 2guests</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
+                                    <p><strong>$4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
+                                    <p><span>Entire home/apt ·</span> 2 workspaces</p>
+                                    <div class="review"><?= createRatingStars(rand(0, 5)); ?><span><?= rand(50, 500); ?> reviews</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="slide-main clearfix">
-                            <div class="slide-contant">
-                                <div class="img" style="background-image: url(<?php echo base_url('theme/front/assests/')?>img/image1.jpg);">
-                                </div>
-                                <div class="content">
-                                    <p><strong>#4,452<span></span> I SETTE CONI - TRULLO EDERA </strong></p>
-                                    <p>Private room - 1 bed 2guests</p>
-                                    <div class="review">
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span><img src="<?php echo base_url('theme/front/assests/')?>img/reting-star-home.png" alt="" /></span>
-                                        <span>1 review</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endfor;?>
                 </div>
             </div>
         </div>

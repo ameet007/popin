@@ -84,6 +84,13 @@ class Account extends CI_Controller {
     public function badges() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = 'Badges';
+        $reviewsList = getMultiRecord('space_ratings','reviewOnId',$data['userProfileInfo']->id);
+        $data['Reviews'] = number_format(count($reviewsList));
+        //$referenceList = getMultiRecord('join_account_master','provide_link_userID',$data['userProfileInfo']->id);
+        //$data['References'] = number_format(count($referenceList));
+        $data['References'] = 0;
+        $data['Listings'] = $this->user->getData('id, spaceTitle, totalRating', array('host'=>$data['userProfileInfo']->id,'status'=>'Active'), 'spaces');
+        //print_array($data['Listings']);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/badges', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');

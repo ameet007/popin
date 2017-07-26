@@ -47,7 +47,7 @@ $authUrl = $gClient->createAuthUrl();
                 <form name="trustProfile" id="trustProfile" method="post" action="<?= base_url('user/submit_trust'); ?>" enctype="multipart/form-data">
                     <article class="col-lg-9 main-right">
                         <div class="panel-group">
-                            <div class="panel panel-default profile-photo mr20">
+<!--                            <div class="panel panel-default profile-photo mr20">
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-7">
@@ -59,7 +59,7 @@ $authUrl = $gClient->createAuthUrl();
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="panel panel-default verified-info">
                                 <div class="panel-heading">Your verified info</div>
                                 <div class="panel-body">

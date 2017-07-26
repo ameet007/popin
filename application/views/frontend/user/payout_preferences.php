@@ -57,13 +57,13 @@
                                                 <td>USD</td>
                                                 <td>Business day processing only; weekends and banking holidays may cause delays.</td>
                                             </tr>
-                                            <tr>
+<!--                                            <tr>
                                                 <td><label for="payout_method_2"><input id="payout_method_2" <input type="radio" name="payout_method" value="2">Bank Transfer</label></td>
                                                 <td>3-5 business days</td>
                                                 <td>None</td>
                                                 <td>USD</td>
                                                 <td>Business day processing only; weekends and banking holidays may cause delays.</td>
-                                            </tr>
+                                            </tr>-->
                                         </tbody>
                                     </table>
                                     <hr>
@@ -84,9 +84,9 @@
                                         <label class="control-label col-sm-3" for="payout-method" style="padding-top: 7px;">Preferred Payout Method:</label>
                                         <div class="col-sm-9 col-md-6">          
                                             <select class="form-control" name="selectType" >
-                                                <option value="" >Select Payout Method</option>
+                                                <option value="" disabled>Select Payout Method</option>
                                                 <option value="1" >PayPal Account</option>
-                                                <option value="2" >Bank Account</option>
+<!--                                                <option value="2" >Bank Account</option>-->
                                             </select>
                                         </div>
                                     </div>
