@@ -48,12 +48,12 @@ class FrontSpace extends CI_Model {
                 $this->db->where("ABS(longitude - {$filters['longitude']}) <= 0.5");
             }
             # Check In and Check Out
-            if ($filters['checkIn'] != "" && $filters['checkOut'] != "") {
+            if (isset($filters['checkIn']) && $filters['checkIn'] != "" && isset($filters['checkOut']) && $filters['checkOut'] != "") {
                 $checkIn = $filters['checkIn'];
                 $checkOut = $filters['checkOut'];
             }
             # Professional capacity
-            if ($filters['professionals'] != "") {
+            if (isset($filters['professionals']) && $filters['professionals'] != "") {
                 $this->db->where('professionalCapacity >=', $filters['professionals']);
             }
             # Space type

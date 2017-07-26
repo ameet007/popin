@@ -143,7 +143,7 @@
 
                     foreach ($listing['gallery'] as $image):
                         if ($count == 1) {
-                            $newHTMl = '<span><img style="height:120px;width:100%;" src="' . base_url('uploads/user/gallery/' . $image) . '"></span><div class="content mapContent"><p><strong>' . $basePrice . ' · ' . $spaceTitle . '</strong></p><p><span style="font-family: \'Roboto\', sans-serif;" >' . $rentType . ' · </span>' . $workspaces . '</p><div class="review">' . createHTMLRating($listing['id']) . ' · 
+                            $newHTMl = '<span><img style="height:120px;width:100%;" src="' . base_url('uploads/user/gallery/' . $image) . '"></span><div class="content mapContent"><p><strong>' . $basePrice . ' · ' . $spaceTitle . '</strong></p><p><span style="font-family: \'Roboto\', sans-serif;" >' . $rentType . ' · </span>' . $workspaces . '</p><div class="">' . createHTMLRating($listing['id']) . '&nbsp;
                 <span>' . totalReivewsGet($listing['id']) . ' review</span>
             </div></div>';
                             $count++;
@@ -328,7 +328,6 @@
         }
     });
 </script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI&libraries=places"></script>
 <script type="text/javascript">
     google.maps.event.addDomListener(window, 'load', function () {
         var places = new google.maps.places.Autocomplete(document.getElementById('destination'));
@@ -350,6 +349,7 @@
 <style>
     /*close button has ben remove on the map*/
     .gm-style-iw + div {display: none;}
+    .gm-style-iw > div > div {overflow: hidden !important;}
     #googleMap { width: 100%; height: 400px; top: 0; left: 0; right: 0; bottom: 0; }
     /*style the box*/  
     .gm-style .gm-style-iw {

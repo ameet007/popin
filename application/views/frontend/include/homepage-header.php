@@ -45,14 +45,7 @@ $siteDetails = $CI->common->getSiteDetails();
         <!--Initialize Jquery Validation with Additional Methods-->
         <script src="<?= base_url('theme/admin/assets/js/jquery.validate.js'); ?>"></script>
         <script src="<?= base_url('theme/admin/assets/js/additional-methods.js'); ?>"></script>
-        <link href="<?php echo base_url('theme/front/css/rating.css') ?>" rel="stylesheet" type="text/css" />
-
-        <style>
-            .error {
-                color:red !important;
-            }
-        </style>
-
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI&libraries=places"></script>
     </head>
     <body>
         <header class="head home-head" <?php if(isset($search_nav) && $search_nav == 1){ ?>style="box-shadow: none;"<?php }?>>
@@ -69,7 +62,11 @@ $siteDetails = $CI->common->getSiteDetails();
                                 <?php if(isset($search_nav) && $search_nav == 1): ?>
                                 <div class="media-body">
                                     <div class="col-xs-12">
-                                        <input type="text" class="form-control header-search" placeholder="Search" />
+                                        <form class="space-search-form" name="space_search_form" method="post" action="<?= site_url('spaces'); ?>">
+                                            <input type="text" id="search-box" class="form-control header-search" name="destination" placeholder="Search" />
+                                            <input type="hidden" id="latitude" name="latitude" value="<?= isset($_POST['latitude'])?$_POST['latitude']:'';?>" />
+                                            <input type="hidden" id="longitude" name="longitude" value="<?= isset($_POST['longitude'])?$_POST['longitude']:'';?>" />
+                                        </form>
                                     </div>
                                 </div>
                                 <?php else: ?>

@@ -525,7 +525,6 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
 ?>
 <script src="<?php echo base_url('theme/front/assests/')?>js/owl.carousel.js" type="text/javascript"></script>
 <script src="<?php echo base_url('theme/front/assests/')?>js/galleria-1.5.7.js" type="text/javascript"></script>
-<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI" type="text/javascript"></script>
 <script type="text/javascript">
     //$('[data-toggle="tooltip"]').tooltip('show');
     // Load the Fullscreen theme
