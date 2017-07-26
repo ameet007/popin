@@ -83,6 +83,11 @@ $(function () {
             $(this).addClass('active');
         }
     });
+    $('#cssmenu ul li a').each(function() {
+        if ($($(this))[0].href === String(window.location)){
+            $(this).parent().addClass('active');
+        }
+    });
     $('#destination').focus(function () {
         $(this).attr('placeholder', 'Destination, city, address');
     }).blur(function () {

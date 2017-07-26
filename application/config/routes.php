@@ -59,6 +59,8 @@ $route['admin/Settings/add_space'] = ADMIN_DIR.'/space/add';
 $route['admin/Settings/edit_space/(:num)'] = ADMIN_DIR.'/space/updateSpace/$1';
 $route['admin/Settings/delet_space/(:num)'] = ADMIN_DIR.'/space/deleteSpace/$1';
 
+$route['page/faq']  = 'Page/faq';
+$route['page/contact-us']  = 'Page/contact';
 $route['page/(:any)']  = 'Page/index/$1';
 
 $route['workshops'] = 'home/workshops';

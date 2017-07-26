@@ -43,7 +43,7 @@
                                     $pageDetail = $CI->settings->getPageDetail($v);
                                     if (!empty($pageDetail)) {
                                         ?>
-                                        <li><a href="<?= base_url('p/' . $pageDetail->url); ?>"><?= $pageDetail->pageName; ?></a></li>
+                                        <li><a href="<?= base_url('page/' . $pageDetail->url); ?>"><?= $pageDetail->pageName; ?></a></li>
                                 <?php }
                             } ?>
                             </ul>

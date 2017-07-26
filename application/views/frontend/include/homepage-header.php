@@ -6,7 +6,7 @@ $siteDetails = $CI->common->getSiteDetails();
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?= ($siteDetails->siteTitle != '') ? $siteDetails->siteTitle : SITE_DISPNAME; ?></title>
+        <title><?= (isset($module_heading))?$module_heading:(($siteDetails->siteTitle != '') ? $siteDetails->siteTitle : SITE_DISPNAME); ?></title>
         <link rel="shortcut icon" href="<?= ($siteDetails->favicon != '') ? base_url('uploads/site/' . $siteDetails->favicon) : base_url('uploads/site/default_favicon.ico'); ?>">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -16,7 +16,6 @@ $siteDetails = $CI->common->getSiteDetails();
         <meta name="author" content="<?= $siteDetails->metaAuthor; ?>">
         <meta name="keywords" content="<?= $siteDetails->metaKeyWords; ?>">
 
-        <link href="<?php echo base_url('theme/front/assests/css/ac.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url('theme/front/assests/css/fileuploader.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url('theme/front/assests/css/fileuploader-theme-thumbnails.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url('theme/front/assests/css/jcarousel.responsive.css') ?>" rel="stylesheet" type="text/css" />
@@ -34,7 +33,7 @@ $siteDetails = $CI->common->getSiteDetails();
         <?php }else{?>
         <link href="<?php echo base_url('theme/front/assests/css/daterangepicker.css') ?>" rel="stylesheet" type="text/css" />        
         <?php }?>
-        
+        <link href="<?php echo base_url('theme/front/assests/css/nav.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url('theme/front/assests/css/main.css') ?>" rel="stylesheet" type="text/css" />
         
         <link href="<?php echo base_url('theme/front/assests/css/media.css') ?>" rel="stylesheet" type="text/css" />
@@ -211,3 +210,18 @@ $siteDetails = $CI->common->getSiteDetails();
                 <?php endif; ?>
             </div>
         </header>
+        <?php if(isset($static_nav) && $static_nav == 1): ?>
+        <nav class="navigation">
+            <div class="container">
+                <div class="row">
+                    <div id='cssmenu'>
+                        <ul>
+                           <li><a href='<?= base_url('page/about-us'); ?>'>About Us</a></li>
+                           <li><a href='<?= base_url('page/contact-us'); ?>'>Contact Us</a></li>
+                           <li><a href='<?= base_url('page/faq'); ?>'>FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <?php endif;?>
