@@ -159,8 +159,10 @@
             mergeForms("space_search_form", "space_filter_form");
         });
         $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('');
+            $("#checkIn").val('');
+            $("#checkOut").val('');
             $(this).attr('placeholder', 'Anytime');
+            mergeForms("space_search_form", "space_filter_form");
         });
         $('#demo-range').focus(function () {
             $(this).attr('placeholder', 'Check In - Check Out');
@@ -227,7 +229,6 @@
             var mesg = "Address: " + address;
             mesg += "\nLatitude: " + latitude;
             mesg += "\nLongitude: " + longitude;
-            console.log(mesg);
             $("#latitude").val(latitude);$("#longitude").val(longitude);
             mergeForms("space_search_form", "space_filter_form");
         });

@@ -37,8 +37,14 @@ class Home extends CI_Controller {
         $this->load->view(FRONT_DIR . '/workshops', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
     }
+    
+    public function remove_all_filters(){
+        $this->session->unset_userdata('filters');
+        redirect('spaces');
+    }
 
     public function spaces() {
+        $this->load->library('pagination');
         $currentUser = '';
         if ($this->session->userdata('user_id') != '') {
             $data['userProfileInfo'] = $this->user->userProfileInfo();
@@ -46,10 +52,63 @@ class Home extends CI_Controller {
         } else {
             $data = array();
         }
-        $filters = $this->input->post();
+        $requestedFilters = $this->input->post();
+        if($this->session->has_userdata('filters')){
+            if(!empty($requestedFilters)){
+                $this->session->set_userdata('filters', $requestedFilters);
+            }
+        }else{
+            $this->session->set_userdata('filters', $requestedFilters);
+        }
+        $filters = $this->session->userdata('filters');
+        /* PAGINATION */
+        $config = array();
+        $config['base_url'] = site_url('spaces');
+        $data['total_rows'] = $config['total_rows'] = $this->space->getActiveListingsCount($currentUser, $filters);
+        $config['per_page'] = 6;
+        $config['uri_segment'] = $this->input->get('per_page');
+        //$choice = $config['total_rows'] / $config['per_page'];
+        $config['num_links'] = 3;
+        $config['page_query_string'] = TRUE;
+        $config['full_tag_open'] = '<ul>';
+        $config['full_tag_close'] = '</ul>';
+        $config['prev_link'] = '⟨';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '⟩';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li><a class="active">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+
+        $config['first_link'] = '&lt;&lt;';
+        $config['last_link'] = '&gt;&gt;';
+
+
+        $this->pagination->initialize($config);
+
+        $page = ($config['uri_segment']) ? $config['uri_segment'] : 0;
+        
         //print_array($filters);
         $data['space_types'] = $this->space->getDropdownData('space_types');
-        $data['listings'] = $this->space->getActiveListings($currentUser, $filters);
+        $data['listings'] = $this->space->getActiveListings($currentUser, $filters, $config['per_page'], $page);
+        $data["links"] = $this->pagination->create_links();
+        $data['start_page'] = $page + 1;
+        if(empty($filters)){
+            $data['per_page'] = $page + $config['per_page'];
+        }elseif(!empty($filters) && count($data['listings']) <= $config['per_page']){
+            $data['per_page'] = $page + $config['per_page'];
+        }else{
+            $data['per_page'] = count($data['listings']);
+        }
+        
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
         $this->load->view(FRONT_DIR . '/spaces', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');

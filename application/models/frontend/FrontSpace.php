@@ -33,8 +33,43 @@ class FrontSpace extends CI_Model {
         $response['General'] = $this->db->select('id,amenities_name as name')->get_where("amenities", array('industry_id' => $industry, 'establishment_id' => $establishment, 'amenitiesType' => '2', 'status' => 'active'))->result_array();
         return $response;
     }
+    
+    function getActiveListingsCount($currentUser = '', $filters = array()) {
+        if ($currentUser != "") {
+            $this->db->where("host != ", $currentUser);
+        }
+        if (!empty($filters)) {
+            # Destination
+            if ($filters['latitude'] != "" && $filters['longitude'] != "") {
+                $this->db->where("ABS(latitude - {$filters['latitude']}) <= 0.5");
+                $this->db->where("ABS(longitude - {$filters['longitude']}) <= 0.5");
+            }
+            # Check In and Check Out
+            if (isset($filters['checkIn']) && $filters['checkIn'] != "" && isset($filters['checkOut']) && $filters['checkOut'] != "") {
+                $checkIn = $filters['checkIn'];
+                $checkOut = $filters['checkOut'];
+            }
+            # Professional capacity
+            if (isset($filters['professionals']) && $filters['professionals'] != "") {
+                $this->db->where('professionalCapacity >=', $filters['professionals']);
+            }
+            # Space type
+            if (isset($filters['spaceType']) && !empty($filters['spaceType'])) {
+                $this->db->where_in('spaceType', $filters['spaceType']);
+            }
+            # Price Range
+            if (isset($filters['minPrice']) && $filters['minPrice'] != "" && isset($filters['maxPrice']) && $filters['maxPrice'] != "") {
+                $this->db->where("base_price BETWEEN {$filters['minPrice']} AND {$filters['maxPrice']}");
+            }
+            # Rent instantly
+            if (isset($filters['rentInstantly'])) {
+                $this->db->where('rentalRequests', $filters['rentInstantly']);
+            }
+        }
+        return $this->db->get_where('spaces', array('status' => 'Active'))->num_rows();
+    }
 
-    function getActiveListings($currentUser = '', $filters = array()) {
+    function getActiveListings($currentUser = '', $filters = array(), $limit = '', $offset = '') {
         $response = array();
         if ($currentUser != "") {
             $this->db->where("host != ", $currentUser);
@@ -69,12 +104,11 @@ class FrontSpace extends CI_Model {
                 $this->db->where('rentalRequests', $filters['rentInstantly']);
             }
         }
+        $this->db->order_by('updatedDate', 'desc');
+        $this->db->limit($limit, $offset);
         $spaceData = $this->db->get_where('spaces', array('status' => 'Active'))->result_array();
         //echo $this->db->last_query();
-//        echo "<pre>";
-//        print_r($spaceData);
-//        echo "</pre>";
-//        exit;
+        //print_array($spaceData);
         $i = 0;
         foreach ($spaceData as $listing) {
             $establishmentType = $this->getDropdownDataRow('establishment_types', $listing['establishmentType']);

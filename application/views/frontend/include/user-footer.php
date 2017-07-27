@@ -108,3 +108,4 @@
 </script>
 </body>
 </html>
+<?php $this->session->unset_userdata('filters');?>

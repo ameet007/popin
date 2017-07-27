@@ -90,6 +90,10 @@ $(function () {
         $(this).attr('placeholder', 'Destination, city, address');
     }).blur(function () {
         $(this).attr('placeholder', 'Anywhere');
+        if($(this).val() === "" && $("#latitude").val() !== "" && $("#longitude").val() !== ""){
+            $("#latitude").val('');$("#longitude").val('');
+            mergeForms("space_search_form", "space_filter_form");
+        }
     });
 
     $('#guest_button').on("click", function (e) {

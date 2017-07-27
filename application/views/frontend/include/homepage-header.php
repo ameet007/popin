@@ -2,6 +2,7 @@
 $CI = & get_instance();
 $CI->load->model(FRONT_DIR . '/FrontCommon', 'common');
 $siteDetails = $CI->common->getSiteDetails();
+$filters = $this->session->userdata('filters');
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,8 +65,8 @@ $siteDetails = $CI->common->getSiteDetails();
                                     <div class="col-xs-12">
                                         <form class="space-search-form" name="space_search_form" method="post" action="<?= site_url('spaces'); ?>">
                                             <input type="text" id="search-box" class="form-control header-search" name="destination" placeholder="Search" />
-                                            <input type="hidden" id="latitude" name="latitude" value="<?= isset($_POST['latitude'])?$_POST['latitude']:'';?>" />
-                                            <input type="hidden" id="longitude" name="longitude" value="<?= isset($_POST['longitude'])?$_POST['longitude']:'';?>" />
+                                            <input type="hidden" id="latitude" name="latitude" value="<?= isset($filters['latitude'])?$filters['latitude']:'';?>" />
+                                            <input type="hidden" id="longitude" name="longitude" value="<?= isset($filters['longitude'])?$filters['longitude']:'';?>" />
                                         </form>
                                     </div>
                                 </div>
@@ -75,29 +76,29 @@ $siteDetails = $CI->common->getSiteDetails();
                                         <form class="space-search-form" name="space_search_form" method="post" action="<?= site_url('spaces'); ?>">
                                             <ul class="clearfix">
                                                 <li class="anywhere">
-                                                    <input class="icon1" type="text" id="destination" name="destination" value="<?= isset($_POST['destination'])?$_POST['destination']:'';?>" placeholder="Anywhere" />
-                                                    <input type="hidden" id="latitude" name="latitude" value="<?= isset($_POST['latitude'])?$_POST['latitude']:'';?>" />
-                                                    <input type="hidden" id="longitude" name="longitude" value="<?= isset($_POST['longitude'])?$_POST['longitude']:'';?>" />
+                                                    <input class="icon1" type="text" id="destination" name="destination" value="<?= isset($filters['destination'])?$filters['destination']:'';?>" placeholder="Anywhere" />
+                                                    <input type="hidden" id="latitude" name="latitude" value="<?= isset($filters['latitude'])?$filters['latitude']:'';?>" />
+                                                    <input type="hidden" id="longitude" name="longitude" value="<?= isset($filters['longitude'])?$filters['longitude']:'';?>" />
                                                 </li>
                                                 <li class="anytime">
                                                     <?php 
                                                         $checkInRange = "";
-                                                        if(isset($_POST['checkIn']) && !empty($_POST['checkIn']) && isset($_POST['checkOut']) && !empty($_POST['checkOut'])){
-                                                            $checkInRange = date("d M", strtotime($_POST['checkIn'])) . ' - ' . date("d M", strtotime($_POST['checkOut']));
+                                                        if(isset($filters['checkIn']) && !empty($filters['checkIn']) && isset($filters['checkOut']) && !empty($filters['checkOut'])){
+                                                            $checkInRange = date("d M", strtotime($filters['checkIn'])) . ' - ' . date("d M", strtotime($filters['checkOut']));
                                                         }
                                                     ?>
                                                     <input class="icon1 icon2" type="text" id="demo-range" placeholder="Anytime" value="<?= $checkInRange; ?>" />
-                                                    <input type="hidden" id="checkIn" name="checkIn" value="<?= isset($_POST['checkIn'])?$_POST['checkIn']:'';?>" /><input type="hidden" id="checkOut" name="checkOut" value="<?= isset($_POST['checkOut'])?$_POST['checkOut']:'';?>" />
+                                                    <input type="hidden" id="checkIn" name="checkIn" value="<?= isset($filters['checkIn'])?$filters['checkIn']:'';?>" /><input type="hidden" id="checkOut" name="checkOut" value="<?= isset($filters['checkOut'])?$filters['checkOut']:'';?>" />
                                                 </li>
                                                 <li class="guest">
                                                     <button id="guest_button" type="button">
                                                         <span><img src="<?= base_url('theme/front/img/head-guest-icon.png'); ?>" alt="" /></span>
-                                                        <span><?= isset($_POST['professionals'])?$_POST['professionals']:1;?> professionals</span>
+                                                        <span><?= isset($filters['professionals'])?$filters['professionals']:1;?> professionals</span>
                                                     </button>
                                                     <div id="guest_open" class="bz_guest_box clearfix" style="display: none;">
                                                         <div class="feild">
                                                             <label>Professionals</label>
-                                                            <span><input value="" class="qtyminus" field="professionals" type="button"> <input name="professionals" value="<?= isset($_POST['professionals'])?$_POST['professionals']:1;?>" class="qty" type="text" readonly> <input value="" class="qtyplus" field="professionals" type="button"></span>
+                                                            <span><input value="" class="qtyminus" field="professionals" type="button"> <input name="professionals" value="<?= isset($filters['professionals'])?$filters['professionals']:1;?>" class="qty" type="text" readonly> <input value="" class="qtyplus" field="professionals" type="button"></span>
                                                         </div>
                                                         <div class="pull-left"><a href="#" id="guest-cancel">Cancel</a></div>
                                                         <div class="pull-right"><a href="#" id="guest-apply">Apply</a></div>

@@ -1061,6 +1061,30 @@ div.review > span {
     position: relative;
 }
 .owl-carousel .item .slide-contant .add-to-wishlist{padding: 10px;font-size: 1.5em;cursor: pointer;}
+.no-result-div {
+    font-weight: 300 !important;
+    color: #484848 !important;
+    margin: 0px !important;
+    word-wrap: break-word !important;
+    font-size: 19px !important;
+    line-height: 24px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+.no-result-div ul{
+    list-style: square; 
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+.no-result-div ul li{ 
+    list-style: square; 
+    list-style-type: square; 
+    padding: 3px 0 !important;
+    display: block !important;
+}
 /*13.07.2017*/
 /*Listing Setting page css start*/
 .listing-sett {}
