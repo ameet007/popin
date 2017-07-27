@@ -102,8 +102,9 @@ class Listing extends CI_Controller {
                                 </div>
                             </div>
                             <div class="media-body media-middle">
+                                <h4>'. $spaceData['spaceTitle']. '</h4>
                                 <h4>'.$spaceData['spaceType'].' in '.$spaceData['city'].', '.$spaceData['state'].'</h4>
-                                <p>Last updated on '.date("F d, Y",$spaceData['updatedDate']).'</p>
+                                <p>Last updated on '.date("d F, Y",$spaceData['updatedDate']).'</p>
                                 <div class="three-btn">
                                     <a href="'. site_url('manage-listing/'.$spaceData['id']).'" class="btn2">Manage listing</a>
                                     <a href="'. site_url('view-reservations/'.$spaceData['id']).'" class="green-btn">View Reservations</a>

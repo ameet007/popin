@@ -18,7 +18,9 @@ class Dashboard extends CI_Controller
     	$data['userProfileInfo'] = $this->user->userProfileInfo();
         $rawdata['limit']   = 5;
         $rawdata['start']   = 0;
+        $rawdata['user_id']    = $this->session->userdata('user_id');
         $data['userMessages'] = $this->user->getUserMessages($data['userProfileInfo']->id, "new", $rawdata);
+        $data['inprogress']  = $this->space->get_user_listings_inprogress($rawdata);
         $data['settings'] = getSingleRecord('settings','id','1');
     	$this->load->view('frontend/dashboard',$data);
     }

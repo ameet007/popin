@@ -48,9 +48,9 @@ $messages = $this->user->getNewUserMessages($userProfileInfo->id);
                         <img src="<?= base_url('theme/front/img/nav-icon2.png'); ?>" alt="" />
                     </li>
                     <li><?= ucfirst($userProfileInfo->firstName); ?>, new spaces have <br />arrived! Book now before they run out.</li>
-                    <li>
+<!--                    <li>
                         <img src="<?= base_url('theme/front/img/close-icon.png'); ?>" alt="" />
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </a>
@@ -63,9 +63,7 @@ $messages = $this->user->getNewUserMessages($userProfileInfo->id);
                         <img src="<?= base_url('theme/front/img/nav-icon2.png'); ?>" alt="" />
                     </li>
                     <li><?= ucfirst($userProfileInfo->firstName); ?>, Book workspaces led by <br />experienced business owners.<br />Now over 51 to choose form.</li>
-                    <li>
-                        <img src="<?= base_url('theme/front/img/close-icon.png'); ?>" alt="" />
-                    </li>
+
                 </ul>
             </div>
         </a>
@@ -78,9 +76,7 @@ $messages = $this->user->getNewUserMessages($userProfileInfo->id);
                         <img src="<?= base_url('theme/front/img/nav-icon2.png'); ?>" alt="" />
                     </li>
                     <li><?= ucfirst($userProfileInfo->firstName); ?>, Invite your colleague to join <br />Popln and you’ll get <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->referral_credit_amount); ?> <br />after their first rental.</li>
-                    <li>
-                        <img src="<?= base_url('theme/front/img/close-icon.png'); ?>" alt="" />
-                    </li>
+
                 </ul>
             </div>
         </a>

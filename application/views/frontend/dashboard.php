@@ -1,7 +1,7 @@
 <?php
 	$this->load->view('frontend/include/user-header');
 ?>
-<section class="middle-container">
+<section class="middle-container list-progress">
     <div class="container">
         <div class="alert alert-info fade in alert-dismissable">
             <a href="#" class="close" data-dismiss="alert" aria-label="close"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt=""></a>
@@ -14,10 +14,10 @@
                     <h4 class="media-heading">Earn <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->referral_credit_amount); ?> rental credit</h4>
                     <p>Give your colleagues <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->join_amount); ?> off their first rental on Popln and you’ll get up to <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->referral_credit_amount);?> rental credit.</p>
                     <a href="<?= site_url('invite'); ?>"><button class="btn2">Invite Colleagues</button></a>
-                    <button class="btn btn-default" data-dismiss="alert" aria-label="close">Later</button>
+<!--                    <button class="btn btn-default" data-dismiss="alert" aria-label="close">Later</button>-->
                 </div>
             </div>
-        </div>
+        </div>        
         <div class="main-content">
             <div class="row clearfix">
                 <aside class="col-sm-3 left-sidebar">
@@ -68,15 +68,60 @@
                         </div>
                     </div>
                 </aside>
-                <article class="col-sm-9 main-right">
-                    <div class="panel-group">
+                <article class="col-sm-9 main-right listings-section">
+                    <div class="panel-group">                        
+                        <?php if(!empty($inprogress)){ ?>
+                        <div class="panel panel-default your-reservations">
+                            <div class="panel-heading">Listings in progress</div>
+                            <div class="panel-body">
+                                <?php foreach($inprogress as $listing){
+                                $spaceType = $this->space->getDropdownDataRow('space_types', $listing['spaceType']);
+                                if(!empty($spaceType)){
+                                    $listing['spaceType'] = $spaceType['name'];
+                                }
+                                $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->limit('1')->get_where('space_gallery', array('space' => $listing['id']))->row_array();
+                                if(!empty($spaceGallery)){
+                                    $listingImage = base_url('uploads/user/gallery/'.$spaceGallery['image']);
+                                }else{
+                                    $listingImage = base_url("theme/front/assests/img/cam-pic.jpg");
+                                }
+                                $listComplete = round(($listing['step_1_percentage'] + $listing['step_2_percentage'] + $listing['step_3_percentage'])/3);
+                                ?>
+                                <div class="media">
+                                    <div class="media-left">
+                                        <div class="inner">
+                                            <img src="<?= $listingImage; ?>" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="media-body media-middle">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?= $listComplete;?>"
+                                            aria-valuemin="0" aria-valuemax="100" style="width:<?= $listComplete; ?>%">
+                                            </div>
+                                        </div>
+                                        <div class="pro-status"><p>You’re <?= $listComplete; ?>% done with your listing.</p></div>
+                                        <h4><?= $listing['spaceTitle']; ?></h4>
+                                        <h4><?= $listing['spaceType']; ?> in <?= $listing['city'].', '.$listing['state']; ?></h4>
+                                        <p>Last updated on <?= date("d F, Y",$listing['updatedDate']); ?></p>
+                                        <div class="three-btn">
+                                            <a href="<?= site_url('Space/become-a-partner/'. $listing['id']); ?>" class="green-btn">Finish the Listing</a>
+                                            <a href="<?= site_url('preview-listing/'.$listing['id']); ?>"><button class="btn">Preview</button></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <?php } ?>
+                        
                         <div class="panel panel-default notification">
                             <div class="panel-heading">Notifications</div>
                             <div class="panel-body">
                                 <ul>
-                                    <li class="clearfix"><a href="<?= site_url('spaces'); ?>"><?= ucfirst($userProfileInfo->firstName); ?>, new spaces have arrived! Book now before they run out.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
-                                    <li class="clearfix"><a href="<?= site_url('spaces'); ?>">Book workspaces led by experienced business owners. Now over 51 to choose form.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
-                                    <li class="clearfix"><a href="<?= site_url('invite'); ?>">Invite your colleague to join Popln and you’ll get <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->referral_credit_amount); ?> after their first rental.</a><span class="pull-right"><a href="#"><img src="<?= base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span></li>
+                                    <li class="clearfix"><a href="<?= site_url('spaces'); ?>"><?= ucfirst($userProfileInfo->firstName); ?>, new spaces have arrived! Book now before they run out.</a><!--<span class="pull-right"><a href="#"><img src="<?php //echo base_url('theme/front/assests/img/close-icon.png'); ?>" alt=""></a></span>--></li>
+                                    <li class="clearfix"><a href="<?= site_url('spaces'); ?>">Book workspaces led by experienced business owners. Now over 51 to choose form.</a></li>
+                                    <li class="clearfix"><a href="<?= site_url('invite'); ?>">Invite your colleague to join Popln and you’ll get <?= getCurrency_symbol($userProfileInfo->currency).number_format($settings->referral_credit_amount); ?> after their first rental.</a></li>
                                 </ul>
                             </div>
                         </div>

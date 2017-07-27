@@ -52,7 +52,7 @@
                                     <p>Remember: <?= SITE_DISPNAME; ?> will never ask you to wire money. <a href="javascript:void(0);">Learn more</a>.</p>
                                 </div>
                             </div>
-                            <div class="panel panel-default gift-card">
+<!--                            <div class="panel panel-default gift-card">
                                 <div class="panel-heading">Gift Card</div>
                                 <div class="panel-body">
                                     <h3><?= SITE_DISPNAME; ?> gift card balance: <spna><?= $userProfileInfo->giftCardBalance; ?></spna></h3>
@@ -67,7 +67,7 @@
                                     </form>
                                     <a href="#"><?= SITE_DISPNAME; ?> gift cards help</a>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="panel panel-default gift-card">
                                 <div class="panel-heading">Paypal Email Address</div>
                                 <div class="panel-body">

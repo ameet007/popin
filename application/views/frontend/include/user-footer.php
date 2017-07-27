@@ -59,8 +59,8 @@
                 </div>
                 <div class="terms">
                     <ul>
-                        <li><a href="#">Terms</a></li>
-                        <li><a href="#">Privacy</a></li>
+                        <li><a href="<?= base_url('page/terms'); ?>">Terms</a></li>
+                        <li><a href="<?= base_url('page/privacy-policy'); ?>">Privacy</a></li>
                         <li><a href="#">Site Map</a></li>
                         <?php if(!empty($settings->facebookLink)){ ?><li><a href="<?= $settings->facebookLink; ?>"><i class="fa fa-facebook" aria-hidden="true"></i></a></li><?php }?>
                         <?php if(!empty($settings->twitterLink)){ ?><li><a href="<?= $settings->twitterLink; ?>"><i class="fa fa-twitter" aria-hidden="true"></i></a></li><?php }?>
