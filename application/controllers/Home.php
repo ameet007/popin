@@ -136,6 +136,7 @@ class Home extends CI_Controller {
             $establishment = $data['preview']['establishmentTypeId'];
             $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
             $data['facilities'] = $this->space->getDropdownData('facilities');
+            $data['reviewsList'] = getMultiRecord('space_ratings','space',$space_id);
             
             $host_id = $this->session->userdata('user_id');
             $filters = array(
@@ -147,7 +148,7 @@ class Home extends CI_Controller {
             );
             
             $data['similarListings'] = $this->space->getSimilarListings($filters);
-            //print_array($data['similarListings']);
+            //print_array($data['reviewsList']);
         }
         $data['search_nav'] = 1;
         $data['space_id'] = $space_id;

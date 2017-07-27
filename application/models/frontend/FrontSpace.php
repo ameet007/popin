@@ -463,8 +463,10 @@ class FrontSpace extends CI_Model {
                 }
             }
 
-            if (!empty($response['professionalRequirements'])) {
+            if ($response['professionalRequirements'] != "") {
                 $response['professionalRequirements'] = explode(',', $response['professionalRequirements']);
+            }else{
+                $response['professionalRequirements'] = array();
             }
 
             if (!empty($response['additionalRules'])) {

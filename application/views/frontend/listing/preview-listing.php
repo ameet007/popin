@@ -1,10 +1,10 @@
 <?php
-if(!empty($hostProfileInfo->avatar)){
+if(!empty($hostProfileInfo->avatar) && file_exists('uploads/user/thumb/' . $hostProfileInfo->avatar)){
     $profile_photo = base_url('uploads/user/'.$hostProfileInfo->avatar);
 }else{
     $profile_photo = base_url('uploads/user/user_pic-225x225.png');
 }
-if(!empty($userProfileInfo->avatar)){
+if(!empty($userProfileInfo->avatar) && file_exists('uploads/user/thumb/' . $userProfileInfo->avatar)){
     $user_profile_photo = base_url('uploads/user/'.$userProfileInfo->avatar);
 }else{
     $user_profile_photo = base_url('uploads/user/user_pic-225x225.png');
@@ -141,7 +141,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                     <div id="home" class="tab-pane fade in active">
                         <div class="media">
                             <div class="media-left">                                
-                                <img src="<?php echo $profile_photo; ?>" width="90px" class="media-object" alt="avatar"/>
+                                <a href="<?php echo base_url('home/viewProfile/'.$hostProfileInfo->id)?>"><img src="<?php echo $profile_photo; ?>" width="90px" class="media-object" alt="avatar"/></a>
                                 <p><?= $hostProfileInfo->firstName;?></p>
                             </div>
                             <div class="media-body">
@@ -166,9 +166,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                         </div>
                         <div class="about-this">
                             <h3>About this listing</h3>
-<!--                            <p>My place is close to civil center, Disneyland. You’ll love my place because of. <br />My place is good for couples.</p>-->
                             <p><?= $preview['spaceDescription']; ?></p>
-                            <a data-toggle="modal" data-target="#myModal" href="#">Contact host</a>
                         </div>
                         <?php $checkIn = unserialize(TIMES); ?>
                         <div class="the-space">
@@ -331,20 +329,51 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                             </ul>
                         </div>
                     </div>
-                    <div id="menu1" class="tab-pane fade"> 
+                    <div id="menu1" class="tab-pane fade user-sh profile-section"> 
                         <h3>This place would love your review</h3>
-                        <p>When you book this place, here’s where your review will show up!</p>
+                        <p>When you book this place, here’s where your review will show up!</p><br>
+                        <h3><?= totalReivewsGet($space_id); ?> Reviews<span class="pull-right"><?= createHTMLRating($space_id);?></span></h3>
+                        <hr>
+                        <?php if (!empty($reviewsList)) {
+                        foreach ($reviewsList as $key => $value) {
+                            $userList = getSingleRecord('user','id',$value['reviewerId']);
+                        ?>
+                        <?php if ($value['status'] == 'Approved') { ?>
+                        <div class="review-sec pro-con">
+                            <div class="media">
+                                <div class="media-left">
+                                    <div class="inner">
+                                        <a href="<?= site_url('home/viewProfile/'.$userList->id); ?>">
+                                            <img style="width:58%;" src="<?php echo base_url('uploads/user/thumb/').(!empty($userList->avatar)?$userList->avatar:'user_pic-225x225.png');?>" class="media-object img-circle" />
+                                            <p><?= $userList->firstName?></p>
+                                        </a>                                        
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <p><?= $value['review'];?></p>
+                                    <footer class="clearfix">
+                                        <div class="pull-left">
+                                            <span>Review date • <?= date('M,Y',$value['createdDate']);?></span>
+                                        </div>
+                                    </footer>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } } } ?>
                     </div>
-                    <div id="menu2" class="tab-pane fade">
-                        <h3>Your Host</h3>
+                    <div id="menu2" class="tab-pane fade user-sh">
                         <div class="media">
                             <div class="media-left">
-                                <img src="<?php echo $profile_photo; ?>" width="90px" class="media-object" />
+                                <a href="<?php echo base_url('home/viewProfile/'.$hostProfileInfo->id)?>"><img src="<?php echo $profile_photo; ?>" width="90px" class="media-object" /></a>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading"><?= $hostProfileInfo->firstName.' '.$hostProfileInfo->lastName; ?></h4>
-                                <p><?= $hostProfileInfo->countryResidence;?> - Joined in <?= date('F Y', $hostProfileInfo->createdDate)?></p>
-                                <a data-toggle="modal" data-target="#myModal" class="btn-red" href="#">Contact host</a>
+                                <h4 class="media-heading">Hosted by <?= $hostProfileInfo->firstName.' '.$hostProfileInfo->lastName; ?></h4>
+                                <p><?= $hostProfileInfo->countryResidence;?> • Joined in <?= date('F Y', $hostProfileInfo->createdDate)?></p>
+                                <ul class="superhost" style="margin-bottom: 20px;">
+                                    <li><span><div class="badgePill_186vx4j"><span><?= count(getMultiRecord('space_ratings','reviewOnId',$hostProfileInfo->id)); ?></span></div></span>&nbsp;&nbsp;Reviews</li>
+                                    <li><span><div class="badgePill_186vx4j"><span><?php echo 0 ?></span></div></span>&nbsp;&nbsp;References</li>
+                                    <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Verified</li>
+                                </ul>
                             </div>
                         </div>
                     </div>

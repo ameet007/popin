@@ -137,13 +137,13 @@
                         <p><?= $userProfileInfo->aboutYou; ?></p>
                         <?php $reviewsList = getMultiRecord('space_ratings','reviewOnId',$userProfileInfo->id);?>
                         <ul class="superhost">
-                            <li><span><div class="badgePill_186vx4j"><span><?= count($reviewsList); ?></span></div></span> Reviews</li>
-                            <li><span><div class="badgePill_186vx4j"><span><?php echo 0 ?></span></div></span> References</li>
-                            <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Verified</li>
+                            <li><span><div class="badgePill_186vx4j"><span><?= count($reviewsList); ?></span></div></span>&nbsp;&nbsp;Reviews</li>
+                            <li><span><div class="badgePill_186vx4j"><span><?php echo 0 ?></span></div></span>&nbsp;&nbsp;References</li>
+                            <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span>&nbsp;&nbsp;Verified</li>
                             <?php if (empty($checkProfile) && $this->session->has_userdata('user_id')) { ?>
                                 <li class="address-book">
                                     <?php if (isset($addressBook) && in_array($customerID, $addressBook)) { ?>
-                                    <span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Added in address book
+                                    <span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span>&nbsp;&nbsp;Added in address book
                                     <?php }else{ ?>
                                     <a href="javascript:;" onclick="add_to_address_book(<?= $customerID; ?>);"> + Add to my address book</a>
                                     <?php }?>
