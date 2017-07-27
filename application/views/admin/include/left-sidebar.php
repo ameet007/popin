@@ -9,6 +9,9 @@
                     <a href="<?= base_url('admin'); ?>" class="waves-effect"><i class="mdi mdi-view-dashboard"></i> <span> Dashboard </span> </a>
                 </li>
                 <li class="has_sub">
+                    <a href="<?= base_url('admin/settings'); ?>" class="waves-effect"><i class="fa fa-gears"></i> <span> Settings </span> </a>
+                </li>
+                <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-invert-colors"></i> <span> Front </span> <span class="menu-arrow"></span></a>
                     <ul class="list-unstyled">
                         <li><a href="<?= base_url(ADMIN_DIR . '/banner/lists'); ?>"><i class="fa fa-image"></i>Home Banner</a></li>

@@ -110,14 +110,13 @@
                             </div>
                         </div>-->
                     </form>
-                    <div class="invite-f clearfix">
-<!--                        <h4>Friends</h4>-->
-                        <a data-toggle="modal" data-target="#myModal2" href="#" data-wishlistId="<?= $WishListMaster['id']; ?>" data-wishlistName="<?= $WishListMaster['name']; ?>">Delete This Wish List</a>
+                    <div class="invite-f clearfix" style="padding-bottom: 0;">
+                        <a data-toggle="modal" data-target="#myModal2" href="#" data-wishlistId="<?= $WishListMaster['id']; ?>" data-wishlistName="<?= $WishListMaster['name']; ?>">Delete this Wish List</a>
                     </div>
                 </div>
                 <?php }?>
             </div>
-            <?php if(!empty($WishListDetails)):?>
+            <?php if(!empty($WishListDetails)): ?>
             <div class="row">
                 <h4 class="wishlist-homes"><?= count($WishListDetails); ?> listings</h4>
                 <?php foreach($WishListDetails as $listing): ?>
@@ -133,6 +132,10 @@
                     <div class="item">
                         <div class="slide-main clearfix">
                             <div class="slide-contant">
+                                <div class="activeBarContainer"></div>
+                                <?php if($this->session->has_userdata('user_id') && $this->session->userdata('user_id') == $WishListMaster['user']){ ?>
+                                <span class="add-to-wishlist pull-right" data-space-id="<?= $listing['space_id']; ?>" data-wishlist-id="<?= $WishListMaster['id']; ?>"><i class="fa fa-heart red"></i></span>
+                                <?php }?>
                                 <div class="img" style="background-image: url(<?= base_url('uploads/user/gallery/'.$image); ?>);"></div>
                                 <div class="content">
                                     <p><strong><?= $basePrice; ?> · <?= $spaceTitle; ?></strong></p>
@@ -145,6 +148,19 @@
                     <?php endforeach; ?>
                 </div>
                 <?php endforeach; ?>
+            </div>
+            <?php else: ?>
+            <div class="row nothing-saved">                
+                <div class="col-sm-12 mr20">
+                    <h4>Nothing saved yet</h4>
+                </div>
+                <div class="col-sm-12 mr20">
+<!--                    <p class="line-height13em">When you find something you like, click the heart icon to save it. If you’re planning a rental with others, invite them so they can save and vote on their favorites.</p>-->
+                    <p class="line-height13em">When you find something you like, click the heart icon to save it.</p>
+                </div>
+                <div class="col-sm-12">
+                    <a class="btn2" href="<?= site_url('spaces'); ?>">Start exploring</a>
+                </div>
             </div>
             <?php endif; ?>
         </div>
@@ -216,6 +232,20 @@
                     $('#setting-clo').trigger('click');
                 }else{
                     
+                }
+            });
+        });
+        $(document).on('click', '.add-to-wishlist', function(){
+            var $this = $(this);
+            var wishlist_id = $(this).attr('data-wishlist-id');
+            var space_id = $(this).attr('data-space-id');
+            var params = {wishlist_id: wishlist_id, space_id: space_id};
+            $.post("<?= site_url('dashboard/add_to_wishlist')?>", params, function(response){
+                var result = JSON.parse(response);
+                if(result.success === 1 || result.success === 2){
+                    $this.find('i.fa').removeClass('fa-heart-o').addClass('fa-heart').addClass('red');
+                }else if(result.success === 0){
+                    $this.find('i.fa').removeClass('fa-heart').addClass('fa-heart-o').removeClass('red');
                 }
             });
         });
@@ -295,14 +325,14 @@
         e.preventDefault();
         $('.after-click').show();
         $('.map-overlay').show();
-        $('.a-list').hide();
+        $('.a-list,.nothing-saved').hide();
         $('.owl-carousel').parent().hide();
     });
     $('#setting-clo').click(function (e) {
         e.preventDefault();
         $('.after-click').hide();
         $('.map-overlay').hide();
-        $('.a-list').show();
+        $('.a-list,.nothing-saved').show();
         $('.owl-carousel').parent().show();
     });
 $(function () {
@@ -473,16 +503,31 @@ function initialize() {
         markers.push(marker);
     }
 }
-//google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', initialize);
 // The function to trigger the marker click, 'id' is the reference index to the 'markers' array.
 function myClick(id){
     google.maps.event.trigger(markers[id], 'click');
 }
 function scroll(target){
     $('.spaces-left').animate({ scrollTop: $("html").find("#"+target).offset().top}, 500);
+    $(".activeBarContainer").css('opacity','0');
+    $("#"+target+" .activeBarContainer").css('opacity','1');
 }
+google.maps.event.addDomListener(window, 'load', function () {
+    var places = new google.maps.places.Autocomplete(document.getElementById('search-box'));
+    google.maps.event.addListener(places, 'place_changed', function () {
+        var place = places.getPlace();
+        var address = place.formatted_address;
+        var latitude = place.geometry.location.lat();
+        var longitude = place.geometry.location.lng();
+        var mesg = "Address: " + address;
+        mesg += "\nLatitude: " + latitude;
+        mesg += "\nLongitude: " + longitude;
+        $("#latitude").val(latitude);$("#longitude").val(longitude);
+        $(".space-search-form").submit();
+    });
+});
 </script>
-<script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI&callback=initialize"></script> 
 <script src="<?php echo base_url('theme/front/assests/js/moment.min.js') ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('theme/front/assests/js/owl.carousel.js') ?>" type="text/javascript"></script>
 <?php if(isset($search_nav) && $search_nav == 1){ ?>

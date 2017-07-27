@@ -181,7 +181,6 @@ if($("#search-box").length) {
             var mesg = "Address: " + address;
             mesg += "\nLatitude: " + latitude;
             mesg += "\nLongitude: " + longitude;
-            console.log(mesg);
             $("#latitude").val(latitude);$("#longitude").val(longitude);
             $(".space-search-form").submit();
         });

@@ -38,14 +38,18 @@ class PosteList extends CI_Controller {
             $row = array();
             $row[] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $fc->id . '"/><span></span></label>';
             $row[] = ucfirst($fc->spaceTitle);
+            $industry = getSingleRecord('industry','id',$fc->industryType);
             $establishment = getSingleRecord('establishment_types','id',$fc->establishmentType);
-            $row[] = $establishment->name;
             $space = getSingleRecord('space_types','id',$fc->spaceType);
-            $row[] = $space->name;
-            $row[] = $fc->workSpaceCount;
-            $row[] = $fc->currency;
-            $row[] = $fc->base_price;
+            $row[] = $industry->industry_name.' / '.$establishment->name.' / '.$space->name;
+            $row[] = $fc->professionalCapacity." Professionals<br/>".$fc->workSpaceCount." Workspaces";
+            $row[] = getCurrency_symbol($fc->currency).$fc->base_price;
             $row[] = date(DATE_FORMAT, $fc->createdDate);
+            if ($fc->isFeatured == 'Yes') {
+                $row[] = '<button class="btn btn-success">'.$fc->isFeatured.'</button>';
+            } else if ($fc->isFeatured == 'No') {
+                $row[] = '<button class="btn btn-warning">'.$fc->isFeatured.'</button>';
+            }
             if ($fc->status == 'Active') {
                 $row[] = '<button class="btn btn-success">Active</button>';
             } else if ($fc->status == 'Deactive') {

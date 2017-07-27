@@ -1,9 +1,11 @@
 <?php
 
 class AdminSettings extends CI_Model {
-	
+	private $table;
+        
 	function __construct(){
-		parent::__construct();
+            parent::__construct();    
+            $this->table = 'settings';
 	}
 	
 	public function settingInfo(){

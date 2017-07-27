@@ -211,7 +211,7 @@ class Settings extends CI_Controller {
                 $this->session->set_flashdata('class', A_SUC);
                 redirect(ADMIN_DIR . '/settings');
             } else {
-                $this->session->set_flashdata('message_notification', 'General Settings Not Updated Successfully');
+                $this->session->set_flashdata('message_notification', 'No changes are done.');
                 $this->session->set_flashdata('class', A_FAIL);
                 redirect(ADMIN_DIR . '/settings');
             }
@@ -249,7 +249,7 @@ class Settings extends CI_Controller {
                     'required' => 'Please Enter The Contact Number'
                 ),
             ),
-            array(
+            /*array(
                 'field' => 'longitude',
                 'label' => 'Longitude',
                 'rules' => 'required',
@@ -264,7 +264,7 @@ class Settings extends CI_Controller {
                 'errors' => array(
                     'required' => 'Please Enter The Latitude'
                 ),
-            )
+            )*/
         );
 
 
@@ -287,7 +287,7 @@ class Settings extends CI_Controller {
                 $this->session->set_flashdata('class', A_SUC);
                 redirect(ADMIN_DIR . '/settings');
             } else {
-                $this->session->set_flashdata('message_notification', 'Contact Settings Not Updated Successfully');
+                $this->session->set_flashdata('message_notification', 'No changes are done.');
                 $this->session->set_flashdata('class', A_FAIL);
                 redirect(ADMIN_DIR . '/settings');
             }
@@ -366,11 +366,11 @@ class Settings extends CI_Controller {
             );
             $response = $this->settings->adminSettingsUpdate($settingData);
             if ($response > 0) {
-                $this->session->set_flashdata('message_notification', 'Contact Settings Updated Successfully');
+                $this->session->set_flashdata('message_notification', 'Email Settings Updated Successfully');
                 $this->session->set_flashdata('class', A_SUC);
                 redirect(ADMIN_DIR . '/settings');
             } else {
-                $this->session->set_flashdata('message_notification', 'Contact Settings Not Updated Successfully');
+                $this->session->set_flashdata('message_notification', 'No changes are done.');
                 $this->session->set_flashdata('class', A_FAIL);
                 redirect(ADMIN_DIR . '/settings');
             }
@@ -445,7 +445,7 @@ class Settings extends CI_Controller {
                 $this->session->set_flashdata('class', A_SUC);
                 redirect(ADMIN_DIR . '/settings');
             } else {
-                $this->session->set_flashdata('message_notification', 'Social Page Settings Not Updated Successfully');
+                $this->session->set_flashdata('message_notification', 'No changes are done.');
                 $this->session->set_flashdata('class', A_FAIL);
                 redirect(ADMIN_DIR . '/settings');
             }

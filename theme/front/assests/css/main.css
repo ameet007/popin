@@ -18,6 +18,7 @@ a:focus {text-decoration: none; color:#007a87;}
 .mr15 {margin-bottom: 15px;}
 .pd0 {padding: 0 !important;}
 .font12{font-size: 12px;}
+.line-height13em{line-height: 1.3em !important;}
 .media-object {max-width: none;}
 a{color:#007a87; text-decoration:none}
 a:hover{color:#db3641;text-decoration:none}
@@ -1059,6 +1060,7 @@ div.review > span {
     top: 4px;
     position: relative;
 }
+.owl-carousel .item .slide-contant .add-to-wishlist{padding: 10px;font-size: 1.5em;cursor: pointer;}
 /*13.07.2017*/
 /*Listing Setting page css start*/
 .listing-sett {}
@@ -1277,7 +1279,7 @@ fieldset, label { margin: 0; padding: 0; }
 .wishlist2 {}
 .wishlist2 .spaces-left {height: 595px; overflow-y: scroll;}
 .wishlist2 .a-list {position: relative; padding-top: 20px; border-bottom: solid 1px #dbdbdb; margin-bottom: 30px; padding-left: 30px; margin-left: -15px;} 
-.wishlist2 .a-list .posi {position: absolute; right: 0; top: 20px; margin-bottom: 0; font-size: 24px; color: #484848; height: 40px; width: 40px; border: solid 1px #484848; text-align: center; border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%; padding-top: 6px;}
+.wishlist2 .a-list .posi {position: absolute; right: 20px; top: 20px; margin-bottom: 0; font-size: 24px; color: #484848; height: 40px; width: 40px; border: solid 1px #484848; text-align: center; border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%; padding-top: 6px;}
 .wishlist2 .a-list a {margin-bottom: 40px; display: inline-block;}
 .wishlist2 .a-list h3, .wishlist2 .setting-s h3 {font-weight: 700; font-size: 26px; line-height: 26px; color: #484848; margin-bottom: 15px;}
 .wishlist2 .a-list p {margin-bottom: 20px;}
@@ -1310,3 +1312,11 @@ fieldset, label { margin: 0; padding: 0; }
 .wishlist2 .after-click .invite-f .media .inner {width: 50px;}
 .wishlist2 .spaces-map .map-overlay {background-color: rgba(0,0,0,0.7); position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 3;}
 #myModal2 .modal-sm p {margin-bottom: 15px;}
+.activeBarContainer {
+    background-color: #ff9955 !important;
+    height: 6px !important;
+    opacity: 0;
+    -webkit-transition: opacity 0.2s ease-in-out !important;
+    -moz-transition: opacity 0.2s ease-in-out !important;
+    transition: opacity 0.2s ease-in-out !important;
+}

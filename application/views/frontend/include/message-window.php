@@ -1,7 +1,7 @@
 <?php 
 $settings = getSingleRecord('settings','id','1');
 if(!isset($userProfileInfo)){
-    $userProfileInfo = $this->host->userProfileInfo();
+    $userProfileInfo = $this->user->userProfileInfo();
 }
 $messages = $this->user->getNewUserMessages($userProfileInfo->id);
 //print_array($messages,true);

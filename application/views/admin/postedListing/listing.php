@@ -36,7 +36,9 @@
                                             <select class="table-group-action-input form-control" name="status">
                                                 <option value="">Select...</option>
                                                 <option value="Active">Active</option>
-                                                <option value="Deactive">Deactive</option>
+                                                <option value="Inactive">Inactive</option>
+                                                <option value="Yes">Featured</option>
+                                                <option value="No">Remove Featured</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
@@ -54,21 +56,18 @@
                                                 </label>
                                             </th>
                                             <th width="10%"> Title</th>
-                                            <th width="20%"> Establishment Types</th>
-                                            <th width="15%">Space Type</th>
-                                            <th width="5%"> workspaces</th>
-                                            <th width="2%"> Currency</th>
-                                            <th width="8%"> Price</th>
+                                            <th width="25%"> Industry / Establishment / Space</th>
+                                            <th width="15%"> Space Details</th>
+                                            <th width="3%"> Base Price</th>
                                             <th width="20%"> Created Date</th>
-                                            <th width="18%"> Status </th>
+                                            <th width="15%"> Featured </th>
+                                            <th width="15%"> Status </th>
                                         </tr>
                                         <tr role="row" class="filter">
-                                        <td> </td>
-                                             <td>
+                                            <td> </td>
+                                            <td>
                                                 <!-- <input type="text" class="form-control form-filter input-sm" name="name"> -->
                                             </td>
-                                            <td> </td>
-                                            <td> </td>
                                             <td> </td>
                                             <td> </td>
                                             <td> </td>
@@ -91,10 +90,22 @@
                                                 </div>
                                             </td>
                                             <td>
+                                                <select name="isFeatured" class="form-control form-filter input-sm">
+                                                    <option value="">Select...</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                                <div style="margin-top: 2px;" ></div>
+                                                <button class="btn btn-sm btn-success filter-submit margin-bottom"><i class="fa fa-search"></i> Search</button>
+                                                <button class="btn btn-sm btn-danger filter-cancel">
+                                                <i class="fa fa-times"></i> Reset</button>
+                                            </td>
+                                            <td>
                                                 <select name="status" class="form-control form-filter input-sm">
                                                     <option value="">Select...</option>
                                                     <option value="Active">Active</option>
-                                                    <option value="inactive">Inactive</option>
+                                                    <option value="Pending">Pending</option>
+                                                    <option value="Inactive">Inactive</option>
                                                 </select>
                                                 <div style="margin-top: 2px;" ></div>
                                                     <button class="btn btn-sm btn-success filter-submit margin-bottom"><i class="fa fa-search"></i> Search</button>
