@@ -557,19 +557,24 @@ class FrontUser extends CI_Model {
        $sql='SELECT `spaces`.*, `industry_name` AS industryName,a.name as establishmentName,b.name as spaceName from spaces INNER JOIN industry ON spaces.industryType=industry.id INNER JOIN establishment_types AS a ON spaces.establishmentType= a.id INNER JOIN space_types as b ON spaces.spaceType=b.id WHERE spaces.status= "Active" AND  spaces.host='.$userID;
       return $this->db->query($sql)->result();
     }
-    public function checkAlreadyJoinAccount($userID){
-        $query = $this->db->get_where('join_account_master',array('provide_link_userID'=>$userID))->result_array();
-        if (!empty($query)) {
-            foreach ($query as $key => $value) {
-                $getUserInfo = getSingleRecord('user','id',$value['activate_link_userID']);
-                if (empty($getUserInfo)) {
-                   return 'true';
-                }else{
-                    return 'false';
-                }
+    public function checkAlreadyJoinAccount($userID, $currentUser=''){
+        if(!empty($currentUser)){
+            $joined = $this->db->get_where('join_account_master',array('provide_link_userID'=>$userID,'activate_link_userID'=>$currentUser))->num_rows();
+            if ($joined == 1) {
+                /*foreach ($query as $key => $value) {
+                    $getUserInfo = getSingleRecord('user','id',$value['activate_link_userID']);
+                    if (empty($getUserInfo)) {
+                       return 'true';
+                    }else{
+                        return 'false';
+                    }
+                }*/
+                return 'true';
+            }else{
+                return 'false';
             }
         }else{
-            return 'true';
+            return 'false';
         }
     }
     # send invitation email from the user

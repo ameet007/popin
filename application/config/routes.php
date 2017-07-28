@@ -89,6 +89,8 @@ $route['view-reservations/(:num)'] = 'Listing/view_reservations/$1';
 $route['my-reservations'] = 'Listing/Listing2';
 $route['reservation-requirements'] = 'Listing/Listing3';
 
+$route['user/upload-documents'] = 'user/upload_documents';
+
 $route['account/payment-methods'] = 'account/payment_methods';
 $route['account/payout-preferences'] = 'account/payout_preferences';
 $route['account/transaction-history'] = 'account/transaction_history';

@@ -155,7 +155,9 @@ $siteDetails = $CI->common->getSiteDetails();
                             <?php  if(!empty($spaceInfo['cleanUpProcedure'])){ $cleanUpProcedures = explode(" | ", $spaceInfo['cleanUpProcedure']); foreach($cleanUpProcedures as $cleanUpProcedure){ ?>
                                 <h4 class="space-rules hidden"><?php echo trim($cleanUpProcedure); ?></h4>
                             <?php }} ?>
+                            <?php  if(!empty($spaceInfo['additionalRules']) && !empty($spaceInfo['cleanUpProcedure'])){ ?>
                             <a href="#" class="show-more" data-target-key="space-rules"><strong>+ See all Space Rules</strong></a>
+                            <?php } ?>
                         </div>
                         <button class="btn-red" type="button">Next</button>
                     </div>

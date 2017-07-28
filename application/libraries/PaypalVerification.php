@@ -10,7 +10,7 @@ class PaypalVerification
    public function paypal($firstName,$secondName,$email){
        // create a new cURL resource
     $ch = curl_init();
-    $ppUserID = "casual_seduction_merchant_api1.gmail.com"; //Take it from   sandbox dashboard for test mode or take it from paypal.com account in production mode, help: https://developer.paypal.com/docs/classic/api/apiCredentials/
+    $ppUserID = PAYPALUSERID; //Take it from   sandbox dashboard for test mode or take it from paypal.com account in production mode, help: https://developer.paypal.com/docs/classic/api/apiCredentials/
     $ppPass = PAYPALPASS; //Take it from sandbox dashboard for test mode or take it from paypal.com account in production mode, help: https://developer.paypal.com/docs/classic/api/apiCredentials/
     $ppSign = PAYPALSIGN; //Take it from sandbox dashboard for test mode or take it from paypal.com account in production mode, help: https://developer.paypal.com/docs/classic/api/apiCredentials/
     $ppAppID = PAYPALAPPID; //if it is sandbox then app id is always: APP-80W284485P519543T

@@ -1,7 +1,7 @@
 <?php
 	$this->load->view('frontend/include/user-header');
 ?>
-<section class="middle-container list-progress">
+<section class="middle-container list-progress profile-section">
     <div class="container">
         <div class="alert alert-info fade in alert-dismissable">
             <a href="#" class="close" data-dismiss="alert" aria-label="close"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt=""></a>
@@ -156,91 +156,78 @@
                                 <?php endif;?>
                             </div>
                         </div>
+                        <?php
+                        $establishmentLicenceLink = trim($userProfileInfo->establishmentLicence);
+                        if ($userProfileInfo->establishmentLicence != '') {
+                            $establishmentLicenceLink = base_url('uploads/user/document/' . $userProfileInfo->establishmentLicence);
+                        }
+                        $establishmentLicenseVerified = strtolower($userProfileInfo->establishmentLicenseVerified);
+
+                        $liabilityInsuranceLink = trim($userProfileInfo->liabilityInsurance);
+                        if ($userProfileInfo->liabilityInsurance != '') {
+                            $liabilityInsuranceLink = base_url('uploads/user/document/' . $userProfileInfo->liabilityInsurance);
+                        }
+                        $liabilityInsuranceVerified = strtolower($userProfileInfo->liabilityInsuranceVerified);
+
+                        $licenceLink = trim($userProfileInfo->licenceCopy);
+                        if ($userProfileInfo->licenceCopy != '') {
+                            $licenceLink = base_url('uploads/user/document/' . $userProfileInfo->licenceCopy);
+                        }
+                        $licenceCopyVerified = strtolower($userProfileInfo->licenceCopyVerified);
+                        ?>
                         <!-- Display upload docuemnt file -->
                         <div class="panel panel-default profile-photo verified-info">
                             <div class="panel-heading">Documents</div>
                             <div class="panel-body">
                                 <div class="row mr15">
                                     <div class="col-md-9">
-                                            <?php
-                                            if($userProfileInfo->licenceCopy!='')
-                                            {
-                                                $licenceLink = base_url('uploads/user/document/'.$userProfileInfo->licenceCopy);
-                                            }
-                                            else{
-                                                $licenceLink = 'javascript:void(0);';
-                                            }
-                                            if($userProfileInfo->establishmentLicence!='')
-                                            {
-                                                $establishmentLicenceLink = base_url('uploads/user/document/'.$userProfileInfo->establishmentLicence);
-                                            }
-                                            else{
-                                                $establishmentLicenceLink = 'javascript:void(0);';
-                                            }
-                                            if($userProfileInfo->liabilityInsurance!='')
-                                            {
-                                                $liabilityInsuranceLink = base_url('uploads/user/document/'.$userProfileInfo->liabilityInsurance);
-                                            }
-                                            else{
-                                                $liabilityInsuranceLink = 'javascript:void(0);';
-                                            }
-                                            ?>
-                                        <h4>License / Certificate Copy <small><?= ($userProfileInfo->licenceCopy!='')?'(Verified)':'<a href="'.base_url('user/trust').'">Click on the link upload license</a>'; ?></small></h4>
-                                        Upload a copy of your license or certificate to avoid the hassle later.<p class="licenceCopyError"></p>
-                                    </div>
-                                    <div class="col-md-3 align-center">
-                                     <?php
-                                      if (!empty($userProfileInfo->licenceCopy)) {
-                                        $licenceCopy  = explode(".",$userProfileInfo->licenceCopy);
-                                            if ($licenceCopy[1] == 'pdf') { ?>
-                                             <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
-                                           <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
-                                               <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
-                                          <?php  }else{ ?>
-                                           <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
-                                         <?php   }
-                                     }
-                                       ?>
-                                    </div>
-                                </div>
-                                <div class="row mr15">
-                                    <div class="col-md-9">
-                                        <h4>Establishment license <small><?= ($userProfileInfo->establishmentLicence!='')?'(Verified)':'<a href="'.base_url('user/trust').'">Click on the link upload license</a>'; ?></small></h4>
-                                        If you are listing your space, verify ownership by providing us with your license<p class="establishmentLicenceError"></p>
-                                    </div>
-                                    <div class="col-md-3 align-center">
+                                        <h4>Establishment license <small><?= ($establishmentLicenceLink !="" && $establishmentLicenseVerified =='yes')?'(Verified)':(($establishmentLicenceLink !="" && $establishmentLicenseVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/upload-documents').'">Upload</a>'); ?></small></h4>
                                         <?php
-                                          if (!empty($userProfileInfo->establishmentLicence)) {
-                                         $establishmentLicence  = explode(".",$userProfileInfo->establishmentLicence);
-                                            if ($establishmentLicence[1] == 'pdf') { ?>
-                                             <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
-                                           <?php }else if ($establishmentLicence[1] == 'doc' || $establishmentLicence[1] == 'docx') { ?>
-                                               <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
-                                          <?php  }else{ ?>
-                                           <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $establishmentLicenceLink; ?>" style="height:100px;" ></a>
-                                         <?php   }
-                                     }
-                                       ?>
+                                        if (!empty($establishmentLicenceLink)) {
+                                        $licenceCopy  = explode(".",$establishmentLicenceLink);
+                                        if ($licenceCopy[1] == 'pdf') { ?>
+                                            <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                                        <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
+                                            <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
+                                        <?php  }else{ ?>
+                                            <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
+                                        <?php  }}else{ ?>
+                                        If you are listing your space, verify ownership by providing us with your license.
+                                        <?php }?>
                                     </div>
                                 </div>
                                 <div class="row mr15">
                                     <div class="col-md-9">
-                                        <h4>Liabilty insurance <small><?= ($userProfileInfo->liabilityInsurance!='')?'(Verified)':'<a href="'.base_url('user/trust').'">Click on the link upload insurance</a>'; ?></small></h4>
-                                        Upload a copy of your liability insurance.<p class="liabilityInsuranceError"></p>
+                                        <h4>Liability insurance <small><?= ($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='yes')?'(Verified)':(($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/upload-documents').'">Upload</a>'); ?></small></h4>
+                                        <?php
+                                        if (!empty($liabilityInsuranceLink)) {
+                                        $licenceCopy  = explode(".",$liabilityInsuranceLink);
+                                        if ($licenceCopy[1] == 'pdf') { ?>
+                                            <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                                        <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
+                                            <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
+                                        <?php  }else{ ?>
+                                            <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
+                                        <?php  }}else{ ?>
+                                        Upload a copy of your liability insurance.
+                                        <?php }?>
                                     </div>
-                                    <div class="col-md-3 align-center">
-                                       <?php
-                                        if (!empty($userProfileInfo->liabilityInsurance)) {
-                                          $liabilityInsurance  = explode(".",$userProfileInfo->liabilityInsurance);
-                                            if ($liabilityInsurance[1] == 'pdf') { ?>
-                                             <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
-                                           <?php }else if ($liabilityInsurance[1] == 'doc' || $liabilityInsurance[1] == 'docx') { ?>
-                                               <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
-                                          <?php  }else{ ?>
-                                           <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $liabilityInsuranceLink; ?>" style="height:100px;" ></a>
-                                         <?php   }
-                                          }
-                                       ?>
+                                </div>
+                                <div class="row mr15">
+                                    <div class="col-md-9">
+                                        <h4>License / Certificate Copy <small><?= ($licenceLink !="" && $licenceCopyVerified =='yes')?'(Verified)':(($licenceLink !="" && $licenceCopyVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/upload-documents').'">Upload</a>'); ?></small></h4>
+                                        <?php
+                                        if (!empty($licenceLink)) {
+                                        $licenceCopy  = explode(".",$licenceLink);
+                                        if ($licenceCopy[1] == 'pdf') { ?>
+                                            <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                                        <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
+                                            <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
+                                        <?php  }else{ ?>
+                                           <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
+                                        <?php  }}else{ ?>
+                                        Upload a copy of your license or certificate to avoid the hassle later.
+                                        <?php }?>
                                     </div>
                                 </div>
                             </div>

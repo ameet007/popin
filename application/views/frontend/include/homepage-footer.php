@@ -74,7 +74,7 @@
 </footer>
 <script>
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip();
+    $(document).find('[data-toggle="tooltip"]').tooltip();
     //highlight current or active link
     $('.head-tab ul li a').each(function() {
         if ($($(this))[0].href === String(window.location)){

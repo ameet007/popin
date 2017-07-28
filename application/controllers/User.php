@@ -224,7 +224,7 @@ class User extends CI_Controller {
             return $return;
         } else {
             //Image Upload
-            $upload_data = $this->upload->data();
+            //$upload_data = $this->upload->data();
             if ($oldFile != '') {
                 //Unlink old images if have
                 @unlink("./uploads/" . $path . "/" . $oldFile);
@@ -294,81 +294,80 @@ class User extends CI_Controller {
         $this->load->view(FRONT_DIR . '/user/trust', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
     }
+    
+    public function upload_documents() {
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+
+        $data['module_heading'] = 'Establishment License';
+
+        $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
+        $this->load->view(FRONT_DIR . '/user/upload-documents', $data);
+        $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
+    }
 
     public function submit_trust() {
-        /* echo '<pre>';
-          print_r($_POST);
-          print_r($_FILES);
-          exit; */
-        $config = array(
-            array(
-                'field' => 'phone',
-                'label' => 'Phone',
-                'rules' => 'required',
-                'errors' => array(
-                    'required' => 'Please Enter The Phone Number'
-                ),
-            )
-        );
-
-        if (isset($_FILES['licenceCopy']) && $_FILES['licenceCopy']['name'] != '') {
-            $licenceCopyResponse = $this->file_upload('licenceCopy', 'user/document/', $this->input->post('OldLicenceCopy'));
-        }
-
+        //print_array($_POST);
+        //print_array($_FILES, TRUE);
+        
         if (isset($_FILES['establishmentLicence']) && $_FILES['establishmentLicence']['name'] != '') {
             $establishmentLicenceResponse = $this->file_upload('establishmentLicence', 'user/document/', $this->input->post('OldEstablishmentLicence'));
-        }
-        if (isset($_FILES['liabilityInsurance']) && $_FILES['liabilityInsurance']['name'] != '') {
-            $liabilityInsuranceResponse = $this->file_upload('liabilityInsurance', 'user/document/', $this->input->post('OldLiabilityInsurance'));
-        }
-
-        /* echo '<pre>';
-          print_r($licenceCopyResponse);
-          print_r($establishmentLicenceResponse);
-          print_r($liabilityInsuranceResponse);
-          exit; */
-
-        /*$this->form_validation->set_rules($config);
-        if ($this->form_validation->run() == FALSE or $licenceCopyResponse['error'] != '' or $establishmentLicenceResponse['error'] != '' or $liabilityInsuranceResponse['error']) {
-            $this->session->set_flashdata('message_notification', validation_errors() . $licenceCopyResponse['error'] . $establishmentLicenceResponse['error'] . $liabilityInsuranceResponse['error']);
-            $this->session->set_flashdata('class', A_FAIL);
-            redirect(base_url('user/trust/'));
-        } else {*/
-            if ($licenceCopyResponse['file_name'] != '') {
-                $licenceCopy = $licenceCopyResponse['file_name'];
-            } else {
-                $licenceCopy = $this->input->post('OldLicenceCopy');
-            }
+            //print_array($establishmentLicenceResponse, TRUE);
             if ($establishmentLicenceResponse['file_name'] != '') {
                 $establishmentLicence = $establishmentLicenceResponse['file_name'];
             } else {
-                $establishmentLicence = $this->input->post('OldEstablishmentLicence');
+                $this->session->set_flashdata('message_notification', $establishmentLicenceResponse['error']);
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(base_url('user/upload-documents'));
             }
+        }else{
+            $establishmentLicence = $this->input->post('OldEstablishmentLicence');
+        }
+        
+        if (isset($_FILES['liabilityInsurance']) && $_FILES['liabilityInsurance']['name'] != '') {
+            $liabilityInsuranceResponse = $this->file_upload('liabilityInsurance', 'user/document/', $this->input->post('OldLiabilityInsurance'));
+            
             if ($liabilityInsuranceResponse['file_name'] != '') {
                 $liabilityInsurance = $liabilityInsuranceResponse['file_name'];
             } else {
-                $liabilityInsurance = $this->input->post('OldLiabilityInsurance');
-            }
-
-            $settingData = array(
-                // "phone" => $this->input->post('phone'),
-                "licenceCopy" => $licenceCopy,
-                "establishmentLicence" => $establishmentLicence,
-                "liabilityInsurance" => $liabilityInsurance,
-                "updatedDate" => strtotime(date('Y-m-d H:i:s')),
-                "ipAddress" => $this->input->ip_address()
-            );
-            $response = $this->user->editUser($settingData, $this->session->userdata('user_id'));
-            if ($response > 0) {
-                $this->session->set_flashdata('message_notification', 'Trust And Verification Documents Updated Successfully');
-                $this->session->set_flashdata('class', A_SUC);
-                redirect(base_url('user/trust/'));
-            } else {
-                $this->session->set_flashdata('message_notification', 'Trust And Verification Documents Not Updated Successfully');
+                $this->session->set_flashdata('message_notification', $liabilityInsuranceResponse['error']);
                 $this->session->set_flashdata('class', A_FAIL);
-                redirect(base_url('user/trust/'));
+                redirect(base_url('user/upload-documents'));
             }
-        //}
+        }else{
+            $liabilityInsurance = $this->input->post('OldLiabilityInsurance');
+        }
+
+        if (isset($_FILES['licenceCopy']) && $_FILES['licenceCopy']['name'] != '') {
+            $licenceCopyResponse = $this->file_upload('licenceCopy', 'user/document/', $this->input->post('OldLicenceCopy'));
+            
+            if ($licenceCopyResponse['file_name'] != '') {
+                $licenceCopy = $licenceCopyResponse['file_name'];
+            } else {
+                $this->session->set_flashdata('message_notification', $licenceCopyResponse['error']);
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(base_url('user/upload-documents'));
+            }
+        }else{
+            $licenceCopy = $this->input->post('OldLicenceCopy');
+        }
+
+        $settingData = array(            
+            "establishmentLicence" => $establishmentLicence,
+            "liabilityInsurance" => $liabilityInsurance,
+            "licenceCopy" => $licenceCopy,
+            "updatedDate" => strtotime(date('Y-m-d H:i:s')),
+            "ipAddress" => $this->input->ip_address()
+        );
+        $response = $this->user->editUser($settingData, $this->session->userdata('user_id'));
+        if ($response > 0) {
+            $this->session->set_flashdata('message_notification', 'Documents Uploaded Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+            redirect(base_url('user/upload-documents'));
+        } else {
+            $this->session->set_flashdata('message_notification', 'Documents Not Updated Successfully');
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(base_url('user/upload-documents'));
+        }
     }
 
     public function submit_avatar() {
@@ -567,9 +566,7 @@ class User extends CI_Controller {
         if ($gClient->getAccessToken()) {
             $userProfile = $google_oauthV2->userinfo->get();
             // Preparing data for database insertion
-            /* echo '<pre>';
-              print_r($userProfile);
-              exit; */
+            //print_array($userProfile, TRUE);
 
             $check_user = $this->user->checkUser($userProfile['email']);
 
@@ -586,8 +583,7 @@ class User extends CI_Controller {
                     "updatedDate" => strtotime(date('Y-m-d H:i:s')),
                     "ipAddress" => $this->input->ip_address(),
                     "status" => 'Active',
-                    "googleEmail" => $userProfile['email'],
-                    "gender" => ucfirst($userProfile['gender'])
+                    "googleEmail" => $userProfile['email']
                 );
                 $updateRecord = $this->user->editUser($updateData, $check_user->id);
                 if ($updateRecord > 0) {
@@ -608,7 +604,6 @@ class User extends CI_Controller {
                     {
                         $agent = 'Unidentified User Agent';
                     }
-                    $this->load->helper('popin');
                     $loginData = array(
                         "userId" => $check_user->id,
                         "loginDate" => strtotime(date('Y-m-d H:i:s')),
@@ -631,7 +626,9 @@ class User extends CI_Controller {
                     redirect(base_url());
                 }
             } else {
-                $password = $this->randomString();
+                // Register with google
+                $this->google_register($userProfile);
+                /*$password = $this->randomString();
                 $userRegisterData = array(
                     "googleVerified" => 'Yes',
                     "firstName" => $userProfile['given_name'],
@@ -654,9 +651,6 @@ class User extends CI_Controller {
                     if (!empty($emailTemplate)) {
                         $siteEmailDetails = $this->all_emails->emailDetails();
 
-                        /* echo '<pre>';
-                          print_r($siteEmailDetails);
-                          exit; */
                         $emailContent = $emailTemplate->content;
                         $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
                             "{name}" => $userName,
@@ -668,7 +662,7 @@ class User extends CI_Controller {
                         $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
                         $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
                         $to = array('email' => $userProfile['email'], 'name' => $userName);
-                        $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
+                        $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
                         //If this email is exist and active then only email should be sent
                     }
 
@@ -679,10 +673,32 @@ class User extends CI_Controller {
                     $this->session->set_flashdata('message_notification', 'Your Registration Has Not Been Done Successfully');
                     $this->session->set_flashdata('class', A_FAIL);
                     redirect(base_url());
-                }
+                }*/
             }
         }
     }
+    
+    private function google_register($googleProfile){
+        /*$googleProfile = array
+                (
+                    'id' => '104386481530242034094',
+                    'email' => 'shshnk1408@gmail.com',
+                    'verified_email' => 1,
+                    'name' => 'Shashank Shekhar',
+                    'given_name' => 'Shashank',
+                    'family_name' => 'Shekhar',
+                    'link' => 'https://plus.google.com/+ShashankShekhar1408',
+                    'picture' => 'https://lh6.googleusercontent.com/-sGUwH0RWFy8/AAAAAAAAAAI/AAAAAAAAACk/CDBWb_-9p1U/photo.jpg',
+                    'gender' => 'male',
+                    'locale' => 'en'
+                );*/
+        
+        //print_array($userProfile);
+        $this->session->set_userdata('googleProfile', $googleProfile);
+        $this->session->set_flashdata('google_notification', 'Your account information is: ');
+        $this->session->set_flashdata('class', A_SUC);
+        redirect(base_url());
+    } 
 
     public function submit_register() {
          // echo '<pre>';
@@ -690,7 +706,7 @@ class User extends CI_Controller {
          //  exit;
         $config = array(
             array(
-                'field' => 'reg_firstName',
+                'field' => 'firstName',
                 'label' => 'First Name',
                 'rules' => 'required',
                 'errors' => array(
@@ -698,7 +714,7 @@ class User extends CI_Controller {
                 ),
             ),
             array(
-                'field' => 'reg_lastName',
+                'field' => 'lastName',
                 'label' => 'Last Name',
                 'rules' => 'required',
                 'errors' => array(
@@ -706,7 +722,7 @@ class User extends CI_Controller {
                 ),
             ),
             array(
-                'field' => 'reg_email',
+                'field' => 'email',
                 'label' => 'Email Address',
                 'rules' => 'required|valid_email|is_unique[user.email]',
                 'errors' => array(
@@ -716,7 +732,7 @@ class User extends CI_Controller {
                 ),
             ),
             array(
-                'field' => 'reg_password',
+                'field' => 'password',
                 'label' => 'Password',
                 'rules' => 'required',
                 'errors' => array(
@@ -724,7 +740,7 @@ class User extends CI_Controller {
                 ),
             ),
             array(
-                'field' => 'reg_dobMonth',
+                'field' => 'dobMonth',
                 'label' => 'DOB Month',
                 'rules' => 'required',
                 'errors' => array(
@@ -732,7 +748,7 @@ class User extends CI_Controller {
                 ),
             ),
             array(
-                'field' => 'reg_dobDay',
+                'field' => 'dobDay',
                 'label' => 'DOB Day',
                 'rules' => 'required',
                 'errors' => array(
@@ -740,7 +756,7 @@ class User extends CI_Controller {
                 ),
             ),
             array(
-                'field' => 'reg_dobYear',
+                'field' => 'dobYear',
                 'label' => 'DOB Year',
                 'rules' => 'required',
                 'errors' => array(
@@ -756,67 +772,124 @@ class User extends CI_Controller {
             $this->session->set_flashdata('class', A_FAIL);
             redirect(base_url());
         } else {
-            $activationLink = md5($this->input->post('reg_email'));
-            $newsLetter = isset($_POST['newsLetter'])?$_POST['newsLetter']:'No';
-            $pass = $this->input->post('reg_password');
-            $userRegisterData = array(
-                "firstName" => $this->input->post('reg_firstName'),
-                "lastName" => $this->input->post('reg_lastName'),
-                "email" => $this->input->post('reg_email'),
-                // "password" => $this->encrypt->encode($pass),
-                "password" => $this->encryption->encrypt($pass),
-                "dobMonth" => $this->input->post('reg_dobMonth'),
-                "dobDay" => $this->input->post('reg_dobDay'),
-                "dobYear" => $this->input->post('reg_dobYear'),
-                "verificationCode" => $activationLink,
-                "status" => 'Pending',
-                "newsLetter" => $newsLetter,
-                "createdDate" => strtotime(date('Y-m-d H:i:s')),
-                "updatedDate" => strtotime(date('Y-m-d H:i:s')),
-                "ipAddress" => $this->input->ip_address()
-            );
-            // print_r($userRegisterData);exit;
+            $userRegisterData = $this->input->post();
+            
+            $userRegisterData['password']            = $this->encryption->encrypt($userRegisterData['password']);
+            if(!isset($userRegisterData['googleVerified'])){
+                $userRegisterData['verificationCode']    = md5($userRegisterData['email']);
+            }            
+            $userRegisterData['newsLetter']          = isset($_POST['newsLetter'])?$_POST['newsLetter']:'No';
+            $userRegisterData['status']              = isset($_POST['googleVerified'])?'Active':'Pending';
+            $userRegisterData['createdDate']         = time();
+            $userRegisterData['updatedDate']         = time();
+            $userRegisterData['ipAddress']           = $this->input->ip_address();
+            if(isset($userRegisterData['picture'])){
+                $this->load->library('image_lib');
+                $userRegisterData['avatar'] = 'googleAvatar-' . $userRegisterData['googleId']. '.jpg';
+                $savePath = './uploads/user/'.$userRegisterData['avatar'];
+                save_image($userRegisterData['picture'], $savePath);
+                //Thumbnails Size
+                $image_sizes = array(
+                    'thumb' => array(150, 100, 'thumb'),
+                    'med' => array(300, 300, 'med'),
+                    'big' => array(800, 600, 'big')
+                );
+                
+                foreach ($image_sizes as $resize) {
+
+                    //Creating thumbnails code start
+                    $config = array(
+                        'image_library' => 'gd2',
+                        'source_image' => $savePath,
+                        'new_image' => './uploads/user/' . $resize[2] . '/' . $userRegisterData['avatar'],
+                        'maintain_ration' => true,
+                        'width' => $resize[0],
+                        'height' => $resize[1]
+                    );
+
+                    $this->image_lib->initialize($config);
+                    $this->image_lib->resize();
+                    $this->image_lib->clear();
+
+                    //Creating thumbnails code end
+                }
+            }
+            unset($userRegisterData['picture']);unset($userRegisterData['googleId']);
+            //print_array($userRegisterData);exit;
             $id = $this->user->addUser($userRegisterData);
             if ($id > 0) {
-                $userName = $this->input->post('reg_firstName') . ' ' . $this->input->post('reg_lastName');
-                if ($newsLetter == 'Yes') {
+                $userName = $userRegisterData['firstName'] . ' ' . $userRegisterData['lastName'];
+                if ($userRegisterData['newsLetter'] == 'Yes') {
                     // It means user wants to subscribe newsletter
                     $subscriberData = array(
                         "user" => $id,
                         "name" => $userName,
                         "status" => 'Pending',
-                        "email" => $this->input->post('reg_email'),
-                        "createdDate" => strtotime(date('Y-m-d H:i:s')),
-                        "updatedDate" => strtotime(date('Y-m-d H:i:s')),
+                        "email" => $this->input->post('email'),
+                        "createdDate" => time(),
+                        "updatedDate" => time(),
                         "ipAddress" => $this->input->ip_address()
                     );
 
                     $this->subscriber->addSubscriber($subscriberData);
                 }
+                
+                if(isset($userRegisterData['verificationCode'])){
+                    //Email Should Be Sent
+                    $emailTemplate = $this->all_emails->getEmailTemplate('user-register');
+                    if (!empty($emailTemplate)) {
+                        $siteEmailDetails = $this->all_emails->emailDetails();
+                        $emailContent = $emailTemplate->content;
+                        $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
+                            "{name}" => $userName,
+                            "{activationLink}" => '<a href="' . base_url('user/activation/' . $userRegisterData['verificationCode']) . '">here</a>'
+                        );
+                        $subject = $emailTemplate->subject;
+                        $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
+                        $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
+                        $to = array('email' => $userRegisterData['email'], 'name' => $userName);
 
-                //Email Should Be Sent
-                $emailTemplate = $this->all_emails->getEmailTemplate('user-register');
-                if (!empty($emailTemplate)) {
-                    $siteEmailDetails = $this->all_emails->emailDetails();
-                    $emailContent = $emailTemplate->content;
-                    $replaceVariables = array("{signature}" => $siteEmailDetails->emailSignature,
-                        "{name}" => $userName,
-                        "{activationLink}" => '<a href="' . base_url('user/activation/' . $activationLink) . '">here</a>'
+                        $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
+
+                        //If this email is exist and active then only email should be sent
+                        $this->session->set_flashdata('message_notification', 'Your registration has been done successfully, please verify your email-address.');
+                        $this->session->set_flashdata('class', A_SUC);
+                        redirect(base_url());
+                    }
+                }else{
+                    $this->load->library('user_agent');
+                    if ($this->agent->is_browser())
+                    {
+                        $agent = $this->agent->browser(); //$this->agent->version();
+                    }
+                    elseif ($this->agent->is_robot())
+                    {
+                        $agent = $this->agent->robot();
+                    }
+                    elseif ($this->agent->is_mobile())
+                    {
+                        $agent = $this->agent->mobile();
+                    }
+                    else
+                    {
+                        $agent = 'Unidentified User Agent';
+                    }
+                    $loginData = array(
+                        "userId" => $id,
+                        "loginDate" => strtotime(date('Y-m-d H:i:s')),
+                        "device" => $this->agent->platform(),
+                        "browser" => $agent,
+                        "ipAddress" => $this->input->ip_address(),
+                        "location" => get_location_from_ip($this->input->ip_address())
                     );
-                    $subject = $emailTemplate->subject;
-                    $from = array('email' => $siteEmailDetails->fromEmail, 'name' => $siteEmailDetails->siteName);
-                    $replyEmail = array('email' => $siteEmailDetails->replyEmail, 'name' => $siteEmailDetails->siteName);
-                    $to = array('email' => $this->input->post('reg_email'), 'name' => $userName);
-
-                    $sendEmail = $this->all_emails->sendEmail($subject, $emailContent, $replaceVariables, $to, $from, $replyEmail);
-
-                    //If this email is exist and active then only email should be sent
-                    $this->session->set_flashdata('message_notification', 'Your registration has been done successfully, please verify your email-address.');
-                    $this->session->set_flashdata('class', A_SUC);
-                    redirect(base_url());
+                    $session_logs = $this->user->loginRecord($loginData);
+                    $this->session->unset_userdata('googleProfile');
+                    //Insert data in to the Logins table code end
+                    // Username and Password is true. So, we get user id in return from the Admin Model
+                    $this->session->set_userdata('user_id', $id);
+                    $this->session->set_userdata('session_login_id', $session_logs);
+                    redirect(site_url('dashboard'));
                 }
-
-
             } else {
                 $this->session->set_flashdata('message_notification', 'Your Registration Has Not Been Done Successfully');
                 $this->session->set_flashdata('class', A_FAIL);
@@ -965,13 +1038,14 @@ class User extends CI_Controller {
         }
     }
     public function check_exist_email() {
-        if ($this->input->post('reg_email') != '') {
+        if ($this->input->post('reg_email') != '' || $this->input->post('email') != '') {
+            $email = ($_POST['email'])?$this->input->post('email'):$this->input->post('reg_email');
             if ($this->input->post('id') != '') {
                 $id = $this->input->post('id');
             } else {
                 $id = 0;
             }
-            $email_check = $this->user->check_exist_email($this->input->post('reg_email'), $id);
+            $email_check = $this->user->check_exist_email($email, $id);
             if (!empty($email_check)) {
                 echo "false";
                 exit;

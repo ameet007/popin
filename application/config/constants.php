@@ -131,6 +131,8 @@ define('EMAIL_TEMPLATE','email_template');
 define('SUBSCRIBER','newsletter_subscriber');
 define('HOST','hosts');
 define('GUEST','guests');
+
+define('PAYPALUSERID','casual_seduction_merchant_api1.gmail.com');
 define('PAYPALSIGN','AFcWxV21C7fd0v3bYYYRCpSSRl31ACfcQDCYj.DtXfE7pooYeCR0xJmr');
 define('PAYPALAPPID','APP-80W284485P519543T');
 define('SENDBOXEMAIL','testmail0987654@gmail.com');
@@ -156,7 +158,7 @@ define('MONTH_DIG',serialize(array(
 		'12'	=>	'December'
 )));
 define('MONTHS',serialize(array(
-		''			=>	'Select Month',
+		''			=>	'Month',
 		'January'	=>	'January',
 		'February'	=>	'February',
 		'March'		=>	'March',

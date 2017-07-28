@@ -13,12 +13,28 @@ ul,ol,ul li,ol li{list-style:none; margin:0; padding:0;}
 .clear-right{clear:right}
 .pad-15 {padding: 15px;}
 a:focus {text-decoration: none; color:#007a87;}
-.mr20 {margin-bottom: 20px !important;}
+
+.mt0 {margin-top: 0px !important;}
+.mt5 {margin-top: 5px !important;}
+.mt10 {margin-top: 10px !important;}
+.mt15 {margin-top: 15px !important;}
+.mt20 {margin-top: 20px !important;}
+
 .mr0 {margin-bottom: 0 !important;}
-.mr15 {margin-bottom: 15px;}
+.mr5 {margin-bottom: 5px !important;}
+.mr10 {margin-bottom: 10px !important;}
+.mr15 {margin-bottom: 15px !important;}
+.mr20 {margin-bottom: 20px !important;}
+
 .pd0 {padding: 0 !important;}
+.pdr0 {padding-right: 0 !important;}
+
 .font12{font-size: 12px;}
+
 .line-height13em{line-height: 1.3em !important;}
+
+.image-border {border: 2px solid #ccc !important;}
+
 .media-object {max-width: none;}
 a{color:#007a87; text-decoration:none}
 a:hover{color:#db3641;text-decoration:none}
@@ -227,6 +243,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .foot {border-top: solid 1px #dce0e0;}
 .foot .foot_top {padding: 40px 0;}
 .foot .one-foruth select, .account-section .receive-sms ul li select {background-image: url(../img/down-arrow.png); background-repeat: no-repeat; background-position: 94% center; font-size: 16px; font-weight: 300; height: 44px; line-height: 16px; padding: 10px 40px 10px 10px; width: 100%; appearance: none; -moz-appearance: none; -webkit-appearance: none;  background-color: #fff; border: 1px solid #dbdbdb; color: #484848; margin-bottom: 10px; width: 250px;}
+select.custom-select {background-image: url(../img/down-arrow.png); background-repeat: no-repeat; background-position: 94% center; font-size: 16px; font-weight: 300; line-height: 16px; padding: 10px 40px 10px 10px; width: 100%; appearance: none; -moz-appearance: none; -webkit-appearance: none;  background-color: #fff; border: 1px solid #aaa; color: #484848; margin-bottom: 10px; width: 100%;}
 .foot .one-foruth h5 {font-weight: 600; margin-bottom: 10px; color: #484848;}
 .foot .one-foruth ul li {padding: 5px 0;}
 .foot .one-foruth ul li a {display: block; color: #76767a;}
@@ -339,7 +356,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .profile-section .profile-photo strong {margin-bottom: 15px; display: block;}
 .profile-section .profile-photo .align-center {padding-top: 15px;}
 .profile-section .verified-info {margin-bottom: 20px;}
-.profile-section .verified-info h4 {margin-bottom: 15px; font-size: 18px; font-weight: 700; line-height: 18px; color: #484848; margin-bottom: 15px;}
+.profile-section .verified-info h4 {margin-bottom: 15px; font-size: 18px; font-weight: 700; line-height: 18px; color: #484848;}
 .profile-section .verified-info p {margin-bottom: 0px; line-height: 20px;}
 .profile-section .verified-info .btn-default {padding: 10px 40px; height: auto;}
 .profile-section .reviews {margin-bottom: 20px;}
@@ -482,7 +499,7 @@ label{font-size:14px; line-height:15px; color:#121212; font-weight:normal;}
 .new-signup .felid input.icon3 {background-image: url(../img/feild-icon3.png);}
 .new-signup .felid input.icon4 {background-image: url(../img/feild-icon4.png);}
 .new-signup .felid label {font-size: 14px; color: #484848;}
-.new-signup .barthday {margin-top: 15px; margin-bottom: 15px;}
+.new-signup .barthday {margin: 5px 0;}
 .new-signup .barthday p{font-size: 11px; color: #484848; margin-bottom: 3px;}
 .new-signup .barthday .selectbox {appearance: none; -moz-appearance: none; -webkit-appearance: none;}
 .new-signup .check-right {margin-bottom: 15px;}

@@ -457,19 +457,22 @@ class Dashboard extends CI_Controller
         $data['module_heading'] = 'Wishlists';
         if ($this->session->userdata('user_id') != '') {
             $data['userProfileInfo'] = $this->user->userProfileInfo();
+            $currentUser = $this->session->userdata('user_id');
         } else {
             $data = array();
+            $currentUser = "";
         }
         $data['referralID']     = $referralNumber;
         $getUserInfo = getSingleRecord('user','referalLink',$referralNumber);
         if (!empty($getUserInfo)) {
-             $alreadyJoin = $this->user->checkAlreadyJoinAccount($getUserInfo->id);
-             if ($alreadyJoin == 'true') {
+             $alreadyJoin = $this->user->checkAlreadyJoinAccount($getUserInfo->id, $currentUser);
+             if ($alreadyJoin == 'false') {
+                 $data['search_nav'] = 1;
                  $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
                  $this->load->view('frontend/referral',$data);
                  $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer'); 
              }else{
-            redirect(base_url());
+                redirect(base_url());
              }
         }else{
             redirect(base_url());

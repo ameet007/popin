@@ -43,8 +43,8 @@
                                     <div class="row">
                                         <label class="align-right col-sm-3">Gender <i class="fa fa-lock" aria-hidden="true"></i></label>
                                         <div class="col-sm-9">
-                                            <select class="selectbox" name="gender" id="gender" onchange="autoSave(this.id,this.value)">
-                                                <option value="">Gender</option>
+                                            <select class="selectbox custom-select" name="gender" id="gender" onchange="autoSave(this.id,this.value)">
+                                                <option value="" disabled>Gender</option>
                                                 <option value="Male" <?= ($userProfileInfo->gender=='Male')?'selected':''; ?>>Male</option>
                                                 <option value="Female" <?= ($userProfileInfo->gender=='Female')?'selected':''; ?>>Female</option>
                                             </select>
@@ -56,25 +56,25 @@
                                     <div class="row">
                                         <label class="align-right col-sm-3">Date of Birth <i class="fa fa-lock" aria-hidden="true"></i></label>
                                         <div class="col-sm-9">
-                                            <select class="selectbox" name="dobMonth" id="dobMonth" onchange="autoSave(this.id,this.value)">
+                                            <select class="selectbox custom-select" name="dobMonth" id="dobMonth" onchange="autoSave(this.id,this.value)">
                                                 <?php $all_months = unserialize(MONTHS); 
-												foreach($all_months as $k=>$v){ ?>
-												<option value="<?= $k; ?>" <?= ($k==$userProfileInfo->dobMonth)?'selected':''; ?>><?= $v; ?></option>
-												<?php } ?>
+                                                foreach($all_months as $k=>$v){ ?>
+                                                <option value="<?= $k; ?>" <?= ($k==$userProfileInfo->dobMonth)?'selected':''; ?>><?= $v; ?></option>
+                                                <?php } ?>
                                             </select>
-                                             <select class="selectbox" name="dobDay" id="dobDay" onchange="autoSave(this.id,this.value)">
-												<option value="">Day</option>
-												<?php for($i=1;$i<=31;$i++) { ?>
-												<option value="<?php echo $i; ?>" <?= ($userProfileInfo->dobDay==$i)?'selected':''; ?>><?php echo $i; ?></option>
-												<?php } ?>
-											</select>
-                                            <select class="selectbox" name="dobYear" id="dobYear" onchange="autoSave(this.id,this.value)">
-												<option value="">Year</option>
-												<?php for($i=date('Y');$i>=(date('Y')-100);$i--) { ?>
-												<option value="<?php echo $i; ?>" <?= ($userProfileInfo->dobYear==$i)?'selected':''; ?>><?php echo $i; ?></option>
-												<?php } ?>
-											</select>
-											<p class="birthError"></p>
+                                            <select class="selectbox custom-select" name="dobDay" id="dobDay" onchange="autoSave(this.id,this.value)">
+                                                <option value="">Day</option>
+                                                <?php for($i=1;$i<=31;$i++) { ?>
+                                                <option value="<?php echo $i; ?>" <?= ($userProfileInfo->dobDay==$i)?'selected':''; ?>><?php echo $i; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <select class="selectbox custom-select" name="dobYear" id="dobYear" onchange="autoSave(this.id,this.value)">
+                                                <option value="">Year</option>
+                                                <?php for($i=date('Y');$i>=(date('Y')-100);$i--) { ?>
+                                                <option value="<?php echo $i; ?>" <?= ($userProfileInfo->dobYear==$i)?'selected':''; ?>><?php echo $i; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <p class="birthError"></p>
                                             <p>We use this data for analysis and never share it with other users.</p>
                                         </div>
                                     </div>
@@ -119,15 +119,15 @@
                                     <div class="row">
                                         <label class="align-right col-sm-3">Preferred Language</label>
                                         <div class="col-sm-9">
-                                            <select class="selectbox" name="language" id="language" onchange="autoSave(this.id,this.value)">
+                                            <select class="selectbox custom-select" name="language" id="language" onchange="autoSave(this.id,this.value)">
                                                <?php $all_languages = unserialize(LANGUAGES); 
-											   foreach($all_languages as $k=>$v)
-											   { ?>
-												   <option value="<?= $k; ?>" <?= ($userProfileInfo->language==$k)?'selected':''; ?>><?= $v; ?></option>
-											  <?php }
-											   ?>
+                                                foreach($all_languages as $k=>$v)
+                                                { ?>
+                                                        <option value="<?= $k; ?>" <?= ($userProfileInfo->language==$k)?'selected':''; ?>><?= $v; ?></option>
+                                               <?php }
+                                                ?>
                                             </select>
-											<p class="languageError"></p>
+                                            <p class="languageError"></p>
                                             <p>We'll send you messages in this language.</p>
                                         </div>
 
@@ -137,18 +137,18 @@
                                     <div class="row">
                                         <label class="align-right col-sm-3">Preferred Currency</label>
                                         <div class="col-sm-9">
-                                            <select class="selectbox" name="currency" id="currency" onchange="autoSave(this.id,this.value)">
+                                            <select class="selectbox custom-select" name="currency" id="currency" onchange="autoSave(this.id,this.value)">
                                             <?php $all_currency = unserialize(CURRENCIES);
-											foreach($all_currency as $k=>$v) { ?>
-											<option value="<?= $v; ?>" <?= ($userProfileInfo->currency==$k)?'selected':''; ?>><?= $v; ?></option>
-											<?php } ?>
-											</select>
-											<p class="currencyError"></p>
+                                            foreach($all_currency as $k=>$v) { ?>
+                                            <option value="<?= $v; ?>" <?= ($userProfileInfo->currency==$k)?'selected':''; ?>><?= $v; ?></option>
+                                            <?php } ?>
+                                            </select>
+                                            <p class="currencyError"></p>
                                             <p>We’ll show you prices in this currency.</p>
                                         </div>
                                     </div>
                                 </div>
-								<div class="main-input">
+                                <div class="main-input">
                                     <div class="row">
                                         <label class="align-right col-sm-3">Business Name</label>
                                         <div class="col-sm-9">
@@ -169,7 +169,7 @@
                                         </div>
                                     </div>
                                 </div>
-								<div class="main-input">
+                                <div class="main-input">
                                     <div class="row">
                                         <label class="align-right col-sm-3">Where You Live</label>
                                         <div class="col-sm-9">
@@ -188,7 +188,7 @@
                                         </div>
                                     </div>
                                 </div>
-								<div class="main-input">
+                                <div class="main-input">
                                     <div class="row">
                                         <label class="align-right col-sm-3">School/Institution Attended</label>
                                         <div class="col-sm-9">
@@ -208,12 +208,12 @@
                                     <div class="row">
                                         <label class="align-right col-sm-3">Time Zone</label>
                                         <div class="col-sm-9">
-                                            <select class="selectbox" name="timeZone" id="timeZone" onchange="autoSave(this.id,this.value)">
+                                            <select class="selectbox custom-select" name="timeZone" id="timeZone" onchange="autoSave(this.id,this.value)">
                                              <?php 
-											 $all_timezone = unserialize(TIMEZONE);
-											 foreach($all_timezone as $k=>$v) { ?>
-												<option value="<?= $k; ?>" <?= ($userProfileInfo->timeZone==$k)?'selected':''; ?>><?= $v; ?></option>
-											<?php } ?>
+                                            $all_timezone = unserialize(TIMEZONE);
+                                            foreach($all_timezone as $k=>$v) { ?>
+                                                <option value="<?= $k; ?>" <?= ($userProfileInfo->timeZone==$k)?'selected':''; ?>><?= $v; ?></option>
+                                           <?php } ?>
                                             </select>
                                             <p>Your home time zone.</p>
                                         </div>
@@ -223,15 +223,14 @@
                                     <div class="row">
                                         <label class="align-right col-sm-3">Languages</label>
                                         <div class="col-sm-9 number-add">
-                                        <select data-placeholder="Please Select Languages" name="languages[]" id="languages" onChange="getSelectedOptions(this)"  multiple class="selectbox chosen-select" tabindex="8">
-										  <?php
-												$language_arr = explode(',',$userProfileInfo->languages);
-											   foreach($all_languages as $k=>$v)
-											   { ?>
-												   <option value="<?= $k; ?>" <?= (in_array($k,$language_arr)==true and $language_arr[0]!='')?'selected':''; ?>><?= $v; ?></option>
-											  <?php }
-											   ?>
-										</select>
+                                            <select data-placeholder="Please Select Languages" name="languages[]" id="languages" onChange="getSelectedOptions(this)"  multiple class="selectbox chosen-select" tabindex="8">
+                                            <?php
+                                                $language_arr = explode(',',$userProfileInfo->languages);
+                                                     foreach($all_languages as $k=>$v)
+                                                     { ?>
+                                                    <option value="<?= $k; ?>" <?= (in_array($k,$language_arr)==true and $language_arr[0]!='')?'selected':''; ?>><?= $v; ?></option>
+                                            <?php } ?>
+                                            </select>
                                             <p>Add any languages that others can use to speak with you on <?= SITE_DISPNAME; ?></p>
                                         </div>
                                     </div>
