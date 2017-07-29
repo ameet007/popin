@@ -44,7 +44,7 @@
                                         <label class="align-right col-sm-3">Gender <i class="fa fa-lock" aria-hidden="true"></i></label>
                                         <div class="col-sm-9">
                                             <select class="selectbox custom-select" name="gender" id="gender" onchange="autoSave(this.id,this.value)">
-                                                <option value="" disabled>Gender</option>
+                                                <option value="" selected disabled>Gender</option>
                                                 <option value="Male" <?= ($userProfileInfo->gender=='Male')?'selected':''; ?>>Male</option>
                                                 <option value="Female" <?= ($userProfileInfo->gender=='Female')?'selected':''; ?>>Female</option>
                                             </select>
@@ -104,7 +104,7 @@
                                               if ($userProfileInfo->phone_verify != 'yes' && !empty($userProfileInfo->phone)) { ?>
                                               <input type="hidden" name="numberCode" value="<?= (!empty($number[0])?$number[0]:''); ?>" >
                                               <input type="hidden" name="number" value="<?= (!empty($number[1])?$number[1]:''); ?>" >
-                                             <u id="ErrorMessage"><p style="cursor:pointer;" data-toggle="modal" data-target="#myModal" >Not verify Click here to verify Phone Number</p></u>
+                                             <u id="ErrorMessage"><p style="cursor:pointer;" data-toggle="modal" data-target="#myModal" >Not verified, Click here to verify Phone Number</p></u>
                                             <?php  }
                                             if ($userProfileInfo->phone_verify == 'yes'){
                                                 echo '<u><p>Verified<span class="pull-right"><img src="'.base_url('theme/front/assests/img/right-singh.png').'" alt=""></span></p></u>';
@@ -153,6 +153,14 @@
                                         <label class="align-right col-sm-3">Business Name</label>
                                         <div class="col-sm-9">
                                             <input class="textbox" value="<?= $userProfileInfo->businessName; ?>" onchange="autoSave(this.id,this.value)" name="businessName" id="businessName" type="text" placeholder="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="main-input">
+                                    <div class="row">
+                                        <label class="align-right col-sm-3">Establishment License Number</label>
+                                        <div class="col-sm-9">
+                                            <input class="textbox" value="<?= $userProfileInfo->establishmentLicenceNumber; ?>" onchange="autoSave(this.id,this.value)" name="establishmentLicenceNumber" id="establishmentLicenceNumber" type="text" placeholder="" />
                                         </div>
                                     </div>
                                 </div>

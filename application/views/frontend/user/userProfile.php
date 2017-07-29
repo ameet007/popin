@@ -1,6 +1,3 @@
-<style type="text/css">
-
-</style>
 <section class="middle-container account-section profile-section user-sh">
     <div class="container">
         <div class="main-content">
@@ -132,7 +129,7 @@
                 </aside>
                 <article class="col-lg-9 main-right wish-lists profile-wish-lists">
                     <div class="pro-con">
-                        <h2>Hey, I’m <?= $userProfileInfo->firstName.' '.$userProfileInfo->lastName; ?>!</h2>
+                        <h2>Hey, I’m <?= $userProfileInfo->firstName; ?></h2>
                         <p><strong><?= strtoupper((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:'Us'));?> • Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
                         <p><?= $userProfileInfo->aboutYou; ?></p>
                         <?php $reviewsList = getMultiRecord('space_ratings','reviewOnId',$userProfileInfo->id);?>

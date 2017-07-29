@@ -60,13 +60,13 @@ $google_notification = $this->session->flashdata('google_notification');
                 <?php } endif;?>
                 <form name="signUpForm" id="signUpForm" method="post" action="<?= base_url('user/submit_register'); ?>" autocomplete="off">
                     <div class="felid">
-                        <input placeholder="First name" value="<?php echo $googleProfile['given_name']; ?>" id="firstName" name="firstName" class="textbox" type="text" />
+                        <input placeholder="First name" value="<?php echo isset($googleProfile['given_name'])?$googleProfile['given_name']:''; ?>" id="firstName" name="firstName" class="textbox" type="text" />
                     </div>
                     <div class="felid">
-                        <input placeholder="Last name" value="<?php echo $googleProfile['family_name']; ?>" id="lastName" name="lastName" class="textbox" type="text" />
+                        <input placeholder="Last name" value="<?php echo isset($googleProfile['family_name'])?$googleProfile['family_name']:''; ?>" id="lastName" name="lastName" class="textbox" type="text" />
                     </div>
                     <div class="felid">
-                        <input placeholder="Email address" value="<?php echo $googleProfile['email']; ?>" name="email" id="email" class="icon3 textbox" onkeyup="return forceLower(this);" />
+                        <input placeholder="Email address" value="<?php echo isset($googleProfile['email'])?$googleProfile['email']:''; ?>" name="email" id="email" class="icon3 textbox" onkeyup="return forceLower(this);" />
                     </div>
                     <div class="felid">
                         <input placeholder="Password" value="" name="password" id="password" class="icon4 textbox" type="password" />
@@ -96,7 +96,7 @@ $google_notification = $this->session->flashdata('google_notification');
                             <div class="col-md-4">
                                 <select class="selectbox custom-select" name="dobYear" id="dobYear">
                                     <option value="">Year</option>
-                                    <?php for ($i = date('Y'); $i >= (date('Y') - 100); $i--) { ?>
+                                    <?php for ($i = date('Y') - 18; $i >= (date('Y') - 100); $i--) { ?>
                                     <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                     <?php } ?>
                                 </select>
@@ -109,7 +109,7 @@ $google_notification = $this->session->flashdata('google_notification');
                             <span for="newsLetter">I would like to receive updates from PopIn</span>
                         </label>
                     </div>
-                    <?php if(!empty($google_notification)):?>
+                    <?php if(isset($googleProfile) && !empty($googleProfile)):?>
                     <input type="hidden" name="googleVerified" value="Yes">
                     <input type="hidden" name="googleId" value="<?php echo $googleProfile['id']; ?>">
                     <input type="hidden" name="gender" value="<?php echo ucfirst($googleProfile['gender']); ?>">

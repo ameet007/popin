@@ -23,7 +23,7 @@
                             <select class="selectbox" name="page1[establishmentType]" required>
                                 <option value="" selected disabled>Select establishment type</option>
                                 <?php foreach($establishment_types as $establishment){ if (isset($stepData['step1']['page1']['industryType'])&&$stepData['step1']['page1']['industryType'] == $establishment['industry_ID']) {?>
-                                <option value="<?= $establishment['id']; ?>" <?php echo (isset($stepData['start']['establishment']) && $stepData['start']['establishment'] == $establishment['id'])? 'selected' : ''?>><?= $establishment['name']; ?></option>
+                                <option value="<?= $establishment['id']; ?>" <?php echo (isset($stepData['step1']['page1']['establishmentType']) && $stepData['step1']['page1']['establishmentType'] == $establishment['id'])? 'selected' : ''?>><?= $establishment['name']; ?></option>
                                 <?php }}?>
                             </select>
                         </div>
@@ -32,15 +32,18 @@
                             <select class="selectbox" name="page1[spaceType]" required>
                                 <option value="" selected disabled>Select space type</option>
                                 <?php foreach($space_types as $space){ ?>
-                                <option value="<?= $space['id']; ?>" <?php echo (isset($stepData['start']['space']) && $stepData['start']['space'] == $space['id'])? 'selected' : ''?>><?= $space['name']; ?></option>
+                                <option value="<?= $space['id']; ?>" <?php echo (isset($stepData['step1']['page1']['spaceType']) && $stepData['step1']['page1']['spaceType'] == $space['id'])? 'selected' : ''?>><?= $space['name']; ?></option>
                                 <?php }?>
                             </select>
                         </div>
+                        <?php if(trim($userProfileInfo->establishmentLicenceNumber) ==""): ?>
                         <div class="feild">
                             <label>Establishment License Number</label>
                             <?php $errors_3 = $this->session->flashdata('errors_3'); if(!empty($errors_3)){ ?><div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?= $errors_3; ?></div><?php }?>
-                            <input type="text" class="textbox" name="page1[establishmentLicence]" placeholder="Establishment License Number" value="<?php echo isset($stepData['step1']['page1']['establishmentLicence'])? $stepData['step1']['page1']['establishmentLicence'] : ""?>"  required/>                            
+                            <input type="text" class="textbox" name="page1[establishmentLicence]" placeholder="Establishment License Number" value="<?php echo isset($stepData['step1']['page1']['establishmentLicence'])? $stepData['step1']['page1']['establishmentLicence'] : $userProfileInfo->establishmentLicenceNumber;?>"  required/>                            
                         </div>
+                        <?php endif;?>
+                        <?php if(trim($userProfileInfo->establishmentLicence) ==""): ?>
                         <div class="feild row">   
                             <?php $errors_1 = $this->session->flashdata('errors_1'); if(!empty($errors_1)){ ?><div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?= $errors_1; ?></div><?php }?>
                             <div class="col-sm-8">                                
@@ -59,6 +62,8 @@
                                 <img id="establishmentLicenceFile" src="<?= $establishmentLicenceFile; ?>" alt="establishmentLicenceFile" <?php if($establishmentLicenceFile == ""){?>style="display: none;"<?php }?>>
                             </div>
                         </div>
+                        <?php endif;?>
+                        <?php if(trim($userProfileInfo->liabilityInsurance) ==""): ?>
                         <div class="feild row">
                             <?php $errors_2 = $this->session->flashdata('errors_2'); if(!empty($errors_2)){ ?><div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?= $errors_2; ?></div><?php }?>
                             <div class="col-sm-8">                                
@@ -77,6 +82,7 @@
                                 <img id="liabilityInsuranceFile" src="<?= $liabilityInsuranceFile; ?>" alt="liabilityInsuranceFile" <?php if($liabilityInsuranceFile == ""){?>style="display: none;"<?php }?>>
                             </div>
                         </div>
+                        <?php endif;?>
                         <div class="next-prevs clearfix">
                             <div class="pull-left">
                                 <a class="gost-btn" href="<?php echo site_url('Space'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>

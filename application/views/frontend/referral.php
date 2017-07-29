@@ -12,8 +12,8 @@ if (!empty($getUserInfo)) {
         <div class="row">
             <div class="col-md-offset-2 col-md-8 text-center">
                 <img class="profile-photo image-round" src="<?php echo $user_profile_photo; ?>" alt="avatar" />
-                <h2><?= ucfirst($getUserInfo->firstName . ' ' . $getUserInfo->lastName); ?> gave you ₹ <?= number_format($getAmount->join_amount); ?> to travel</h2>
-                <p>Popln is the best way to rent unique, local accommodations on any travel budget. Get ₹ <?= number_format($getAmount->join_amount); ?> off your first trip of ₹<?= number_format($getAmount->referral_credit_amount); ?> or more. Read the terms</p>
+                <h2><?= ucfirst($getUserInfo->firstName); ?> gave you ₹<?= number_format($getAmount->join_amount); ?> to rent</h2>
+                <p>PopIn is the best way to rent unique, local accommodations on any rental budget. Get ₹<?= number_format($getAmount->join_amount); ?> off your first rental of ₹<?= number_format($getAmount->referral_credit_amount); ?> or more. <a href="<?= site_url('page/terms'); ?>">Read the terms</a></p>
             </div>
         </div>
         <!-- <div class="signup-btn-container" data-reactid="23"> -->
@@ -40,10 +40,10 @@ if (!empty($getUserInfo)) {
                 <div class="col-md-12 text-center">
                     <img class="profile-photo image-round" src="<?php echo $user_profile_photo; ?>" height="150" width="150" alt="avatar" />
                     <h4 class="mr10"><?= ucfirst($getUserInfo->firstName . ' ' . $getUserInfo->lastName); ?> gave you ₹<?= number_format($getAmount->join_amount); ?> to travel</h4>
-                    <p>Popln is the best way to rent unique, local accommodations on any travel budget. Get ₹<?= number_format($getAmount->join_amount); ?> off your first trip of ₹<?= number_format($getAmount->referral_credit_amount); ?> or more. Read the terms</p>
+                    <p>PopIn is the best way to rent unique, local accommodations on any travel budget. Get ₹<?= number_format($getAmount->join_amount); ?> off your first trip of ₹<?= number_format($getAmount->referral_credit_amount); ?> or more. Read the terms</p>
                 </div>
             </div>
-            <form name="signUpForm" id="signUpForm" method="post" action="<?= base_url('user/submit_referral_register'); ?>">
+            <form name="signUpFormRefer" id="signUpFormRefer" method="post" action="<?= base_url('user/submit_referral_register'); ?>" autocomplete="off">
                 <div class="modal-body mt10">
                     <div class="felid">
                         <input placeholder="First name" value="" id="reg_firstName" name="reg_firstName" class="textbox" type="text" />
@@ -85,7 +85,7 @@ if (!empty($getUserInfo)) {
                             <div class="col-md-4">
                                 <select class="selectbox custom-select" name="reg_dobYear" id="reg_dobYear">
                                     <option value="">Year</option>
-                                    <?php for ($i = date('Y'); $i >= (date('Y') - 100); $i--) { ?>
+                                    <?php for ($i = date('Y') - 18; $i >= (date('Y') - 100); $i--) { ?>
                                         <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                     <?php } ?>
                                 </select>
@@ -112,7 +112,7 @@ if (!empty($getUserInfo)) {
 <!--User Signup Modal Box End-->
 <script>
     $(document).ready(function (e) {
-        $('#signUpForm').validate({
+        $('#signUpFormRefer').validate({
             rules: {
                 reg_firstName: {required: true},
                 reg_lastName: {required: true},
@@ -133,26 +133,6 @@ if (!empty($getUserInfo)) {
                 reg_dobMonth: {required: "Please Select Month"},
                 reg_dobDay: {required: "Please Select Day"},
                 reg_dobYear: {required: "Please Select Year"}
-            }
-        });
-
-
-        $('#signInForm').validate({
-            rules: {
-                login_email: {required: true, email: true},
-                login_password: {required: true},
-            },
-            messages: {
-                login_email: {required: "Please Enter Email Address", email: "Please Enter Valid Email Address"},
-                login_password: {required: "Please Enter Password"},
-            }
-        });
-        $('#forgotPasswordForm').validate({
-            rules: {
-                forgot_email: {required: true, email: true}
-            },
-            messages: {
-                forgot_email: {required: "Please Enter Email Address", email: "Please Enter Valid Email Address"}
             }
         });
     });

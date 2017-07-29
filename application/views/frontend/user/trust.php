@@ -103,7 +103,7 @@ $message_notification = $this->session->flashdata('message_notification')
                                         <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
                                             <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
                                         <?php  }else{ ?>
-                                            <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
+                                            <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $establishmentLicenceLink; ?>" style="height:100px;" ></a>
                                         <?php   }?>
                                     <?php } if ($liabilityInsuranceVerified == 'yes' && !empty($liabilityInsuranceLink)) { ?>
                                     <h4 class="mt15 mr5">Liability insurance <small>(Verified)</small></h4>
@@ -114,7 +114,7 @@ $message_notification = $this->session->flashdata('message_notification')
                                         <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
                                             <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
                                         <?php  }else{ ?>
-                                            <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
+                                            <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $liabilityInsuranceLink; ?>" style="height:100px;" ></a>
                                         <?php   }?>
                                     <?php } if ($licenceCopyVerified == 'yes' && !empty($licenceLink)) { ?>
                                     <h4 class="mt15 mr5">License / Certificate Copy <small>(Verified)</small></h4>
@@ -146,7 +146,7 @@ $message_notification = $this->session->flashdata('message_notification')
                                             <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
                                                 <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
                                             <?php  }else{ ?>
-                                                <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
+                                                <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $establishmentLicenceLink; ?>" style="height:100px;" ></a>
                                             <?php  }}else{ ?>
                                             If you are listing your space, verify ownership by providing us with your license.
                                             <?php }?>
@@ -165,7 +165,7 @@ $message_notification = $this->session->flashdata('message_notification')
                                             <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
                                                 <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
                                             <?php  }else{ ?>
-                                                <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
+                                                <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $liabilityInsuranceLink; ?>" style="height:100px;" ></a>
                                             <?php  }}else{ ?>
                                             Upload a copy of your liability insurance.
                                             <?php }?>

@@ -144,6 +144,7 @@ class Space extends CI_Controller {
         } else {
             $stepData = $this->session->userdata('stepData');
         }
+        $data['userProfileInfo'] = $this->host->userProfileInfo();
         $data['industries'] = $this->space->getDropdownData('industry');
         $data['establishment_types'] = $this->space->getDropdownData('establishment_types');
         $data['space_types'] = $this->space->getDropdownData('space_types');
@@ -154,6 +155,7 @@ class Space extends CI_Controller {
     }
 
     public function professionals() {   
+        $userProfileInfo = $this->host->userProfileInfo();
         $header['step_info'] = $this->head_step_1;
         $stepData = $this->session->userdata('stepData');
         if (!empty($_POST)){
@@ -165,10 +167,20 @@ class Space extends CI_Controller {
         $estabLicenceFile = ''; $liabInsurance = '';
         if(isset($stepData['step1']['page1']['establishmentLicenceFile'])){
             $estabLicenceFile = $stepData['step1']['page1']['establishmentLicenceFile'];
+        }else{
+            $estabLicenceFile = trim($userProfileInfo->establishmentLicence);
         }
+        
         if(isset($stepData['step1']['page1']['liabilityInsurance'])){
             $liabInsurance = $stepData['step1']['page1']['liabilityInsurance'];
+        }else{
+            $liabInsurance = trim($userProfileInfo->liabilityInsurance);
         }
+        
+        if(!isset($requestData['establishmentLicence'])){
+            $requestData['establishmentLicence'] = trim($userProfileInfo->establishmentLicenceNumber);
+        }
+        
 
         if (!empty($requestData)) {
             $stepData['step1']['page1'] = $requestData;
@@ -221,6 +233,15 @@ class Space extends CI_Controller {
                 
                 $this->space->updateData($updateData,$stepData['id'],$host_id);
             }
+            // update user profile for documents
+            $profileData = array(
+                "establishmentLicenceNumber" => trim($stepData['step1']['page1']['establishmentLicence']),
+                "establishmentLicence" => $stepData['step1']['page1']['establishmentLicenceFile'],
+                "liabilityInsurance" => $stepData['step1']['page1']['liabilityInsurance'],
+                "updatedDate" => time(),
+                "ipAddress" => $this->input->ip_address()
+            );
+            $this->space->editHost($profileData, $host_id);
             $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',20);
             $this->session->set_userdata('stepData', $stepData);
         }

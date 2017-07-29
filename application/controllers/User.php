@@ -1039,7 +1039,7 @@ class User extends CI_Controller {
     }
     public function check_exist_email() {
         if ($this->input->post('reg_email') != '' || $this->input->post('email') != '') {
-            $email = ($_POST['email'])?$this->input->post('email'):$this->input->post('reg_email');
+            $email = (isset($_POST['email']))?$this->input->post('email'):$this->input->post('reg_email');
             if ($this->input->post('id') != '') {
                 $id = $this->input->post('id');
             } else {
