@@ -61,14 +61,14 @@
                                                 </label>
                                             </th>
                                             <th width="10%">Avatar</th>
-                                            <th width="15%"> Name </th>
+                                            <th width="10%"> Name </th>
                                             <th width="10%">Email</th>
                                             <th width="10%">Number</th>
                                             <th width="10%">Gender</th>
                                             <th width="10%"> Created Date</th>
                                             <th width="10%"> Updated Date</th>
                                             <th width="10%"> Status </th>
-                                            <th width="13%"> Actions </th>
+                                            <th width="10%"> Actions </th>
                                         </tr>
                                         <tr role="row" class="filter">
                                             <td> </td>

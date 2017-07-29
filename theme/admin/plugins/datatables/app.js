@@ -11,7 +11,7 @@ var App = function() {
 
     var resizeHandlers = [];
     
-    var base_url = window.location.protocol + '//' + window.location.hostname + (window.location.hostname === 'localhost')?'/neurons-it/':'/';
+    var base_url = window.location.protocol + '//' + window.location.hostname + (window.location.hostname === 'localhost'?'/neurons-it/':'/');
     
     var assetsPath = base_url + 'Popin/theme/admin/assets/';
 

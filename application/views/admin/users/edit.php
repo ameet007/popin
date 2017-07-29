@@ -8,13 +8,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-title-box">
-                        <?php if ($message_notification = $this->session->flashdata('message_notification')) { ?>
+                        <?php $message_notification = $this->session->flashdata('message_notification'); if ($message_notification) { ?>
                             <!-- Message Notification Start -->
                             <div id="message_notification">
                                 <div class="alert alert-<?= $this->session->flashdata('class'); ?>">    
                                     <button class="close" data-dismiss="alert" type="button">×</button>
                                     <strong>
-                                        <?= $this->session->flashdata('message_notification'); ?> 
+                                        <?= $message_notification; ?> 
                                     </strong>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                                     </select>
                                     <select class="selectbox" name="dobYear" id="dobYear" required>
                                         <option value="">Year</option>
-                                        <?php for($i=date('Y');$i>=(date('Y')-100);$i--) { ?>
+                                        <?php for($i=date('Y')-18;$i>=(date('Y')-100);$i--) { ?>
                                         <option value="<?php echo $i; ?>" <?= ($profileDetail['dobYear']==$i)?'selected':''; ?>><?php echo $i; ?></option>
                                         <?php } ?>
                                     </select>
@@ -114,7 +114,7 @@
                                 <label for="field-1" class="control-label">Preferred Language<span class="text-danger">*</span></label>
                                 <p class="text-muted m-b-15 font-13 languageBlock">
                                     <select class="form-control" name="language" id="language" required>
-                                        <?= $all_languages = unserialize(LANGUAGES); 
+                                        <?php $all_languages = unserialize(LANGUAGES); 
                                         foreach($all_languages as $k=>$v)
                                         { ?>
                                                 <option value="<?= $k; ?>" <?= ($profileDetail['language']==$k)?'selected':''; ?>><?= $v; ?></option>
@@ -165,6 +165,15 @@
                             <div class="form-group">
                                 <label for="field-2" class="control-label">Business Number</label>
                                 <p class="text-muted m-b-15 font-13 businessNumberBlock"><input type="text" class="form-control" name="businessNumber" value="<?= $profileDetail['businessNumber'];?>" placeholder="Business Number"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Establishment License Number<span class="text-danger">*</span></label>
+                                <p class="text-muted m-b-15 font-13 establishmentLicenceNumberBlock"><input type="text" class="form-control" name="establishmentLicenceNumber" value="<?= $profileDetail['establishmentLicenceNumber'];?>" placeholder="Establishment License Number"></p>
                             </div>
                         </div>
                     </div>
@@ -238,20 +247,20 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="field-1" class="control-label">License/Certificate Copy</label>
-                                <p class="text-muted m-b-15 font-13 licenceCopyBlock"><?= $profileDetail['licenceCopy'];?></p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 <label for="field-2" class="control-label">Establishment License</label>
-                                <p class="text-muted m-b-15 font-13 establishmentLicenceBlock"><?= $profileDetail['establishmentLicence'];?></p>
+                                <p class="text-muted m-b-15 font-13 establishmentLicenseVerifiedBlock"><?= $profileDetail['establishmentLicence'];?></p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="field-1" class="control-label">Liability Insurance</label>
-                                <p class="text-muted m-b-15 font-13 liabilityInsuranceBlock"><?= $profileDetail['liabilityInsurance'];?></p>
+                                <p class="text-muted m-b-15 font-13 liabilityInsuranceVerifiedBlock"><?= $profileDetail['liabilityInsurance'];?></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">License/Certificate Copy</label>
+                                <p class="text-muted m-b-15 font-13 licenceCopyVerifiedBlock"><?= $profileDetail['licenceCopy'];?></p>
                             </div>
                         </div>
                     </div>
@@ -431,12 +440,55 @@
         </div>
     </div>
 </div>
+ <!-- Sweet-Alert  -->
+<script src="<?= base_url('theme/admin/plugins/bootstrap-sweetalert/sweet-alert.min.js'); ?>"></script>
 <script type="text/javascript" src="<?= base_url('theme/admin/plugins/parsleyjs/parsley.min.js');?>"></script>
 <script>
     $(document).ready(function(e){	
 	//$('.chosen-select').chosen();
         $('.select2').select2();
         $('form').parsley();
+        $('.doc-verification').click(function () {
+            var $this = $(this),
+                doc_type = $(this).attr("data-doc-type"),
+                doc_name = $(this).attr("data-doc-name"),
+                user_id = $(this).attr("data-user-id");
+            swal({
+                title: "Are you sure?",
+                text: "You want to set this verified!",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonClass: 'btn-default btn-md waves-effect',
+                confirmButtonClass: 'btn-success btn-md waves-effect waves-light',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, verify it!",
+                cancelButtonText: "No, cancel!",
+                closeOnConfirm: false,
+                //closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '<?= base_url('admin/users/verifyDoc'); ?>',
+                        type: 'POST',
+                        dataType: "json",
+                        data: {column: doc_type, user: user_id},
+                        success: function (response) {
+                            if (response.class === '<?= A_SUC; ?>')
+                            {
+                                $this.remove();
+                                $(document).find("." + doc_type + "Block").append('&nbsp;&nbsp;&nbsp;<span class="label label-success">Verified</span>');
+                                swal("Verified!", doc_name + " is verified successfully.", "success");
+                            } else {
+                                swal("Failed!", response.message, "error");
+                            }
+                        }
+                    });
+                    
+                } else {
+                    //swal("Cancelled", "", "error");
+                }
+            });
+        });
     });
     function readURL(input) {
         if (input.files && input.files[0]) {

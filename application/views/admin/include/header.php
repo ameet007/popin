@@ -1,5 +1,10 @@
 <?php
     $adminProfileInfo = $this->adminProfileInfo;
+    $CI =& get_instance();
+    $CI->load->model(ADMIN_DIR . '/adminUsers', 'user');
+    
+    $unverifiedUsers = $CI->user->getUnverifiedUsers();
+    //print_array($unverifiedUsers);
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,6 +32,8 @@
         <link href="<?= base_url('theme/admin/assets/css/custom.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('theme/admin/assets/css/responsive.css'); ?>" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="<?= base_url('theme/admin/plugins/switchery/switchery.min.css'); ?>">
+        <!-- Sweet Alert -->
+        <link href="<?= base_url('theme/admin/plugins/bootstrap-sweetalert/sweet-alert.css'); ?>" rel="stylesheet" type="text/css">
 
         <link href="<?= base_url('theme/admin/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css'); ?>" rel="stylesheet">
         
@@ -126,10 +133,90 @@
                 <div class="navbar navbar-default" role="navigation">
                     <div class="container">
 
-
+                        <!-- Navbar-left -->
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <button class="button-menu-mobile open-left waves-effect">
+                                    <i class="mdi mdi-menu"></i>
+                                </button>
+                            </li>
+                        </ul>
                         <!-- Right(Notification) -->
                         <ul class="nav navbar-nav navbar-right">
+<!--                            <li>
+                                <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
+                                    <i class="mdi mdi-bell"></i>
+                                    <span class="badge up bg-success">4</span>
+                                </a>
 
+                                <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+                                    <li>
+                                        <h5>Notifications</h5>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="icon bg-info">
+                                                <i class="mdi mdi-account"></i>
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">New Signup</span>
+                                                <span class="time">5 hours ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="icon bg-danger">
+                                                <i class="mdi mdi-comment"></i>
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">New Message received</span>
+                                                <span class="time">1 day ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="icon bg-warning">
+                                                <i class="mdi mdi-settings"></i>
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">Settings</span>
+                                                <span class="time">1 day ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>-->
+                            <li>
+                                <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
+                                    <i class="mdi mdi-email"></i>
+                                    <?php if(count($unverifiedUsers)){?><span class="badge up bg-danger"><?= count($unverifiedUsers); ?></span><?php }?>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+                                    <li>
+                                        <h5>Messages</h5>
+                                    </li>
+                                    <?php 
+                                    foreach($unverifiedUsers as $userProfileInfo):
+                                        $avatar = ($userProfileInfo->avatar != '' && file_exists('uploads/user/thumb/' . $userProfileInfo->avatar)) ? $userProfileInfo->avatar : 'user_pic-225x225.png';
+                                    ?>
+                                    <li>
+                                        <a href="<?= site_url('admin/users/edit/' . $userProfileInfo->id); ?>" class="user-list-item">
+                                            <div class="avatar">
+                                                <img src="<?= base_url('uploads/user/thumb/' . $avatar); ?>" alt="<?= $userProfileInfo->firstName; ?>">
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name"><?= $userProfileInfo->firstName . '&nbsp;' . $userProfileInfo->lastName; ?></span>
+                                                <span class="desc">Verify documents</span>
+<!--                                                <span class="time">2 hours ago</span>-->
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <?php endforeach;?>
+                                </ul>
+                            </li>
                             <li class="dropdown user-box">
                                 <a href="" class="dropdown-toggle waves-effect user-link" data-toggle="dropdown" aria-expanded="true">
                                     <img src="<?= base_url('uploads/admin/' . $adminProfileInfo->avatar); ?>" alt="<?= $adminProfileInfo->name; ?>" title="<?= $adminProfileInfo->name; ?>" class="img-circle user-img">

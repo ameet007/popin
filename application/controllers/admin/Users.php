@@ -83,7 +83,7 @@ class Users extends CI_Controller {
     public function edit($id) {
         if(empty($id)){redirect('admin/users');}
         $data = $this->user->viewUser($id);
-
+        //print_array($data, TRUE);
         $languages = explode(',', $data->languages);
 
         $all_cards = $this->user->getCards($data->id);
@@ -99,22 +99,39 @@ class Users extends CI_Controller {
             $all_lang .= $lang . ',';
         }
 
-        if ($data->licenceCopy != '') {
-            $licenceCopy = '<a href="' . base_url('uploads/user/document/' . $data->licenceCopy) . '" target="_blank"><i class="fa fa-eye"></i> View</a>';
-        } else {
-            $licenceCopy = '<a href="javascript:void(0);"> No Licence Copy Uploaded</a>';
-        }
-
         if ($data->establishmentLicence != '') {
-            $establishmentLicence = '<a href="' . base_url('uploads/user/document/' . $data->establishmentLicence) . '" target="_blank"><i class="fa fa-eye"></i> View</a>';
+            $establishmentLicence = '<a href="' . base_url('uploads/user/document/' . $data->establishmentLicence) . '" class="btn btn-info waves-effect waves-light btn-sm" target="_blank">View</a>';
+        
+            if ($data->establishmentLicenseVerified == 'No') {
+                $establishmentLicence .= '&nbsp;&nbsp;&nbsp;<button class="btn btn-primary waves-effect waves-light btn-sm doc-verification" type="button" data-doc-name="Establishment License" data-doc-type="establishmentLicenseVerified" data-user-id="'.$data->id.'">Click to verify</button>';
+            }else{
+                $establishmentLicence .= '&nbsp;&nbsp;&nbsp;<span class="label label-success">Verified</span>';
+            }
         } else {
-            $establishmentLicence = '<a href="javascript:void(0);"> No Establishment Licence Copy Uploaded</a>';
+            $establishmentLicence = '<span class="label label-danger">No Establishment Licence Uploaded</span>';
         }
 
         if ($data->liabilityInsurance != '') {
-            $liabilityInsurance = '<a href="' . base_url('uploads/user/document/' . $data->liabilityInsurance) . '" target="_blank"><i class="fa fa-eye"></i> View</a>';
+            $liabilityInsurance = '<a href="' . base_url('uploads/user/document/' . $data->liabilityInsurance) . '" class="btn btn-info waves-effect waves-light btn-sm" target="_blank">View</a>';
+        
+            if ($data->liabilityInsuranceVerified == 'No') {
+                $liabilityInsurance .= '&nbsp;&nbsp;&nbsp;<button class="btn btn-primary waves-effect waves-light btn-sm doc-verification" type="button" data-doc-name="Liability Insurance" data-doc-type="liabilityInsuranceVerified" data-user-id="'.$data->id.'">Click to verify</button>';
+            }else{
+                $liabilityInsurance .= '&nbsp;&nbsp;&nbsp;<span class="label label-success">Verified</span>';
+            }
         } else {
-            $liabilityInsurance = '<a href="javascript:void(0);"> No Liability Insurance Copy Uploaded</a>';
+            $liabilityInsurance = '<span class="label label-danger">No Liability Insurance Uploaded</span>';
+        }
+
+        if ($data->licenceCopy != '') {
+            $licenceCopy = '<a href="' . base_url('uploads/user/document/' . $data->licenceCopy) . '" class="btn btn-info waves-effect waves-light btn-sm" target="_blank">View</a>';
+            if ($data->licenceCopyVerified == 'No') {
+                $licenceCopy .= '&nbsp;&nbsp;&nbsp;<button class="btn btn-primary waves-effect waves-light btn-sm doc-verification" type="button" data-doc-name="License/Certificate Copy" data-doc-type="licenceCopyVerified" data-user-id="'.$data->id.'">Click to verify</button>';
+            }else{
+                $licenceCopy .= '&nbsp;&nbsp;&nbsp;<span class="label label-success">Verified</span>';
+            }
+        } else {
+            $licenceCopy = '<span class="label label-danger">No Licence Copy Uploaded</span>';
         }
 
         if ($data->status == 'Pending') {
@@ -157,6 +174,7 @@ class Users extends CI_Controller {
             'licenceCopy' => $licenceCopy,
             'establishmentLicence' => $establishmentLicence,
             'liabilityInsurance' => $liabilityInsurance,
+            'establishmentLicenceNumber' => $data->establishmentLicenceNumber,
             'googleVerified' => $data->googleVerified,
             'googleEmail' => $data->googleEmail,
             'verificationCode' => $data->verificationCode,
@@ -185,6 +203,22 @@ class Users extends CI_Controller {
         $value['profileDetail'] = $profileDetail;
         $this->load->view(ADMIN_DIR . '/users/edit', $value);
         $this->load->view(ADMIN_DIR . '/' . INC . '/footer');
+    }
+    function verifyDoc(){
+        $dbColumn = $this->input->post('column');
+        $user = $this->input->post('user');
+        $rawData[$dbColumn] = "Yes";
+        $this->db->where('id',$user)->update('user', $rawData);
+        if ($this->db->affected_rows()) {
+
+            $response['class'] = A_SUC;
+            $response['message'] = 'Your Profile Updated Successfully';
+        } else {
+            $response['class'] = A_FAIL;
+            $response['message'] = 'Your Profile Not Updated Successfully';
+        }
+        echo json_encode($response);
+        die();
     }
     function update_profile() {
         $rawData = $this->input->post();
@@ -249,10 +283,10 @@ class Users extends CI_Controller {
                 }
                 if ($upload_data['file_name'] != '') {
                     $rawData['avatar'] = $upload_data['file_name'];
-                    @unlink("./uploads/user/" . $this->input->post('oldAvatar'));
+                    /*@unlink("./uploads/user/" . $this->input->post('oldAvatar'));
                     @unlink("./uploads/user/big/" . $this->input->post('oldAvatar'));
                     @unlink("./uploads/user/med/" . $this->input->post('oldAvatar'));
-                    @unlink("./uploads/user/thumb/" . $this->input->post('oldAvatar'));
+                    @unlink("./uploads/user/thumb/" . $this->input->post('oldAvatar'));*/
                     //It means you have to unlink the image
                 }
             }

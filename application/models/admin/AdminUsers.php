@@ -139,7 +139,20 @@ class AdminUsers extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
-
+    
+    public function getUnverifiedUsers() {
+        $where = array(
+            'establishmentLicence !=' => '',  
+            'liabilityInsurance !=' => '',  
+            'licenceCopy !=' => '',  
+            'establishmentLicenseVerified' => 'No',  
+            'liabilityInsuranceVerified' => 'No',  
+            'licenceCopyVerified' => 'No',  
+            'status' => 'Active'
+        );
+        $this->db->select('id,firstName,lastName,avatar');
+        return $this->db->get_where('user', $where)->result();
+    }
 }
 
 ?>

@@ -1,3 +1,15 @@
+<?php
+$notVerified = TRUE;
+
+if(strtolower($userProfileInfo->phone_verify) == 'yes' && 
+    $userProfileInfo->establishmentLicence != '' && 
+    strtolower($userProfileInfo->establishmentLicenseVerified) == 'yes' &&
+    $userProfileInfo->liabilityInsurance != '' && 
+    strtolower($userProfileInfo->liabilityInsuranceVerified) == 'yes'){
+    $notVerified = FALSE;
+}
+?>
+
 <section class="middle-container account-section profile-section user-sh">
     <div class="container">
         <div class="main-content">
@@ -124,13 +136,13 @@
                 <article class="col-lg-9 main-right wish-lists profile-wish-lists">
                     <div class="pro-con">
                         <h2>Hey, I’m <?= $userProfileInfo->firstName; ?></h2>
-                        <p><strong><?= strtoupper((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence.' • ':''));?>Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
+                        <p><strong><?= strtoupper((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:''));?> • Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
                         <p><?= $userProfileInfo->aboutYou; ?></p>
                         <?php $reviewsList = getMultiRecord('space_ratings','reviewOnId',$userProfileInfo->id);?>
                         <ul class="superhost">
                             <li><span><div class="badgePill_186vx4j"><span><?= count($reviewsList); ?></span></div></span>&nbsp;&nbsp;Reviews</li>
                             <li><span><div class="badgePill_186vx4j"><span><?php echo 0 ?></span></div></span>&nbsp;&nbsp;References</li>
-                            <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span>&nbsp;&nbsp;Verified</li>
+                            <?php if(!$notVerified): ?><li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span>&nbsp;&nbsp;Verified</li><?php endif;?>
                             <?php if (empty($checkProfile) && $this->session->has_userdata('user_id')) { ?>
                                 <li class="address-book">
                                     <?php if (isset($addressBook) && in_array($customerID, $addressBook)) { ?>

@@ -44,7 +44,7 @@ $licenceCopyVerified = strtolower($userProfileInfo->licenceCopyVerified);
                                 <div class="panel-body">                                    
                                     <div class="row mr15">
                                         <div class="col-md-9">
-                                            <h4>Establishment license <small>(<?= ($establishmentLicenceLink !="" && $establishmentLicenseVerified =='yes')?'Verified':($establishmentLicenceLink !="" && $establishmentLicenseVerified =='no')?'Pending Verification':'Not Uploaded'; ?>)</small></h4>
+                                            <h4>Establishment license <small>(<?= ($establishmentLicenceLink !="" && $establishmentLicenseVerified =='yes')?'Verified':(($establishmentLicenceLink !="" && $establishmentLicenseVerified =='no')?'Pending Verification':'Not Uploaded'); ?>)</small></h4>
                                             <?php
                                             if (!empty($establishmentLicenceLink)) {
                                             $licenceCopy  = explode(".",$establishmentLicenceLink);
@@ -65,7 +65,7 @@ $licenceCopyVerified = strtolower($userProfileInfo->licenceCopyVerified);
                                     </div>
                                     <div class="row mr15">
                                         <div class="col-md-9">
-                                            <h4>Liability insurance <small>(<?= ($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='yes')?'Verified':($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='no')?'Pending Verification':'Not Uploaded'; ?>)</small></h4>
+                                            <h4>Liability insurance <small>(<?= ($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='yes')?'Verified':(($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='no')?'Pending Verification':'Not Uploaded'); ?>)</small></h4>
                                             <?php
                                             if (!empty($liabilityInsuranceLink)) {
                                             $licenceCopy  = explode(".",$liabilityInsuranceLink);
@@ -86,7 +86,7 @@ $licenceCopyVerified = strtolower($userProfileInfo->licenceCopyVerified);
                                     </div>
                                     <div class="row mr15">
                                         <div class="col-md-9">                                            
-                                            <h4>License / Certificate Copy <small>(<?= ($licenceLink !="" && $licenceCopyVerified =='yes')?'Verified':($licenceLink !="" && $licenceCopyVerified =='no')?'Pending Verification':'Not Uploaded'; ?>)</small></h4>
+                                            <h4>License / Certificate Copy <small>(<?= ($licenceLink !="" && $licenceCopyVerified =='yes')?'Verified':(($licenceLink !="" && $licenceCopyVerified =='no')?'Pending Verification':'Not Uploaded'); ?>)</small></h4>
                                             <?php
                                             if (!empty($licenceLink)) {
                                             $licenceCopy  = explode(".",$licenceLink);
