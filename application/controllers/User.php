@@ -448,10 +448,10 @@ class User extends CI_Controller {
             }
             if ($upload_data['file_name'] != '') {
                 $image_name = $upload_data['file_name'];
-                @unlink("./uploads/user/" . $this->input->post('oldAvatar'));
+                /*@unlink("./uploads/user/" . $this->input->post('oldAvatar'));
                 @unlink("./uploads/user/big/" . $this->input->post('oldAvatar'));
                 @unlink("./uploads/user/med/" . $this->input->post('oldAvatar'));
-                @unlink("./uploads/user/thumb/" . $this->input->post('oldAvatar'));
+                @unlink("./uploads/user/thumb/" . $this->input->post('oldAvatar'));*/
                 //It means you have to unlink the image
             } else {
                 $image_name = $this->input->post('oldAvatar');
@@ -464,6 +464,17 @@ class User extends CI_Controller {
             );
             $response = $this->user->editUser($profileData, $this->session->userdata('user_id'));
             if ($response > 0) {
+                // save user previous images
+                $userData = array(
+                    "user"          => $this->session->userdata('user_id'),
+                    "image"         => $image_name,
+                    "isProfile"     => "Yes",
+                    "createdDate"   => time(),
+                    "updatedDate"   => time(),
+                    "ipAddress"     => $this->input->ip_address()
+                );
+                $this->user->insertData($userData,'user_gallery');
+                
                 $this->session->set_flashdata('message_notification', 'Profile Avatar Updated Successfully');
                 $this->session->set_flashdata('class', A_SUC);
                 redirect(base_url('/user/photo'));

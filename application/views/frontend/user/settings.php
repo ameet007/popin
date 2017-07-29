@@ -24,10 +24,10 @@
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="col-md-5 text-right">
-                                                <label for="countryResidence">Country of Residence <i class="fa fa-question-circle" aria-hidden="true"></i></label>
+                                                <label for="countryResidence">Country of Residence</label>
                                             </div>
                                             <div class="col-md-7">
-                                                <select id="countryResidence" name="countryResidence" onchange="autoSave(this.id,this.value)" >
+                                                <select class="selectbox custom-select" id="countryResidence" name="countryResidence" onchange="autoSave(this.id,this.value)" >
                                                     <?php
                                                     $all_country = unserialize(ALL_COUNTRY);
                                                     foreach ($all_country as $k => $v) {

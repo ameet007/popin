@@ -13,14 +13,6 @@
                                 <ul>
                                     <li class="clearfix">
                                         <div class="pull-left">
-                                            <p title="Verified info" >Government ID</p>
-                                        </div>
-                                        <div class="pull-right">
-                                            <img title="Verified info" src="<?php echo base_url('theme/front/img'); ?>/right-singh.png" alt="" />
-                                        </div>
-                                    </li>
-                                    <li class="clearfix">
-                                        <div class="pull-left">
                                             <p title="Verified info" >Email address</p>
                                         </div>
                                         <div class="pull-right">
@@ -32,9 +24,11 @@
                                         <div class="pull-left">
                                             <p>Phone number</p>
                                         </div>
+                                        <?php if(strtolower($userProfileInfo->phone_verify) == 'yes'){ ?>
                                         <div class="pull-right">
                                             <img src="<?php echo base_url('theme/front/img'); ?>/right-singh.png" alt="" />
                                         </div>
+                                        <?php }?>
                                     </li>
                                     <?php if (!empty($checkProfile)) {?>
                                     <li><a href="<?= base_url()?>user/profile">Learn more >></a></li>
@@ -130,7 +124,7 @@
                 <article class="col-lg-9 main-right wish-lists profile-wish-lists">
                     <div class="pro-con">
                         <h2>Hey, I’m <?= $userProfileInfo->firstName; ?></h2>
-                        <p><strong><?= strtoupper((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence:'Us'));?> • Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
+                        <p><strong><?= strtoupper((!empty($userProfileInfo->countryResidence)?$userProfileInfo->countryResidence.' • ':''));?>Joined in <?= date('M,Y',$userProfileInfo->createdDate);?></strong></p>
                         <p><?= $userProfileInfo->aboutYou; ?></p>
                         <?php $reviewsList = getMultiRecord('space_ratings','reviewOnId',$userProfileInfo->id);?>
                         <ul class="superhost">
@@ -147,6 +141,7 @@
                                 </li>
                             <?php }?>
                         </ul>
+                        <?php if(count($userWishLists) > 0): ?>
                         <div class="wishlist-list">
                             <h2>Wish Lists <small>(<?= count($userWishLists); ?>)</small><?php if (!empty($checkProfile)) {?><a href="<?= site_url('wishlists');?>" class="view_all pull-right font12">View all &nbsp;»</a><?php }?></h2>
                             <ul class="clearfix">
@@ -161,6 +156,7 @@
                                 <?php $wishCount++; endforeach; ?>
                             </ul>
                         </div>
+                        <?php endif;?>
                     <?php if (!empty($reviewsList)) {
                         foreach ($reviewsList as $key => $value) {
                             $userList = getSingleRecord('user','id',$value['reviewerId']);

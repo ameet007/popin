@@ -43,7 +43,7 @@ class Space extends CI_Controller {
             return $return;
         } else {
             //Image Upload
-            $upload_data = $this->upload->data();
+            //$upload_data = $this->upload->data();
             if ($oldFile != '') {
                 //Unlink old images if have
                 @unlink("./uploads/" . $path . "/" . $oldFile);
@@ -235,13 +235,22 @@ class Space extends CI_Controller {
             }
             // update user profile for documents
             $profileData = array(
-                "establishmentLicenceNumber" => trim($stepData['step1']['page1']['establishmentLicence']),
-                "establishmentLicence" => $stepData['step1']['page1']['establishmentLicenceFile'],
-                "liabilityInsurance" => $stepData['step1']['page1']['liabilityInsurance'],
                 "updatedDate" => time(),
                 "ipAddress" => $this->input->ip_address()
             );
-            $this->space->editHost($profileData, $host_id);
+            if($userProfileInfo->establishmentLicenceNumber == ""){
+                $profileData['establishmentLicenceNumber'] = trim($stepData['step1']['page1']['establishmentLicence']);
+            }
+            if($userProfileInfo->establishmentLicence == ""){
+                $profileData['establishmentLicence'] = $stepData['step1']['page1']['establishmentLicenceFile'];
+            }
+            if($userProfileInfo->liabilityInsurance == ""){
+                $profileData['liabilityInsurance'] = $stepData['step1']['page1']['liabilityInsurance'];
+            }   
+            if(count($profileData) > 2){
+                $this->space->editHost($profileData, $host_id);
+            }
+            
             $this->space->setPercentageComplete($stepData['id'],$host_id,'step_1_percentage',20);
             $this->session->set_userdata('stepData', $stepData);
         }
@@ -421,8 +430,9 @@ class Space extends CI_Controller {
 
         $response = $stepData['step1']['page4'];
         $response['full_address'] = $stepData['step1']['page4']['streetAddress'];
-        if (!empty($stepData['step1']['page4']['suiteBuilding']))
+        if (!empty($stepData['step1']['page4']['suiteBuilding'])){
             $response['full_address'] .= ' ' . $stepData['step1']['page4']['suiteBuilding'];
+        }
         $response['full_address'] .= ', ' . $stepData['step1']['page4']['city'] . ', ';
         $response['full_address'] .= $stepData['step1']['page4']['state'] . ', ';
         $response['full_address'] .= $stepData['step1']['page4']['zipCode'] . ', ';
@@ -558,8 +568,9 @@ class Space extends CI_Controller {
         };
         $stepData = $this->session->userdata('stepData');
         //unset($stepData['step2']['gallery']);
-        if (isset($upload['files'][0]['name']) && !empty($upload['files'][0]['name']))
+        if (isset($upload['files'][0]['name']) && !empty($upload['files'][0]['name'])){
             $stepData['step2']['galleryImage'][] = $upload['files'][0]['name'];
+        }
         $this->session->set_userdata('stepData', $stepData);
 
         echo json_encode($upload);
@@ -775,10 +786,10 @@ class Space extends CI_Controller {
 
                 if ($upload_data['file_name'] != '') {
                     $image_name = $upload_data['file_name'];
-                    @unlink("./uploads/user/" . $this->input->post('oldAvatar'));
+                    /*@unlink("./uploads/user/" . $this->input->post('oldAvatar'));
                     @unlink("./uploads/user/big/" . $this->input->post('oldAvatar'));
                     @unlink("./uploads/user/med/" . $this->input->post('oldAvatar'));
-                    @unlink("./uploads/user/thumb/" . $this->input->post('oldAvatar'));
+                    @unlink("./uploads/user/thumb/" . $this->input->post('oldAvatar'));*/
                     //It means you have to unlink the image
                 } else {
                     $image_name = $this->input->post('oldAvatar');
@@ -789,7 +800,19 @@ class Space extends CI_Controller {
                     "updatedDate" => strtotime(date('Y-m-d H:i:s')),
                     "ipAddress" => $this->input->ip_address()
                 );
-                $this->space->editHost($profileData, $this->session->userdata('user_id'));
+                $response = $this->space->editHost($profileData, $this->session->userdata('user_id'));
+                if($response){
+                    // save user previous images
+                    $userData = array(
+                        "user"          => $this->session->userdata('user_id'),
+                        "image"         => $image_name,
+                        "isProfile"     => "Yes",
+                        "createdDate"   => time(),
+                        "updatedDate"   => time(),
+                        "ipAddress"     => $this->input->ip_address()
+                    );
+                    $this->user->insertData($userData,'user_gallery');
+                }
                 $stepData = $this->session->userdata('stepData');
                 $host_id = $this->session->userdata('user_id');
                 $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',90);

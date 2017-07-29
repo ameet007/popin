@@ -1,11 +1,9 @@
-<?php if ($message_notification = $this->session->flashdata('message_notification')) { ?>
+<?php $message_notification = $this->session->flashdata('message_notification'); if($message_notification) { ?>
     <!-- Message Notification Start -->
     <div id="message_notification">
         <div class="alert alert-<?= $this->session->flashdata('class'); ?>">    
             <button class="close" data-dismiss="alert" type="button">×</button>
-            <strong>
-                <?= $this->session->flashdata('message_notification'); ?> 
-            </strong>
+            <center><strong><?= $message_notification; ?></strong></center>
         </div>
     </div>
     <!-- Message Notification End -->
