@@ -292,6 +292,7 @@ class Home extends CI_Controller {
     }
 
     public function request_to_book() {
+        $this->session->unset_userdata('checkout_amount');
         $rawData = $this->input->post();
         if (empty($rawData)) {
             redirect('spaces');
@@ -304,6 +305,35 @@ class Home extends CI_Controller {
         $data['hostInfo'] = $this->user->userInfo($data['spaceInfo']['host']);
         //print_array($data['spaceInfo'], TRUE);
         $this->load->view(FRONT_DIR . '/booking_management/booking_summary', $data);
+    }
+    
+    public function applyPromoCode() {
+        $checkout_amount = $this->session->userdata('checkout_amount');
+        $promo_code = $this->input->post('promo_code');
+        $promoCode = $this->db->select('value')->get_where('promo_codes', array('code' => $promo_code, 'status' => 'Active'))->row_array();
+        if(empty($promoCode)){
+            $response['code'] = 0;
+            $response['success'] = 'danger';
+            $response['message'] = "Invalid Promo Code.";
+        }else{
+            if($promoCode['value']){
+                $discount = $promoCode['value'];
+                $checkout_amount = $checkout_amount - round($checkout_amount * $discount / 100, 1);
+                $this->session->set_userdata('checkout_amount',$checkout_amount);
+                
+                $response['code'] = 1;
+                $response['success'] = 'success';
+                $response['message'] = "Promo Code applied.";
+                $response['discount'] = $discount."% off";
+                $response['new_amount'] = "$".$checkout_amount."<sup>USD</sup>";
+            }else{
+                $response['code'] = 0;
+                $response['success'] = 'danger';
+                $response['message'] = "Invalid Promo Code.";
+            }            
+        }
+        echo json_encode($response);
+        die();
     }
 
     public function book_space() {

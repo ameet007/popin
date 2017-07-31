@@ -223,7 +223,7 @@ $siteDetails = $CI->common->getSiteDetails();
                         ?>
                         <h5 class="mr0"><?= $spaceType['name']; ?></h5>
                         <h5><?= createHTMLRating($spaceInfo['id']); ?> · <?=  totalReivewsGet($spaceInfo['id']);?> review <br><?= $spaceInfo['state']; ?>, <?= $all_countries[$spaceInfo['country']]; ?></h5>
-                        <ul>
+                        <ul class="parent">
                             <li class="clearfix">
                                 <div clas="row">
                                     <div class="col-md-6">
@@ -235,16 +235,25 @@ $siteDetails = $CI->common->getSiteDetails();
                                 </div>
                             </li>
                             <?php $bookingCurrency = getCurrency_symbol($booking['currency']); ?>
-                            <li class="clearfix">
+                            <li class="clearfix booking-section">
                                 <div class="pull-left">
                                     <p><?= $bookingCurrency.$booking['basePrice']; ?> x <?= $booking['numberBooking'].' '.$booking['bookingType']; ?></p>
                                     <p>Additional Charges &nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Cleaning Fee, Service Fee etc."></i></p>
-<!--                                    <a href="#"><strong>Coupon</strong></a>-->
+                                    <p><a href="#"><strong>Promotional Code</strong></a></p>                                    
                                 </div>
                                 <div class="pull-right">
                                     <p><?= $bookingCurrency.$booking['totalBasePrice']; ?></p>
                                     <p><?= $bookingCurrency.$booking['addtionalCosts']; ?></p>
+                                    <p class="promo-applied"></p>
                                 </div>
+                                <div class="gift-card">
+                                    <form id="promoCodeForm" method="post" action="<?= site_url('home/applyPromoCode'); ?>" autocomplete="off">                                        
+                                        <div>
+                                            <input class="form-control" type="text" name="promo_code" placeholder="Enter Promo Code" required>
+                                            <button type="submit" class="btn-red">Apply </button>
+                                        </div>
+                                    </form>
+                                </div>                                
                             </li>
                             <?php 
                             $exchangeRate = "";
@@ -264,7 +273,7 @@ $siteDetails = $CI->common->getSiteDetails();
                                 <div class="pull-left">
                                     <p><strong>Total</strong></p>
                                 </div>
-                                <div class="pull-right">
+                                <div class="pull-right final_amount">
                                     <p><?= $bookingCurrency.$booking['totalAmount']; ?><sup><?= $booking['currency']; ?></sup></p>
                                     <?php if(!empty($exchangeRate)): ?><p>$<?php echo $finalExchangedAmount; ?><sup>USD</sup></p><?php endif;?>
                                 </div>
@@ -280,6 +289,7 @@ $siteDetails = $CI->common->getSiteDetails();
 <script type="text/javascript">
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+    
     $(document).on('click', 'a.show-more', function(e){
         e.preventDefault();
         var $this = $(this), target = $(this).attr("data-target-key");
@@ -327,7 +337,34 @@ $(document).ready(function(){
         $("html, body").animate({ scrollTop: 0 });
         return false;
     });
+    $(document).on("submit", "form#promoCodeForm", function(e){
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            dataType: "json",
+            data: $(this).serialize(),
+            beforeSend: function () {
+                $(".loader").show();
+            },
+            complete: function () {
+                $('.loader').hide();
+            },
+            success: function (response) {
+                var errorMsg = $('<div class="alert alert-'+response.success+'">'+response.message+'</div>');
+                $("ul.parent .alert").remove();
+                errorMsg.insertBefore($("form#promoCodeForm").parent().parent());
+                if(response.code){
+                    $("form#promoCodeForm").remove();
+                    $(".promo-applied").html('<strong>'+response.discount+'</strong>');
+                    $(".final_amount p:last-child").html(response.new_amount);
+                }
+            }
+        });
+    });    
 });
 </script>
+
+<div class="loader" style="display:none;"></div>
 </body>
 </html>
