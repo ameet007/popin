@@ -242,6 +242,31 @@ class Listing extends CI_Controller {
         $this->load->view(FRONT_DIR . '/listing/view-reservations', $data);
     }
     
+    public function reservation_details($booking_id = '') {
+        $data['search_nav'] = 1;
+        $data['module_heading'] = 'Rentals Receipt';
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+        $data['bookingInfo'] = $this->user->bookingInfo($booking_id);
+        //print_array($data['bookingInfo']);
+        if(empty($data['bookingInfo'])){
+            redirect('rentals');
+        }
+        $data['spaceInfo'] = $this->user->spaceInfo($data['bookingInfo']['space']);
+        $data['userInfo'] = $this->user->userInfo($data['bookingInfo']['user']);
+        $data['hostInfo'] = $this->user->userInfo($data['spaceInfo']['host']);
+        $this->load->view(FRONT_DIR . '/listing/reservation_details',$data);
+    }
+    
+    public function update_reservation_request() {
+        $bookingId = $this->input->post('id');
+        $bookingStatus = $this->input->post('status');
+        
+        $this->db->update('space_booking', array('partnerStatus' => $bookingStatus), array('id' => $bookingId));
+        if($this->db->affected_rows()){
+            $this->db->update('conversation', array('status' => 'reservations'), array('booking' => $bookingId));
+        }
+    }
+    
     public function manage_calendar($space_id = '') {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $rawData = $this->input->post();

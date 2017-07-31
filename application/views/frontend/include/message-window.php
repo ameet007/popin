@@ -20,7 +20,7 @@ $messages = $this->user->getNewUserMessages($userProfileInfo->id);
         $avatar = ($message['picture']!='' && file_exists('uploads/user/thumb/' . $message['picture']))?$message['picture']:'user_pic-225x225.png';
     ?>
     <li>
-        <a href="<?= site_url('spaces'); ?>">
+        <a href="<?= site_url('inbox'); ?>">
             <div class="cassidy">
                 <ul>
                     <li>

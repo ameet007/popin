@@ -426,6 +426,17 @@ if(isset($preview['gallery']) && !empty($preview['gallery']) && file_exists('upl
                         </div>
                         <?php } } } ?>
                     </div>
+                    <?php
+                    $notVerified = TRUE;
+
+                    if(strtolower($hostProfileInfo->phone_verify) == 'yes' && 
+                        $hostProfileInfo->establishmentLicence != '' && 
+                        strtolower($hostProfileInfo->establishmentLicenseVerified) == 'yes' &&
+                        $hostProfileInfo->liabilityInsurance != '' && 
+                        strtolower($hostProfileInfo->liabilityInsuranceVerified) == 'yes'){
+                        $notVerified = FALSE;
+                    }
+                    ?>
                     <div id="menu2" class="tab-pane fade user-sh">
                         <div class="media">
                             <div class="media-left">
@@ -437,7 +448,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery']) && file_exists('upl
                                 <ul class="superhost" style="margin-bottom: 20px;">
                                     <li><span><div class="badgePill_186vx4j"><span><?= count(getMultiRecord('space_ratings','reviewOnId',$hostProfileInfo->id)); ?></span></div></span>&nbsp;&nbsp;Reviews</li>
                                     <li><span><div class="badgePill_186vx4j"><span><?php echo 0 ?></span></div></span>&nbsp;&nbsp;References</li>
-                                    <li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Verified</li>
+                                    <?php if(!$notVerified){?><li><span><img src="<?php echo base_url('theme/front/img'); ?>/ver.png" alt="" /></span> Verified</li><?php }?>
                                 </ul>
                                 <?php if($this->session->userdata('user_id')!= NULL){ ?>
                                 <a data-toggle="modal" data-target="#myModal" class="btn-red" href="#">Contact host</a>

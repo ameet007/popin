@@ -6,18 +6,18 @@
         <div class="main-content">
             <div class="row">
                 <div class="col-md-6">
-                    <a class="btn2" href="<?= site_url('compose'); ?>">Compose new message</a>
-                    <a class="btn2" href="<?= site_url('contactList'); ?>">Contact List</a>
+                    <a class="green-btn" href="<?= site_url('contactList'); ?>"><i class="fa fa-address-book-o"></i> Address Book</a>
+                    <a class="btn2" href="<?= site_url('compose'); ?>"><i class="fa fa-envelope-o"></i> Compose new message</a>                    
                 </div>
                 <div class="col-md-3 all-msessage pull-right">
                     <form id="inbox" method="post" action="">
                         <select name="status" onchange="this.form.submit();">
                             <option value="" <?= ($status == "")?"selected":"";?>>All Messages (<?= $userMessages['allCount']; ?>)</option>
-                            <option value="starred" <?= ($status == "starred")?"selected":"";?>>Starred (<?= $userMessages['starCount']; ?>)</option>
+                            <option value="read" <?= ($status == "read")?"selected":"";?>>Read (<?= $userMessages['readCount']; ?>)</option>
                             <option value="new" <?= ($status == "new")?"selected":"";?>>Unread (<?= $userMessages['newCount']; ?>)</option>
                             <option value="reservations" <?= ($status == "reservations")?"selected":"";?>>Reservations (<?= $userMessages['reserveCount']; ?>)</option>
                             <option value="pending" <?= ($status == "pending")?"selected":"";?>>Pending Requests (<?= $userMessages['pendingCount']; ?>)</option>
-                            <option value="archived" <?= ($status == "archived")?"selected":"";?>>Archived (<?= $userMessages['archiveCount']; ?>)</option>
+<!--                            <option value="archived" <?= ($status == "archived")?"selected":"";?>>Archived (<?= $userMessages['archiveCount']; ?>)</option>-->
                         </select>
                     </form>
                 </div>

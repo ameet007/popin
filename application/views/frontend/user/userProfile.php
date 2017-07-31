@@ -174,7 +174,7 @@ if(strtolower($userProfileInfo->phone_verify) == 'yes' &&
                             $userList = getSingleRecord('user','id',$value['reviewerId']);
                          ?>
                          <?php if ($value['reviewBy'] == 'Professional') { ?>
-                        <div class="review-sec">
+                        <div class="review-sec mt15">
                             <h3>Reviews <span>(<?= count($reviewsList)?>)</span></h3>
                             <h4>Reviews From Professional</h4>
                             <div class="media">

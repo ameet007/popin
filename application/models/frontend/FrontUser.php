@@ -266,14 +266,15 @@ class FrontUser extends CI_Model {
     }
     
     function updateMessageStatus($userId, $status){
-        $this->db->where(array('receiver' => $userId));
+        $this->db->where(array('receiver' => $userId,'status'=>'new'));
         $this->db->update('conversation',array('status' => $status));
     }
     
     function getNewUserMessages($userId) {
         $this->db->select("msg.id,msg.subject,msg.message,msg.createdDate,user.firstName as fname,user.lastName as lname,user.avatar as picture");
         $this->db->join('user','msg.sender = user.id');
-        $this->db->where(array('msg.receiver' => $userId, 'msg.status' => 'new'));
+        $this->db->where(array('msg.receiver' => $userId));
+        $this->db->where_in('msg.status', array('new','pending'));
         return $this->db->order_by('msg.createdDate', 'desc')->get('conversation as msg')->result_array();
     }
 
@@ -309,6 +310,10 @@ class FrontUser extends CI_Model {
                             'country' => $spaceInfo['country'],
                         );
                     }
+                    if ($conversation['booking']) {
+                        $bookingInfo = $this->bookingInfo($conversation['booking'],'space_booking.partnerStatus,payments.currency_code,payments.payment_gross');
+                        $response['messages'][$conversation['id']]['bookingInfo'] = $bookingInfo;
+                    }
                     $this->db->where('parent', $conversation['id']);
                     $replyData = $this->db->order_by('id', 'asc')->get('conversation')->result_array();
                     if (!empty($replyData)) {
@@ -322,8 +327,10 @@ class FrontUser extends CI_Model {
         $this->db->where(array('receiver' => $userId));
         $response['allCount'] = $this->db->get('conversation')->num_rows();
 
-        $this->db->where(array('receiver' => $userId, 'status' => 'starred'));
-        $response['starCount'] = $this->db->get('conversation')->num_rows();
+        //$this->db->where(array('receiver' => $userId, 'status' => 'starred'));
+        //$response['starCount'] = $this->db->get('conversation')->num_rows();
+        $this->db->where(array('receiver' => $userId, 'status' => 'read'));
+        $response['readCount'] = $this->db->get('conversation')->num_rows();
 
         $this->db->where(array('receiver' => $userId, 'status' => 'new'));
         $response['newCount'] = $this->db->get('conversation')->num_rows();
@@ -403,7 +410,7 @@ class FrontUser extends CI_Model {
     }
     
     function getUserReservations($user, $space){
-        $this->db->select("space_booking.id as id, CONCAT(spaces.spaceTitle, ' · ', spaces.professionalCapacity, ' Professional(s)') as title, space_booking.checkIn as start, space_booking.checkOut as end");
+        $this->db->select("space_booking.id as id, CONCAT(spaces.spaceTitle, ' · ', spaces.professionalCapacity, ' Professional(s)') as title, space_booking.checkIn as start, space_booking.checkOut as end, CONCAT('".site_url('reservation-details')."', '/', space_booking.id) as url");
         $this->db->join('spaces', 'user.id = spaces.host');
         $this->db->join('space_booking', 'spaces.id = space_booking.space');
         $result = $this->db->where(array('user.id' => $user,'spaces.id'=>$space))->get('user')->result_array();
@@ -670,6 +677,12 @@ class FrontUser extends CI_Model {
       $bank['updateDate']      = time();
       $this->db->insert('payout_preferences',$bank); 
       return $this->db->affected_rows();
+    }
+    public function getTransactionsHostory($userId){
+        $this->db->select("payments.*, space_booking.checkIn, space_booking.checkOut, space_booking.totalAmount, space_booking.currency, spaces.spaceTitle, CONCAT(spaces.city, ', ', spaces.state) as location");
+        $this->db->join('space_booking', 'payments.booking_id = space_booking.id', 'left');
+        $this->db->join('spaces', 'space_booking.space = spaces.id', 'left');
+        return $this->db->get_where('payments',array('user_id'=>$userId))->result_array();      
     }
 }
 

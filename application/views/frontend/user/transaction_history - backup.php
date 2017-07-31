@@ -11,9 +11,9 @@
                             <div class="panel-heading">
                                 <div id="exTab1">
                                     <ul  class="nav nav-pills">
-                                        <li class="active"><a  href="#1a" data-toggle="tab">All Transactions</a></li>
-<!--                                        <li><a href="#2a" data-toggle="tab">Future Transactions</a></li>
-                                        <li><a href="#3a" data-toggle="tab">Gross Earnings</a></li>-->
+                                        <li class="active"><a  href="#1a" data-toggle="tab">Completed Transactions</a></li>
+                                        <li><a href="#2a" data-toggle="tab">Future Transactions</a></li>
+                                        <li><a href="#3a" data-toggle="tab">Gross Earnings</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -28,29 +28,24 @@
                                                         <th>Type</th>
                                                         <th>Details</th>
                                                         <th>Amount</th>
-                                                        <th>Paid From</th>
+                                                        <th>Paid Out</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php if(!empty($histories)){ foreach ($histories as $history){ ?>
                                                     <tr>
-                                                        <td><?= date("d/m/Y", strtotime($history['payment_date'])); ?></td>
-                                                        <td><?= ucfirst($history['paid_for']); ?></td>
-                                                        <td>
-                                                            <?php
-                                                            if($history['paid_for'] == 'rental'){
-                                                                echo date("F d, Y", strtotime($history['checkIn'])).'<br/>'.$history['spaceTitle'].'<br/>'.$history['location'];
-                                                            }else{
-                                                                echo "PopIn Scheduler Subscription Plan";
-                                                            }
-                                                            ?>
-                                                        </td>
-                                                        <td><?= getCurrency_symbol($history['currency_code']).$history['payment_gross']; ?></td>
-                                                        <td><?= $history['payer_email']; ?></td>
+                                                        <td>03/04/17</td>
+                                                        <td>Rental</td>
+                                                        <td>March 3, 2017 9a-3p <br/>Orange <br/>Station A</td>
+                                                        <td>$60</td>
+                                                        <td>$58.20</td>
                                                     </tr>
-                                                    <?php }}else{ ?>
-                                                    <tr><td colspan="5" align="center"><h3>No Transactions</h3></td></tr>
-                                                    <?php }?>
+                                                    <tr>
+                                                        <td>03/07/17</td>
+                                                        <td>Workshop</td>
+                                                        <td>March 06, 2017 <br />Orange <br/>Introduction to Letterpressing</td>
+                                                        <td>$100</td>
+                                                        <td>$90</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>

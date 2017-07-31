@@ -94,8 +94,9 @@ class Dashboard extends CI_Controller
                         $HTML.='</td>';
                         if($messages['booking']):
                         $HTML.='<td width="100">
-                            <h4>Accepted</h4>
-                            <span class="price">&amp;40</span>
+                            <h4>Rental Status: '.$messages['bookingInfo']['partnerStatus'].'</h4>
+                            <span class="price">Paid: '. getCurrency_symbol($messages['bookingInfo']['currency_code']).$messages['bookingInfo']['payment_gross'].'</span>
+                            <br/><a href="'. site_url('reservation-details/'.$messages['booking']).'">View Details</a>
                         </td>';
                         else:
                             $receiverId = ($this->session->userdata('user_id') == $messages['sender'])?$messages['receiver']:$messages['sender'];

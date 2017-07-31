@@ -24,36 +24,31 @@
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/industry_list'); ?>"><i class="fa fa-industry" aria-hidden="true"></i>Manage Industry</a></li>
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/establishment_list'); ?>"><i class="fa fa-info"></i>Establishment Type</a></li>
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/amenities_list'); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Manage Amenities</a></li>
-                        <li><a href="<?= base_url('admin/Settings/spaceList'); ?>"><i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>Space Type</a></li>
-                        <li><a href="<?= base_url('admin/Settings/facilities'); ?>"><i class="fa fa-magnet" aria-hidden="true"></i>Manage Facilities</a></li>
+                        <li><a href="<?= base_url(ADMIN_DIR . '/settings/spaceList'); ?>"><i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>Space Type</a></li>
+                        <li><a href="<?= base_url(ADMIN_DIR . '/settings/facilities'); ?>"><i class="fa fa-magnet" aria-hidden="true"></i>Manage Facilities</a></li>
                     </ul>
-                </li>
-                <li>
-                    <a href="<?= base_url(ADMIN_DIR . '/newsletter_subscriber/lists'); ?>" class="waves-effect" title="Newsletter Subscriber"><i class="fa fa-envelope"></i><span> Newsletter Sub. </span></a>
                 </li>
                 <li>
                     <a href="<?= base_url('admin/users'); ?>" class="waves-effect"><i class="fa fa-users"></i><span> Manage Users </span></a>
                 </li>
                 <li>
-                    <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Transactional Reports </span></a>
+                    <a href="<?= base_url(ADMIN_DIR . '/PosteList/messageListing'); ?>" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage user messages </span></a>
                 </li>
                 <li>
                     <a href="<?= base_url(ADMIN_DIR . '/PosteList/index'); ?>" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage Posted listings </span></a>
                 </li>
                 <li>
-                    <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Subscription plans and Promo Codes </span></a>
+                    <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Transactional Reports </span></a>
+                </li>
+                <li>
+                    <a href="<?= base_url(ADMIN_DIR . '/settings/promo_codes'); ?>" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Subscription plans and Promo Codes </span></a>
                 </li>
                 <li>
                     <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Referral bonus and rules </span></a>
                 </li>
-                <li>
-                    <a href="<?= base_url(ADMIN_DIR . '/PosteList/messageListing'); ?>" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Manage user messages </span></a>
-                </li>
-                <li>
-                    <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span> Email Templates and Newsletters </span></a>
-                </li>
-
-
+<!--                <li>
+                    <a href="<?= base_url(ADMIN_DIR . '/newsletter_subscriber/lists'); ?>" class="waves-effect" title="Newsletter Subscriber"><i class="fa fa-envelope"></i><span> Newsletter Subscriptions </span></a>
+                </li>-->
             </ul>
         </div>
         <!-- Sidebar -->

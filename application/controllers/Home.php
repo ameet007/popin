@@ -175,7 +175,8 @@ class Home extends CI_Controller {
             'space_id' => $spaceId,
             'sender' => $guestId,
             'receiver' => $hostId,
-            'message' => $messageBody
+            'message' => $messageBody,
+            'status' => 'pending'
         );
         $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
         $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
@@ -332,6 +333,7 @@ class Home extends CI_Controller {
             $messageBody .= nl2br($message);
 
             $rawData = array(
+                'booking' => $bookingId,
                 'space_id' => $spaceId,
                 'sender' => $userID,
                 'receiver' => $spaceData['host'],
@@ -443,13 +445,13 @@ class Home extends CI_Controller {
         if (empty($userID)) {
             redirect(base_url());
         }
-        if ($this->session->userdata('user_id') != '' && $this->session->userdata('user_id') == $userID) {
+        if ($this->session->has_userdata('user_id') && $this->session->userdata('user_id') == $userID) {
             $loginID = $this->session->userdata('user_id');
             $data['checkStatus'] = $this->user->checkContactList($userID, $loginID);
             $data['userProfileInfo'] = getSingleRecord('user', 'id', $userID);
             $data['customerID'] = $userID;
             $data['module_heading'] = 'My Profile';
-            $data['checkProfile'] = " ";
+            $data['checkProfile'] = "my_profile";
             $data['spaceList'] = $this->user->getSpaceList($loginID);
         } else {
             $header['step_info'] = "";
@@ -461,7 +463,7 @@ class Home extends CI_Controller {
                 }
                 //print_array($data['addressBook']);
             }
-            $header['checkProfile'] = "profile";
+            $data['checkProfile'] = "";
             $loginID = $userID;
             $data['customerID'] = $userID;
             $data['module_heading'] = 'My Profile';
@@ -473,8 +475,9 @@ class Home extends CI_Controller {
             $this->load->view(FRONT_DIR . '/user/userProfile', $data);
             $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
         } else {
-            $data['search_nav'] = 1;
-            $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header', $data);
+            $header['search_nav'] = 1;
+            $header['userProfileInfo'] = $this->user->userProfileInfo();
+            $this->load->view(FRONT_DIR . '/' . INC . '/homepage-header',$header);
             $this->load->view(FRONT_DIR . '/user/userProfile', $data);
             $this->load->view(FRONT_DIR . '/' . INC . '/homepage-footer');
         }

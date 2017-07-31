@@ -10,7 +10,8 @@ class Settings extends CI_Controller {
         $this->load->model(ADMIN_DIR . '/AdminEstablishment', 'faq_category');
         $this->load->model(ADMIN_DIR . '/AdminIndustry', 'get_industry');
         $this->load->model(ADMIN_DIR . '/AdminAmenities', 'get_amenities');
-        $this->load->model(ADMIN_DIR . '/AdminFashletics', 'fashletics');
+        $this->load->model(ADMIN_DIR . '/AdminFacilities', 'facilities');
+        $this->load->model(ADMIN_DIR . '/AdminPromoCodes', 'promo_codes');
         $this->load->library('form_validation');
     }
     function image_upload($filename, $path = 'site/', $oldImage = '') {
@@ -1202,11 +1203,11 @@ class Settings extends CI_Controller {
     }
     public function get_all_facilities_list() {
         if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
-            $response = $this->fashletics->updateStatus($_POST['id'], $_REQUEST['customActionName']);
+            $response = $this->facilities->updateStatus($_POST['id'], $_REQUEST['customActionName']);
             $status = $response['status'];
             $message = $response['message'];
         }
-        $list = $this->fashletics->get_datatables();
+        $list = $this->facilities->get_datatables();
         // print_r($list);
         $data = array();
         $no = $_POST['start'];
@@ -1245,8 +1246,8 @@ class Settings extends CI_Controller {
         }
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->fashletics->count_all(),
-            "recordsFiltered" => $this->fashletics->count_filtered(),
+            "recordsTotal" => $this->facilities->count_all(),
+            "recordsFiltered" => $this->facilities->count_filtered(),
             "data" => $data,
         );
         if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
@@ -1257,7 +1258,7 @@ class Settings extends CI_Controller {
         //output to json format
         echo json_encode($output);
     }
-     public function add_facilities() {
+    public function add_facilities() {
         $data = array();
         $data['module_heading']   = 'Add New Facilities';
         $data['adminProfileInfo'] = $this->adminProfileInfo;
@@ -1273,9 +1274,9 @@ class Settings extends CI_Controller {
                 'label' => 'Fashletices Name',
                 'rules' => 'required|min_length[3]|max_length[255]',
                 'errors' => array(
-                    'required' => 'Please Enter The fashletices Name',
-                    'min_length' => 'Minimum 3 Characters Long fashletices Name Is Required',
-                    'max_length' => 'Maximum 255 Characters Long fashletices Name Is Required'
+                    'required' => 'Please Enter The facilities Name',
+                    'min_length' => 'Minimum 3 Characters Long facilities Name Is Required',
+                    'max_length' => 'Maximum 255 Characters Long facilities Name Is Required'
                 ),
             ),
             array(
@@ -1283,7 +1284,7 @@ class Settings extends CI_Controller {
                 'label' => 'Status',
                 'rules' => 'required',
                 'errors' => array(
-                    'required' => 'Please Enter The fashletices type Status'
+                    'required' => 'Please Enter The facilities type Status'
                 ),
             )
         );
@@ -1291,16 +1292,16 @@ class Settings extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('message_notification', validation_errors());
             $this->session->set_flashdata('class', 'danger');
-            redirect(ADMIN_DIR . '/settings/add_fashletices');
+            redirect(ADMIN_DIR . '/settings/add_facilities');
         } else {
-            $fashletices = array(
+            $facilities = array(
                 "name" => $this->input->post('name'),
                 "status" => $this->input->post('status'),
                 "createdDate" => strtotime(date('Y-m-d H:i:s')),
                 "updatedDate" => strtotime(date('Y-m-d H:i:s')),
                 "description" => $this->input->post('description')
             );
-            $response = $this->fashletics->addfacilities($fashletices);
+            $response = $this->facilities->addfacilities($facilities);
             if ($response > 0) {
                 $this->session->set_flashdata('message_notification', 'Facilities has ben Added Successfully');
                 $this->session->set_flashdata('class', A_SUC);
@@ -1318,7 +1319,7 @@ class Settings extends CI_Controller {
         $data['module_heading'] = 'Update Facilities';
         $data['adminProfileInfo'] = $this->adminProfileInfo;
         $facilitiesID = $this->uri->segment('4');
-        $data['facilities'] = $this->fashletics->viewFacilities($facilitiesID);
+        $data['facilities'] = $this->facilities->viewFacilities($facilitiesID);
         $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
         $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
         $this->load->view(ADMIN_DIR . '/facilities/edit', $data);
@@ -1359,7 +1360,7 @@ class Settings extends CI_Controller {
                 "description" => $this->input->post('description'),
                 "id" => $this->input->post('id')
             );
-            $response = $this->fashletics->editfacilities($facilities);
+            $response = $this->facilities->editfacilities($facilities);
             if ($response > 0) {
                 $this->session->set_flashdata('message_notification', 'Facilities Updated Successfully');
                 $this->session->set_flashdata('class', A_SUC);
@@ -1375,7 +1376,7 @@ class Settings extends CI_Controller {
     public function deleteFacilities() {
         $array      = $this->uri->uri_to_assoc();
         $facilities = $array['deleteFacilities'];
-        $response = $this->fashletics->deletefacilitiesValue($facilities);
+        $response = $this->facilities->deletefacilitiesValue($facilities);
         if ($response > 0) {
             $this->session->set_flashdata('message_notification', 'Facilities has ben Deleted Successfully');
             $this->session->set_flashdata('class', A_SUC);
@@ -1384,6 +1385,225 @@ class Settings extends CI_Controller {
             $this->session->set_flashdata('message_notification', 'Facilities Not Deleted Successfully');
             $this->session->set_flashdata('class', A_FAIL);
             redirect(ADMIN_DIR . '/Settings/facilities');
+        }
+    }
+    
+    public function promo_codes() {
+        $data = array();
+        $data['module_heading']   = 'Promo Codes';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/promo_codes/promo_codes_list', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+    public function get_all_promo_codes() {
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+            $response = $this->promo_codes->updateStatus($_POST['id'], $_REQUEST['customActionName']);
+            $status = $response['status'];
+            $message = $response['message'];
+        }
+        $list = $this->promo_codes->get_datatables();
+        // print_r($list);
+        $data = array();
+        $no = $_POST['start'];
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $fc) {
+            $no++;
+            $possible_status_changes = '';
+            $row = array();
+            $row[] = '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input name="id[]" type="checkbox" class="checkboxes" value="' . $fc->id . '"/><span></span></label>';
+            $row[] = trim($fc->code);
+            $row[] = $fc->value;
+            $row[] = ucfirst($fc->ownerType);
+            $row[] = date(DATE_FORMAT, $fc->createdDate);
+            if ($fc->status == 'Active') {
+                $row[] = '<button class="btn btn-success">active</button>';
+            } else if ($fc->status == 'Inactive') {
+                $row[] = '<button class="btn btn-warning">inactive</button>';
+            } else {
+                $row[] = '<button class="btn btn-danger">' . $fc->status . '</button>';
+            }
+            //add html for action
+            $row[] = '<div class="btn-group btn-info">
+                        <a data-toggle="dropdown" href="javascript:;" class="btn purple" aria-expanded="true">
+                        <i class="fa fa-user"></i> Settings
+                        <i class="fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                            <a  href="' . base_url(ADMIN_DIR . '/settings/update_promo_code/' . $fc->id) . '"><i class="fa fa-pencil"></i> Edit</a>
+                            </li>
+                          <li>
+                           <a  href="' . base_url(ADMIN_DIR . '/settings/delete_promo_code/' . $fc->id) . '"><i class="fa fa-trash"></i> Delete</a>
+                          </li>
+                        </ul>
+                    </div>';
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->facilities->count_all(),
+            "recordsFiltered" => $this->facilities->count_filtered(),
+            "data" => $data,
+        );
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+
+            $output["customActionStatus"] = $status; // OK for success and NOt OK for fail. pass custom message(useful for getting status of group actions)
+            $output["customActionMessage"] = $message; // pass custom message(useful for getting status of group actions)
+        }
+        //output to json format
+        echo json_encode($output);
+    }
+    public function add_promo_code() {
+        $data = array();
+        $data['module_heading']   = 'Add New Promo Code';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/promo_codes/add', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+    public function add_promo_code_submit(){
+        $config = array(
+            array(
+                'field' => 'code',
+                'label' => 'Promo Code',
+                'rules' => 'required|min_length[3]|max_length[255]',
+                'errors' => array(
+                    'required' => 'Please Enter The Promo Code',
+                    'min_length' => 'Minimum 3 Characters Long Promo Code Is Required',
+                    'max_length' => 'Maximum 255 Characters Long Promo Code Is Required'
+                ),
+            ),
+            array(
+                'field' => 'value',
+                'label' => 'Discount',
+                'rules' => 'required|integer|greater_than[0]|less_than_equal_to[100]',
+                'errors' => array(
+                    'required' => 'Please Enter The Promo Code Discount Value'
+                ),
+            )
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/settings/add_promo_code');
+        } else {
+            $isExist = $this->db->get_where('promo_codes', array('code' => trim($this->input->post('code'))))->num_rows();
+            if($isExist == 0){
+                $promo_codes = array(
+                    "code" => trim($this->input->post('code')),
+                    "value" => trim($this->input->post('value')),
+                    "ownerId" => 1,
+                    "createdDate" => time(),
+                    "updatedDate" => time()
+                );
+                $response = $this->promo_codes->add_promo_codes($promo_codes);
+                if ($response > 0) {
+                    $this->session->set_flashdata('message_notification', 'Promo Code has been Added Successfully');
+                    $this->session->set_flashdata('class', A_SUC);
+                    redirect(ADMIN_DIR . '/settings/add_promo_code');
+                } else {
+                    $this->session->set_flashdata('message_notification', 'Promo Code Not Added Successfully');
+                    $this->session->set_flashdata('class', A_FAIL);
+                    redirect(ADMIN_DIR . '/settings/add_promo_code');
+                }
+            }else{
+                $this->session->set_flashdata('message_notification', 'This promo code already exists.');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(ADMIN_DIR . '/settings/add_promo_code');
+            }
+            
+        }
+    }
+    # Update space 
+    public function update_promo_code() {
+        $data = array();
+        $data['module_heading'] = 'Update Promo Code';
+        $data['adminProfileInfo'] = $this->adminProfileInfo;
+        $promo_codeID = $this->uri->segment('4');
+        $data['promo_code'] = $this->promo_codes->viewPromoCode($promo_codeID);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/header', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/left-sidebar', $data);
+        $this->load->view(ADMIN_DIR . '/promo_codes/edit', $data);
+        $this->load->view(ADMIN_DIR . '/' . INC . '/footer', $data);
+    }
+    public function update_promo_code_submit() {
+       $config = array(
+            array(
+                'field' => 'code',
+                'label' => 'Promo Code',
+                'rules' => 'required|min_length[3]|max_length[255]',
+                'errors' => array(
+                    'required' => 'Please Enter The Promo Code',
+                    'min_length' => 'Minimum 3 Characters Long Promo Code Is Required',
+                    'max_length' => 'Maximum 255 Characters Long Promo Code Is Required'
+                ),
+            ),
+            array(
+                'field' => 'value',
+                'label' => 'Discount',
+                'rules' => 'required|integer|greater_than[0]|less_than_equal_to[100]',
+                'errors' => array(
+                    'required' => 'Please Enter The Promo Code Discount Value'
+                ),
+            ),
+            array(
+                'field' => 'status',
+                'label' => 'Status',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Please Select The Promo Code Status'
+                ),
+            )
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('message_notification', validation_errors());
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/settings/update_promo_code/' . $this->input->post('id'));
+        } else {
+            $isExist = $this->db->get_where('promo_codes', array('id !=' => $this->input->post('id'),'code' => trim($this->input->post('code'))))->num_rows();
+            if($isExist == 0){
+                $promo_codes = array(
+                    "code" => trim($this->input->post('code')),
+                    "value" => trim($this->input->post('value')),
+                    "status" => $this->input->post('status'),
+                    "ownerId" => 1,
+                    "updatedDate" => time(),
+                    "id" => $this->input->post('id')
+                );
+                $response = $this->promo_codes->update_promo_codes($promo_codes);
+                if ($response > 0) {
+                    $this->session->set_flashdata('message_notification', 'Promo Code Updated Successfully');
+                    $this->session->set_flashdata('class', A_SUC);
+                    redirect(ADMIN_DIR . '/settings/promo_codes');
+                } else {
+                    $this->session->set_flashdata('message_notification', 'Promo Code Not Updated Successfully');
+                    $this->session->set_flashdata('class', A_FAIL);
+                    redirect(ADMIN_DIR . '/settings/update_promo_code/' . $this->input->post('id'));
+                }
+            }else{
+                $this->session->set_flashdata('message_notification', 'This promo code already exists.');
+                $this->session->set_flashdata('class', A_FAIL);
+                redirect(ADMIN_DIR . '/settings/update_promo_code/' . $this->input->post('id'));
+            }
+        }
+    }
+    public function delete_promo_code() {
+        $array      = $this->uri->uri_to_assoc();
+        $promo_code_id = $array['delete_promo_code'];
+        $response = $this->promo_codes->deletePromoCode($promo_code_id);
+        if ($response > 0) {
+            $this->session->set_flashdata('message_notification', 'Promo Code has ben Deleted Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+            redirect(ADMIN_DIR . '/settings/promo_codes');
+        } else {
+            $this->session->set_flashdata('message_notification', 'Promo Code Not Deleted Successfully');
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(ADMIN_DIR . '/settings/promo_codes');
         }
     }
 }

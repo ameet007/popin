@@ -37,7 +37,7 @@
                                             <div class="review text-center">
                                                 <?= $listing['spaceTitle']; ?>
                                             </div>
-                                            <footer><?= createRatingStars($listing['totalRating']); ?></footer>
+                                            <footer><?= createRatingStars($listing['totalRating']); ?><span><?= totalReivewsGet($listing['id']); ?> reviews</span></footer>
                                         </li>
                                         <?php endforeach; ?>
                                     </ul>

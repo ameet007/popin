@@ -543,7 +543,7 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                         </div>
                                     </form>
                                 </div>
-                                <div class="pro-requr space-r policie-s">
+<!--                                <div class="pro-requr space-r policie-s">
                                     <h3>Policies</h3>
                                     <button class="gost-btn">Edit</button>
                                     <ul class="listing-info">
@@ -588,7 +588,7 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                             </div>
                                         </li>
                                     </ul>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="col-md-4">
                                 <div class="increase-profit">

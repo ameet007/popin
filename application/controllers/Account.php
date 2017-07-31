@@ -43,6 +43,8 @@ class Account extends CI_Controller {
     public function transaction_history() {
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = 'Transaction History';
+        $data['histories'] = $this->user->getTransactionsHostory($this->session->userdata('user_id'));
+        //print_array($data['histories']);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/transaction_history', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');

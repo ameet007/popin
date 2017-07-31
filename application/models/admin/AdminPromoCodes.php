@@ -1,18 +1,13 @@
 <?php
 
-class AdminUsers extends CI_Model {
+class AdminPromoCodes extends CI_Model {
 
-    function __construct() {
-        parent::__construct();
-        $table = 'user';
-    }
-
-    var $table = 'user';
+    var $table = 'promo_codes';
     var $select_fields = '*';
     var $where_condition = "id!='0'";
-    var $column_order = array('id', 'id', 'firstName', 'lastName', 'avatar', 'email', 'gender', 'phone', 'createdDate', 'updatedDate', 'status', null); //set column field database for datatable orderable
-    var $column_search = array('id', 'id', 'firstName', 'lastName', 'avatar', 'email', 'gender', 'phone', 'createdDate', 'updatedDate', 'status'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('id' => 'DESC'); // default order 
+    var $column_order = array('id', 'code', 'value', 'ownerType', 'ownerId', 'status', 'createdDate', 'updatedDate', null); //set column field database for datatable orderable
+    var $column_search = array('id', 'code', 'value', 'ownerType', 'ownerId', 'status', 'createdDate', 'updatedDate'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $order = array('id' => 'desc'); // default order 
 
     private function get_datatables_query() {
         $this->db->from($this->table);
@@ -39,22 +34,6 @@ class AdminUsers extends CI_Model {
         if (isset($_POST['order'])) { // here order processing
             $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
         }
-        if (isset($_POST['firstName']) and $_POST['firstName'] != '') {
-            $this->db->like('firstName', $_POST['firstName']);
-        }
-        if (isset($_POST['lastName']) and $_POST['lastName'] != '') {
-            $this->db->like('lastName', $_POST['lastName']);
-        }
-        if (isset($_POST['phone']) and $_POST['phone'] != '') {
-            $this->db->like('phone', $_POST['phone']);
-        }
-        if (isset($_POST['email']) and $_POST['email'] != '') {
-            $this->db->like('email', $_POST['email']);
-        }
-        if (isset($_POST['gender']) and $_POST['gender'] != '') {
-            $this->db->like('email', $_POST['email']);
-        }
-
         if ((!empty($_POST['order_date_from']) and ! empty($_POST['order_date_to']))) {
             $from_date = explode('/', $_POST['order_date_from']);
             $from_date_ymd = strtotime($from_date[2] . '-' . $from_date[1] . '-' . $from_date[0]);
@@ -104,10 +83,28 @@ class AdminUsers extends CI_Model {
         return $this->db->count_all_results();
     }
 
-    public function viewUser($userId) {
-        $this->db->select('*');
+    public function add_promo_codes($data) {
+        //Insert Query Goes here...
+        $this->db->insert($this->table, $data);
+        return $this->db->insert_id();
+    }
+
+    public function deletePromoCode($ID) {
+        $this->db->where('id', $ID);
+        $this->db->delete($this->table);
+        return $this->db->affected_rows();
+    }
+
+    public function update_promo_codes($data) {
+        $where = array("id" => $data['id']);
+        $this->db->where($where);
+        $this->db->update($this->table, $data);
+        return $this->db->affected_rows();
+    }
+
+    public function viewPromoCode($id) {
         $this->db->from($this->table);
-        $this->db->where('id', $userId);
+        $this->db->where('id', $id);
         $query = $this->db->get();
         return $query->row();
     }
@@ -126,37 +123,12 @@ class AdminUsers extends CI_Model {
             }
         }
         if ($wrong == true) {
-            return array("status" => "NOT OK", "message" => "Selected User's Status Not Updated.");
+            return array("status" => "NOT OK", "message" => "Selected Promo Code Status Not Updated Sucessfully");
         } else {
-            return array("status" => "OK", "message" => "Selected User's Status Updated Successfully.");
+            return array("status" => "OK", "message" => "Selected Promo Code Status Updated Successfully");
         }
     }
 
-    public function getCards($userId) {
-        $this->db->select('*');
-        $this->db->from('card_details');
-        $this->db->where('user', $userId);
-        $query = $this->db->get();
-        return $query->result();
-    }
-    
-    public function getUnverifiedUsers() {
-        $this->db->select('id,firstName,lastName,avatar');
-        $this->db->or_group_start();
-            $this->db->where('establishmentLicence !=', '');
-            $this->db->where('establishmentLicenseVerified', 'No');
-        $this->db->group_end();
-        $this->db->or_group_start();
-            $this->db->where('liabilityInsurance !=', '');
-            $this->db->where('liabilityInsuranceVerified', 'No');
-        $this->db->group_end();
-        $this->db->or_group_start();
-            $this->db->where('licenceCopy !=', '');
-            $this->db->where('licenceCopyVerified', 'No');
-        $this->db->group_end();
-        $this->db->where('status', 'Active');
-        return $this->db->get('user')->result();
-    }
 }
 
 ?>
