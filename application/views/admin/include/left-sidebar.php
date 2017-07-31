@@ -43,9 +43,9 @@
                 <li>
                     <a href="<?= base_url(ADMIN_DIR . '/settings/promo_codes'); ?>" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Subscription plans and Promo Codes </span></a>
                 </li>
-                <li>
+<!--                <li>
                     <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Referral bonus and rules </span></a>
-                </li>
+                </li>-->
 <!--                <li>
                     <a href="<?= base_url(ADMIN_DIR . '/newsletter_subscriber/lists'); ?>" class="waves-effect" title="Newsletter Subscriber"><i class="fa fa-envelope"></i><span> Newsletter Subscriptions </span></a>
                 </li>-->
