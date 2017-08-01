@@ -38,8 +38,8 @@
                                             <th width="10%"> User Name </th>
                                             <th width="15%"> Subscription Name </th>
                                             <th width="10%"> Subscribed Date </th>
-<!--                                            <th width="10%"> Subscribed Through </th>
-                                            <th width="12%"> Subscribed With </th>-->
+                                            <th width="10%"> Paid Through </th>
+                                            <th width="12%"> Paid With </th>
                                             <th width="10%"> Valid Till </th>
                                         </tr>
                                     </thead>
