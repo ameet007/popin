@@ -41,7 +41,7 @@
                                                             if($history['paid_for'] == 'rental'){
                                                                 echo date("F d, Y", strtotime($history['checkIn'])).'<br/>'.$history['spaceTitle'].'<br/>'.$history['location'];
                                                             }else{
-                                                                echo "PopIn Scheduler Subscription Plan";
+                                                                echo $history['subscription_name'];
                                                             }
                                                             ?>
                                                         </td>

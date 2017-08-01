@@ -58,6 +58,8 @@ $route['admin/Settings/spaceList'] = ADMIN_DIR.'/Space/index';
 $route['admin/Settings/add_space'] = ADMIN_DIR.'/space/add';
 $route['admin/Settings/edit_space/(:num)'] = ADMIN_DIR.'/space/updateSpace/$1';
 $route['admin/Settings/delet_space/(:num)'] = ADMIN_DIR.'/space/deleteSpace/$1';
+$route['admin/manage_subscriptions'] = ADMIN_DIR.'/subscriptions/index';
+$route['admin/manage_subscription_plans'] = ADMIN_DIR.'/subscriptions/manage_subscription_plans';
 
 $route['page/faq']  = 'Page/faq';
 $route['page/contact-us']  = 'Page/contact';

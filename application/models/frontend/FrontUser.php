@@ -679,8 +679,9 @@ class FrontUser extends CI_Model {
       return $this->db->affected_rows();
     }
     public function getTransactionsHostory($userId){
-        $this->db->select("payments.*, space_booking.checkIn, space_booking.checkOut, space_booking.totalAmount, space_booking.currency, spaces.spaceTitle, CONCAT(spaces.city, ', ', spaces.state) as location");
+        $this->db->select("payments.*, space_booking.checkIn, space_booking.checkOut, space_booking.totalAmount, space_booking.currency, subscription_master.name as subscription_name, spaces.spaceTitle, CONCAT(spaces.city, ', ', spaces.state) as location");
         $this->db->join('space_booking', 'payments.booking_id = space_booking.id', 'left');
+        $this->db->join('subscription_master', 'payments.booking_id = subscription_master.code', 'left');
         $this->db->join('spaces', 'space_booking.space = spaces.id', 'left');
         return $this->db->get_where('payments',array('user_id'=>$userId))->result_array();      
     }

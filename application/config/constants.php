@@ -128,7 +128,8 @@ define('FAQ_CAT','faq_category');
 define('FAQ','faq');
 define('SETTINGS','settings');
 define('EMAIL_TEMPLATE','email_template');
-define('SUBSCRIBER','newsletter_subscriber');
+define('SUBSCRIBER','subscriber');
+define('NEWS_SUBSCRIBER','newsletter_subscriber');
 define('HOST','hosts');
 define('GUEST','guests');
 
