@@ -24,10 +24,10 @@ function sendMailAdmin($email,$subjectTitle,$smsmessage,$from)
     mail($to,$subject,'<pre style="font-size:14px;">'.$message.'</pre>',$headers);
     return 1;
 }
-function getSingleRecord($table,$column,$condition){
+function getSingleRecord($table,$column,$condition,$select = "*"){
     $tableRecord =& get_instance();
     $tableRecord->load->database();
-    return $tableRecord->db->get_where($table,array($column=>$condition))->row();
+    return $tableRecord->db->select($select)->get_where($table,array($column=>$condition))->row();
 }
 function getMultiRecord($table,$column,$condition,$orderBy='',$orderType=''){
     $tableRecord =& get_instance();
