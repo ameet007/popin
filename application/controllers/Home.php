@@ -387,7 +387,7 @@ class Home extends CI_Controller {
             $this->paypal_lib->add_field('cancel_return', $cancelURL);
             $this->paypal_lib->add_field('notify_url', $notifyURL);
             $this->paypal_lib->add_field('item_name', $spaceData['spaceTitle']);
-            $this->paypal_lib->add_field('custom', $userID);
+            $this->paypal_lib->add_field('custom', json_encode(array('userID'=>$userID, 'payFor' =>'rental')));
             $this->paypal_lib->add_field('item_number', $bookingId);
             $this->paypal_lib->add_field('amount', $this->session->userdata('checkout_amount'));
             $this->paypal_lib->image($logo);
@@ -447,7 +447,9 @@ class Home extends CI_Controller {
 
         //check whether the payment is verified
         if (preg_match("/VERIFIED/i", $result)) {
-            $data['user_id'] = $paypalInfo['custom'];
+            $custom = json_decode($paypalInfo['custom'], TRUE);
+            $data['user_id'] = $custom['userID'];
+            $data['paid_for'] = $custom['payFor'];
             $data['booking_id'] = $paypalInfo["item_number"];
             $data['txn_id'] = $paypalInfo["txn_id"];
             $data['payment_gross'] = $paypalInfo["mc_gross"];
@@ -458,13 +460,20 @@ class Home extends CI_Controller {
             //insert the transaction data into the database
             $response = $this->insertTransaction($data);
             if ($response) {
-                $updateData = array(
-                    'paymentStatus' => ucfirst($data['payment_status']),
-                    'transactionId' => $data['txn_id'],
-                    'paymentAccount' => $data['payer_email'],
-                    'updatedDate' => time()
-                );
-                $this->db->where('id', $data['booking_id'])->update('space_booking', $updateData);
+                if($data['paid_for'] == 'rental'){
+                    $updateData = array(
+                        'paymentStatus' => ucfirst($data['payment_status']),
+                        'transactionId' => $data['txn_id'],
+                        'paymentAccount' => $data['payer_email'],
+                        'updatedDate' => time()
+                    );
+                    $this->db->where('id', $data['booking_id'])->update('space_booking', $updateData);
+                }elseif($data['paid_for'] == 'subscription'){
+                    $updateData = array(
+                        'valid_date' => strtotime("+30 days")
+                    );
+                    $this->db->where(array('user_id' => $data['user_id'], 'subscription_code' => $data['booking_id']))->update('user_subscriptions', $updateData);
+                }                
             }
         }
     }

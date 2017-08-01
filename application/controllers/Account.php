@@ -22,12 +22,64 @@ class Account extends CI_Controller {
     }
 
     public function payment_methods() {
+        $userID = $this->session->userdata('user_id'); //current user id
         $data['cardDetails'] = $this->user->cardDetails();
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['module_heading'] = 'Payment Methods';
+        $data['subscription'] = getSingleRecord('subscription_master', 'code', 'scheduler');
+        if(trim($data['userProfileInfo']->currency) != "USD" && !empty($data['subscription'])){
+            $finalExchangedAmount = $this->currencyconverter->convert('USD', trim($data['userProfileInfo']->currency), $data['subscription']->amount, true, 1);
+        }
+        $data['my_subscription'] = getSingleRecord('user_subscriptions', 'user_id', $userID);
+        $data['paypalInfo'] = $this->input->post();
+        if(!empty($data['paypalInfo'])){
+            $isExist = $this->db->get_where('user_subscriptions',array('user_id'=> $userID, 'subscription_code' => $data['paypalInfo']["item_number"]))->num_rows();
+            if($isExist == 0){
+                $insertData = array(
+                    'user_id' => $userID,
+                    'subscription_code' => $data['paypalInfo']["item_number"],
+                    'subscribed_date' => strtotime($data['paypalInfo']['payment_date']),
+                    'subscribed_through' => 'paypal',
+                    'subscribed_with' => $data['paypalInfo']["payer_email"]
+                );
+                $this->db->insert('user_subscriptions', $insertData);
+            }            
+        }
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/payment_methods', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/user-footer');
+    }
+    
+    public function buy_subscription() {
+        $this->load->library('paypal_lib');
+        $userID = $this->session->userdata('user_id'); //current user id
+        $rawData = $this->input->post();
+        //print_array($rawData, true);
+        if (!empty($rawData)) {
+            $this->session->set_userdata("subscription_code", $rawData['subscription_code']);            
+            $subscription = getSingleRecord('subscription_master', 'code', 'scheduler');
+            //Set variables for paypal form
+            $returnURL = site_url() . 'account/payment-methods'; //payment success url
+            $cancelURL = base_url() . 'account/payment-methods'; //payment cancel url
+            $notifyURL = base_url() . 'home/payment_ipn'; //ipn url
+
+            $logo = 'http://www.neurons-it.in/Popin/uploads/site/thumb/logo.png';
+
+            $this->paypal_lib->add_field('return', $returnURL);
+            $this->paypal_lib->add_field('cancel_return', $cancelURL);
+            $this->paypal_lib->add_field('notify_url', $notifyURL);
+            $this->paypal_lib->add_field('item_name', $rawData['subscription_name']);            
+            $this->paypal_lib->add_field('item_number', $rawData['subscription_code']);
+            $this->paypal_lib->add_field('custom', json_encode(array('userID'=>$userID, 'payFor' =>'subscription')));
+            $this->paypal_lib->add_field('amount', $subscription->amount);
+            $this->paypal_lib->image($logo);
+            //$this->paypal_lib->add_field('currency_code', $this->session->userdata('checkout_currency'));
+
+            $this->paypal_lib->paypal_auto_form();
+        } else {
+            echo '<center><h3><strong>Failed</strong></h3><h4>Invalid subscription details.</h4></center>';
+            die();
+        }
     }
 
     public function payout_preferences() {

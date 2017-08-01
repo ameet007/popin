@@ -1,9 +1,9 @@
-<?php if ($message_notification = $this->session->flashdata('message_notification')) { ?>
+<?php $message_notification = $this->session->flashdata('message_notification'); if ($message_notification) { ?>
     <!-- Message Notification Start -->
     <div id="message_notification">
         <div class="alert alert-<?= $this->session->flashdata('class'); ?>">    
             <button class="close" data-dismiss="alert" type="button">×</button>
-            <center><strong><?= $this->session->flashdata('message_notification'); ?></strong></center>
+            <center><strong><?= $message_notification; ?></strong></center>
         </div>
     </div>
     <!-- Message Notification End -->
@@ -79,6 +79,42 @@
                                     </form>
                                 </div>
                             </div>
+                            <?php if(!empty($subscription)): $today = time(); ?>
+                            <div class="panel panel-default gift-card">
+                                <div class="panel-heading"><?= SITE_DISPNAME; ?> Subscription</div>
+                                <div class="panel-body">
+                                    <h3><?= $subscription->name; ?>: <span>$<?= $subscription->amount; ?> per month</span></h3>
+                                    <p><?= $subscription->details; ?></p>
+                                    <?php if(!empty($my_subscription)): ?>
+                                    <p>You have successfully subscribed for this on <b><?= date("d F, Y", $my_subscription->subscribed_date); ?></b>.</p>
+                                    <?php if(!empty($my_subscription->valid_date) && $my_subscription->valid_date >= time()){ ?>
+                                    <p>Your subscription is valid till <b><?= date("d F, Y", $my_subscription->valid_date); ?></b>.</p>
+                                    <?php }else{ ?>
+                                    <p>Your subscription is expired now.</p>
+                                    <form method="post" action="<?= base_url('account/buy_subscription'); ?>">
+                                        <input type="hidden" name="subscription_code" value="<?= $subscription->code; ?>" />
+                                        <input type="hidden" name="subscription_name" value="<?= $subscription->name; ?>" />
+                                        <ul>
+                                            <li><button class="btn-red">Renew subscription</button></li>
+                                        </ul>
+                                    </form>
+                                    <?php }?>
+                                    
+                                    <?php elseif(!empty($paypalInfo)): ?>
+                                    <p>You have successfully subscribed for <?= $subscription->name; ?>.</p>                 
+                                    
+                                    <?php else: ?>
+                                    <form method="post" action="<?= base_url('account/buy_subscription'); ?>">
+                                        <input type="hidden" name="subscription_code" value="<?= $subscription->code; ?>" />
+                                        <input type="hidden" name="subscription_name" value="<?= $subscription->name; ?>" />
+                                        <ul>
+                                            <li><button class="btn-red">Buy now</button></li>
+                                        </ul>
+                                    </form>
+                                    <?php endif;?>
+                                </div>
+                            </div>
+                            <?php endif; ?>
                         </div>
                     </article>
                 </div>
@@ -86,7 +122,7 @@
     </div>
 </section>
 <!--User Sign In Model Start-->
-<div id="addCardBox" class="modal fade new-partner-model new-signup" role="dialog">
+<div id="addCardBox" class="modal fade new-partner-model" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -96,24 +132,25 @@
             </div>
             <form name="addCardForm" id="addCardForm" method="post" action="<?= base_url('account/submit_card'); ?>">
                 <div class="modal-body">
-                    <div class="felid">
+                    <div class="felid form-group">
                         <input placeholder="Card Number" id="cardNumber" name="cardNumber" value="" class="textbox" type="text" />
                     </div>
-                    <div class="felid barthday">
-                        <label>Expiration <i class="fa fa-question-circle" aria-hidden="true"></i></label>
+                    <div class="felid form-group">
+                        <p><b>Expiration</b></p><br>
                         <div class="row">
                             <div class="col-md-6">
                                 <select class="selectbox" name="expirationMonth" id="expirationMonth">
+                                    <option value="" selected>Month</option>
                                     <?php $all_months = unserialize(MONTH_DIG);
-                                    foreach ($all_months as $k => $v) {
+                                    foreach ($all_months as $k => $v) { if($k != ""){
                                         ?>
-                                        <option value="<?= $k; ?>"><?= $v; ?></option>
-                                    <?php } ?>
+                                        <option value="<?= $k; ?>"><?= $v." ({$k})"; ?></option>
+                                    <?php }} ?>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <select class="selectbox" name="expirationYear" id="expirationYear">
-                                    <option value="">Select Year</option>
+                                    <option value="">Year</option>
                                     <?php for ($i = date('Y'); $i <= (date('Y') + 20); $i++) { ?>
                                         <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                     <?php } ?>
