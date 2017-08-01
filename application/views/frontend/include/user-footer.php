@@ -3,13 +3,16 @@
         <div class="row">
             <div class="foot_top clearfix">
                 <div class="col-lg-3 one-foruth">
-                    <select name="site_language" id="site_language">
+                    <div id="google_translate_element"></div>
+<!--                    <select name="site_language" id="site_language">-->
                         <?php $all_languages = unserialize(LANGUAGES);
+                        $langCodes = '';
                         foreach ($all_languages as $k => $v) {
+                            $langCodes .= $k.',';
                             ?>
-                            <option value="<?= $k; ?>" <?= !empty($userProfileInfo->language) ? ($userProfileInfo->language == $k ? 'selected' : '') : ($k == 'en' ? 'selected' : ''); ?> ><?= $v; ?></option>
-                        <?php } ?>
-                    </select>
+<!--                            <option value="<?= $k; ?>" <?= !empty($userProfileInfo->language) ? ($userProfileInfo->language == $k ? 'selected' : '') : ($k == 'en' ? 'selected' : ''); ?> ><?= $v; ?></option>-->
+                        <?php } $allLangCodes = rtrim($langCodes, ','); ?>
+<!--                    </select>-->
 
                     <select name="site_currency" id="site_currency">
                         <?php $all_currency = unserialize(CURRENCIES);
@@ -104,6 +107,18 @@
                 $(".space-search-form").submit();
             });
         });
+    }
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+        {
+            defaultLanguage: 'en', 
+            //pageLanguage: 'en', 
+            includedLanguages: '<?= $allLangCodes;?>', 
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            //autoDisplay: false,
+            //multilanguagePage: true
+        }, 
+        'google_translate_element');
     }
 </script>
 </body>

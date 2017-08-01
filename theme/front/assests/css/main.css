@@ -1363,3 +1363,9 @@ fieldset, label { margin: 0; padding: 0; }
 }
 
 .booking-section .gift-card input {display: inline-block; padding: 8px 10px; width: 200px; height: 39px; background-color: #fff; border: 1px solid #aaa; border-radius: 2px; color: #484848;}
+#google_translate_element { font-size: 16px; font-weight: 300; height: 44px; line-height: 16px; padding: 10px; width: 100%; appearance: none; -moz-appearance: none; -webkit-appearance: none;  background-color: #fff; border: 1px solid #dbdbdb; color: #484848; margin-bottom: 10px; width: 250px;}
+.goog-te-gadget-simple {
+    border: none !important;
+    font-size: 12pt !important;
+    width: 100% !important;
+}

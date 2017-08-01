@@ -39,6 +39,7 @@ if ($module_heading != '') {
         <!--Initialize Jquery Validation with Additional Methods-->
         <script src="<?= base_url('theme/admin/assets/js/jquery.validate.js'); ?>"></script>
         <script src="<?= base_url('theme/admin/assets/js/additional-methods.js'); ?>"></script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI&libraries=places"></script>
         <style>
             .error {

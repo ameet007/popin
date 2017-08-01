@@ -44,6 +44,7 @@ if (empty($checkProfile)) {
         <!--Initialize Jquery Validation with Additional Methods-->
         <script src="<?= base_url('theme/admin/assets/js/jquery.validate.js'); ?>"></script>
         <script src="<?= base_url('theme/admin/assets/js/additional-methods.js'); ?>"></script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         <style type="text/css">
             .new-partner25 .space-are #bsh-a,.new-partner25 .space-are #bsh-b,.new-partner25 .space-are #bsh-c,.new-partner25 .space-are #bsh-d {border-radius: 20px; border:solid 2px #bbb;}
             label.error {color: #ff5a60 !important;}
