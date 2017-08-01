@@ -76,7 +76,7 @@ $(document).ready(function(){
               <tr>
                 <td align="left" style="width:10%;"><img style="width: 55px;" class="profile-photo image-round" src="<?php echo base_url().'uploads/user/'.(!empty($user->avatar)?$user->avatar:'user_pic-225x225.png'); ?>" alt="avatar" /></td>
                 <td align="left" style="width:70%;" ><?php echo $user->firstName.' '.$user->lastName;?></td>
-                <td align="right" style="width:20%;" ><?= getCurrency_symbol($userProfileInfo->currency).number_format($user->referalAmount).'  '.$user->status; ?></td>
+                <td align="right" style="width:20%;" ><?= getCurrency_symbol($userProfileInfo->currency).number_format($getAmount->join_amount).'  '.$user->status; ?></td>
               </tr>
             </tbody>
         </table>

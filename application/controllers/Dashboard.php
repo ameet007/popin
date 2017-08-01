@@ -437,7 +437,7 @@ class Dashboard extends CI_Controller
     public function invite(){
         getCurrency_symbol();
         $data['search_nav'] = 1;
-    	$data['module_heading'] = 'Wishlists';
+    	$data['module_heading'] = 'Invite';
     	$data['userProfileInfo'] = $this->user->userProfileInfo();
         $referalLink = trim($data['userProfileInfo']->referalLink);
         if(empty($referalLink)){
@@ -455,7 +455,7 @@ class Dashboard extends CI_Controller
     }
   # referral registration page
     public function referral($referralNumber){
-        $data['module_heading'] = 'Wishlists';
+        $data['module_heading'] = 'Invite';
         if ($this->session->userdata('user_id') != '') {
             $data['userProfileInfo'] = $this->user->userProfileInfo();
             $currentUser = $this->session->userdata('user_id');
