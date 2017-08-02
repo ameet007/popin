@@ -44,10 +44,10 @@ class Subscriptions extends CI_Controller {
             
             $subscription = getSingleRecord('subscription_master', 'code', $ns->subscription_code);
             $row[] = $subscription->name;
-            $row[] = date(DATE_FORMAT, $ns->subscribed_date);
-            $row[] = $ns->subscribed_through;
+            $row[] = date("d F, Y", $ns->subscribed_date);
+            $row[] = ucwords($ns->subscribed_through);
             $row[] = $ns->subscribed_with;
-            $row[] = date(DATE_FORMAT, $ns->valid_date);
+            $row[] = date("d F, Y", $ns->valid_date);
             $data[] = $row;
         }
 

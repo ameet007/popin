@@ -36,6 +36,9 @@
                 </li>
                 <li>
                     <a href="<?= base_url(ADMIN_DIR . '/PosteList/index'); ?>" class="waves-effect"><i class="fa fa-list-alt"></i><span> Manage Posted listings </span></a>
+                </li>                
+                <li>
+                    <a href="<?= base_url(ADMIN_DIR . '/manage_subscriptions'); ?>" class="waves-effect"><i class="fa fa-list"></i><span>  Manage Subscriptions</span></a>
                 </li>
                 <li>
                     <a href="<?= base_url(ADMIN_DIR . '/transactions'); ?>" class="waves-effect"><i class="fa fa-file-o"></i><span>  Transactional Reports </span></a>
@@ -45,9 +48,6 @@
                 </li>
                 <li>
                     <a href="<?= base_url(ADMIN_DIR . '/settings/promo_codes'); ?>" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Manage Promo Codes </span></a>
-                </li>
-                <li>
-                    <a href="<?= base_url(ADMIN_DIR . '/manage_subscriptions'); ?>" class="waves-effect"><i class="fa fa-list"></i><span>  Manage Subscriptions</span></a>
                 </li>
 <!--                <li>
                     <a href="#" class="waves-effect"><i class="mdi mdi-calendar"></i><span>  Referral bonus and rules </span></a>

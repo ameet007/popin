@@ -21,6 +21,9 @@
 
         <!--Morris Chart CSS -->
         <link rel="stylesheet" href="<?= base_url('theme/admin/plugins/morris/morris.css'); ?>">
+        
+        <!-- Summernote css -->
+        <link href="<?= base_url('theme/admin/plugins/summernote/summernote.css'); ?>" rel="stylesheet" />
 
         <!-- App css -->
         <link href="<?= base_url('theme/admin/assets/css/bootstrap.min.css'); ?>" rel="stylesheet" type="text/css" />

@@ -26,7 +26,7 @@
             <!-- end row -->
 
             <div class="row">
-                <div class="col-sm-12 col-md-8">
+                <div class="col-sm-12">
                     <div class="card-box">
                         <form class="form-horizontal" role="form" method="post" action="<?= base_url(ADMIN_DIR . '/subscriptions/update_subscription_submit/'); ?>" enctype="multipart/form-data">
                             <div class="form-group">
@@ -36,15 +36,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="caption" class="col-sm-3 control-label">Subscription Details</label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control" name="details" ><?= $subscription->details; ?></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="caption" class="col-sm-3 control-label">Amount</label>
                                 <div class="col-sm-9">
                                     <input type="text" name="amount" class="form-control" value="<?= $subscription->amount; ?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="caption" class="col-sm-3 control-label">Subscription Details</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control summernote" name="details" ><?= $subscription->details; ?></textarea>
                                 </div>
                             </div>
                             <div class="form-group m-b-0">
