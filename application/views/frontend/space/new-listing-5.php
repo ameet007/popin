@@ -71,7 +71,6 @@ $zip = $state = $city = $street = "";
                                 <a class="gost-btn" href="<?php echo site_url('Space/bathrooms'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red">Next</button>
                             </div>
                         </div>
@@ -100,7 +99,7 @@ $zip = $state = $city = $street = "";
                                 <form id="geo-location" action="<?php echo site_url('Space/geo_location_submit'); ?>" method="post">
                                     <input type="hidden" id="lat" name="latitude" value="<?= isset($stepData['step1']['page4']['latitude'])?$stepData['step1']['page4']['latitude']:'';?>">
                                     <input type="hidden" id="lng" name="longitude" value="<?= isset($stepData['step1']['page4']['longitude'])?$stepData['step1']['page4']['longitude']:'';?>">
-                                    <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;<button class="btn-red">Next</button>
+                                    <button class="btn-red">Next</button>
                                 </form>
                             </div>
                         </div>
@@ -123,7 +122,6 @@ $zip = $state = $city = $street = "";
 </style>
 <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDx2JMX91vY411oEI6jv4T34fpWeUdBRAI" type="text/javascript"></script>
 <script type="text/javascript">
-$(".loader").hide();
 <?php if($editMode){ ?>            
     var full_address = "<?= $stepData['start']['full_address']; ?>";
     geocoder = new google.maps.Geocoder();
@@ -171,7 +169,6 @@ $('#location-form').validate({
     },
     submitHandler: function(form) {
         $('#location-form button').text('Please wait...');
-        $(".loader").show();
         $.ajax({
             url: form.action,
             type: form.method,
@@ -182,7 +179,6 @@ $('#location-form').validate({
                 $(".space-are h4:eq(0)").html(response.full_address);
                 $(form).hide();
                 $("#location-map").removeClass('hidden');
-                $(".loader").hide();
                 //console.log("user entered location = " + response.full_address);
 
                 geocoder = new google.maps.Geocoder();
@@ -225,10 +221,8 @@ $("#edit-address, #map-back").on('click', function () {
 
 $("#geo-location").submit(function(e){
     e.preventDefault();
-    $(".loader").show();
     $('#geo-location button').text('Please wait...');
     $.post($("#geo-location").attr('action'), $("#geo-location").serialize(), function(){
-        $(".loader").hide();
         $('#geo-location button').text('Next');
         window.location.href = "<?= site_url('Space/amenities'); ?>";
     })

@@ -14,13 +14,13 @@
                     <form action="<?php echo site_url('Space/location'); ?>" method="post">
                         <div class="feild">
                             <div class="main">
-                                <input type='text' class="textbox" name='bathrooms' value='<?php echo isset($stepData['step1']['page3']['bathrooms'])? $stepData['step1']['page3']['bathrooms'] : '1'?> bathroom' class='qty' />
+                                <input type='text' class="textbox" name='bathrooms' value='<?php echo isset($stepData['step1']['page3']['bathrooms'])? $stepData['step1']['page3']['bathrooms'] : '1'?> bathrooms' class='qty' />
                                 <input type='button' value='' class='qtyminus' field='bathrooms' />
                                 <input type='button' value='' class='qtyplus' field='bathrooms' />
                             </div>
                         </div>
                         <div class="feild">
-                            <label>Is your bathroom ADA Compliant? <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="bathroom" data-html="true"></i></label>
+                            <label>Is your bathroom ADA Compliant? <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="bathroom ADA Compliant" data-html="true"></i></label>
                             <div class="pull-left">
                                 <div class="demo1" id="a"></div>
                                 <input type="hidden" id="bathroomADACompliant" name="bathroomADACompliant" value="<?= isset($stepData['step1']['page3']['bathroomADACompliant'])?$stepData['step1']['page3']['bathroomADACompliant']:'Yes';?>" />
@@ -68,13 +68,14 @@
         // Stop acting like a button
         e.preventDefault();
         // Get the field name
-        fieldName = $(this).attr('field');
+        var fieldName = $(this).attr('field');
         // Get its current value
         var currentVal = parseInt($('input[name='+fieldName+']').val());
+        currentVal++;
         // If is not undefined
         if (!isNaN(currentVal)) {
             // Increment
-            $('input[name='+fieldName+']').val((currentVal + 1)+" bathroom");
+            $('input[name='+fieldName+']').val(currentVal+" bathrooms");
         } else {
             // Otherwise put a 0 there
             $('input[name='+fieldName+']').val(0 + " bathroom");
@@ -85,13 +86,14 @@
         // Stop acting like a button
         e.preventDefault();
         // Get the field name
-        fieldName = $(this).attr('field');
+        var fieldName = $(this).attr('field');
         // Get its current value
         var currentVal = parseInt($('input[name='+fieldName+']').val());
+        currentVal--;
         // If it isn't undefined or its greater than 0
         if (!isNaN(currentVal) && currentVal > 0) {
             // Decrement one
-            $('input[name='+fieldName+']').val((currentVal - 1)+" bathroom");
+            $('input[name='+fieldName+']').val(currentVal+" bathrooms");
         } else {
             // Otherwise put a 0 there
             $('input[name='+fieldName+']').val(0+" bathroom");

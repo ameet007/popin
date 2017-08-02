@@ -4,7 +4,7 @@
         90% Complete
     </div>
 </div>
-<section class="middle-container new-partner6 new-partner11">
+<section class="middle-container new-partner6 new-partner11 new-partner25">
     <div class="container">
         <div class="row clearfix">
             <div class="col-md-8">
@@ -14,20 +14,36 @@
                         <?php foreach($facilities as $k => $facility){ ?>
                         <div class="feild">
                             <label for="<?= $k; ?>">
-                                <input id="<?= $k; ?>" type="checkbox" name="facilities[]" value="<?= $facility['id']; ?>" <?php echo (isset($stepData['step1']['page6']['facilities']) && !empty($stepData['step1']['page6']['facilities']) && in_array($k, $stepData['step1']['page6']['facilities']))? 'checked' : ''?>> <?= $facility['name']; ?>
+                                <input id="<?= $k; ?>" type="checkbox" name="facilities[main][]" value="<?= $facility['id']; ?>" <?php echo (isset($stepData['step1']['page6']['facilities']['main']) && !empty($stepData['step1']['page6']['facilities']['main']) && in_array($facility['id'], $stepData['step1']['page6']['facilities']['main']))? 'checked' : ''?>> <?= $facility['name']; ?>
                                 <?php if(!empty($facility['description'])): ?>
                                 <span></span>
                                 <?php endif;?>
                             </label>
                         </div>
                         <?php } ?>
+                        <div class="add-rules">
+                            <div class="additional-rules">
+                                <?php 
+                                if(isset($stepData['step1']['page6']['facilities']['other']) && !empty($stepData['step1']['page6']['facilities']['other'])){
+                                    foreach($stepData['step1']['page6']['facilities']['other'] as $amenity){
+                                ?>
+                                <div class="append-div">
+                                    <input class="textbox" name="facilities[other][]" value="<?= $amenity; ?>" type="text" readonly />
+                                    <a class="clos cancel-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a>
+                                </div>
+                                <?php }} ?>
+                            </div>
+                            <div class="clearfix">
+                                <span class="pull-left"><input id="rule-text" class="textbox" type="text" placeholder="Add your own facilities" ></span>
+                                <span class="pull-left"><button class="red-btn" id="add-rule" type="button">Add</button></span>
+                            </div>
+                        </div>
                         <div class="next-prevs clearfix">
                             <div class="pull-left">
                                 <a class="gost-btn" href="<?php echo site_url('Space/amenities'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
-                                <button class="btn-red">Finish</button>
+                                <button class="btn-red" type="submit">Finish</button>
                             </div>
                         </div>
                     </form>
@@ -42,17 +58,36 @@
         </div>
     </div>    
 </section>
+<style>
+    .new-partner25 .add-rules .pull-left .textbox{
+        width: 300px;
+    }
+</style>
 <script type="text/javascript">
-$(".loader").hide();
 $("#spaces-form").submit(function(e){
     e.preventDefault();
-    $(".loader").show();
-    $(this).find('button').text('Please wait...');
+    $(this).find('button[type="submit"]').text('Please wait...');
     $.post($(this).attr('action'), $(this).serialize(), function(){
-        $(".loader").hide();
-        $('#spaces-form button').text('Finished');
+        $('#spaces-form button[type="submit"]').text('Finished');
         window.location.href = "<?= site_url('Space/become-a-partner'); ?>";
-    })
+    });
+});
+$('#add-rule').click(function(){
+    var text = $('#rule-text').val();
+    if(text.trim() !== ""){
+        $('.additional-rules').append('<div class="append-div"><input class="textbox" name="facilities[other][]" value="'+text+'" type="text" readonly /><a class="clos cancel-rule" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a></div>');
+        $('#rule-text').val('');
+    }
+});
+$(document).on('click','.cancel-rule',function(event){
+    event.preventDefault();
+    $(this).parent('div').remove();
+});
+$(document).on("keypress", "input#rule-text", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById('add-rule').click();
+    }
 });
 </script>
 </body>

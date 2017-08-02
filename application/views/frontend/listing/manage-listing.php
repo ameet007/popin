@@ -354,11 +354,11 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                                 </div>
                                             </div>
                                             <?php if(!empty($facilities)): ?>
-                                            <h3>What facilities can professionals use?</h3>
+                                            <h3 class="mt20">What facilities can professionals use?</h3>
                                             <?php foreach($facilities as $k => $facility){ ?>
                                             <div class="feild">
                                                 <label for="facility<?= $k; ?>">
-                                                    <input id="facility<?= $k; ?>" type="checkbox" name="facilities[]" value="<?= $facility['id']; ?>" <?php echo (!empty($listing['facilities']) && in_array($k, $listing['facilities']))? 'checked' : ''?>> <?= $facility['name']; ?>
+                                                    <input id="facility<?= $k; ?>" type="checkbox" name="facilities[main][]" value="<?= $facility['id']; ?>" <?php echo (!empty($listing['facilities']['main']) && in_array($facility['id'], $listing['facilities']['main']))? 'checked' : ''?>> <?= $facility['name']; ?>
                                                     <?php if(!empty($facility['description'])): ?>
                                                     <span></span>
                                                     <?php endif;?>
@@ -366,6 +366,23 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                             </div>
                                             <?php } ?>
                                             <?php endif;?>
+                                            <div class="feild add-rules">
+                                                <div class="additional-facilities">
+                                                    <?php 
+                                                    if(isset($listing['facilities']['other']) && !empty($listing['facilities']['other'])){
+                                                        foreach($listing['facilities']['other'] as $facility){
+                                                    ?>
+                                                    <div class="append-div">
+                                                        <input class="textbox" name="facilities[other][]" value="<?= $facility; ?>" type="text" readonly />
+                                                        <a class="clos cancel-facility" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a>
+                                                    </div>
+                                                    <?php }} ?>
+                                                </div>
+                                                <div class="clearfix">
+                                                    <span class="pull-left"><input id="facility-text" class="textbox" type="text" placeholder="Add your own facilities" ></span>
+                                                    <span class="pull-left"><button class="red-btn" id="add-facility" type="button">Add</button></span>
+                                                </div>
+                                            </div>
                                             
                                             <div class="main-input">
                                                 <div class="row">
@@ -415,13 +432,19 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                             <div class="pull-right col-sm-9">
                                                 <?php 
                                                 $facility_value = "";
-                                                if(!empty($listing['facilities'])){
+                                                if(!empty($listing['facilities']) && isset($listing['facilities']['main'])){
                                                 foreach($facilities as $facility){ 
-                                                    if(in_array($facility['id'], $listing['facilities'])){ 
+                                                    if(in_array($facility['id'], $listing['facilities']['main'])){ 
                                                         $facility_value .= "<strong>".$facility['name']."</strong>, ";
                                                     }
                                                 }}?>
                                                 <p><?= rtrim($facility_value, ", "); ?></p>
+                                                <?php
+                                                if(!empty($listing['facilities']['other'])){
+                                                    $aminity_value = implode(", ", $listing['facilities']['other']);
+                                                ?>
+                                                <p><?= $aminity_value; ?></p>
+                                                <?php }?>
                                             </div>
                                         </li>
                                     </ul>
@@ -1102,7 +1125,7 @@ $(document).ready(function(){
 
         });
     });
-    
+    // Amenities
     $('#add-rule').click(function(){
         var text = $('#rule-text').val();
         if(text.trim() !== ""){
@@ -1110,7 +1133,7 @@ $(document).ready(function(){
             $('#rule-text').val('');
         }
     });
-    $(document).on('click','.cancel-rule',function(event){
+    $(document).on('click','.cancel-rule, .cancel-facility',function(event){
         event.preventDefault();
         $(this).parent('div').remove();
     });
@@ -1120,6 +1143,21 @@ $(document).ready(function(){
             document.getElementById('add-rule').click();
         }
     });
+    // Facilities
+    $('#add-facility').click(function(){
+        var text = $('#facility-text').val();
+        if(text.trim() !== ""){
+            $('.additional-facilities').append('<div class="append-div"><input class="textbox" name="facilities[other][]" value="'+text+'" type="text" readonly /><a class="clos cancel-facility" href="#"><img src="<?= base_url('theme/front/assests/img/alert-close-icon.png'); ?>" alt="" /></a></div>');
+            $('#facility-text').val('');
+        }
+    });
+    $(document).on("keypress", "input#facility-text", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById('add-facility').click();
+        }
+    });
+    
     $(document).on("keypress", "input#rule-textbox", function(event) {
         if (event.keyCode === 13) {
             event.preventDefault();

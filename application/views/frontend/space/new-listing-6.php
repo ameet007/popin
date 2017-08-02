@@ -54,7 +54,6 @@
                                 <a class="gost-btn" href="<?php echo site_url('Space/location'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit">Next</button>
                             </div>
                         </div>
@@ -72,7 +71,7 @@
 </section>
 <style>
     .new-partner25 .add-rules .pull-left .textbox{
-        width: 337px;
+        width: 300px;
     }
     ul.chosen-choices{margin: 0 !important;}
     ul.chosen-choices li {font-size: 16px; font-weight: 600;}
@@ -82,7 +81,6 @@
 </style>
 <script src="<?= base_url('theme/front/assests/js/chosen.js'); ?>"  type="text/javascript"></script>
 <script type="text/javascript">
-$(".loader").hide();
 $('.chosen-select').chosen();
 $(document).on('click', 'a.show-more', function(e){
     e.preventDefault();
@@ -104,10 +102,8 @@ $(document).on('click', 'a.show-more', function(e){
 });
 $("#amenities-form").submit(function(e){
     e.preventDefault();
-    $(".loader").show();
     $(this).find("button[type='submit']").text('Please wait...');
     $.post($(this).attr('action'), $(this).serialize(), function(){
-        $(".loader").hide();
         $("#amenities-form button[type='submit']").text('Next');
         window.location.href = "<?= site_url('Space/facilities'); ?>";
     });

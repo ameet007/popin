@@ -5,7 +5,7 @@ class AdminFacilities extends CI_Model {
     var $table = 'facilities';
     var $select_fields = 'id,name,description,createdDate,updatedDate,status';
     var $where_condition = "id!='0'";
-    var $column_order = array('id', 'id', 'name', 'description', 'createdDate', 'updatedDate', 'status', null); //set column field database for datatable orderable
+    var $column_order = array('id', 'name', 'createdDate', 'updatedDate', 'status', null); //set column field database for datatable orderable
     var $column_search = array('id', 'name', 'description', 'createdDate', 'updatedDate', 'status'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('id' => 'desc'); // default order 
 
@@ -31,9 +31,7 @@ class AdminFacilities extends CI_Model {
             $i++;
         }
 
-        if (isset($_POST['order'])) { // here order processing
-            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        }
+        
         if (isset($_POST['name']) and $_POST['name'] != '') {
             //$this->db->where('fname="'.($_POST['fname']).'"');
             $this->db->like('name', $_POST['name']);
@@ -60,9 +58,14 @@ class AdminFacilities extends CI_Model {
                 $this->db->where('updatedDate <=', $to_date_ymd);
             }
         }
+        
         if (isset($_POST['status']) and $_POST['status'] != '') {
             $this->db->where('status="' . $_POST['status'] . '"');
-        } else if (isset($this->order)) {
+        }
+        
+        if (isset($_POST['order'])) { // here order processing
+            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        }else if (isset($this->order)) {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
@@ -73,6 +76,7 @@ class AdminFacilities extends CI_Model {
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->result();
     }
 
