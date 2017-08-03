@@ -104,7 +104,7 @@ $siteDetails = $CI->common->getSiteDetails();
                             <ul>                                
                                 <li class="clearfix">
                                     <div class="pull-left">
-                                        Check in time is <b><?php $day = strtolower(date("D")); echo $checkInOut[$spaceInfo["{$day}From"]] . ' - ' . $checkInOut[$spaceInfo["{$day}To"]]; ?></b>
+                                        Pop In time is <b><?php $day = strtolower(date("D")); echo $checkInOut[$spaceInfo["{$day}From"]] . ' - ' . $checkInOut[$spaceInfo["{$day}To"]]; ?></b>
                                     </div>
                                     <div class="pull-right">
                                         <img src="<?= base_url('theme/front/assests/img/blue-right.png'); ?>" alt="" />
@@ -173,8 +173,17 @@ $siteDetails = $CI->common->getSiteDetails();
                     <h2 id="booking-pay" class="stp2">2. Payment</h2>
                     <div id="step2" style="display: none;">                        
                         <div class="ple-let">
-                            <h6>Cancellation policy: Strict</h6>
-                            <p>Cancel up to 7days before your trip and get a 50% refund. After that time, the reservation is non-refundable.</p>
+                            <?php 
+                            $cancellation_term = 'Not Set'; $cancellation_term_details = '';
+                            foreach($cancellation_policies as $policy) {
+                                if($spaceInfo['cancellation_term'] == $policy['id']){
+                                    $cancellation_term = $policy['term'];
+                                    $cancellation_term_details = $policy['description'];
+                                }  
+                            }
+                            ?>
+                            <h6>Cancellation policy: <?= $cancellation_term; ?></h6>
+                            <p><?= $cancellation_term_details; ?> After that time, the reservation is non-refundable.</p>
 <!--                            <div class="row">
                                 <div class="feild col-md-6">
                                     <label>Billing country</label>
@@ -227,10 +236,10 @@ $siteDetails = $CI->common->getSiteDetails();
                             <li class="clearfix">
                                 <div clas="row">
                                     <div class="col-md-6">
-                                        <p>Check-in <strong><?= date('d M, Y', strtotime($booking['checkIn'])); ?></strong></p>
+                                        <p>Pop In <strong><?= date('d M, Y', strtotime($booking['checkIn'])); ?></strong></p>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>Checkout <strong><?= date('d M, Y', strtotime($booking['checkOut'])); ?></strong></p>
+                                        <p>Pop Out <strong><?= date('d M, Y', strtotime($booking['checkOut'])); ?></strong></p>
                                     </div>
                                 </div>
                             </li>

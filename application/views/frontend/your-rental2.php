@@ -66,7 +66,7 @@
                         </ul>
                     </div>
                     <div class="receipt-left business-trip">
-                        <h3>Business trip notes</h3>
+                        <h3>Notes</h3>
                         <span class="font12"><?= !empty(trim($bookingInfo['professionalNote']))?nl2br($bookingInfo['professionalNote']):'None added'; ?></span>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                             <?php }
                             $settings = getSingleRecord('settings','id','1');
                             if($settings->serviceFee > 0){
-                                $serviceCharges = round($bookingPrice * $settings->serviceFee / 100, 1);
+                                $serviceCharges = round($bookingPrice * $settings->serviceFee / 100, 2);
                             ?>
                             <li class="clearfix">
                                 <div class="pull-left">Service fee</div>

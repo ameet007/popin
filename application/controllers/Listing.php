@@ -108,7 +108,7 @@ class Listing extends CI_Controller {
                                 <div class="three-btn">
                                     <a href="'. site_url('manage-listing/'.$spaceData['id']).'" class="btn2">Manage listing</a>
                                     <a href="'. site_url('view-reservations/'.$spaceData['id']).'" class="green-btn">View Reservations</a>
-                                    <a href="'. site_url('preview-listing/'.$spaceData['id']).'"><button class="btn">Preview</button></a>
+                                    <a target="_blank" href="'. site_url('preview-listing/'.$spaceData['id']).'"><button class="btn">Preview</button></a>
                                 </div>
                             </div>
                         </div><hr>';

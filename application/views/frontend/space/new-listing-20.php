@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="pull-right">
                                     <div class="demo1" id="a"></div>
-                                    <input type="hidden" name="rentalRequests" id="rentalRequests" value="<?= isset($stepData['step3']['page4']['rentalRequests'])?$stepData['step3']['page4']['rentalRequests']:'Yes';?>">
+                                    <input type="hidden" name="rentalRequests" id="rentalRequests" value="<?= isset($stepData['step3']['page4']['rentalRequests'])?$stepData['step3']['page4']['rentalRequests']:'No';?>">
                                 </div>
                             </li>
                         </ul>

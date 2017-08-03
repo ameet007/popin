@@ -10,10 +10,11 @@
         <div class="row clearfix">            
             <div class="col-md-8">
                 <div class="space-are">
-                    <h3>How much notice do you need before a professional arrives?</h3>
+                    
                     <form class="dates-form" action="<?php echo site_url('Space/availability_settings'); ?>" method="post">
+                        <h3>How much notice do you need before a professional arrives?</h3>
                         <div class="feild">
-                            <select class="selectbox" name="page6[noticeTime]">
+                            <select class="selectbox custom-select" name="page6[noticeTime]">
                                 <option value="1" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == '1')? 'selected' : ''?>>1 hour</option>
                                 <option value="12" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == '12')? 'selected' : ''?>>12 hours</option>
                                 <option value="24" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == '24')? 'selected' : ''?>>1 day</option>
@@ -22,6 +23,18 @@
                             </select>
                         </div>
                         <p><strong>Tip:</strong> At least <strong>1 day notice</strong> can help you plan for a professionals arrival, but you might miss out on last-minute rentals.</p>
+                        
+                        <h3>How much time do you want between professionals?</h3>
+                        <div class="feild">
+                            <select class="selectbox custom-select" name="page6[bookingGap]">
+                                <option value="0" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '0')? 'selected' : ''?>>No time</option>
+                                <option value="15" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '15')? 'selected' : ''?>>15 minutes</option>
+                                <option value="30" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '30')? 'selected' : ''?>>30 minutes</option>
+                                <option value="45" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '45')? 'selected' : ''?>>45 minutes</option>
+                                <option value="60" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '60')? 'selected' : ''?>>1 hour</option>
+                            </select>
+                        </div>
+                        
                         <div class="rental-hours">
                             <a href="#"><h5 style="color: #008489;">When can professionals rent your workspace?</h5></a>
                             <table class="table">
@@ -188,9 +201,12 @@
                     <form class="advance-form" action="<?php echo site_url('Space/availability_settings'); ?>" method="post">
                         <div class="feild">
                             <select class="selectbox" name="page6[advanceBook]">
-                                <option value="3" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '3')? 'selected' : ''?>>3 months</option>
-                                <option value="2" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '2')? 'selected' : ''?>>2 months</option>
                                 <option value="1" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '1')? 'selected' : ''?>>1 month</option>
+                                <option value="2" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '2')? 'selected' : ''?>>2 months</option>
+                                <option value="3" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '3')? 'selected' : ''?>>3 months</option>
+                                <option value="6" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '6')? 'selected' : ''?>>6 months</option>
+                                <option value="9" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '9')? 'selected' : ''?>>9 months</option>
+                                <option value="12" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '12')? 'selected' : ''?>>1 year</option>
                             </select>
                         </div>
                         <p><strong>Tip:</strong> Most partners can keep their calendars updated up to 3 months out.</h5></p>

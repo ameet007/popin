@@ -147,7 +147,7 @@
             //timePicker: true,
             //timePickerIncrement: 30,
             locale: {
-                format: 'DD MMM' //MM/DD/YYYY h:mm A
+                format: 'MMM-DD' //MM/DD/YYYY h:mm A
             }
         }, 
         function(start, end, label) {
@@ -155,7 +155,7 @@
             $("#checkIn").val(start.format('YYYY-MM-DD'));$("#checkOut").val(end.format('YYYY-MM-DD'));
         });
         $('#demo-range').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('DD MMM') + ' - ' + picker.endDate.format('DD MMM'));
+            $(this).val(picker.startDate.format('MMM-DD') + ' - ' + picker.endDate.format('MMM-DD'));
             mergeForms("space_search_form", "space_filter_form");
         });
         $('#demo-range').on('cancel.daterangepicker', function(ev, picker) {
@@ -165,7 +165,7 @@
             mergeForms("space_search_form", "space_filter_form");
         });
         $('#demo-range').focus(function () {
-            $(this).attr('placeholder', 'Check In - Check Out');
+            $(this).attr('placeholder', 'Pop In - Pop Out');
         }).blur(function () {
             $(this).attr('placeholder', 'Anytime');
         });

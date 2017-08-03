@@ -1369,3 +1369,4 @@ fieldset, label { margin: 0; padding: 0; }
     font-size: 12pt !important;
     width: 100% !important;
 }
+.add-to-addressbook{position: relative; right: 60px; font-size: 1.5em;}

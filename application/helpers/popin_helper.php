@@ -24,12 +24,12 @@ function get_start_date_by_currentdate($availableArray,$unavailableArray) {
             if(strtotime($availableArray[$i]) < $today){
                 continue;
             }else{
-                $startDate = $availableArray[$i];
+                $startDate = date("m-d-Y", strtotime($availableArray[$i]));
                 break;
             }
         }
     }else{
-        $startDate = date("Y-m-d",$today);
+        $startDate = date("m-d-Y",$today);
     }
 
     return $startDate;
@@ -44,7 +44,7 @@ function get_end_date_by_currentdate($availableArray,$unavailableArray) {
         $endDate = end($unavailableArray);
     }
     
-    return $endDate;
+    return date("m-d-Y", strtotime($endDate));
 }
 //Converting date to time ago e.g 1 day ago, 2 days ago…
 function time_elapsed_string($datetime, $full = false) {

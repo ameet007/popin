@@ -317,7 +317,7 @@ class User extends CI_Controller {
             } else {
                 $this->session->set_flashdata('message_notification', $establishmentLicenceResponse['error']);
                 $this->session->set_flashdata('class', A_FAIL);
-                redirect(base_url('user/upload-documents'));
+                redirect(base_url('user/trust'));
             }
         }else{
             $establishmentLicence = $this->input->post('OldEstablishmentLicence');
@@ -331,7 +331,7 @@ class User extends CI_Controller {
             } else {
                 $this->session->set_flashdata('message_notification', $liabilityInsuranceResponse['error']);
                 $this->session->set_flashdata('class', A_FAIL);
-                redirect(base_url('user/upload-documents'));
+                redirect(base_url('user/trust'));
             }
         }else{
             $liabilityInsurance = $this->input->post('OldLiabilityInsurance');
@@ -345,7 +345,7 @@ class User extends CI_Controller {
             } else {
                 $this->session->set_flashdata('message_notification', $licenceCopyResponse['error']);
                 $this->session->set_flashdata('class', A_FAIL);
-                redirect(base_url('user/upload-documents'));
+                redirect(base_url('user/trust'));
             }
         }else{
             $licenceCopy = $this->input->post('OldLicenceCopy');
@@ -362,11 +362,11 @@ class User extends CI_Controller {
         if ($response > 0) {
             $this->session->set_flashdata('message_notification', 'Documents Uploaded Successfully');
             $this->session->set_flashdata('class', A_SUC);
-            redirect(base_url('user/upload-documents'));
+            redirect(base_url('user/trust'));
         } else {
             $this->session->set_flashdata('message_notification', 'Documents Not Updated Successfully');
             $this->session->set_flashdata('class', A_FAIL);
-            redirect(base_url('user/upload-documents'));
+            redirect(base_url('user/trust'));
         }
     }
 

@@ -17,7 +17,7 @@ if ($message_notification) { ?>
         <div class="main-content">
             <div class="row clearfix">
                 <aside class="col-lg-3 left-sidebar">
-<?php $this->load->view('frontend/include/profile-sidebar'); ?>
+                <?php $this->load->view('frontend/include/profile-sidebar'); ?>
                 </aside>
                 <form name="editBasicProfile" id="editBasicProfile" method="post" action="<?= base_url('user/submit_basic'); ?>">
                     <article class="col-lg-9 main-right">
@@ -62,19 +62,19 @@ if ($message_notification) { ?>
                                                     foreach ($all_months as $k => $v) {
                                                         ?>
                                                         <option value="<?= $k; ?>" <?= ($k == $userProfileInfo->dobMonth) ? 'selected' : ''; ?>><?= $v; ?></option>
-<?php } ?>
+                                                    <?php } ?>
                                                 </select>
                                                 <select class="selectbox custom-select" name="dobDay" id="dobDay" onchange="autoSave(this.id, this.value)">
                                                     <option value="">Day</option>
                                                     <?php for ($i = 1; $i <= 31; $i++) { ?>
                                                         <option value="<?php echo $i; ?>" <?= ($userProfileInfo->dobDay == $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
-<?php } ?>
+                                                    <?php } ?>
                                                 </select>
                                                 <select class="selectbox custom-select" name="dobYear" id="dobYear" onchange="autoSave(this.id, this.value)">
                                                     <option value="">Year</option>
                                                     <?php for ($i = date('Y')-18; $i >= (date('Y') - 100); $i--) { ?>
                                                         <option value="<?php echo $i; ?>" <?= ($userProfileInfo->dobYear == $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
-<?php } ?>
+                                                    <?php } ?>
                                                 </select>
                                                 <p class="birthError"></p>
                                                 <p>We use this data for analysis and never share it with other users.</p>
@@ -143,17 +143,22 @@ if ($userProfileInfo->phone_verify != 'yes' && !empty($userProfileInfo->phone)) 
                                             <label class="align-right col-sm-3">Preferred Currency</label>
                                             <div class="col-sm-9">
                                                 <select class="selectbox custom-select" name="currency" id="currency" onchange="autoSave(this.id, this.value)">
-<?php $all_currency = unserialize(CURRENCIES);
-foreach ($all_currency as $k => $v) {
-    ?>
-                                                        <option value="<?= $v; ?>" <?= ($userProfileInfo->currency == $k) ? 'selected' : ''; ?>><?= $v; ?></option>
-<?php } ?>
+                                                <?php $all_currency = unserialize(CURRENCIES);
+                                                foreach ($all_currency as $k => $v) {
+                                                    ?>
+                                                    <option value="<?= $v; ?>" <?= ($userProfileInfo->currency == $k) ? 'selected' : ''; ?>><?= $v; ?></option>
+                                                <?php } ?>
                                                 </select>
                                                 <p class="currencyError"></p>
                                                 <p>We’ll show you prices in this currency.</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="panel panel-default required optional">
+                                <div class="panel-heading">Optional</div>
+                                <div class="panel-body">
                                     <div class="main-input">
                                         <div class="row">
                                             <label class="align-right col-sm-3">Business Name</label>
@@ -164,20 +169,7 @@ foreach ($all_currency as $k => $v) {
                                     </div>
                                     <div class="main-input">
                                         <div class="row">
-                                            <label class="align-right col-sm-3">Establishment License Number</label>
-                                            <div class="col-sm-9">
-                                                <input class="textbox" value="<?= $userProfileInfo->establishmentLicenceNumber; ?>" onchange="autoSave(this.id, this.value)" name="establishmentLicenceNumber" id="establishmentLicenceNumber" type="text" placeholder="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel panel-default required optional">
-                                <div class="panel-heading">Optional</div>
-                                <div class="panel-body">
-                                    <div class="main-input">
-                                        <div class="row">
-                                            <label class="align-right col-sm-3">Business Number</label>
+                                            <label class="align-right col-sm-3">Business Phone Number</label>
                                             <div class="col-sm-9">
                                                 <input class="textbox" value="<?= $userProfileInfo->businessNumber ?>" onchange="autoSave(this.id, this.value)" name="businessNumber" id="businessNumber" type="text" placeholder="" />
                                             </div>
@@ -198,7 +190,7 @@ foreach ($all_currency as $k => $v) {
                                             <div class="col-sm-9 number-add">
                                                 <textarea class="textarea" name="aboutYou" onchange="autoSave(this.id, this.value)" id="aboutYou"><?= $userProfileInfo->aboutYou; ?></textarea>
                                                 <p>Help other people get to know you.</p>
-                                                <p>Tell them what it’s like to have you as a renter or partner: What’s your style of doing business? how long have you been in the industry? What are your specialities?</p>
+                                                <p>Tell them what it’s like to have you as a renter or partner: <br/>What’s your style of doing business? <br/>how long have you been in the industry? <br/>What are your specialties?</p>
                                             </div>
                                         </div>
                                     </div>

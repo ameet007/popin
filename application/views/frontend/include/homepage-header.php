@@ -85,7 +85,7 @@ $filters = $this->session->userdata('filters');
                                                     <?php 
                                                         $checkInRange = "";
                                                         if(isset($filters['checkIn']) && !empty($filters['checkIn']) && isset($filters['checkOut']) && !empty($filters['checkOut'])){
-                                                            $checkInRange = date("d M", strtotime($filters['checkIn'])) . ' - ' . date("d M", strtotime($filters['checkOut']));
+                                                            $checkInRange = date("M-d", strtotime($filters['checkIn'])) . ' - ' . date("M-d", strtotime($filters['checkOut']));
                                                         }
                                                     ?>
                                                     <input class="icon1 icon2" type="text" id="demo-range" placeholder="Anytime" value="<?= $checkInRange; ?>" />

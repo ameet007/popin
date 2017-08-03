@@ -26,12 +26,16 @@
                                 if(!empty($spaceType)){
                                     $listing['spaceType'] = $spaceType['name'];
                                 }
+                                $total_percentage = $listing['step_1_percentage'] + $listing['step_2_percentage'] + $listing['step_3_percentage'];
+                                
                                 $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->limit('1')->get_where('space_gallery', array('space' => $listing['id']))->row_array();
                                 if(!empty($spaceGallery)){
-                                    $total_percentage = $listing['step_1_percentage'] + $listing['step_2_percentage'] + $listing['step_3_percentage'];
                                     $listingImage = base_url('uploads/user/gallery/'.$spaceGallery['image']);
                                 }else{
-                                    $total_percentage = $listing['step_1_percentage'] + ($listing['step_2_percentage'] - 40) + $listing['step_3_percentage'];
+                                    if($listing['step_1_percentage'] == 100 && $listing['step_3_percentage'] > 0){
+                                        $total_percentage = $listing['step_1_percentage'] + ($listing['step_2_percentage'] - 40) + $listing['step_3_percentage'];
+                                    }
+                                    
                                     $listingImage = base_url("theme/front/assests/img/cam-pic.jpg");
                                 }
                                 $listComplete = round($total_percentage/3);
@@ -54,7 +58,7 @@
                                         <p>Last updated on <?= date("d F, Y",$listing['updatedDate']); ?></p>
                                         <div class="three-btn">
                                             <a href="<?= site_url('Space/become-a-partner/'. $listing['id']); ?>" class="green-btn">Finish the Listing</a>
-                                            <a href="<?= site_url('preview-listing/'.$listing['id']); ?>"><button class="btn">Preview</button></a>
+                                            <a target="_blank" href="<?= site_url('preview-listing/'.$listing['id']); ?>"><button class="btn">Preview</button></a>
                                         </div>
                                     </div>
                                 </div>

@@ -21,6 +21,11 @@ if(!empty($userProfileInfo->avatar) && file_exists('uploads/user/thumb/' . $user
             <div class="modal-body clearfix">
                 <div class="left-sidebar pull-left">
                     <div class="profile-pic">
+                        <?php if (isset($addressBook) && in_array($hostProfileInfo->id, $addressBook)) { ?>
+                        <a class="add-to-addressbook pull-right" title="Added in my address book"><i class="fa fa-address-book"></i></a>
+                        <?php }else{ ?>
+                        <a id="address-book" class="add-to-addressbook pull-right" onclick="add_to_address_book(this.id, <?= $hostProfileInfo->id; ?>);" title="Add to my address book"><i class="fa fa-address-book-o"></i></a>
+                        <?php }?>
                         <img src="<?= $profile_photo; ?>" alt="" />
                         <h4><?= $hostProfileInfo->firstName;?></h4>
                     </div>
@@ -35,22 +40,22 @@ if(!empty($userProfileInfo->avatar) && file_exists('uploads/user/thumb/' . $user
                 </div>
                 <div class="host-popup-content pull-left">
                     <div class="alert alert-info">
-                        <img src="<?= base_url('theme/front/assests/img/alert-icon.png'); ?>" alt="" /><strong>Please specify check in and check out dates</strong>
+                        <img src="<?= base_url('theme/front/assests/img/alert-icon.png'); ?>" alt="" /><strong>Please specify Pop In and Pop Out dates</strong>
                     </div>
                     <div class="host-from">
-                        <h4>When are you traveling?</h4>
+                        <h4>When are you working?</h4>
                         <form id="contact-form" method="post" action="<?php echo site_url("home/send_message_submit"); ?>">
                             <input type="hidden" name="host" value="<?= $hostProfileInfo->id; ?>">
                             <input type="hidden" name="space" value="<?= $space_id; ?>">
                             <div class="feild"> 
                                 <ul class="clearfix">
                                     <li>
-                                        <label>Check In</label>
-                                        <input id="startDate2" class="textbox" type="text" name="checkIn" placeholder="Check In" readonly="" />
+                                        <label>Pop In</label>
+                                        <input id="startDate2" class="textbox" type="text" name="checkIn" placeholder="mm-dd-yyyy" readonly="" />
                                     </li>
                                     <li>
-                                        <label>Check Out</label>
-                                        <input id="endDate2" class="textbox" type="text" name="checkOut" placeholder="Check Out" readonly="" disabled="" />
+                                        <label>Pop Out</label>
+                                        <input id="endDate2" class="textbox" type="text" name="checkOut" placeholder="mm-dd-yyyy" readonly="" disabled="" />
                                     </li>
                                 </ul>
                             </div>
@@ -245,7 +250,7 @@ if(isset($preview['gallery']) && !empty($preview['gallery']) && file_exists('upl
                                     <a href="javascript:;" onclick="scrollToDiv('#house-rules');">House Rules</a>
                                 </li>
                                 <li>
-                                    <p>Check In: <strong><?php $day = strtolower(date("D")); echo $checkInOut[$preview["{$day}From"]] . ' - ' . $checkInOut[$preview["{$day}To"]]; ?></strong></p>
+                                    <p>Pop In: <strong><?php $day = strtolower(date("D")); echo $checkInOut[$preview["{$day}From"]] . ' - ' . $checkInOut[$preview["{$day}To"]]; ?></strong></p>
                                     <p>Establishment type: <strong><?= $preview['establishmentType']; ?></strong></p>
                                     <p>Space type: <strong><?= $preview['spaceType']; ?></strong></p>
                                 </li>
@@ -486,12 +491,12 @@ if(isset($preview['gallery']) && !empty($preview['gallery']) && file_exists('upl
                         <input type="hidden" name="space" value="<?= $space_id; ?>">
                         <div class="feild clearfix">
                             <div class="col-sm-6">
-                                <label for="startDate">Check In</label>
-                                <input id="startDate" class="textbox" name="checkIn" type="text" placeholder="dd-mm-yyyy" readonly="" />
+                                <label for="startDate">Pop In</label>
+                                <input id="startDate" class="textbox" name="checkIn" type="text" placeholder="mm-dd-yyyy" readonly="" />
                             </div>
                             <div class="col-sm-6">
-                                <label for="endDate">Check Out</label>
-                                <input id="endDate" class="textbox" name="checkOut" type="text" placeholder="dd-mm-yyyy" readonly="" disabled="" />
+                                <label for="endDate">Pop Out</label>
+                                <input id="endDate" class="textbox" name="checkOut" type="text" placeholder="mm-dd-yyyy" readonly="" disabled="" />
                             </div>
                         </div>
                         <div class="feild clearfix">
@@ -577,6 +582,22 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
 <script src="<?php echo base_url('theme/front/assests/')?>js/owl.carousel.js" type="text/javascript"></script>
 <script src="<?php echo base_url('theme/front/assests/')?>js/galleria-1.5.7.js" type="text/javascript"></script>
 <script type="text/javascript">
+    function add_to_address_book(target,contactUserID){
+        $.ajax({
+            url: "<?php echo base_url('home/addContact'); ?>",
+            type: "post",
+            data: 'contactUserID='+contactUserID ,
+            success: function (response) {
+                if (response == 1) {
+                    $('#' + target).attr('title', 'Added in my address book');
+                    $('#' + target).html('<i class="fa fa-address-book"></i>');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+               console.log(textStatus, errorThrown);
+            }
+        });
+    }
     $(function () {
         $('[data-toggle="popover"]').popover();
     });
@@ -649,10 +670,10 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
             //title: "Check In Date",
             orientation: "bottom",
             autoclose: true,
-            format: 'dd-mm-yyyy',
+            format: 'mm-dd-yyyy',
             weekStart: 1,
             beforeShowDay: function (date){
-                var dmy = date.getDate().padLeft() + "-" + (date.getMonth()+1).padLeft() + "-" + date.getFullYear();
+                var dmy =  date.getFullYear()+ "-" + (date.getMonth()+1).padLeft() + "-" + date.getDate().padLeft();
 
                 //console.log(dmy+' : '+($.inArray(dmy, availableDates)));
                 //console.log(unavailableDates);
@@ -684,26 +705,26 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
         $("#endDate,#endDate2").datepicker("destroy");
         $('#endDate,#endDate2').prop('disabled', false);
 
-        var startDate = new Date(start_date.substring(6, 10), start_date.substring(3, 5)-1, start_date.substring(0, 2));
-        var endDate = new Date(start_date.substring(6, 10), start_date.substring(3, 5)-1, start_date.substring(0, 2));
+        var startDate = new Date(start_date.substring(6, 10), start_date.substring(0, 2)-1, start_date.substring(3, 5));
+        var endDate = new Date(start_date.substring(6, 10), start_date.substring(0, 2)-1, start_date.substring(3, 5));
         <?php if(!empty($preview['minStay']) && !empty($preview['maxStay'])){?>
         var minNumberOfDaysToAdd = <?= $preview['minStay']; ?>, maxNumberOfDaysToAdd = <?= $preview['maxStay']; ?>;
         
         <?php if($preview['minStayType'] == "days"){ ?> startDate.setDate(startDate.getDate() + minNumberOfDaysToAdd); <?php }?>
         <?php if($preview['maxStayType'] == "days"){ ?> endDate.setDate(endDate.getDate() + maxNumberOfDaysToAdd);  <?php }?>
         <?php }?>
-        var minDate = [ startDate.getDate().padLeft(), 
-                    (startDate.getMonth()+1).padLeft(), 
+        var minDate = [ (startDate.getMonth()+1).padLeft(), 
+                    startDate.getDate().padLeft(), 
                     startDate.getFullYear()
                   ].join('-');
-        var maxDate = [ endDate.getDate().padLeft(), 
-                    (endDate.getMonth()+1).padLeft(), 
+        var maxDate = [ (endDate.getMonth()+1).padLeft(), 
+                    endDate.getDate().padLeft(),                     
                     endDate.getFullYear()
                   ].join('-');
 
         $( "#endDate,#endDate2" ).datepicker({
             title: "Min stay: <?= $preview['minStay']; ?> <?= $preview['minStayType']; ?>, Max stay: <?= $preview['maxStay']; ?> <?= $preview['maxStayType']; ?>",
-            format: "dd-mm-yyyy",
+            format: "mm-dd-yyyy",
             startDate: minDate,
             endDate: maxDate,
             orientation: "bottom",
@@ -711,8 +732,8 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
             weekStart: 1
         });
         
-        $("#endDate").datepicker("setDate",minDate);
-        $("#endDate").focus();
+        $("#endDate,#endDate2").datepicker("setDate",minDate);
+        $("#endDate,#endDate2").focus();
     }
     Number.prototype.padLeft = function(base,chr){
         var  len = (String(base || 10).length - String(this).length)+1;

@@ -79,12 +79,16 @@
                                 if(!empty($spaceType)){
                                     $listing['spaceType'] = $spaceType['name'];
                                 }
+                                $total_percentage = $listing['step_1_percentage'] + $listing['step_2_percentage'] + $listing['step_3_percentage'];
+                                
                                 $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->limit('1')->get_where('space_gallery', array('space' => $listing['id']))->row_array();
-                                if(!empty($spaceGallery)){
-                                    $total_percentage = $listing['step_1_percentage'] + $listing['step_2_percentage'] + $listing['step_3_percentage'];
+                                if(!empty($spaceGallery)){                                    
                                     $listingImage = base_url('uploads/user/gallery/'.$spaceGallery['image']);
                                 }else{
-                                    $total_percentage = $listing['step_1_percentage'] + ($listing['step_2_percentage'] - 40) + $listing['step_3_percentage'];
+                                    if($listing['step_1_percentage'] == 100 && $listing['step_3_percentage'] > 0){
+                                        $total_percentage = $listing['step_1_percentage'] + ($listing['step_2_percentage'] - 40) + $listing['step_3_percentage'];
+                                    }
+                                    
                                     $listingImage = base_url("theme/front/assests/img/cam-pic.jpg");
                                 }
                                 $listComplete = round($total_percentage/3);
@@ -183,7 +187,7 @@
                             <div class="panel-body">
                                 <div class="row mr15">
                                     <div class="col-md-9">
-                                        <h4>Establishment license <small><?= ($establishmentLicenceLink !="" && $establishmentLicenseVerified =='yes')?'(Verified)':(($establishmentLicenceLink !="" && $establishmentLicenseVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/upload-documents').'">Upload</a>'); ?></small></h4>
+                                        <h4>Establishment license <small><?= ($establishmentLicenceLink !="" && $establishmentLicenseVerified =='yes')?'(SUBMITTED)':(($establishmentLicenceLink !="" && $establishmentLicenseVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/trust').'">Upload</a>'); ?></small></h4>
                                         <?php
                                         if (!empty($establishmentLicenceLink)) {
                                         $licenceCopy  = explode(".",$establishmentLicenceLink);
@@ -200,7 +204,7 @@
                                 </div>
                                 <div class="row mr15">
                                     <div class="col-md-9">
-                                        <h4>Liability insurance <small><?= ($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='yes')?'(Verified)':(($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/upload-documents').'">Upload</a>'); ?></small></h4>
+                                        <h4>Liability insurance <small><?= ($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='yes')?'(SUBMITTED)':(($liabilityInsuranceLink !="" && $liabilityInsuranceVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/trust').'">Upload</a>'); ?></small></h4>
                                         <?php
                                         if (!empty($liabilityInsuranceLink)) {
                                         $licenceCopy  = explode(".",$liabilityInsuranceLink);
@@ -217,7 +221,7 @@
                                 </div>
                                 <div class="row mr15">
                                     <div class="col-md-9">
-                                        <h4>License / Certificate Copy <small><?= ($licenceLink !="" && $licenceCopyVerified =='yes')?'(Verified)':(($licenceLink !="" && $licenceCopyVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/upload-documents').'">Upload</a>'); ?></small></h4>
+                                        <h4>License / Certificate Copy <small><?= ($licenceLink !="" && $licenceCopyVerified =='yes')?'(SUBMITTED)':(($licenceLink !="" && $licenceCopyVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/trust').'">Upload</a>'); ?></small></h4>
                                         <?php
                                         if (!empty($licenceLink)) {
                                         $licenceCopy  = explode(".",$licenceLink);

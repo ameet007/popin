@@ -65,7 +65,7 @@ class Home extends CI_Controller {
         $config = array();
         $config['base_url'] = site_url('spaces');
         $data['total_rows'] = $config['total_rows'] = $this->space->getActiveListingsCount($currentUser, $filters);
-        $config['per_page'] = 6;
+        $config['per_page'] = 30;
         $config['uri_segment'] = $this->input->get('per_page');
         //$choice = $config['total_rows'] / $config['per_page'];
         $config['num_links'] = 3;
@@ -149,6 +149,13 @@ class Home extends CI_Controller {
             );
             
             $data['similarListings'] = $this->space->getSimilarListings($filters);
+            if ($this->session->has_userdata('user_id')){
+                $userAddressBook = getMultiRecord('address_book', 'userID', $this->session->userdata('user_id'));
+                foreach ($userAddressBook as $address) {
+                    $data['addressBook'][] = $address['addUserID']; 
+                }
+                //print_array($data['addressBook']);
+            }
             //print_array($data['reviewsList']);
         }
         $data['search_nav'] = 1;
@@ -197,13 +204,17 @@ class Home extends CI_Controller {
 
     function get_booking_info() {
         $rawData = $this->input->post();
+        //print_array($rawData);
         $spaceData = $this->db->select('minStay,minStayType,maxStay,maxStayType,base_price,currency,cleaningFee,daily_discount,weekly_discount')->get_where('spaces', array('id' => $rawData['space']))->row_array();
 
         // Start date
-        $checkIn = strtotime($rawData['checkIn']);
+        $popin_date = DateTime::createFromFormat('m-d-Y', $rawData['checkIn']);
         // End date
-        $checkOut = strtotime($rawData['checkOut']);
+        $popout_date = DateTime::createFromFormat('m-d-Y', $rawData['checkOut']);
 
+        $checkIn = strtotime($popin_date->format('Y-m-d'));
+        $checkOut = strtotime($popout_date->format('Y-m-d'));
+        
         $date1 = date_create(date("Y-m-d", $checkIn));
         $date2 = date_create(date("Y-m-d", $checkOut));
         $diff = date_diff($date1, $date2);
@@ -223,7 +234,7 @@ class Home extends CI_Controller {
                     $dayPrice = $dayPrice - round($dayPrice * $spaceData['daily_discount'] / 100, 1);
                 }
                 $totalBasePrice += $dayPrice;
-                $tooltip .= '<tr><td>' . date("d-m-Y", $checkIn) . '</td><td>' . $currencySymbol . $dayPrice . '</td></tr>';
+                $tooltip .= '<tr><td>' . date("m-d-Y", $checkIn) . '</td><td>' . $currencySymbol . $dayPrice . '</td></tr>';
                 $checkIn = strtotime("+1 day", $checkIn);
             }
 
@@ -248,7 +259,7 @@ class Home extends CI_Controller {
         $settings = getSingleRecord('settings', 'id', '1');
         $serviceCharges = 0;
         if ($settings->serviceFee > 0) {
-            $serviceCharges = round($totalBasePrice * $settings->serviceFee / 100);
+            $serviceCharges = round($totalBasePrice * $settings->serviceFee / 100, 2);
         }
         // Additional costs
         $additionalCosts = $serviceCharges;
@@ -304,6 +315,7 @@ class Home extends CI_Controller {
         $data['spaceGallery'] = $this->user->getSpaceGallery($rawData['space']);
         $data['userInfo'] = $this->user->userInfo($userID);
         $data['hostInfo'] = $this->user->userInfo($data['spaceInfo']['host']);
+        $data['cancellation_policies'] = $this->space->getDropdownData('cancellation_policies_master');
         //print_array($data['spaceInfo'], TRUE);
         $this->load->view(FRONT_DIR . '/booking_management/booking_summary', $data);
     }
@@ -341,18 +353,22 @@ class Home extends CI_Controller {
         $userID = $this->session->userdata('user_id'); //current user id
         $rawData = $this->input->post();
         //print_array($rawData);
+        $spaceId = $rawData['space'];
+        $spaceData = $this->db->select('host,spaceTitle,rentalRequests')->get_where('spaces', array('id' => $spaceId))->row_array();
+            
         $rawData['user'] = $userID;
+        if($spaceData['rentalRequests'] == 'No'){
+            $rawData['partnerStatus'] = 'Accepted';
+        }
         $rawData['checkIn'] = date("Y-m-d", strtotime($this->input->post('checkIn')));
         $rawData['checkOut'] = date("Y-m-d", strtotime($this->input->post('checkOut')));
         $rawData['createdDate'] = strtotime(date('Y-m-d H:i:s'));
         $rawData['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
         $rawData['ipAddress'] = $this->input->ip_address();
         $bookingId = $this->space->insertBooking($rawData);
+        
         if (!empty($bookingId)) {
             $this->session->set_userdata("bookingId", $bookingId);
-            $spaceId = $rawData['space'];
-            $spaceData = $this->db->select('host,spaceTitle')->get_where('spaces', array('id' => $spaceId))->row_array();
-
             // Send message to the partner
             $checkIn = $this->input->post('checkIn');
             $checkOut = $this->input->post('checkOut');

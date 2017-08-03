@@ -362,7 +362,7 @@ class FrontSpace extends CI_Model {
     }
 
     public function getSpaceSettings($space_id, $host_id) {
-        return $this->db->select('noticeTime,monFrom,monTo,tueFrom,tueTo, wedFrom,wedTo,thuFrom,thuTo,friFrom,friTo,satFrom,satTo,sunFrom,sunTo,advanceBook,minStay,maxStay,minStayType,maxStayType')->get_where('spaces', array('id' => $space_id, 'host' => $host_id))->row_array();
+        return $this->db->select('noticeTime,bookingGap,monFrom,monTo,tueFrom,tueTo, wedFrom,wedTo,thuFrom,thuTo,friFrom,friTo,satFrom,satTo,sunFrom,sunTo,advanceBook,minStay,maxStay,minStayType,maxStayType')->get_where('spaces', array('id' => $space_id, 'host' => $host_id))->row_array();
     }
 
     public function insertData($rawData) {
@@ -483,12 +483,12 @@ class FrontSpace extends CI_Model {
             $spaceAvailableDates = $this->db->select('spaceDate')->get_where('space_available_slots', array('space' => $space_id))->row_array();
             if (!empty($spaceAvailableDates)) {
                 $response['calendar']['available_dates'] = json_decode($spaceAvailableDates['spaceDate'], TRUE);
-                array_walk($response['calendar']['available_dates'], array($this, 'change_format'));
+                //array_walk($response['calendar']['available_dates'], array($this, 'change_format'));
             }
             $spaceUnavailableDates = $this->db->select('spaceDate')->get_where('space_unavailable_slots', array('space' => $space_id))->row_array();
             if (!empty($spaceUnavailableDates)) {
                 $response['calendar']['unavailable_dates'] = json_decode($spaceUnavailableDates['spaceDate'], TRUE);
-                array_walk($response['calendar']['unavailable_dates'], array($this, 'change_format'));
+                //array_walk($response['calendar']['unavailable_dates'], array($this, 'change_format'));
             }
 
 
