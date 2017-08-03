@@ -136,6 +136,7 @@ class Home extends CI_Controller {
             $establishment = $data['preview']['establishmentTypeId'];
             $data['amenities'] = $this->space->collectAmenities($industry, $establishment);
             $data['facilities'] = $this->space->getDropdownData('facilities');
+            $data['cancellation_policies'] = $this->space->getDropdownData('cancellation_policies_master');
             $data['reviewsList'] = getMultiRecord('space_ratings','space',$space_id);
             
             $host_id = $this->session->userdata('user_id');
@@ -260,7 +261,7 @@ class Home extends CI_Controller {
 
         $response = '<tr>
                         <td>' . $priceBreakDown .
-                ' <i class="fa fa-question-circle" data-toggle="tooltip" title=\'' . $tooltip . '\' data-html="true"></i></td>
+                ' <i class="fa fa-question-circle" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="top" data-content=\'' . $tooltip . '\' data-html="true"></i></td>
                         <td align="right">' . $currencySymbol . $totalBasePrice . '</td>
                     </tr>';
         if ($days > 0 && $days < 7 && $spaceData['daily_discount'] > 0) {
@@ -271,12 +272,12 @@ class Home extends CI_Controller {
         }
         if ($spaceData['cleaningFee'] > 0) {
             $response .= '<tr>
-                        <td>Cleaning fee <i class="fa fa-question-circle" data-toggle="tooltip" title=""></i></td>
+                        <td>Cleaning fee <i class="fa fa-question-circle" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="top" data-content=""></i></td>
                         <td align="right">' . $currencySymbol . $spaceData['cleaningFee'] . '</td>
                     </tr>';
         }
         $response .= '<tr>
-                        <td>Service fee <i class="fa fa-question-circle" data-toggle="tooltip" title="This help us run our platform and offer services like 24/7 support on your trip."></i></td>
+                        <td>Service fee <i class="fa fa-question-circle" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="top" data-content="This help us run our platform and offer services like 24/7 support on your trip."></i></td>
                         <td align="right">' . $currencySymbol . $serviceCharges . '</td>
                     </tr>
                     <tr>

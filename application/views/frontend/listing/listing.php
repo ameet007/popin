@@ -28,11 +28,13 @@
                                 }
                                 $spaceGallery = $this->db->select('image')->order_by('position', 'asc')->limit('1')->get_where('space_gallery', array('space' => $listing['id']))->row_array();
                                 if(!empty($spaceGallery)){
+                                    $total_percentage = $listing['step_1_percentage'] + $listing['step_2_percentage'] + $listing['step_3_percentage'];
                                     $listingImage = base_url('uploads/user/gallery/'.$spaceGallery['image']);
                                 }else{
+                                    $total_percentage = $listing['step_1_percentage'] + ($listing['step_2_percentage'] - 40) + $listing['step_3_percentage'];
                                     $listingImage = base_url("theme/front/assests/img/cam-pic.jpg");
                                 }
-                                $listComplete = round(($listing['step_1_percentage'] + $listing['step_2_percentage'] + $listing['step_3_percentage'])/3);
+                                $listComplete = round($total_percentage/3);
                                 ?>
                                 <div class="media">
                                     <div class="media-left">

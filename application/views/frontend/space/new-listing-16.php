@@ -7,8 +7,8 @@
         <div class="row clearfix">
             <div class="col-md-8">
                 <div class="space-are">
-                    <h3>Review Pop ln’s professional requirements</h3>
-                    <p>All Pop In professionals must submit the following to rent:</p>
+                    <h3>Review <?= SITE_DISPNAME; ?>’s professional requirements</h3>
+                    <p>All <?= SITE_DISPNAME; ?> professionals must submit the following to rent:</p>
                     <ul>
                         <li>Profile photo</li>
                         <li>Confirmed email</li>
@@ -21,7 +21,7 @@
                         <li>Send you a message about their business</li>
                         <li>Tell you how many people are using workspaces</li>
                         <li>Confirm their pop-in time if they're coming the following day</li>
-                        <li>Proof of liabilty insurance</li>
+                        <li>Proof of liability insurance</li>
                         <li>Confirm their pop-in time if they're coming the following day or sooner</li>
                     </ul>
                     <p>Add more professional requirements</p>
@@ -40,7 +40,6 @@
                                 <a class="gost-btn" href="<?php echo site_url('Space/become-a-partner/'.$stepData['id']); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit" name="submit">Next</button>
                             </div>
                         </div>
@@ -50,20 +49,17 @@
             <div class="col-md-4 entire-palce">
                 <div class="entire-main">
                     <img src="<?php echo base_url('theme/front/assests/img/bulb.png')?>" alt="" />
-                    <h5>You nee to feel confident with every reservation. That’s why we require certain information from every guest before they can book</h5>
+                    <h5>You need to feel confident with every reservation. That’s why we require certain information from every professional before they can rent.</h5>
                 </div>
             </div>
         </div>
     </div>    
 </section>
 <script type="text/javascript">
-    $(".loader").hide();
     $("form.listing-form").submit(function(e){
         e.preventDefault();
-        $(".loader").show();
         $(this).find('button').text('Please wait...');
         $.post($(this).attr('action'), $(this).serialize(), function(){
-            $(".loader").hide();
             $('form.listing-form button').text('Next');
             window.location.href = "<?= site_url('Space/rules'); ?>";
         });

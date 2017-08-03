@@ -116,6 +116,7 @@ $route['Space/hosting-terms'] = 'Space/hosting_terms';
 $route['Space/availability-questions'] = 'Space/availability_questions';
 $route['Space/availability-settings'] = 'Space/availability_settings';
 $route['Space/price-settings'] = 'Space/price_settings';
+$route['Space/cancellation-policy'] = 'Space/cancellation_policy';
 $route['Space/additional-pricing'] = 'Space/additional_pricing';
 $route['Space/booking-scenarios'] = 'Space/booking_scenarios';
 $route['Space/local-laws'] = 'Space/local_laws';

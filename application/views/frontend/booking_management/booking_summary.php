@@ -238,7 +238,7 @@ $siteDetails = $CI->common->getSiteDetails();
                             <li class="clearfix booking-section">
                                 <div class="pull-left">
                                     <p><?= $bookingCurrency.$booking['basePrice']; ?> x <?= $booking['numberBooking'].' '.$booking['bookingType']; ?></p>
-                                    <p>Additional Charges &nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Cleaning Fee, Service Fee etc."></i></p>
+                                    <p>Additional Charges &nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="top" data-content="Cleaning Fee, Service Fee etc."></i></p>
                                     <p><a href="#"><strong>Promotional Code</strong></a></p>                                    
                                 </div>
                                 <div class="pull-right">
@@ -288,7 +288,9 @@ $siteDetails = $CI->common->getSiteDetails();
 </section>
 <script type="text/javascript">
 $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
+    $(function () {
+        $('[data-toggle="popover"]').popover();
+    });
     
     $(document).on('click', 'a.show-more', function(e){
         e.preventDefault();

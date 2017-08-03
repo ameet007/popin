@@ -30,7 +30,6 @@
                                 <a class="gost-btn" href="<?php echo site_url('Space/calendar'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit" name="submit">Next</button>
                             </div>
                         </div>
@@ -49,7 +48,6 @@
     </div>    
 </section>
 <script type="text/javascript">
-    $(".loader").hide();
     $("input[name='page7[base_price]']").keypress(function (e) {
         
         if (e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57)) {
@@ -67,13 +65,11 @@
             'page7[base_price]' :{ required:true},
             'page7[currency]' :{ required:true}
         },
-        submitHandler: function(form) {            
-            $(".loader").show();
+        submitHandler: function(form) {  
             $('form button').text('Please wait...');
             $.post(form.action, $(form).serialize(), function(){
-                $(".loader").hide();
                 $(form).find('button').text('Next');
-                window.location.href = "<?= site_url('Space/additional-pricing'); ?>";
+                window.location.href = "<?= site_url('Space/cancellation-policy'); ?>";
             });
         }
     });

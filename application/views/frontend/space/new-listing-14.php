@@ -93,7 +93,6 @@ if(isset($stepData['step2']['page6']['numberVerified'])){
                                 <a class="gost-btn" href="<?= $back_url; ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red">Finish</button>
                             </div>
                         </div>
@@ -111,7 +110,6 @@ if(isset($stepData['step2']['page6']['numberVerified'])){
 </section>
 
 <script type="text/javascript">
-    $(".loader").hide();
     $("a#change-country").on('click', function(e){
         e.preventDefault();
         $("select#country").toggle();
@@ -206,12 +204,10 @@ if(isset($stepData['step2']['page6']['numberVerified'])){
                 dataType: "json",
                 data: {enterCode:enterCode},
                 beforeSend: function(){
-                    $(".loader").show();
                     $("p.error").remove();
                     $('form button').text('Please wait...');
                 },
                 complete: function(){
-                    $('.loader').hide();
                     $('form button').text('Finish');
                 },
                 success: function(response) {
@@ -228,9 +224,9 @@ if(isset($stepData['step2']['page6']['numberVerified'])){
                 }          
             });
         }else{
-            $(".loader").show();$('form button').text('Please wait...');
+            $('form button').text('Please wait...');
             $.post($('form').attr('action'), $('form').serialize(), function(){
-                $('.loader').hide();$('form button').text('Finish');
+                $('form button').text('Finish');
                 window.location.href = "<?= site_url('Space/become-a-partner'); ?>";
             });
         }

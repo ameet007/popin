@@ -260,7 +260,7 @@ class FrontUser extends CI_Model {
     
     public function bookingInfo($id, $select = "*") {
         $where = array("space_booking.id=" => $id);
-        $this->db->join("payments", "space_booking.id = payments.booking_id", "right");
+        $this->db->join("payments", "space_booking.id = payments.booking_id", "left");
         $query = $this->db->select($select)->from('space_booking')->where($where)->get();
         return $query->row_array();
     }

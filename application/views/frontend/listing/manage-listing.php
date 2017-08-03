@@ -566,52 +566,52 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                         </div>
                                     </form>
                                 </div>
-<!--                                <div class="pro-requr space-r policie-s">
+                                <div class="pro-requr space-r policie-s">
                                     <h3>Policies</h3>
-                                    <button class="gost-btn">Edit</button>
+                                    <button class="gost-btn edit-btn">Edit</button>
+                                    <form id="policies" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;" novalidate>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <label class="align-right col-sm-3">Currency:</label>
+                                                <div class="col-sm-6">
+                                                    <select class="selectbox custom-select" name="cancellation_term" required>
+                                                        <?php 
+                                                        $cancellation_term = 'Not Set'; $cancellation_term_details = '';
+                                                        foreach($cancellation_policies as $policy) { 
+                                                            $selected = $listing['cancellation_term'] == $policy['id']? 'selected' : '';
+                                                            if($listing['cancellation_term'] == $policy['id']){
+                                                                $cancellation_term = $policy['term'];
+                                                                $cancellation_term_details = $policy['description'];
+                                                            }                                                            
+                                                        ?>
+                                                        <option value="<?= $policy['id']; ?>" <?= $selected; ?>><?= $policy['term']; ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="main-input">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="pull-right">
+                                                        <a class="btn2 cancel-btn" href="#">Cancel</a>
+                                                        <button class="btn-red update-btn" type="submit">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                     <ul class="listing-info">
-                                        <li class="clearfix">
-                                            <div class="pull-left">
-                                                PopIn window
-                                            </div>
-                                            <div class="pull-right">
-                                                <strong>10 minutes before rental start time</strong>
-                                            </div>
-                                        </li>
-                                        <li class="clearfix">
-                                            <div class="pull-left">
-                                                Proof of liability insurance
-                                            </div>
-                                            <div class="pull-right">
-                                                <strong>Not set</strong>
-                                            </div>
-                                        </li>
                                         <li class="clearfix">
                                             <div class="pull-left">
                                                 Cancellation policy
                                             </div>
-                                            <div class="pull-right">
-                                                <strong>Flexible</strong>
-                                            </div>
-                                        </li>
-                                        <li class="clearfix">
-                                            <div class="pull-left">
-                                                Confirm their popin time
-                                            </div>
-                                            <div class="pull-right">
-                                                <strong>Not set</strong>
-                                            </div>
-                                        </li>
-                                        <li class="clearfix">
-                                            <div class="pull-left">
-                                                Message sent about their business
-                                            </div>
-                                            <div class="pull-right">
-                                                <strong>Not set</strong>
+                                            <div class="pull-right">                                                
+                                                <p><strong><?= $cancellation_term; ?></strong>: <?= $cancellation_term_details; ?></p>
                                             </div>
                                         </li>
                                     </ul>
-                                </div>-->
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="increase-profit">

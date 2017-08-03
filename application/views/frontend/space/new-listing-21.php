@@ -46,11 +46,9 @@ $('form').validate({
     errorPlacement: function (error, element) {
         error.insertAfter(element.parent());
     },
-    submitHandler: function(form) {            
-        $(".loader").show();
+    submitHandler: function(form) {  
         $(form).find('button').text('Please wait...');
         $.post(form.action, $(form).serialize(), function(){
-            $(".loader").hide();
             $(form).find('button').text('Next');
             window.location.href = "<?= site_url('Space/availability-questions'); ?>";
         });        

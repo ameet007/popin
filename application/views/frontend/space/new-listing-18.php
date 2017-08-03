@@ -33,7 +33,6 @@
                                 <a class="gost-btn" href="<?php echo site_url('Space/rules'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit" name="submit">Next</button>
                             </div>
                         </div>
@@ -50,13 +49,10 @@
     </div>    
 </section>
 <script type="text/javascript">
-    $(".loader").hide();
     $("form.listing-form").submit(function(e){
         e.preventDefault();
-        $(".loader").show();
         $(this).find("button[type='submit']").text('Please wait...');
         $.post($(this).attr('action'), $(this).serialize(), function(){
-            $(".loader").hide();
             $("form.listing-form button[type='submit']").text('Next');
             window.location.href = "<?= site_url('Space/review-professional-requirements'); ?>";
         });

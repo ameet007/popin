@@ -141,6 +141,7 @@ class Listing extends CI_Controller {
         $data['establishment_types'] = $this->space_model->getDropdownData('establishment_types');
         $data['space_types'] = $this->space_model->getDropdownData('space_types');
         $data['facilities'] = $this->space_model->getDropdownData('facilities');
+        $data['cancellation_policies'] = $this->space_model->getDropdownData('cancellation_policies_master');
         $data['reviewsList'] = getMultiRecord('space_ratings','space',$space_id);
         $header['search_nav'] = 1;
         $data['space_id'] = $space_id;
@@ -170,6 +171,7 @@ class Listing extends CI_Controller {
             $establishment = $data['listing']['establishmentTypeId'];
             $data['amenities'] = $this->space_model->collectAmenities($industry, $establishment);
             $data['facilities'] = $this->space_model->getDropdownData('facilities');
+            $data['cancellation_policies'] = $this->space_model->getDropdownData('cancellation_policies_master');
         }
         //print_array($data['listing']);
         $data['space_id'] = $space_id;

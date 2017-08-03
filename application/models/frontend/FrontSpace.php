@@ -337,6 +337,9 @@ class FrontSpace extends CI_Model {
                 'base_price' => $spaceData['base_price'],
                 'currency' => $spaceData['currency']
             );
+            
+            $response['step3']['cancellation_term'] = $spaceData['cancellation_term'];
+            
             $response['step3']['page8'] = array(
                 'daily_discount' => $spaceData['daily_discount'],
                 'weekly_discount' => $spaceData['weekly_discount']

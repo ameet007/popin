@@ -159,7 +159,6 @@
                                 <a class="gost-btn" href="<?php echo site_url('Space/availability-questions'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit" name="submit">Next</button>
                             </div>
                         </div>
@@ -200,7 +199,6 @@
                                 <a class="gost-btn" id="back-1" href="#"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit" name="submit">Next</button>
                             </div>
                         </div>
@@ -254,7 +252,6 @@
                                 <a class="gost-btn" id="back-2" href="#"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit" name="submit">Next</button>
                             </div>
                         </div>
@@ -270,7 +267,7 @@
     </div>    
 </section>
 <script type="text/javascript">
-    $(".loader,#settings-1,#settings-2,#settings-3").hide();
+    $("#settings-1,#settings-2,#settings-3").hide();
     
     if(window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
@@ -297,11 +294,9 @@
             'page6[sunFrom]' :{ required:function(element){ return $("select[name='page6[sunTo]']").val().length > 0;}},
             'page6[sunTo]' :{ required:function(element){ return $("select[name='page6[sunFrom]']").val().length > 0;}}
         },
-        submitHandler: function(form) {            
-            $(".loader").show();
+        submitHandler: function(form) {  
             $(form).find('button').text('Please wait...');
             $.post(form.action, $(form).serialize(), function(){
-                $(".loader").hide();
                 $(form).find('button').text('Next');
                 $("#settings-1").hide();$("#settings-2").show();
             });
@@ -309,10 +304,8 @@
     });
     $("form.advance-form").submit(function(e){
         e.preventDefault();
-        $(".loader").show();
         $(this).find('button').text('Please wait...');
         $.post($(this).attr('action'), $(this).serialize(), function(){
-            $(".loader").hide();
             $('form.advance-form button').text('Next');
             $("#settings-2").hide();$("#settings-3").show();
         });
@@ -329,14 +322,12 @@
         if(isNaN(minStay) || minStay < 1){
             var errorMsg = $('<label for="minStay" class="error minStay">Please enter valid value.</label>');            
             errorMsg.insertAfter($("input[name='minStay']").parent());
-            $(".loader").hide();
             $('form.night-stay-form button').text('Next');
             return false;
         }
         if(isNaN(maxStay) || maxStay < 1){
             var errorMsg = $('<label for="maxStay" class="error maxStay">Please enter valid value.</label>');            
             errorMsg.insertAfter($("input[name='maxStay']").parent());
-            $(".loader").hide();
             $('form.night-stay-form button').text('Next');
             return false;
         }
@@ -345,10 +336,10 @@
         }else if(maxStay !== 0 && minStayType === "days" && maxStayType === "hours"){
             return false;
         }
-        $(".loader").show();
+
         $(this).find('button').text('Please wait...');
         $.post($(this).attr('action'), $(this).serialize(), function(){
-            $(".loader").hide();
+
             $('form.night-stay-form button').text('Next');
             window.location.href = "<?= site_url('Space/calendar'); ?>";
         });

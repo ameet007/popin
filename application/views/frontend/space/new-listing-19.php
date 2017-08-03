@@ -9,16 +9,16 @@
         <div class="row clearfix">
             <div class="col-md-8">
                 <div class="space-are">
-                    <h3>Review your professional requremnts</h3>
+                    <h3>Review your professional requirements</h3>
                     <div class="popln-pro">
-                        <p>Popln’s professional requirements</p>
+                        <p><?= SITE_DISPNAME; ?>’s professional requirements</p>
                         <ul>
                             <li>Profile photo</li>
                             <li>Confirmed email</li>
                             <li>Confirmed phone number</li>
                             <li>Payment information</li>
-                            <li>A message about the guest’s trip</li>
-                            <li>Check-in time for last minute trips</li>
+                            <li>A message about the professional’s rental</li>
+                            <li>Check-in time for last minute rentals</li>
                         </ul>
                         <a class="btn btn-defalut" href="<?= site_url('Space/professional-requirements'); ?>">Review</a>
                     </div>
@@ -65,7 +65,7 @@
                         </ul>
                         
                         <?php if(isset($stepData['step3']['page2']['additionalRules']) && !empty($stepData['step3']['page2']['additionalRules'])){ ?>
-                        <p class="grey-color">Your additional rules</p>
+                        <p class="grey-color">Your additional space rules</p>
                         <ul>
                         <?php  foreach($stepData['step3']['page2']['additionalRules'] as $additionalRules){ ?>
                             <li><?php echo $additionalRules; ?></li>

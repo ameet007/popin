@@ -33,7 +33,6 @@
                                 <a class="gost-btn" href="<?php echo site_url('Space/hosting-terms'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit" name="submit">Next</button>
                             </div>
                         </div>
@@ -50,17 +49,14 @@
     </div>    
 </section>
 <script type="text/javascript">
-    $(".loader").hide();
     $('form').validate({
         rules: {
             'page5[everRented]' :{ required:true},
             'page5[haveProffesionals]' :{ required:true}
         },
-        submitHandler: function(form) {            
-            $(".loader").show();
+        submitHandler: function(form) {  
             $('form button').text('Please wait...');
             $.post(form.action, $(form).serialize(), function(){
-                $(".loader").hide();
                 $('form.listing-form button').text('Next');
                 window.location.href = "<?= site_url('Space/availability-settings'); ?>";
             });

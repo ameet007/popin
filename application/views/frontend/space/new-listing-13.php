@@ -44,7 +44,6 @@
                                 <a class="gost-btn" href="<?= site_url('Space/title'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red">Next</button>
                             </div>
                         </div>
@@ -62,7 +61,6 @@
     </div>    
 </section>
 <script type="text/javascript">
-    $(".loader").hide();
     $("a#change-photo").click(function(e){
         e.preventDefault();
         $("#without-avatar").show();
@@ -70,7 +68,6 @@
     }); 
     $("form").submit(function(e){
         e.preventDefault();
-        $(".loader").show();
         $(this).find('button').text('Please wait...');
 
         $.ajax({
@@ -81,7 +78,6 @@
               processData: false,  // tell jQuery not to process the data
               contentType: false,   // tell jQuery not to set contentType
               success: function(response) {
-                    $(".loader").hide();
                     $('form button').text('Next');
                     if(response != "")
                         alert(response);

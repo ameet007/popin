@@ -14,7 +14,6 @@
                         <a class="gost-btn" href="<?php echo site_url('Space/availability-settings'); ?>#settings-3"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                     </div>
                     <div class="pull-right">
-                        <img class="loader" style="display: none;" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                         <a class="green-btn" href="<?php echo site_url('Space/price-settings'); ?>"> Next</a>
                     </div>
                 </div>
@@ -194,7 +193,6 @@
                     return false;
                 }
                 
-                $(".loader").show();
                 $(this).text('Please wait...');
                 $.ajax({
                     url         : '<?php echo site_url('Space/calendar'); ?>',
@@ -203,7 +201,6 @@
                     contentType : false,
                     type        : 'POST'
                 }).done(function(data){
-                    $(".loader").hide();
                     $('a.green-btn').text('Next');
                     window.location.href = $('a.green-btn').attr('href');
                 });

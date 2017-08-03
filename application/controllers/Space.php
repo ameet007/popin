@@ -131,6 +131,8 @@ class Space extends CI_Controller {
         $data['establishment_types'] = $this->space->getDropdownData('establishment_types');
         $data['space_types'] = $this->space->getDropdownData('space_types');
         $data['facilities'] = $this->space->getDropdownData('facilities');
+        $data['cancellation_policies'] = $this->space->getDropdownData('cancellation_policies_master');
+        
         $this->load->view(FRONT_DIR . '/include-partner/preview-header');
         $this->load->view(FRONT_DIR . '/space/preview-layout', $data);
     }
@@ -1182,6 +1184,34 @@ class Space extends CI_Controller {
         
         $this->load->view(FRONT_DIR . '/include-partner/header', $header);
         $this->load->view(FRONT_DIR . '/space/new-listing-25', $data);
+        $this->load->view(FRONT_DIR . '/' . INC . '/footer');
+    }
+    
+    public function cancellation_policy() {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $stepData = $this->session->userdata('stepData');
+
+            if (!empty($_POST['cancellation_term'])) {
+                $stepData['step3']['cancellation_term'] = $this->input->post('cancellation_term');
+
+                if (isset($stepData['id'])) {
+                    $updateData['cancellation_term'] = $stepData['step3']['cancellation_term'];
+                    $host_id = $this->session->userdata('user_id');
+
+                    $this->space->updateData($updateData, $stepData['id'], $host_id);
+                }
+            }
+            $this->space->setPercentageComplete($stepData['id'],$host_id,'step_3_percentage',95);
+            $this->session->set_userdata('stepData', $stepData);
+            die();
+        }
+        $this->restrict_direct_access_steps('step3','cancellation_term');
+        $header['step_info'] = $this->head_step_3;
+        $data['hostProfileInfo'] = $this->host->userProfileInfo();
+        $data['cancellation_policies'] = $this->space->getDropdownData('cancellation_policies_master');
+        
+        $this->load->view(FRONT_DIR . '/include-partner/header', $header);
+        $this->load->view(FRONT_DIR . '/space/cancellation-policy', $data);
         $this->load->view(FRONT_DIR . '/' . INC . '/footer');
     }
 

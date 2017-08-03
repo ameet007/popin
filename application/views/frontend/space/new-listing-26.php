@@ -1,7 +1,7 @@
 <?php $stepData = $this->session->userdata('stepData');//print_r($stepData); ?>
 <div class="progress">
-    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-        90% Complete
+    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width:95%">
+        95% Complete
     </div>
 </div>
 <section class="middle-container new-partner6 new-partner16 new-partner39 new-partner40">
@@ -25,10 +25,9 @@
                         </div>
                         <div class="next-prevs clearfix">
                             <div class="pull-left">
-                                <a class="gost-btn" href="<?php echo site_url('Space/price-settings'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+                                <a class="gost-btn" href="<?php echo site_url('Space/cancellation-policy'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red" type="submit" name="submit">Next</button>
                             </div>
                         </div>
@@ -47,7 +46,6 @@
     </div>    
 </section>
 <script type="text/javascript">
-    $(".loader").hide();
     $(document).on('click', 'a[data-target]', function(e) {
             e.preventDefault();
             var target = $(this).data('target'),
@@ -60,11 +58,9 @@
             'page8[daily_discount]' :{ required:true,min: 0,max: 100},
             'page8[weekly_discount]' :{ required:true,min: 0,max: 100}
         },
-        submitHandler: function(form) {            
-            $(".loader").show();
+        submitHandler: function(form) {  
             $('form button').text('Please wait...');
             $.post(form.action, $(form).serialize(), function(){
-                $(".loader").hide();
                 $(form).find('button').text('Next');
                 window.location.href = "<?= site_url('Space/booking-scenarios'); ?>";
             });

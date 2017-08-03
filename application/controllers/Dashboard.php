@@ -350,6 +350,7 @@ class Dashboard extends CI_Controller
         if(empty($data['bookingInfo'])){
             redirect('rentals');
         }
+        $data['cancellation_policies'] = $this->space->getDropdownData('cancellation_policies_master');
         $data['spaceInfo'] = $this->user->spaceInfo($data['bookingInfo']['space']);
         $data['userInfo'] = $this->user->userInfo($data['bookingInfo']['user']);
         $data['hostInfo'] = $this->user->userInfo($data['spaceInfo']['host']);

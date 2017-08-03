@@ -885,7 +885,7 @@ define('REQUIREMENTS',serialize(array(
 		'1'	=>	'Government-issued ID submitted to PopIn',
 		'2'	=>	'Government-issued License or Certificate submitted to Popln',
 		'3'	=>	'Reviews from other business owners and no negative reviews',
-		'4'	=>	'Provide how many customers or patients are being served'
+		'4'	=>	'Provide how many clients are being served'
 )));
 
 define('NOTICES',serialize(array(

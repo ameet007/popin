@@ -300,12 +300,21 @@ if(isset($preview['gallery']) && !empty($preview['gallery']) && file_exists('upl
                                 </li>
                             </ul>
                         </div>
+                        <?php 
+                        $cancellation_term = 'Not Set'; $cancellation_term_details = '';
+                        foreach($cancellation_policies as $policy) {
+                            if($preview['cancellation_term'] == $policy['id']){
+                                $cancellation_term = $policy['term'];
+                                $cancellation_term_details = $policy['description'];
+                            }  
+                        }
+                        ?>
                         <div class="the-space">
                             <ul class="accomm clearfix">
                                 <li>Prices</li>
                                 <li>
                                     <p>Daily Discount: <strong><?= $preview['daily_discount']; ?>%</strong></p>
-                                    <p>Cancellation: <a href="#">Flexible</a></p>
+                                    <p>Cancellation: <a href="#" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="right" data-content="<?= $cancellation_term_details; ?>"><?= $cancellation_term; ?></a></p>
                                 </li>
                                 <li>
                                     <p>Weekly Discount: <strong><?= $preview['weekly_discount']; ?>%</strong></p>
@@ -568,7 +577,9 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
 <script src="<?php echo base_url('theme/front/assests/')?>js/owl.carousel.js" type="text/javascript"></script>
 <script src="<?php echo base_url('theme/front/assests/')?>js/galleria-1.5.7.js" type="text/javascript"></script>
 <script type="text/javascript">
-    //$('[data-toggle="tooltip"]').tooltip('show');
+    $(function () {
+        $('[data-toggle="popover"]').popover();
+    });
     // Load the Fullscreen theme
     Galleria.loadTheme('<?php echo base_url('theme/front/assests/')?>fullscreen/galleria.fullscreen.js');
     var check = 0;
@@ -745,7 +756,8 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
                 $("form#booking-form").parent().unblock();
                 $(".bookingInfo table tbody").html(response);
                 $(".bookingInfo").removeClass('hidden');
-                $('[data-toggle="tooltip"]').tooltip();
+                //$('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="popover"]').popover();
             },
             error: function(response){
                 $("form#booking-form").parent().unblock();

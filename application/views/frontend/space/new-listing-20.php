@@ -10,7 +10,7 @@
         <div class="row clearfix">
             <div class="col-md-8">
                 <div class="space-are">
-                    <h3>Here’s how professionals will book with you</h3>
+                    <h3>Here’s how professionals will rent with you</h3>
                     <div class="pro-find">
                         <p>1. Professionals find your listing in search.</p>
                         <img src="<?php echo base_url('theme/front/assests/img/30img1.png')?>" alt="" />
@@ -20,7 +20,7 @@
                         <img src="<?php echo base_url('theme/front/assests/img/30img2.png')?>" alt="" />
                     </div>
                     <div class="pro-find">
-                        <p>3. You’ll get a message from your professional about their rental, along with the reservation confirmation, how many clients they are meeting, and check-in time.</p>
+                        <p>3. You’ll get a message from professional about their rental, along with the reservation confirmation, how many clients they are meeting, and check-in time.</p>
                         <img src="<?php echo base_url('theme/front/assests/img/30img3.png')?>" alt="" />
                     </div>
                     <form class="listing-form" action="<?php echo site_url('Space/review_how_professional_book'); ?>" method="post">

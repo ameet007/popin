@@ -24,7 +24,6 @@
                                 <a class="gost-btn" href="<?php echo site_url('Space/space-description'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <img class="loader" src="<?php echo base_url()?>/assets/images/loading-spinner-grey.gif">&nbsp;&nbsp;
                                 <button class="btn-red">Next</button>
                             </div>
                         </div>
@@ -41,16 +40,13 @@
     </div>    
 </section>
 <script type="text/javascript">
-    $(".loader").hide();
     $('form').validate({
         rules: {
             'page4[spaceTitle]' :{ required:true},'page4[businessName]' :{ required:true}
         },
-        submitHandler: function(form) {            
-            $(".loader").show();
+        submitHandler: function(form) {
             $('form button').text('Please wait...');
             $.post(form.action, $(form).serialize(), function(){
-                $(".loader").hide();
                 $('form button').text('Next');
                 window.location.href = "<?= site_url('Space/profile-photo'); ?>";
             });

@@ -141,16 +141,25 @@
             <div class="need-help clearfix">
                 <div class="pull-left">
                     <h4>Need help?</h4>
-                    <p>Visit the <a href="#">Help Center</a> for any questions.</p>
+                    <p>Visit the <a href="<?= site_url('page/help'); ?>">Help Center</a> for any questions.</p>
                 </div>
                 <div class="pull-right">
                     <p>Booked by <strong><?= $userInfo->firstName.' '.$userInfo->lastName; ?></strong> <br/><?= date("l, M d, Y", $bookingInfo['createdDate']); ?></p>
                 </div>
             </div>
+            <?php 
+            $cancellation_term = 'Not Set'; $cancellation_term_details = '';
+            foreach($cancellation_policies as $policy) {
+                if($spaceInfo['cancellation_term'] == $policy['id']){
+                    $cancellation_term = $policy['term'];
+                    $cancellation_term_details = $policy['description'];
+                }  
+            }
+            ?>
             <div class="policy">
-                <p><strong>Cancellation policy:</strong> <a href="#">Strict.</a> Certain fees and taxes may be non-refundable. See <a href="#">here</a> for more details.</p>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                <p><strong>Explanation of Security Deposit</strong></p>
+                <p><strong>Cancellation policy:</strong> <a href="javascript:;"><?= $cancellation_term; ?></a>. Certain fees and taxes may be non-refundable. See <a href="#">here</a> for more details.</p>
+                <p><?= $cancellation_term_details; ?></p>
+                <p><strong>Explanation of Security Deposit:</strong></p>
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                 <p>Payment Processed by:<br/><strong>Popln, Inc.</strong><br/>1253 E. Imperial Highway<br/>Placentia, CA 92870</p>
             </div>
