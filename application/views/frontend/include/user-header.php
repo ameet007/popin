@@ -140,7 +140,7 @@ if ($module_heading != '') {
                             $module_name2 = $this->uri->segment($last-1);
                             ?>
                             <li><a href='<?php echo site_url('dashboard') ?>'>Dashboard</a></li>
-                            <li <?= ($module_name == 'compose' or $module_name == 'contactList' or $module_name == 'inbox') ? 'class="active"' : ''; ?>><a href='<?= site_url('inbox'); ?>'>Inbox</a></li>
+                            <li <?= ($module_name == 'compose' or $module_name == 'my-address-book' or $module_name == 'inbox' or $module_name == 'outbox') ? 'class="active"' : ''; ?>><a href='<?= site_url('inbox'); ?>'>Inbox</a></li>
                             <li <?= (in_array($module_name, array('listing','my-reservations','reservation-requirements')) || in_array($module_name2, array('manage-listing','view-reservations','manage-calendar'))) ? 'class="active"' : ''; ?>><a href='<?php echo base_url('listing'); ?>'>Listings</a></li>
                             <li><a href='<?= site_url('rentals'); ?>'>Rentals</a></li>
                             <li <?= (in_array($module_name, array('user','trust','photo','upload-documents','profile','reviews','references')) || in_array($module_name2, array('viewProfile'))) ? 'class="active"' : ''; ?>><a href='<?php echo base_url('user/profile') ?>'>Profile</a></li>

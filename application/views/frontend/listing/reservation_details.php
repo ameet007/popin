@@ -1,6 +1,8 @@
 <?php
 	$this->load->view('frontend/include/user-header');
 ?>
+<!-- Sweet Alert -->
+<link href="<?= base_url('assets/global/sweetalert/sweetalert.css'); ?>" rel="stylesheet" type="text/css">
 <?php $all_countries = unserialize(ALL_COUNTRY); ?>
 <div class="loader" style="display:none;"></div>
 <section class="middle-container receipt-section">
@@ -15,7 +17,11 @@
                     <p>Partner Approval: <strong><?= $bookingInfo['partnerStatus']; ?></strong></p>
                     <?php if(strtolower($bookingInfo['partnerStatus']) == 'pending'):?>
                     <button class="btn2 update-request" data-booking-id="<?= $bookingInfo['id']; ?>" data-status="Accepted">Accept</button>
-                    <button class="green-btn update-request" data-booking-id="<?= $bookingInfo['id']; ?>" data-status="Rejected">Reject</button>
+                    <button class="green-btn cancel-reservation" data-booking-id="<?= $bookingInfo['id']; ?>" data-status="Rejected">Reject</button>
+                    <?php elseif(strtolower($bookingInfo['partnerStatus']) == 'accepted'):?>
+                    <a href="javascript:;" class="green-btn cancel-reservation" data-booking-id="<?= $bookingInfo['id']; ?>" data-status="Rejected">Cancel Reservation</a>
+                    <?php elseif(strtolower($bookingInfo['partnerStatus']) == 'rejected'):?>
+                    <h5><b>Reason for Cancellation:</b> <?= $bookingInfo['reason']; ?></h5>
                     <?php endif;?>
                 </div>
             </div>
@@ -130,8 +136,42 @@
         </div>
     <div>
 </section>
+<!-- Sweet-Alert  -->
+<script src="<?= base_url('assets/global/sweetalert/sweetalert.min.js'); ?>"></script>
 <script>
-$(document).ready(function(){
+$(document).ready(function(){    
+    $('.cancel-reservation').click(function () {
+        var $this = $(this),
+            booking_id = $(this).attr("data-booking-id"),
+            booking_status = $(this).attr("data-status");
+        swal({
+            title: "Are you sure?",
+            text: "Give an explanation for the cancellation:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Reason for the cancellation"
+          },
+          function(inputValue){
+            if (inputValue === false) return false;
+
+            if (inputValue === "") {
+              swal.showInputError("You need to write something!");
+              return false;
+            }else{
+                $.ajax({
+                    url: '<?= base_url('listing/update_reservation_request'); ?>',
+                    type: 'POST',
+                    data: {id: booking_id, status: booking_status, reason: inputValue},
+                    success: function (response) {
+                        $this.parent().html('<p>Partner Approval: <strong>'+booking_status+'</strong></p>');
+                        swal("Nice!", "Reservation is cancelled successfully.", "success");
+                    }
+                });
+            }
+          });
+    });
     $("button.update-request").on("click",function(){
         var booking_id = $(this).attr("data-booking-id"), booking_status = $(this).attr("data-status");
         $.ajax({

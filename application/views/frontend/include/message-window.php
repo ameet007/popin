@@ -6,7 +6,7 @@ if(!isset($userProfileInfo)){
 $messages = $this->user->getNewUserMessages($userProfileInfo->id);
 //print_array($messages,true);
 ?>
-<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Messages <span class="caret"></span></a>
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Messages <span class="badge <?= count($messages) ? '' : 'hidden'; ?>"><?= count($messages); ?></span><span class="caret"></span></a>
 <ul class="dropdown-menu">
     <li>
         <a href="<?= site_url('inbox'); ?>">

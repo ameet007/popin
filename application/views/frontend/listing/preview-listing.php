@@ -21,6 +21,7 @@ if(!empty($userProfileInfo->avatar) && file_exists('uploads/user/thumb/' . $user
             <div class="modal-body clearfix">
                 <div class="left-sidebar pull-left">
                     <div class="profile-pic">
+                        <a class="add-to-addressbook pull-right" title="Add to my address book"><i class="fa fa-address-book-o"></i></a>
                         <img src="<?= $profile_photo; ?>" alt="" />
                         <h4><?= $hostProfileInfo->firstName;?></h4>
                     </div>
@@ -35,19 +36,19 @@ if(!empty($userProfileInfo->avatar) && file_exists('uploads/user/thumb/' . $user
                 </div>
                 <div class="host-popup-content pull-left">
                     <div class="alert alert-info">
-                        <img src="<?= base_url('theme/front/assests/img/alert-icon.png'); ?>" alt="" /><strong>Please specify check in and check out dates</strong>
+                        <img src="<?= base_url('theme/front/assests/img/alert-icon.png'); ?>" alt="" /><strong>Please specify Pop In and Pop Out dates</strong>
                     </div>
                     <div class="host-from">
-                        <h4>When are you traveling?</h4>
+                        <h4>When are you working?</h4>
                         <div class="feild"> 
                             <ul class="clearfix">
                                 <li>
-                                    <label>Check In</label>
-                                    <input id="startDate2" class="textbox" type="text" placeholder="Check In" />
+                                    <label>Pop In</label>
+                                    <input id="startDate2" class="textbox" type="text" placeholder="mm-dd-yyyy" />
                                 </li>
                                 <li>
-                                    <label>Check Out</label>
-                                    <input id="endDate2" class="textbox" type="text" placeholder="Check Out" disabled="" />
+                                    <label>Pop Out</label>
+                                    <input id="endDate2" class="textbox" type="text" placeholder="mm-dd-yyyy" disabled="" />
                                 </li>
                             </ul>
                         </div>
@@ -403,12 +404,12 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
                 <div class="content clearfix">
                     <div class="feild clearfix">
                         <div class="col-sm-6">
-                            <label for="startDate">Check In</label>
-                            <input id="startDate" class="textbox " type="text" placeholder="dd-mm-yyyy" />
+                            <label for="startDate">Pop In</label>
+                            <input id="startDate" class="textbox " type="text" placeholder="mm-dd-yyyy" />
                         </div>
                         <div class="col-sm-6">
-                            <label for="endDate">Check Out</label>
-                            <input id="endDate" class="textbox " type="text" placeholder="dd-mm-yyyy" disabled="" />
+                            <label for="endDate">Pop Out</label>
+                            <input id="endDate" class="textbox " type="text" placeholder="mm-dd-yyyy" disabled="" />
                         </div>
                     </div>
                     <div class="feild clearfix">
@@ -509,10 +510,10 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
             //title: "Check In Date",
             orientation: "bottom",
             autoclose: true,
-            format: 'dd-mm-yyyy',
+            format: 'mm-dd-yyyy',
             weekStart: 1,
             beforeShowDay: function (date){
-                var dmy = date.getDate().padLeft() + "-" + (date.getMonth()+1).padLeft() + "-" + date.getFullYear();
+                var dmy =  date.getFullYear()+ "-" + (date.getMonth()+1).padLeft() + "-" + date.getDate().padLeft();
 
                 //console.log(dmy+' : '+($.inArray(dmy, availableDates)));
                 //console.log(unavailableDates);
@@ -544,35 +545,35 @@ if(isset($preview['gallery']) && !empty($preview['gallery'])){
         $("#endDate,#endDate2").datepicker("destroy");
         $('#endDate,#endDate2').prop('disabled', false);
 
-        var startDate = new Date(start_date.substring(6, 10), start_date.substring(3, 5)-1, start_date.substring(0, 2));
-        var endDate = new Date(start_date.substring(6, 10), start_date.substring(3, 5)-1, start_date.substring(0, 2));
+        var startDate = new Date(start_date.substring(6, 10), start_date.substring(0, 2)-1, start_date.substring(3, 5));
+        var endDate = new Date(start_date.substring(6, 10), start_date.substring(0, 2)-1, start_date.substring(3, 5));
         <?php if(!empty($preview['minStay']) && !empty($preview['maxStay'])){?>
         var minNumberOfDaysToAdd = <?= $preview['minStay']; ?>, maxNumberOfDaysToAdd = <?= $preview['maxStay']; ?>;
         
         <?php if($preview['minStayType'] == "days"){ ?> startDate.setDate(startDate.getDate() + minNumberOfDaysToAdd); <?php }?>
         <?php if($preview['maxStayType'] == "days"){ ?> endDate.setDate(endDate.getDate() + maxNumberOfDaysToAdd);  <?php }?>
         <?php }?>
-        var minDate = [ startDate.getDate().padLeft(), 
-                    (startDate.getMonth()+1).padLeft(), 
+        var minDate = [ (startDate.getMonth()+1).padLeft(), 
+                    startDate.getDate().padLeft(), 
                     startDate.getFullYear()
                   ].join('-');
-        var maxDate = [ endDate.getDate().padLeft(), 
-                    (endDate.getMonth()+1).padLeft(), 
+        var maxDate = [ (endDate.getMonth()+1).padLeft(), 
+                    endDate.getDate().padLeft(),                     
                     endDate.getFullYear()
                   ].join('-');
 
         $( "#endDate,#endDate2" ).datepicker({
-            title: "Min stay: <?= $preview['minStay']; ?> <?= $preview['minStayType']; ?>, Max stay: <?= $preview['maxStay']; ?> <?= $preview['maxStayType']; ?>",
-            format: "dd-mm-yyyy",
+            title: "Min stay: <?php echo !empty($preview['minStay'])? $preview['minStay'].$preview['minStayType'] : 'No'?>, Max stay: <?php echo !empty($preview['maxStay'])? $preview['maxStay'].$preview['maxStayType'] : 'No'; ?>",
+            format: "mm-dd-yyyy",
             startDate: minDate,
-            endDate: maxDate,
+            <?php if(!empty($preview['maxStay'])){?>endDate: maxDate,<?php }?>
             orientation: "bottom",
             autoclose: true,
             weekStart: 1
         });
         
-        $("#endDate").datepicker("setDate",minDate);
-        $("#endDate").focus();
+        $("#endDate,#endDate2").datepicker("setDate",minDate);
+        $("#endDate,#endDate2").focus();
     }
     Number.prototype.padLeft = function(base,chr){
         var  len = (String(base || 10).length - String(this).length)+1;

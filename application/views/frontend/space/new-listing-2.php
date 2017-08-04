@@ -11,7 +11,7 @@
                     <form action="<?php echo site_url('Space/professionals'); ?>" method="post" enctype="multipart/form-data">
                         <div class="feild">
                             <label>What type of industry is this?</label>
-                            <select class="selectbox" name="page1[industryType]" onchange="onchange_industry(this.value)" required>
+                            <select class="selectbox custom-select" name="page1[industryType]" onchange="onchange_industry(this.value)" required>
                                 <option value="" selected disabled>Select industry</option>
                                 <?php foreach($industries as $industry){ ?>
                                 <option value="<?= $industry['id']; ?>" <?php echo (isset($stepData['step1']['page1']['industryType']) && $stepData['step1']['page1']['industryType'] == $industry['id'])? 'selected' : ''?>><?= $industry['industry_name']; ?></option>
@@ -20,7 +20,7 @@
                         </div>
                         <div class="feild">
                             <label>What type of establishment is this?</label>
-                            <select class="selectbox" name="page1[establishmentType]" required>
+                            <select class="selectbox custom-select" name="page1[establishmentType]" required>
                                 <option value="" selected disabled>Select establishment type</option>
                                 <?php foreach($establishment_types as $establishment){ if (isset($stepData['step1']['page1']['industryType'])&&$stepData['step1']['page1']['industryType'] == $establishment['industry_ID']) {?>
                                 <option value="<?= $establishment['id']; ?>" <?php echo (isset($stepData['step1']['page1']['establishmentType']) && $stepData['step1']['page1']['establishmentType'] == $establishment['id'])? 'selected' : ''?>><?= $establishment['name']; ?></option>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="feild">
                             <label>What type of space is this?</label>
-                            <select class="selectbox" name="page1[spaceType]" required>
+                            <select class="selectbox custom-select" name="page1[spaceType]" required>
                                 <option value="" selected disabled>Select space type</option>
                                 <?php foreach($space_types as $space){ ?>
                                 <option value="<?= $space['id']; ?>" <?php echo (isset($stepData['step1']['page1']['spaceType']) && $stepData['step1']['page1']['spaceType'] == $space['id'])? 'selected' : ''?>><?= $space['name']; ?></option>
@@ -43,7 +43,7 @@
                             <input type="text" class="textbox" name="page1[establishmentLicence]" placeholder="Establishment License Number" value="<?php echo isset($stepData['step1']['page1']['establishmentLicence'])? $stepData['step1']['page1']['establishmentLicence'] : $userProfileInfo->establishmentLicenceNumber;?>"  required/>                            
                         </div>
                         <?php endif;?>
-                        <?php if(trim($userProfileInfo->establishmentLicence) ==""): ?>
+                        <?php //if(trim($userProfileInfo->establishmentLicence) ==""): ?>
                         <div class="feild row">   
                             <?php $errors_1 = $this->session->flashdata('errors_1'); if(!empty($errors_1)){ ?><div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?= $errors_1; ?></div><?php }?>
                             <div class="col-sm-8">                                
@@ -56,14 +56,26 @@
                             $establishmentLicenceFile = "";
                             if(isset($stepData['step1']['page1']['establishmentLicenceFile']) && !empty($stepData['step1']['page1']['establishmentLicenceFile'])):
                                 $establishmentLicenceFile = base_url('uploads/user/document/'.$stepData['step1']['page1']['establishmentLicenceFile']);
+                            else:
+                                $establishmentLicenceFile = base_url('uploads/user/document/'.trim($userProfileInfo->establishmentLicence));
                             endif;
                             ?>
                             <div class="col-sm-4">
-                                <img id="establishmentLicenceFile" src="<?= $establishmentLicenceFile; ?>" alt="establishmentLicenceFile" <?php if($establishmentLicenceFile == ""){?>style="display: none;"<?php }?>>
+                                <?php
+                                $establishmentLicence  = explode(".",$establishmentLicenceFile);
+                                $establishmentLicenceExt = end($establishmentLicence);
+                                if ($establishmentLicenceExt == 'pdf') { ?>
+                                    <a target="_blank" href="<?php echo $establishmentLicenceFile; ?>" title="View Licence"><i class="fa fa-file-pdf-o fa-5x" aria-hidden="true"></i></a>
+                                <?php }else if ($establishmentLicenceExt == 'doc' || $establishmentLicenceExt == 'docx') { ?>
+                                    <a target="_blank" href="<?php echo $establishmentLicenceFile; ?>" title="View Licence"><i class="fa fa-file-word-o fa-5x" aria-hidden="true"></i></a>
+                                <?php  }else{ ?>
+                                    <a target="_blank" href="<?php echo $establishmentLicenceFile; ?>" title="View Licence"><img title="View Licence" src="<?php echo $establishmentLicenceFile; ?>"></a>
+                                <?php }?>
+                                <img id="establishmentLicenceFile" src="" alt="establishmentLicenceFile" style="display: none;">
                             </div>
                         </div>
-                        <?php endif;?>
-                        <?php if(trim($userProfileInfo->liabilityInsurance) ==""): ?>
+                        <?php //endif;?>
+                        <?php //if(trim($userProfileInfo->liabilityInsurance) ==""): ?>
                         <div class="feild row">
                             <?php $errors_2 = $this->session->flashdata('errors_2'); if(!empty($errors_2)){ ?><div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?= $errors_2; ?></div><?php }?>
                             <div class="col-sm-8">                                
@@ -76,13 +88,25 @@
                             $liabilityInsuranceFile = "";
                             if(isset($stepData['step1']['page1']['liabilityInsurance']) && !empty($stepData['step1']['page1']['liabilityInsurance'])):
                                 $liabilityInsuranceFile = base_url('uploads/user/document/'.$stepData['step1']['page1']['liabilityInsurance']);
+                            else:
+                                $liabilityInsuranceFile = base_url('uploads/user/document/'.trim($userProfileInfo->liabilityInsurance));
                             endif;
                             ?>
                             <div class="col-sm-4">
-                                <img id="liabilityInsuranceFile" src="<?= $liabilityInsuranceFile; ?>" alt="liabilityInsuranceFile" <?php if($liabilityInsuranceFile == ""){?>style="display: none;"<?php }?>>
+                                <?php
+                                $licenceCopy  = explode(".",$liabilityInsuranceFile);
+                                $licenceCopyExt = end($licenceCopy);
+                                if ($licenceCopyExt == 'pdf') { ?>
+                                    <a target="_blank" href="<?php echo $liabilityInsuranceFile; ?>" title="View Licence"><i class="fa fa-file-pdf-o fa-5x" aria-hidden="true"></i></a>
+                                <?php }else if ($licenceCopyExt == 'doc' || $licenceCopyExt == 'docx') { ?>
+                                    <a target="_blank" href="<?php echo $liabilityInsuranceFile; ?>" title="View Licence"><i class="fa fa-file-word-o fa-3x" aria-hidden="true"></i></a>
+                                <?php  }else{ ?>
+                                    <a target="_blank" href="<?php echo $liabilityInsuranceFile; ?>" title="View Licence"><img title="View Licence" src="<?php echo $liabilityInsuranceFile; ?>"></a>
+                                <?php  } ?>
+                                <img id="liabilityInsuranceFile" src="" alt="liabilityInsuranceFile" style="display: none;">
                             </div>
                         </div>
-                        <?php endif;?>
+                        <?php //endif;?>
                         <div class="next-prevs clearfix">
                             <div class="pull-left">
                                 <a class="gost-btn" href="<?php echo site_url('Space'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>

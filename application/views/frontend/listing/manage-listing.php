@@ -777,7 +777,7 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                 </div>
                             </div>
                         </div>
-                        <?php $noticesArray = unserialize(NOTICES); ?>
+                        <?php $noticesArray = unserialize(NOTICES); $gapsArray = unserialize(GAPS); $advanceArray = unserialize(ADVANCE_NOTICES); ?>
                         <div id="menu3" class="tab-pane fade">
                             <div class="col-md-8 new-partner6 new-partner7 new-partner34">
                                 <div class="pro-requr space-r">
@@ -787,13 +787,22 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                         <form id="availability" class="form-horizontal" method="post" action="<?= site_url('listing/update_listing_details'); ?>" autocomplete="off" style="display: none;" novalidate>
                                             <h3>How much notice do you need before a professional arrives?</h3>
                                             <div class="main-input feild">
-                                                <select class="selectbox" name="noticeTime">
-                                                    <?php
-                                                    foreach($noticesArray as $k => $v){ ?>
+                                                <select class="selectbox custom-select" name="noticeTime">
+                                                    <?php foreach($noticesArray as $k => $v){ ?>
                                                     <option value="<?= $k; ?>" <?php echo ($listing['noticeTime'] == $k)? 'selected' : ''?>><?= $v; ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
+                                            
+                                            <h3>How much time do you want between professionals?</h3>
+                                            <div class="feild">
+                                                <select class="selectbox custom-select" name="bookingGap">
+                                                    <?php foreach($gapsArray as $k => $v){ ?>
+                                                    <option value="<?= $k; ?>" <?php echo ($listing['bookingGap'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            
                                             <div class="rental-hours">
                                                 <h4>When can professionals rent your workspace?</h4>
                                                 <table class="table">
@@ -926,21 +935,24 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                                     </tbody>
                                                   </table>
                                             </div>
+                                            
                                             <h3>How far in advance can professionals book?</h3>
                                             <div class="main-input feild">
-                                                <select class="selectbox" name="advanceBook">
-                                                    <option value="3" <?php echo ($listing['advanceBook'] == '3')? 'selected' : ''?>>3 months</option>
-                                                    <option value="2" <?php echo ($listing['advanceBook'] == '2')? 'selected' : ''?>>2 months</option>
-                                                    <option value="1" <?php echo ($listing['advanceBook'] == '1')? 'selected' : ''?>>1 month</option>
+                                                <select class="selectbox custom-select" name="advanceBook">
+                                                    <?php foreach($advanceArray as $k => $v){ ?>
+                                                    <option value="<?= $k; ?>" <?php echo ($listing['advanceBook'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
+                                            
                                             <h3>How long can professionals stay?</h3>
                                             <div class="alert alert-danger" style="display: none;">
                                                 <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i></strong> Minimum stay can’t be higher than maximum stay.
                                             </div>
+                                            
                                             <div class="main-input feild">
                                                 <div class="main">
-                                                    <input type='text' class="textbox" name='minStay' value='<?php echo !empty($listing['minStay'])? $listing['minStay'] : 1?> <?php echo $listing['minStayType']?> min' class='qty' />
+                                                    <input type='text' class="textbox" name='minStay' value='<?php echo $listing['minStay']; ?> <?php echo $listing['minStayType']?> min' class='qty' />
                                                     <input type='button' value='' class='qtyminus2' field='minStay' />
                                                     <input type='button' value='' class='qtyplus2' field='minStay' />
                                                 </div>
@@ -948,7 +960,7 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                             </div>
                                             <div class="main-input feild">
                                                 <div class="main">
-                                                    <input type='text' class="textbox" name='maxStay' value='<?php echo !empty($listing['maxStay'])? $listing['maxStay'] : 1?> <?php echo $listing['maxStayType']?> max' class='qty2' />
+                                                    <input type='text' class="textbox" name='maxStay' value='<?php echo $listing['maxStay']; ?> <?php echo $listing['maxStayType']?> max' class='qty2' />
                                                     <input type='button' value='' class='qtyminus2' field='maxStay' />
                                                     <input type='button' value='' class='qtyplus2' field='maxStay' />
                                                 </div>
@@ -972,13 +984,17 @@ ul.chosen-results li{ margin: 0 !important;padding: 5px 6px !important;border-to
                                             <div class="pull-right"><?= $noticesArray[$listing['noticeTime']]; ?></div>
                                         </li>
                                         <li class="clearfix">
+                                            <div class="pull-left">How much time do you want between professionals?</div>
+                                            <div class="pull-right"><?= $gapsArray[$listing['bookingGap']]; ?></div>
+                                        </li>
+                                        <li class="clearfix">
                                             <div class="pull-left">How far in advance can professionals book?</div>
-                                            <div class="pull-right"><?= $listing['advanceBook']; ?> month(s)</div>
+                                            <div class="pull-right"><?= $advanceArray[$listing['advanceBook']]; ?></div>
                                         </li>
                                         <li class="clearfix">
                                             <div class="pull-left">How long can professionals stay?</div>
                                             <div class="pull-right">
-                                                <strong><?php echo !empty($listing['minStay'])? $listing['minStay'] : 1?> <?php echo $listing['minStayType']?></strong> Min Stay, <strong><?php echo !empty($listing['maxStay'])? $listing['maxStay'] : 1?> <?php echo $listing['maxStayType']?></strong> Max Stay
+                                                <strong><?php echo !empty($listing['minStay'])? $listing['minStay'].$listing['minStayType'] : 'No'?></strong> Min Stay, <strong><?php echo !empty($listing['maxStay'])? $listing['maxStay'].$listing['maxStayType'] : 'No'; ?></strong> Max Stay
                                             </div>
                                         </li>
                                     </ul>
@@ -1229,7 +1245,7 @@ $(document).ready(function(){
         currentVal--;
         var variable = get_stay_var(currentVal, inputString, 'Minus');
         // If it isn't undefined or its greater than 0
-        if (!isNaN(variable[0]) && variable[0] > 0) {            
+        if (!isNaN(variable[0]) && variable[0] >= 0) {            
             $('input[name='+fieldName+']').val(variable[0] + variable[1]);
             $('input[name='+fieldName+'Type]').val(variable[2]);
         } else {

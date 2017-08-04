@@ -18,7 +18,7 @@
                         </div>
                         <div class="feild">
                             <label>Currency</label>
-                            <select class="textbox" name="page7[currency]">
+                            <select class="textbox custom-select" name="page7[currency]">
                                 <?php $all_currency = unserialize(CURRENCIES); 
                                  foreach($all_currency as $k=>$v) { ?>
                                  <option value="<?= $k; ?>" <?php echo ((isset($stepData['step3']['page7']['currency']) && $stepData['step3']['page7']['currency'] == $k) || $hostProfileInfo->currency == $k)? 'selected' : ''?>><?= $v; ?></option>

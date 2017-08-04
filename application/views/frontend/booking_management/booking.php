@@ -723,15 +723,14 @@ if(isset($preview['latitude']) && isset($preview['longitude']) && !empty($previe
                   ].join('-');
 
         $( "#endDate,#endDate2" ).datepicker({
-            title: "Min stay: <?= $preview['minStay']; ?> <?= $preview['minStayType']; ?>, Max stay: <?= $preview['maxStay']; ?> <?= $preview['maxStayType']; ?>",
+            title: "Min stay: <?php echo !empty($preview['minStay'])? $preview['minStay'].$preview['minStayType'] : 'No'?>, Max stay: <?php echo !empty($preview['maxStay'])? $preview['maxStay'].$preview['maxStayType'] : 'No'; ?>",
             format: "mm-dd-yyyy",
             startDate: minDate,
-            endDate: maxDate,
+            <?php if(!empty($preview['maxStay'])){?>endDate: maxDate,<?php }?>
             orientation: "bottom",
             autoclose: true,
             weekStart: 1
         });
-        
         $("#endDate,#endDate2").datepicker("setDate",minDate);
         $("#endDate,#endDate2").focus();
     }

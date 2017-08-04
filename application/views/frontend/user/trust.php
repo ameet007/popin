@@ -118,9 +118,9 @@ $message_notification = $this->session->flashdata('message_notification')
                                                 if (!empty($establishmentLicenceLink)) {
                                                 $licenceCopy  = explode(".",$establishmentLicenceLink);
                                                 if ($licenceCopy[1] == 'pdf') { ?>
-                                                    <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                                                    <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i class="fa fa-file-pdf-o fa-5x" aria-hidden="true"></i></a>
                                                 <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
-                                                    <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
+                                                    <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><i class="fa fa-file-word-o fa-5x" aria-hidden="true"></i></a>
                                                 <?php  }else{ ?>
                                                     <a target="_blank" href="<?php echo $establishmentLicenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $establishmentLicenceLink; ?>" style="height:100px;" ></a>
                                                 <?php  }}else{ ?>
@@ -139,9 +139,9 @@ $message_notification = $this->session->flashdata('message_notification')
                                                 if (!empty($liabilityInsuranceLink)) {
                                                 $licenceCopy  = explode(".",$liabilityInsuranceLink);
                                                 if ($licenceCopy[1] == 'pdf') { ?>
-                                                    <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                                                    <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i class="fa fa-file-pdf-o fa-5x" aria-hidden="true"></i></a>
                                                 <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
-                                                    <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
+                                                    <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><i class="fa fa-file-word-o fa-5x" aria-hidden="true"></i></a>
                                                 <?php  }else{ ?>
                                                     <a target="_blank" href="<?php echo $liabilityInsuranceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $liabilityInsuranceLink; ?>" style="height:100px;" ></a>
                                                 <?php  }}else{ ?>

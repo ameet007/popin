@@ -10,16 +10,14 @@
         <div class="row clearfix">            
             <div class="col-md-8">
                 <div class="space-are">
-                    
+                    <?php $noticesArray = unserialize(NOTICES); $gapsArray = unserialize(GAPS); $advanceArray = unserialize(ADVANCE_NOTICES); ?>
                     <form class="dates-form" action="<?php echo site_url('Space/availability_settings'); ?>" method="post">
                         <h3>How much notice do you need before a professional arrives?</h3>
                         <div class="feild">
                             <select class="selectbox custom-select" name="page6[noticeTime]">
-                                <option value="1" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == '1')? 'selected' : ''?>>1 hour</option>
-                                <option value="12" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == '12')? 'selected' : ''?>>12 hours</option>
-                                <option value="24" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == '24')? 'selected' : ''?>>1 day</option>
-                                <option value="48" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == '48')? 'selected' : ''?>>2 days</option>
-                                <option value="168" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == '168')? 'selected' : ''?>>7 days</option>
+                                <?php foreach($noticesArray as $k => $v){ ?>
+                                <option value="<?= $k; ?>" <?php echo (isset($stepData['step3']['page6']['noticeTime']) && $stepData['step3']['page6']['noticeTime'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                         <p><strong>Tip:</strong> At least <strong>1 day notice</strong> can help you plan for a professionals arrival, but you might miss out on last-minute rentals.</p>
@@ -27,11 +25,9 @@
                         <h3>How much time do you want between professionals?</h3>
                         <div class="feild">
                             <select class="selectbox custom-select" name="page6[bookingGap]">
-                                <option value="0" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '0')? 'selected' : ''?>>No time</option>
-                                <option value="15" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '15')? 'selected' : ''?>>15 minutes</option>
-                                <option value="30" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '30')? 'selected' : ''?>>30 minutes</option>
-                                <option value="45" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '45')? 'selected' : ''?>>45 minutes</option>
-                                <option value="60" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == '60')? 'selected' : ''?>>1 hour</option>
+                                <?php foreach($gapsArray as $k => $v){ ?>
+                                <option value="<?= $k; ?>" <?php echo (isset($stepData['step3']['page6']['bookingGap']) && $stepData['step3']['page6']['bookingGap'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                         
@@ -200,13 +196,10 @@
                     <h3>How far in advance can professionals book?</h3>
                     <form class="advance-form" action="<?php echo site_url('Space/availability_settings'); ?>" method="post">
                         <div class="feild">
-                            <select class="selectbox" name="page6[advanceBook]">
-                                <option value="1" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '1')? 'selected' : ''?>>1 month</option>
-                                <option value="2" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '2')? 'selected' : ''?>>2 months</option>
-                                <option value="3" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '3')? 'selected' : ''?>>3 months</option>
-                                <option value="6" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '6')? 'selected' : ''?>>6 months</option>
-                                <option value="9" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '9')? 'selected' : ''?>>9 months</option>
-                                <option value="12" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == '12')? 'selected' : ''?>>1 year</option>
+                            <select class="selectbox custom-select" name="page6[advanceBook]">
+                                <?php foreach($advanceArray as $k => $v){ ?>
+                                <option value="<?= $k; ?>" <?php echo (isset($stepData['step3']['page6']['advanceBook']) && $stepData['step3']['page6']['advanceBook'] == $k)? 'selected' : ''?>><?= $v; ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                         <p><strong>Tip:</strong> Most partners can keep their calendars updated up to 3 months out.</h5></p>
@@ -248,7 +241,7 @@
                     <form class="night-stay-form" action="<?php echo site_url('Space/availability_settings'); ?>" method="post">
                         <div class="feild">
                             <div class="main">
-                                <input type='text' class="textbox" name='minStay' value='<?php echo isset($stepData['step3']['page6']['minStay'])&&!empty($stepData['step3']['page6']['minStay'])? $stepData['step3']['page6']['minStay'] : 1?> <?php echo isset($stepData['step3']['page6']['minStayType'])? $stepData['step3']['page6']['minStayType'] : 'hours'?> min' class='qty' />
+                                <input type='text' class="textbox" name='minStay' value='<?php echo isset($stepData['step3']['page6']['minStay'])? $stepData['step3']['page6']['minStay'] : 1?> <?php echo isset($stepData['step3']['page6']['minStayType'])? $stepData['step3']['page6']['minStayType'] : 'hours'?> min' class='qty' />
                                 <input type='button' value='' class='qtyminus' field='minStay' />
                                 <input type='button' value='' class='qtyplus' field='minStay' />
                             </div>
@@ -256,7 +249,7 @@
                         </div>
                         <div class="feild">
                             <div class="main">
-                                <input type='text' class="textbox" name='maxStay' value='<?php echo isset($stepData['step3']['page6']['maxStay'])&&!empty($stepData['step3']['page6']['maxStay'])? $stepData['step3']['page6']['maxStay'] : 0?> <?php echo isset($stepData['step3']['page6']['maxStayType'])? $stepData['step3']['page6']['maxStayType'] : 'hours'?> max' class='qty2' />
+                                <input type='text' class="textbox" name='maxStay' value='<?php echo isset($stepData['step3']['page6']['maxStay'])? $stepData['step3']['page6']['maxStay'] : 0?> <?php echo isset($stepData['step3']['page6']['maxStayType'])? $stepData['step3']['page6']['maxStayType'] : 'hours'?> max' class='qty2' />
                                 <input type='button' value='' class='qtyminus' field='maxStay' />
                                 <input type='button' value='' class='qtyplus' field='maxStay' />
                             </div>
@@ -335,13 +328,13 @@
         
         $("label.minStay").remove();$("label.maxStay").remove();
         
-        if(isNaN(minStay) || minStay < 1){
+        if(isNaN(minStay) || minStay < 0){
             var errorMsg = $('<label for="minStay" class="error minStay">Please enter valid value.</label>');            
             errorMsg.insertAfter($("input[name='minStay']").parent());
             $('form.night-stay-form button').text('Next');
             return false;
         }
-        if(isNaN(maxStay) || maxStay < 1){
+        if(isNaN(maxStay) || maxStay < 0){
             var errorMsg = $('<label for="maxStay" class="error maxStay">Please enter valid value.</label>');            
             errorMsg.insertAfter($("input[name='maxStay']").parent());
             $('form.night-stay-form button').text('Next');
@@ -413,7 +406,7 @@
         currentVal--;
         var variable = get_stay_var(currentVal, inputString, 'Minus');
         // If it isn't undefined or its greater than 0
-        if (!isNaN(variable[0]) && variable[0] > 0) {            
+        if (!isNaN(variable[0]) && variable[0] >= 0) {            
             $('input[name='+fieldName+']').val(variable[0] + variable[1]);
             $('input[name='+fieldName+'Type]').val(variable[2]);
         } else {
@@ -450,13 +443,15 @@
         // logic for changing the sidebar image
         var minText, maxText;
         
-        if(minStay < 2){
+        if(minStay == 0){
+            minText = "No min";
+        }else if(minStay < 2){
             minText = minStay+" "+minStayType;
         }else{
             minText = minStay+" "+minStayType;
         }
         
-        if(maxStay === 0){
+        if(maxStay == 0){
             maxText = "No max";
         }else if(maxStay < 2){
             maxText = maxStay+" "+maxStayType;
@@ -477,6 +472,8 @@
             $("#settings-3 div.to-day").html(night_4);
         }else if(minStay >= 0 && maxStay >= 1){
             $("#settings-3 div.to-day").html(night_3);
+        }else if(minStay == 0 && maxStay == 0){
+            $("#settings-3 div.to-day").html(night_1);
         }
     }
     

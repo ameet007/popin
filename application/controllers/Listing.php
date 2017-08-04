@@ -263,9 +263,14 @@ class Listing extends CI_Controller {
         $bookingId = $this->input->post('id');
         $bookingStatus = $this->input->post('status');
         
-        $this->db->update('space_booking', array('partnerStatus' => $bookingStatus), array('id' => $bookingId));
+        $this->db->update('space_booking', array('partnerStatus' => $bookingStatus, 'updatedDate'=>time()), array('id' => $bookingId));
         if($this->db->affected_rows()){
-            $this->db->update('conversation', array('status' => 'reservations'), array('booking' => $bookingId));
+            if($bookingStatus == 'Accepted'){
+                $this->db->update('conversation', array('status' => 'reservations'), array('booking' => $bookingId));
+            }
+            if($bookingStatus == 'Rejected'){
+                $this->db->insert('cancel_reason', array('booking_id' => $bookingId, 'reason' => $this->input->post('reason'), 'createdDate'=>time(), 'updatedDate'=>time(),'ipAddress'=>$this->input->ip_address()));
+            }
         }
     }
     

@@ -258,9 +258,10 @@ class FrontUser extends CI_Model {
         }
     }
     
-    public function bookingInfo($id, $select = "*") {
+    public function bookingInfo($id, $select = "space_booking.*, payments.*, cancel_reason.reason") {
         $where = array("space_booking.id=" => $id);
         $this->db->join("payments", "space_booking.id = payments.booking_id", "left");
+        $this->db->join("cancel_reason", "space_booking.id = cancel_reason.booking_id", "left");
         $query = $this->db->select($select)->from('space_booking')->where($where)->get();
         return $query->row_array();
     }
@@ -277,7 +278,8 @@ class FrontUser extends CI_Model {
         $this->db->where_in('msg.status', array('new','pending'));
         return $this->db->order_by('msg.createdDate', 'desc')->get('conversation as msg')->result_array();
     }
-
+    
+    // Get user inbox messages
     function getUserMessages($userId, $status = "", $requestData="") {
         $response = array();
 
@@ -346,6 +348,58 @@ class FrontUser extends CI_Model {
         //echo "<pre>";print_r($response);exit;
         return $response;
     }
+    
+    // get user outbox messages
+    function getUserOubox($userId, $status = "", $requestData="") {
+        $response = array();
+
+        //$this->db->where("(sender = {$userId} OR receiver = {$userId}) AND parent = 0");
+        $this->db->where('sender', $userId);
+        if ($status != "") {
+            $this->db->where("status", $status);
+        }
+        if(!empty($requestData)){ $this->db->limit($requestData['limit'], $requestData['start']); }
+        $conversations = $this->db->order_by('updatedDate', 'desc')->get('conversation')->result_array();
+        //echo $this->db->last_query();
+        if (!empty($conversations)) {
+            foreach ($conversations as $conversation) {
+                if ($conversation['parent'] != 0) {
+                    $this->db->where('id', $conversation['parent']);
+                    $conversation = $this->db->get('conversation')->row_array();
+                }
+                $userInfo = $this->userInfo($conversation['receiver']);
+                if (!empty($userInfo)) {
+                    $response['messages'][$conversation['id']] = $conversation;
+                    $response['messages'][$conversation['id']]['userInfo'] = array(
+                        'fname' => $userInfo->firstName,
+                        'lname' => $userInfo->lastName,
+                        'picture' => ($userInfo->avatar != '' && file_exists('uploads/user/thumb/' . $userInfo->avatar)) ? $userInfo->avatar : 'user_pic-225x225.png',
+                    );
+                    if ($conversation['space_id']) {
+                        $spaceInfo = $this->spaceInfo($conversation['space_id']);
+                        $response['messages'][$conversation['id']]['spaceInfo'] = array(
+                            'title' => $spaceInfo['spaceTitle'],
+                            'country' => $spaceInfo['country'],
+                        );
+                    }
+                    if ($conversation['booking']) {
+                        $bookingInfo = $this->bookingInfo($conversation['booking'],'space_booking.partnerStatus,payments.currency_code,payments.payment_gross');
+                        $response['messages'][$conversation['id']]['bookingInfo'] = $bookingInfo;
+                    }
+                    $this->db->where('parent', $conversation['id']);
+                    $replyData = $this->db->order_by('id', 'asc')->get('conversation')->result_array();
+                    if (!empty($replyData)) {
+                        $response['messages'][$conversation['id']]['replies'] = $replyData;
+                    }
+                }
+            }
+        } else {
+            $response['messages'] = array();
+        }
+        //echo "<pre>";print_r($response);exit;
+        return $response;
+    }
+    
     function getUpcomingRentals($user){
         $response = array();
         $rentals = $this->db->where('user', $user)->order_by('updatedDate', 'desc')->limit('3')->get('space_booking')->result_array();

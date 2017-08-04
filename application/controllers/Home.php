@@ -310,6 +310,14 @@ class Home extends CI_Controller {
             redirect('spaces');
         }
         $userID = $this->session->userdata('user_id'); //current user id
+        // Start date
+        $popin_date = DateTime::createFromFormat('m-d-Y', $rawData['checkIn']);
+        // End date
+        $popout_date = DateTime::createFromFormat('m-d-Y', $rawData['checkOut']);
+
+        $rawData['checkIn'] = $popin_date->format('Y-m-d');
+        $rawData['checkOut'] = $popout_date->format('Y-m-d');
+        
         $data['booking'] = $rawData;
         $data['spaceInfo'] = $this->user->spaceInfo($rawData['space']);
         $data['spaceGallery'] = $this->user->getSpaceGallery($rawData['space']);
@@ -370,8 +378,8 @@ class Home extends CI_Controller {
         if (!empty($bookingId)) {
             $this->session->set_userdata("bookingId", $bookingId);
             // Send message to the partner
-            $checkIn = $this->input->post('checkIn');
-            $checkOut = $this->input->post('checkOut');
+            $checkIn = date("m-d-Y", strtotime($this->input->post('checkIn')));
+            $checkOut = date("m-d-Y", strtotime($this->input->post('checkOut')));
             $professionals = $this->input->post('professionals');
             $message = $this->input->post('professionalNote');
 

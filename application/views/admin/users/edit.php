@@ -440,7 +440,7 @@
         </div>
     </div>
 </div>
- <!-- Sweet-Alert  -->
+<!-- Sweet-Alert  -->
 <script src="<?= base_url('theme/admin/plugins/bootstrap-sweetalert/sweet-alert.min.js'); ?>"></script>
 <script type="text/javascript" src="<?= base_url('theme/admin/plugins/parsleyjs/parsley.min.js');?>"></script>
 <script>

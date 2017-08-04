@@ -111,7 +111,7 @@
                                         <p>Last updated on <?= date("d F, Y",$listing['updatedDate']); ?></p>
                                         <div class="three-btn">
                                             <a href="<?= site_url('Space/become-a-partner/'. $listing['id']); ?>" class="green-btn">Finish the Listing</a>
-                                            <a href="<?= site_url('preview-listing/'.$listing['id']); ?>"><button class="btn">Preview</button></a>
+                                            <a target="_blank" href="<?= site_url('preview-listing/'.$listing['id']); ?>"><button class="btn">Preview</button></a>
                                         </div>
                                     </div>
                                 </div>

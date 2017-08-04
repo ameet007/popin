@@ -71,6 +71,7 @@ $route['spaces/(:num)'] = 'home/rooms/$1';
 $route['home/request-to-book'] = 'home/request_to_book';
 
 $route['inbox'] = 'Dashboard/inbox';
+$route['outbox'] = 'Dashboard/outbox';
 $route['compose'] = 'Dashboard/compose';
 $route['compose/(:num)'] = 'Dashboard/compose/$1';
 $route['rentals'] = 'Dashboard/rentals';
@@ -82,6 +83,7 @@ $route['wishlists/(:num)'] = 'Dashboard/edit_wishlists/$1';
 $route['invite']    = 'Dashboard/invite';
 $route['referral/(:any)']  = 'Dashboard/referral/$1';
 $route['contactList'] = 'Dashboard/contactList';
+$route['my-address-book'] = 'Dashboard/contactList';
 
 $route['listing'] = 'Listing/listing';
 $route['preview-listing/(:num)'] = 'Listing/preview_listing/$1';

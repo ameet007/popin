@@ -13,7 +13,7 @@
                     <form class="listing-form" action="<?php echo site_url('Space/availability_questions'); ?>" method="post">
                         <div class="feild">
                             <p>Have you rented out your space before?</p>
-                            <select class="selectbox" name="page5[everRented]">
+                            <select class="selectbox custom-select" name="page5[everRented]">
                                 <option selected="selected" disabled>Select one</option>
                                 <option value="Yes" <?php echo (isset($stepData['step3']['page5']['everRented']) && $stepData['step3']['page5']['everRented'] == 'Yes')? 'selected' : ''?>>Yes</option>
                                 <option value="No" <?php echo (isset($stepData['step3']['page5']['everRented']) && $stepData['step3']['page5']['everRented'] == 'No')? 'selected' : ''?>>No</option>
@@ -21,7 +21,7 @@
                         </div>
                         <div class="feild">
                             <p>How often do you want to have professionals?</p>
-                            <select class="selectbox" name="page5[haveProffesionals]">
+                            <select class="selectbox custom-select" name="page5[haveProffesionals]">
                                 <option selected="selected" disabled>Select one</option>
                                 <option value="Not sure yet" <?php echo (isset($stepData['step3']['page5']['haveProffesionals']) && $stepData['step3']['page5']['haveProffesionals'] == 'Not sure yet')? 'selected' : ''?>>Not sure yet</option>
                                 <option value="Part-time" <?php echo (isset($stepData['step3']['page5']['haveProffesionals']) && $stepData['step3']['page5']['haveProffesionals'] == 'Part-time')? 'selected' : ''?>>Part-time</option>

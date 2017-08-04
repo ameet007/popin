@@ -24,7 +24,7 @@
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/industry_list'); ?>"><i class="fa fa-industry" aria-hidden="true"></i>Manage Industry</a></li>
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/establishment_list'); ?>"><i class="fa fa-info"></i>Establishment Type</a></li>
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/amenities_list'); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Manage Amenities</a></li>
-                        <li><a href="<?= base_url(ADMIN_DIR . '/settings/spaceList'); ?>"><i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>Space Type</a></li>
+                        <li><a href="<?= base_url(ADMIN_DIR . '/Settings/spaceList'); ?>"><i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>Space Type</a></li>
                         <li><a href="<?= base_url(ADMIN_DIR . '/settings/facilities'); ?>"><i class="fa fa-magnet" aria-hidden="true"></i>Manage Facilities</a></li>
                     </ul>
                 </li>

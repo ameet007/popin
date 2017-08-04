@@ -721,8 +721,8 @@ a.verify-button{width: auto;border-right: none;border-left: 1px solid #dce0e1;ba
 .new-partner37 {}
 .fc-button-group, .fc button {display: block;}
 .new-partner37 .fc-header-toolbar .fc-right .btn-default, .fc button  {background-color: transparent; border: solid 1px #ddd; padding: 12px 20px; height: auto; color: #007a87;}
-.new-partner37 .fc-toolbar .fc-center {float:left; padding-left:20px; padding-top: 14px;}
-.new-partner37 .fc-toolbar .fc-center h2 {font-size:16px; line-height:16px;}
+.new-partner37 .fc-toolbar .fc-center {padding-left:20px; padding-top: 14px;}
+.new-partner37 .fc-toolbar .fc-center h2 {font-size:24px; line-height:16px;}
 .new-partner37 .fc tbody .fc-row .fc-content-skeleton table {height:95px;}
 .new-partner37 .fc-content-skeleton > table > thead td {height:95px;}
 .manage-calendar .fc-content-skeleton > table > thead td {height:95px;border-color: #ddd !important;}

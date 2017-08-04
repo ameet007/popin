@@ -28,8 +28,8 @@ $filters = $this->session->userdata('filters');
         <!--Initialize Jquery-->
         <script src="<?php echo base_url('theme/front/assests/js/jQuery.js') ?>" type="text/javascript"></script>
         <?php if(isset($search_nav) && $search_nav == 1){ ?>
+        <link href="<?php echo base_url('theme/admin/plugins/timepicker/bootstrap-timepicker.min.css') ?>" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.0/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
-<!--        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.js"></script>-->
         <script src="<?php echo base_url('theme/front/assests/js/jquery.blockUI.js') ?>" type="text/javascript"></script>
         <?php }else{?>
         <link href="<?php echo base_url('theme/front/assests/css/daterangepicker.css') ?>" rel="stylesheet" type="text/css" />        

@@ -34,7 +34,7 @@ class Dashboard extends CI_Controller
         $this->user->updateMessageStatus($user_id,'read');
         $status = $this->input->post('status');
         $rawdata['page']        = 1;
-        $rawdata['limit']       = 10;
+        $rawdata['limit']       = 20;
         if($rawdata['page']==1){
             $rawdata['start']   = 0;
         }else{
@@ -47,19 +47,47 @@ class Dashboard extends CI_Controller
         $data['status']   = $status;
         $this->load->view('frontend/inbox',$data);
     }
+    
+    public function outbox()
+    {
+        $data['module_heading'] = 'Outbox';
+        $data['userProfileInfo'] = $this->user->userProfileInfo();
+
+        $user_id = $this->session->userdata('user_id');
+        $status = $this->input->post('status');
+        $rawdata['page']        = 1;
+        $rawdata['limit']       = 20;
+        if($rawdata['page']==1){
+            $rawdata['start']   = 0;
+        }else{
+            $rawdata['start']   = ($rawdata['page']-1)*$rawdata['limit'];
+        }
+        $data['userMessages']   = $modelData['data']  = $this->user->getUserOubox($user_id,$status,$rawdata);
+        $modelData['page']  = $rawdata['page'];
+        $modelData['limit'] = $rawdata['limit'];
+        $data['messages']   = $this->messageBuilderHTML($modelData);
+        $data['status']   = $status;
+        $this->load->view('frontend/outbox',$data);
+    }
 
     public function messageRequest(){
         if(isset($_POST)){
             $user_id = $this->session->userdata('user_id');
             $status = $this->input->post('status');
+            $url = $this->input->post('open');
             $rawdata['page']        = $this->input->post('page');
-            $rawdata['limit']       = 10;
+            $rawdata['limit']       = 20;
             if($rawdata['page']==1){
                 $rawdata['start']   = 0;
             }else{
                 $rawdata['start']   = ($rawdata['page']-1)*$rawdata['limit'];
             }
-            $modelData['data']  = $this->user->getUserMessages($user_id,$status,$rawdata);
+            if($url == 'inbox'){
+                $modelData['data']  = $this->user->getUserMessages($user_id,$status,$rawdata);
+            }else{
+                $modelData['data']  = $this->user->getUserOubox($user_id,$status,$rawdata);
+            }
+            
             $modelData['page']  = $rawdata['page'];
             $modelData['limit'] = $rawdata['limit'];
             $messasgeData = $this->messageBuilderHTML($modelData);
@@ -83,7 +111,7 @@ class Dashboard extends CI_Controller
                     endif;
                     $HTML.='<tr>
                         <td width="60"><center><!--<a href="javascript:;" class="update-msg-status" data-msg-id="'.$messages['id'].'" data-action="starred" data-status="'.$messages['status'].'"><i class="fa '. $star.'" aria-hidden="true"></i></a>&nbsp;&nbsp;--><img class="user-pic" src="'. base_url('uploads/user/thumb/'.$messages['userInfo']['picture']).'" alt="" width="50" height="50"></center></td>
-                        <td width="80"><span class="dark-gery">'.$messages['userInfo']['fname'].' <br/>'. date("d/m/Y",$messages['createdDate']).'</span></td>
+                        <td width="80"><span class="dark-gery">'.$messages['userInfo']['fname'].' <br/>'. date("m/d/Y",$messages['createdDate']).'</span></td>
                         <td width="400">';
                             if(isset($messages['spaceInfo'])):$HTML.= $messages['spaceInfo']['title'].", ".$messages['spaceInfo']['country']." <br/>";endif;
                             if(!empty($messages['subject'])):$HTML.= $messages['subject']."<br/><br/>";endif;

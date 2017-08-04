@@ -29,7 +29,7 @@ $zip = $state = $city = $street = "";
                     <form id="location-form" action="<?php echo site_url('Space/location_submit'); ?>" method="post" <?php if($editMode){ echo "style='display: none;'"; }?>>
                         <div class="feild">
                             <label>Country</label>
-                            <select class="selectbox" name="page4[country]">
+                            <select class="selectbox custom-select" name="page4[country]">
                                 <?php $all_countries = unserialize(ALL_COUNTRY); 
                                 foreach($all_countries as $k=>$v){ ?>
                                 <option value="<?= $k; ?>" <?php echo (isset($stepData['step1']['page4']['country']) && $stepData['step1']['page4']['country'] == $k)? 'selected' : ''?>><?= $v; ?></option>
