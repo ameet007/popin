@@ -246,7 +246,7 @@ class Listing extends CI_Controller {
     
     public function reservation_details($booking_id = '') {
         $data['search_nav'] = 1;
-        $data['module_heading'] = 'Rentals Receipt';
+        $data['module_heading'] = 'Reservation Details';
         $data['userProfileInfo'] = $this->user->userProfileInfo();
         $data['bookingInfo'] = $this->user->bookingInfo($booking_id);
         //print_array($data['bookingInfo']);

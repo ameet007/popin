@@ -908,11 +908,14 @@ class Space extends CI_Controller {
                 $this->db->where(array('id' => $stepData['id'], 'host' => $host_id));
                 $this->db->update('spaces', $updateData);
                 
-                $data['phone'] = $stepData['step2']['page6']['mobileNumber'];
-                $data['phone_verify'] = 'yes';
-                $data['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
-                $data['ipAddress'] = $this->input->ip_address();
-                $this->space->editHost($data,$host_id);
+                $userProfileInfo = $this->host->userProfileInfo();
+                if($userProfileInfo->phone == "" || $userProfileInfo->phone == $stepData['step2']['page6']['mobileNumber']){
+                    $data['phone'] = $stepData['step2']['page6']['mobileNumber'];
+                    $data['phone_verify'] = 'yes';
+                    $data['updatedDate'] = strtotime(date('Y-m-d H:i:s'));
+                    $data['ipAddress'] = $this->input->ip_address();
+                    $this->space->editHost($data,$host_id);
+                }
             }
         }
         $this->space->setPercentageComplete($stepData['id'],$host_id,'step_2_percentage',100);

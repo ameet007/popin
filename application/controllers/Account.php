@@ -537,6 +537,22 @@ class Account extends CI_Controller {
             redirect(base_url('account/payment-methods'));
         }
     }
+    
+    public function set_default_document() {
+        $last = $this->uri->total_segments();
+        $doc_id = $this->uri->segment($last);
+        $user_id = $this->session->userdata('user_id');
+        $response = $this->user->setDefaultDoc($user_id, $doc_id);
+        if ($response > 0) {
+            $this->session->set_flashdata('message_notification', 'Your Document Set Default Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+            redirect(base_url('user/trust'));
+        } else {
+            $this->session->set_flashdata('message_notification', 'Your Document Not Set Default Successfully');
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(base_url('user/trust'));
+        }
+    }
 
     public function remove_card() {
         $last = $this->uri->total_segments();
@@ -550,6 +566,24 @@ class Account extends CI_Controller {
             $this->session->set_flashdata('message_notification', 'Card Not Removed Successfully');
             $this->session->set_flashdata('class', A_FAIL);
             redirect(base_url('account/payment-methods'));
+        }
+    }
+    
+    public function remove_document() {
+        $last = $this->uri->total_segments();
+        $doc_id = $this->uri->segment($last);
+        $user_id = $this->session->userdata('user_id');
+        $response = $this->user->removeDoc($user_id, $doc_id);
+        if ($response > 0) {
+            $docInfo = $this->db->select('doc_name')->get_where('user_documents', array('user' => $user_id, 'id' => $doc_id))->row_array();
+            @unlink("./uploads/user/document/" . $docInfo['doc_name']);
+            $this->session->set_flashdata('message_notification', 'Document Removed Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+            redirect(base_url('user/trust'));
+        } else {
+            $this->session->set_flashdata('message_notification', 'Document Not Removed Successfully');
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(base_url('user/trust'));
         }
     }
 

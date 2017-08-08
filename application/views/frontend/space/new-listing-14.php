@@ -11,10 +11,10 @@
 $numberVerified = FALSE;
 if(isset($stepData['step2']['page6']['numberVerified'])){
     if(strtolower($stepData['step2']['page6']['numberVerified']) == 'yes'){
-        $numberVerified = TRUE;
+        //$numberVerified = TRUE;
     }
 }elseif (trim($hostProfileInfo->phone) != "" && strtolower($hostProfileInfo->phone_verify)=='yes') {
-    $numberVerified = TRUE;
+    //$numberVerified = TRUE;
 }
 ?>
 
@@ -93,7 +93,7 @@ if(isset($stepData['step2']['page6']['numberVerified'])){
                                 <a class="gost-btn" href="<?= $back_url; ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                             </div>
                             <div class="pull-right">
-                                <button class="btn-red">Finish</button>
+                                <button class="btn-red" type="submit">Finish</button>
                             </div>
                         </div>
                     </form>
@@ -149,6 +149,7 @@ if(isset($stepData['step2']['page6']['numberVerified'])){
     $("input[name='page6[mobileNumber]']").on('keyup', function () {
         if($(this).val() !== ""){
             $("a.verify-button").css('display', 'inline-block');
+            $("form button[type='submit']").prop('disabled', true);
         }else{
             $("a.verify-button").css('display', 'none');
         }
@@ -191,6 +192,7 @@ if(isset($stepData['step2']['page6']['numberVerified'])){
                     $("section.new-partner21").addClass("new-partner22");
                     $("a.verify-button").hide();
                     $('input[name="page6[mobileNumber]"]').prop('readonly', true);
+                    $("form button[type='submit']").prop('disabled', false);
                 }
             }          
         });

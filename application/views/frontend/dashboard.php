@@ -181,7 +181,7 @@
                         }
                         $licenceCopyVerified = strtolower($userProfileInfo->licenceCopyVerified);
                         ?>
-                        <!-- Display upload docuemnt file -->
+                        <!-- Display upload document file -->
                         <div class="panel panel-default profile-photo verified-info">
                             <div class="panel-heading">Documents</div>
                             <div class="panel-body">
@@ -221,7 +221,7 @@
                                 </div>
                                 <div class="row mr15">
                                     <div class="col-md-9">
-                                        <h4>License / Certificate Copy <small><?= ($licenceLink !="" && $licenceCopyVerified =='yes')?'(SUBMITTED)':(($licenceLink !="" && $licenceCopyVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/trust').'">Upload</a>'); ?></small></h4>
+                                        <h4>Government Issued License/Certificate <small><?= ($licenceLink !="" && $licenceCopyVerified =='yes')?'(SUBMITTED)':(($licenceLink !="" && $licenceCopyVerified =='no')?'(Pending Verification)':'<a href="'.base_url('user/trust').'">Upload</a>'); ?></small></h4>
                                         <?php
                                         if (!empty($licenceLink)) {
                                         $licenceCopy  = explode(".",$licenceLink);

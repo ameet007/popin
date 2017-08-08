@@ -313,7 +313,7 @@ class FrontUser extends CI_Model {
                         );
                     }
                     if ($conversation['booking']) {
-                        $bookingInfo = $this->bookingInfo($conversation['booking'],'space_booking.partnerStatus,payments.currency_code,payments.payment_gross');
+                        $bookingInfo = $this->bookingInfo($conversation['booking'],'space_booking.partnerStatus,space_booking.checkIn,space_booking.checkOut,payments.currency_code,payments.payment_gross');
                         $response['messages'][$conversation['id']]['bookingInfo'] = $bookingInfo;
                     }
                     $this->db->where('parent', $conversation['id']);
@@ -738,6 +738,122 @@ class FrontUser extends CI_Model {
         $this->db->join('subscription_master', 'payments.booking_id = subscription_master.code', 'left');
         $this->db->join('spaces', 'space_booking.space = spaces.id', 'left');
         return $this->db->get_where('payments',array('user_id'=>$userId))->result_array();      
+    }
+    
+    // User Documents section
+    public function createUserDocs($user) {
+        // User table documents
+        $userDocs = $this->db->select('establishmentLicence,liabilityInsurance,licenceCopy')->where('id', $user)->get('user')->row_array();
+        foreach ($userDocs as $key => $doc) {
+            if(trim($doc) != ""){
+                if($key == 'establishmentLicence'){
+                    $doc_type = '1';
+                }elseif($key == 'liabilityInsurance'){
+                    $doc_type = '2';
+                }else{
+                    $doc_type = '3';
+                }
+                $isDocPresent = $this->db->get_where('user_documents', array('user' => $user, 'doc_type' => $doc_type, 'doc_name' => $doc))->num_rows();
+
+                if($isDocPresent == 0){
+                    $rawData = array(
+                        'user' => $user,
+                        'doc_type' => $doc_type,
+                        'doc_name' => $doc,
+                        'createdDate'   => time(),
+                        'updatedDate'   => time(),
+                        'ipAddress'   => $this->input->ip_address()
+                    );
+                    $this->db->insert('user_documents', $rawData);
+                }
+            }
+        }
+        // Space table documents
+        $spaceDocs = $this->db->select('establishmentLicenceFile,liabilityInsurance')->where('host', $user)->get('spaces')->result_array();
+        
+        foreach ($spaceDocs as $spaceDoc) {
+            foreach ($spaceDoc as $key => $doc) {
+                if(trim($doc) != ""){
+                    $isDocPresent = $this->db->where_in('doc_type', array('1','2'))->get_where('user_documents', array('user' => $user, 'doc_name' => $doc))->num_rows();
+                
+                    if($isDocPresent == 0){
+                        $rawData = array(
+                            'user' => $user,
+                            'doc_type' => ($key == 'establishmentLicenceFile')?1:2,
+                            'doc_name' => $doc,
+                            'createdDate'   => time(),
+                            'updatedDate'   => time(),
+                            'ipAddress'   => $this->input->ip_address()
+                        );
+                        $this->db->insert('user_documents', $rawData);
+                    }
+                }
+            }            
+        }
+    }
+    
+    public function insertUserDocs($user, $doc_name, $doc_type) {
+        if($doc_name != ""){
+            $isDocPresent = $this->db->get_where('user_documents', array('user' => $user, 'doc_name' => $doc_name, 'doc_type' => $doc_type))->num_rows();
+                
+            if($isDocPresent == 0){
+                $rawData = array(
+                    'user' => $user,
+                    'doc_type' => $doc_type,
+                    'doc_name' => $doc_name,
+                    'createdDate'   => time(),
+                    'updatedDate'   => time(),
+                    'ipAddress'   => $this->input->ip_address()
+                );
+                $this->db->insert('user_documents', $rawData);
+                $insertId = $this->db->insert_id();
+                
+                if($doc_type == '3'){
+                    $this->setDefaultDoc($user, $insertId);
+                }
+                return $insertId;
+            }
+        }
+    }
+    
+    public function getUserDocuments($user) {
+        $response['establishment'] = $this->db->select('id,doc_name')->get_where('user_documents', array('user' => $user, 'doc_type' => '1', 'doc_status' => 'added'))->result_array();
+        $response['liability'] = $this->db->select('id,doc_name')->get_where('user_documents', array('user' => $user, 'doc_type' => '2', 'doc_status' => 'added'))->result_array();
+        $response['certificate'] = $this->db->select('id,doc_name')->get_where('user_documents', array('user' => $user, 'doc_type' => '3', 'doc_status' => 'added'))->result_array();
+        
+        return $response;
+    }
+    
+    public function removeDoc($user_id, $doc_id) {
+        $this->db->where('user', $user_id);
+        $this->db->where('id', $doc_id);
+        $this->db->update('user_documents', array('doc_status' => 'removed'));
+        return $this->db->affected_rows();
+    }
+    
+    public function setDefaultDoc($user_id, $doc_id) {
+        $docInfo = $this->db->select('id,doc_name,doc_type')->get_where('user_documents', array('user' => $user_id, 'id' => $doc_id))->row_array();
+        if(!empty($docInfo)){
+            if($docInfo['doc_type'] == 1){
+                $updateData['establishmentLicence'] = $docInfo['doc_name'];
+                $updateData['establishmentLicenseVerified'] = 'Yes';
+            }elseif($docInfo['doc_type'] == 2){
+                $updateData['liabilityInsurance'] = $docInfo['doc_name'];
+                $updateData['liabilityInsuranceVerified'] = 'Yes';
+            }elseif($docInfo['doc_type'] == 3){
+                $updateData['licenceCopy'] = $docInfo['doc_name'];
+                $updateData['licenceCopyVerified'] = 'Yes';
+            }
+            $updateData['updatedDate'] = time();
+            
+            return $this->editUser($updateData, $user_id);
+        }else{
+            return 0;
+        }
+    }
+    
+    public function verifiedPhones($user_id, $user_phone) {
+        return $this->db->select('distinct(mobileNumber)')->where(array('host' => $user_id, 'mobileNumber !=' => $user_phone, 'numberVerified' => 'Yes', 'status' => 'Active'))->get('spaces')->result_array();
     }
 }
 

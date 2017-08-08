@@ -15,10 +15,10 @@
                 </div>
                 <div class="pull-right">
                     <p>Partner Approval: <strong><?= $bookingInfo['partnerStatus']; ?></strong></p>
-                    <?php if(strtolower($bookingInfo['partnerStatus']) == 'pending'):?>
+                    <?php if($this->session->userdata('user_id') == $hostInfo->id && strtolower($bookingInfo['partnerStatus']) == 'pending'):?>
                     <button class="btn2 update-request" data-booking-id="<?= $bookingInfo['id']; ?>" data-status="Accepted">Accept</button>
                     <button class="green-btn cancel-reservation" data-booking-id="<?= $bookingInfo['id']; ?>" data-status="Rejected">Reject</button>
-                    <?php elseif(strtolower($bookingInfo['partnerStatus']) == 'accepted'):?>
+                    <?php elseif($this->session->userdata('user_id') == $hostInfo->id && strtolower($bookingInfo['partnerStatus']) == 'accepted'):?>
                     <a href="javascript:;" class="green-btn cancel-reservation" data-booking-id="<?= $bookingInfo['id']; ?>" data-status="Rejected">Cancel Reservation</a>
                     <?php elseif(strtolower($bookingInfo['partnerStatus']) == 'rejected'):?>
                     <h5><b>Reason for Cancellation:</b> <?= $bookingInfo['reason']; ?></h5>
@@ -146,7 +146,7 @@ $(document).ready(function(){
             booking_status = $(this).attr("data-status");
         swal({
             title: "Are you sure?",
-            text: "Give an explanation for the cancellation:",
+            text: "Give a reason for the cancellation:",
             type: "input",
             showCancelButton: true,
             closeOnConfirm: false,

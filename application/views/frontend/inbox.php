@@ -1,6 +1,8 @@
 <?php
 	$this->load->view('frontend/include/user-header');
 ?>
+<!-- Sweet Alert -->
+<link href="<?= base_url('assets/global/sweetalert/sweetalert.css'); ?>" rel="stylesheet" type="text/css">
 <section class="middle-container inbox_x">
     <div class="container">
         <div class="main-content">
@@ -79,7 +81,42 @@
     </div>
 </div>
 <script src="<?php echo base_url('theme/front/assests/js/jquery.blockUI.js') ?>" type="text/javascript"></script>
+<!-- Sweet-Alert  -->
+<script src="<?= base_url('assets/global/sweetalert/sweetalert.min.js'); ?>"></script>
 <script>
+$('.cancel-reservation').click(function () {
+    var $this = $(this),
+        booking_id = $(this).attr("data-booking-id"),
+        booking_status = $(this).attr("data-status");
+    swal({
+        title: "Are you sure?",
+        text: "Give a reason for the cancellation:",
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        animation: "slide-from-top",
+        inputPlaceholder: "Reason for the cancellation"
+      },
+      function(inputValue){
+        if (inputValue === false) return false;
+
+        if (inputValue === "") {
+          swal.showInputError("You need to write something!");
+          return false;
+        }else{
+            $.ajax({
+                url: '<?= base_url('listing/update_reservation_request'); ?>',
+                type: 'POST',
+                data: {id: booking_id, status: booking_status, reason: inputValue},
+                success: function (response) {
+                    $this.parent().find('h4').html('Rental Status: ' + booking_status);
+                    $this.remove();
+                    swal("Nice!", "Reservation is cancelled successfully.", "success");
+                }
+            });
+        }
+      });
+});
 $("a.update-msg-status").on("click", function(){
     var $this = $(this),
         id = $(this).attr("data-msg-id"),

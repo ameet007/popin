@@ -43,6 +43,7 @@ class Dashboard extends CI_Controller
         $data['userMessages']   = $modelData['data']  = $this->user->getUserMessages($user_id,$status,$rawdata);
         $modelData['page']  = $rawdata['page'];
         $modelData['limit'] = $rawdata['limit'];
+        $modelData['url']   = 'inbox';
         $data['messages']   = $this->messageBuilderHTML($modelData);
         $data['status']   = $status;
         $this->load->view('frontend/inbox',$data);
@@ -65,6 +66,7 @@ class Dashboard extends CI_Controller
         $data['userMessages']   = $modelData['data']  = $this->user->getUserOubox($user_id,$status,$rawdata);
         $modelData['page']  = $rawdata['page'];
         $modelData['limit'] = $rawdata['limit'];
+        $modelData['url']   = 'outbox';
         $data['messages']   = $this->messageBuilderHTML($modelData);
         $data['status']   = $status;
         $this->load->view('frontend/outbox',$data);
@@ -90,6 +92,7 @@ class Dashboard extends CI_Controller
             
             $modelData['page']  = $rawdata['page'];
             $modelData['limit'] = $rawdata['limit'];
+            $modelData['url'] = $url;
             $messasgeData = $this->messageBuilderHTML($modelData);
             echo $messasgeData;
         }
@@ -124,8 +127,11 @@ class Dashboard extends CI_Controller
                         $HTML.='<td width="100">
                             <h4>Rental Status: '.$messages['bookingInfo']['partnerStatus'].'</h4>
                             <span class="price">Paid: '. getCurrency_symbol($messages['bookingInfo']['currency_code']).$messages['bookingInfo']['payment_gross'].'</span>
-                            <br/><a href="'. site_url('reservation-details/'.$messages['booking']).'">View Details</a>
-                        </td>';
+                            <br/><a href="'. site_url('reservation-details/'.$messages['booking']).'">View Details</a><br/>';
+                            if($modelData['url'] == 'inbox' && time() <= strtotime($messages['bookingInfo']['checkOut']) && strtolower($messages['bookingInfo']['partnerStatus']) != 'rejected'){
+                                $HTML.='<a href="javascript:;" class="cancel-reservation" data-booking-id="'.$messages['booking'].'" data-status="Rejected">Cancel Reservation</a>';
+                            }
+                        $HTML.='</td>';
                         else:
                             $receiverId = ($this->session->userdata('user_id') == $messages['sender'])?$messages['receiver']:$messages['sender'];
                             $archived = $messages['status']=='archived'?'Archived':'Archive';

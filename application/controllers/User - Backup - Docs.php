@@ -288,8 +288,8 @@ class User extends CI_Controller {
         $data['module_heading'] = 'Trust and Verification';
         $this->user->createUserDocs($this->session->userdata('user_id'));
         $data['userDocuments'] = $this->user->getUserDocuments($this->session->userdata('user_id'));
-        $data['userPhones'] = $this->user->verifiedPhones($this->session->userdata('user_id'), $data['userProfileInfo']->phone);
-        //print_array($data['userPhones']);
+        
+        //print_array($data['userDocuments']);
 
         $this->load->view(FRONT_DIR . '/' . INC . '/user-header', $data);
         $this->load->view(FRONT_DIR . '/user/trust', $data);
@@ -315,7 +315,6 @@ class User extends CI_Controller {
             //print_array($establishmentLicenceResponse, TRUE);
             if ($establishmentLicenceResponse['file_name'] != '') {
                 $establishmentLicence = $establishmentLicenceResponse['file_name'];
-                $this->user->insertUserDocs($this->session->userdata('user_id'), $establishmentLicence, '1');
             } else {
                 $this->session->set_flashdata('message_notification', $establishmentLicenceResponse['error']);
                 $this->session->set_flashdata('class', A_FAIL);
@@ -330,7 +329,6 @@ class User extends CI_Controller {
             
             if ($liabilityInsuranceResponse['file_name'] != '') {
                 $liabilityInsurance = $liabilityInsuranceResponse['file_name'];
-                $this->user->insertUserDocs($this->session->userdata('user_id'), $liabilityInsurance, '2');
             } else {
                 $this->session->set_flashdata('message_notification', $liabilityInsuranceResponse['error']);
                 $this->session->set_flashdata('class', A_FAIL);
@@ -345,7 +343,6 @@ class User extends CI_Controller {
             
             if ($licenceCopyResponse['file_name'] != '') {
                 $licenceCopy = $licenceCopyResponse['file_name'];
-                $this->user->insertUserDocs($this->session->userdata('user_id'), $licenceCopy, '3');
             } else {
                 $this->session->set_flashdata('message_notification', $licenceCopyResponse['error']);
                 $this->session->set_flashdata('class', A_FAIL);
@@ -355,18 +352,23 @@ class User extends CI_Controller {
             $licenceCopy = $this->input->post('OldLicenceCopy');
         }
 
-        /*$settingData = array(            
+        $settingData = array(            
             "establishmentLicence" => $establishmentLicence,
             "liabilityInsurance" => $liabilityInsurance,
             "licenceCopy" => $licenceCopy,
             "updatedDate" => strtotime(date('Y-m-d H:i:s')),
             "ipAddress" => $this->input->ip_address()
         );
-        $response = $this->user->editUser($settingData, $this->session->userdata('user_id'));*/
-        
-        $this->session->set_flashdata('message_notification', 'Documents Uploaded Successfully');
-        $this->session->set_flashdata('class', A_SUC);
-        redirect(base_url('user/trust'));
+        $response = $this->user->editUser($settingData, $this->session->userdata('user_id'));
+        if ($response > 0) {
+            $this->session->set_flashdata('message_notification', 'Documents Uploaded Successfully');
+            $this->session->set_flashdata('class', A_SUC);
+            redirect(base_url('user/trust'));
+        } else {
+            $this->session->set_flashdata('message_notification', 'Documents Not Updated Successfully');
+            $this->session->set_flashdata('class', A_FAIL);
+            redirect(base_url('user/trust'));
+        }
     }
 
     public function submit_avatar() {
