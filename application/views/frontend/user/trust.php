@@ -208,25 +208,44 @@ $message_notification = $this->session->flashdata('message_notification')
                                         <div class="col-md-9">                                            
                                             <h4>Government Issued License/Certificate</h4>
                                             <p class="mr10">Upload a copy of your license or certificate to avoid the hassle later.</p>
-                                            <?php
-                                            if (!empty($licenceLink)) {
-                                            $licenceCopy  = explode(".",$licenceLink);
-                                            if ($licenceCopy[1] == 'pdf') { ?>
-                                                <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
-                                            <?php }else if ($licenceCopy[1] == 'doc' || $licenceCopy[1] == 'docx') { ?>
-                                                <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><i style="font-size: 100px;" class="fa fa-file-word-o" aria-hidden="true"></i></a>
-                                            <?php  }else{ ?>
-                                               <a target="_blank" href="<?php echo $licenceLink; ?>" title="View Licence"><img title="View Licence" src="<?php echo $licenceLink; ?>" style="height:100px;" ></a>
-                                            <?php }}?>
                                             <p class="licenceCopyError"></p>
                                         </div>
                                         <div class="col-md-3 align-center">
                                             <input  type="file" name="licenceCopy" id="licenceCopy">
                                         </div>
+                                        <div class="add-payment col-xs-12 mt10">
+                                            <ul>
+                                                <?php foreach ($userDocuments['certificate'] as $k => $v) { ?>
+                                                    <li class="clearfix mr10">
+                                                        <p><a target="_blank" href="<?php echo base_url('uploads/user/document/' . $v['doc_name']); ?>" title="View Licence"><?= $v['doc_name']; ?></a></p>
+                                                        <div class="wrap">
+                                                            <div class="pull-left">
+                                                                <?php if ($v['doc_name'] == trim($userProfileInfo->licenceCopy)) { ?>
+                                                                <?php } else { ?>
+                                                                    <a href="javascript:void(0);" onclick="removeDoc('<?= $v['id']; ?>')">Remove</a>
+                                                                <?php } ?>                                                                
+                                                            </div>
+                                                            <div class="pull-right">
+                                                                <?php
+                                                                $docInfo  = explode(".",$v['doc_name']);
+                                                                $docExt = end($docInfo);
+                                                                if ($docExt == 'pdf') { ?>
+                                                                    <i class="fa fa-file-pdf-o fa-3x" aria-hidden="true"></i>
+                                                                <?php }else if ($docExt == 'doc' || $docExt == 'docx') { ?>
+                                                                    <i class="fa fa-file-word-o fa-3x" aria-hidden="true"></i>
+                                                                <?php  }else{ ?>
+                                                                    <i class="fa fa-file-image-o fa-3x" aria-hidden="true"></i>
+                                                                <?php }?>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php } ?>
+                                            </ul>
+                                        </div> 
                                     </div>
-                                    <input type="hidden" name="OldEstablishmentLicence" id="OldEstablishmentLicence" value="<?= $userProfileInfo->establishmentLicence; ?>">
-                                    <input type="hidden" name="OldLiabilityInsurance" id="OldLiabilityInsurance" value="<?= $userProfileInfo->liabilityInsurance; ?>">
-                                    <input type="hidden" name="OldLicenceCopy" id="OldLicenceCopy" value="<?= $userProfileInfo->licenceCopy; ?>">
+                                    <input type="hidden" name="OldEstablishmentLicence" id="OldEstablishmentLicence" value="">
+                                    <input type="hidden" name="OldLiabilityInsurance" id="OldLiabilityInsurance" value="">
+                                    <input type="hidden" name="OldLicenceCopy" id="OldLicenceCopy" value="">
                                     <input type="submit" name="submit" id="submit" class="btn green-btn pull-right" value="Upload">
                                 </form>
                             </div>

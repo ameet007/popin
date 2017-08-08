@@ -794,9 +794,9 @@ class FrontUser extends CI_Model {
     
     public function insertUserDocs($user, $doc_name, $doc_type) {
         if($doc_name != ""){
-            $isDocPresent = $this->db->get_where('user_documents', array('user' => $user, 'doc_name' => $doc_name, 'doc_type' => $doc_type))->num_rows();
+            $isDocQuery = $this->db->get_where('user_documents', array('user' => $user, 'doc_name' => $doc_name, 'doc_type' => $doc_type));
                 
-            if($isDocPresent == 0){
+            if($isDocQuery->num_rows() == 0){
                 $rawData = array(
                     'user' => $user,
                     'doc_type' => $doc_type,
@@ -812,14 +812,24 @@ class FrontUser extends CI_Model {
                     $this->setDefaultDoc($user, $insertId);
                 }
                 return $insertId;
+            }else{
+                $docInfo = $isDocQuery->row_array();
+                $this->db->where(array('user' => $user, 'doc_name' => $doc_name, 'doc_type' => $doc_type));
+                $this->db->update('user_documents', array('doc_status' => 'added', 'updatedDate'   => time()));
+                $insertId = $this->db->insert_id();
+                
+                if($doc_type == '3'){
+                    $this->setDefaultDoc($user, $docInfo['id']);
+                }
+                return $docInfo['id'];
             }
         }
     }
     
     public function getUserDocuments($user) {
-        $response['establishment'] = $this->db->select('id,doc_name')->get_where('user_documents', array('user' => $user, 'doc_type' => '1', 'doc_status' => 'added'))->result_array();
-        $response['liability'] = $this->db->select('id,doc_name')->get_where('user_documents', array('user' => $user, 'doc_type' => '2', 'doc_status' => 'added'))->result_array();
-        $response['certificate'] = $this->db->select('id,doc_name')->get_where('user_documents', array('user' => $user, 'doc_type' => '3', 'doc_status' => 'added'))->result_array();
+        $response['establishment'] = $this->db->select('id,doc_name')->order_by('id', 'desc')->get_where('user_documents', array('user' => $user, 'doc_type' => '1', 'doc_status' => 'added'))->result_array();
+        $response['liability'] = $this->db->select('id,doc_name')->order_by('id', 'desc')->get_where('user_documents', array('user' => $user, 'doc_type' => '2', 'doc_status' => 'added'))->result_array();
+        $response['certificate'] = $this->db->select('id,doc_name')->order_by('id', 'desc')->get_where('user_documents', array('user' => $user, 'doc_type' => '3', 'doc_status' => 'added'))->result_array();
         
         return $response;
     }

@@ -575,8 +575,13 @@ class Account extends CI_Controller {
         $user_id = $this->session->userdata('user_id');
         $response = $this->user->removeDoc($user_id, $doc_id);
         if ($response > 0) {
-            $docInfo = $this->db->select('doc_name')->get_where('user_documents', array('user' => $user_id, 'id' => $doc_id))->row_array();
+            $docInfo = $this->db->get_where('user_documents', array('user' => $user_id, 'id' => $doc_id))->row_array();
             @unlink("./uploads/user/document/" . $docInfo['doc_name']);
+            if($docInfo['doc_type'] == '3'){
+                $this->db->where('user', $user_id);
+                $this->db->where('id', $docInfo['id']);
+                $this->db->delete('user_documents');
+            }
             $this->session->set_flashdata('message_notification', 'Document Removed Successfully');
             $this->session->set_flashdata('class', A_SUC);
             redirect(base_url('user/trust'));
